@@ -8,7 +8,8 @@
 
 
 </div>
-
+## Project Overview
+ We will develop a game, called Guess The Phrase, that aims to maximize communication between children who use Augmentative and Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to encourage communication between two players. We aim to integrate existing AAC technology into this game.
 
 ## Keywords
 
