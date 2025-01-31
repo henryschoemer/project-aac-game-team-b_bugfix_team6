@@ -42,14 +42,15 @@ Discuss what you need to develop this project. This includes background informat
 <tr>
     <td align="center">
         <a href="https://github.com/nathaliavalli">
-            <img src="/workspaces/project-aac-game-team-b/documentation/src/images/nathalia_valli.jpeg" width="100;" alt="nathalia_valli.jpeg"/>
+            <img src="documentation/src/images/nathalia_valli.jpeg" width="100" alt="nathalia_valli.jpeg"/>
+
             <br />
             <sub><b>Nathalia Valli</b></sub>
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/leighflagg">
-            <img src="https://avatars.githubusercontent.com/u/77810293?v=4" width="100;" alt="leighflagg"/>
+        <a href="https://github.com/HarpinderFeelsLikeCoding">
+            <img src="documentation/src/images/harpinder.webp" width="100;" alt="harpinder.webb"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
