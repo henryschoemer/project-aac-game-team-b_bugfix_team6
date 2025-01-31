@@ -6,9 +6,9 @@ sidebar_position: 1
 
 ## Project Abstract
 
-This project is a web-based, tablet-friendly "fill-in-the-phrase" game designed for children, with special considerations 
+This project is a web-based, tablet-friendly "fill-in-the-phrase" story game designed for children, with special considerations 
 regarding players who use Augmentative and Alternatve Communication (ACC). In order to promote social inclusion and empathy, the 
-game is offered in two modes -Verbal and AAC- and provides a pause function that allows AAC users to communicate without feeling 
+game is offered in two modes -External AAC Tablet/Voice Control and Built in AAC Tablet- which provides a turn taken function that allows AAC users to communicate without feeling 
 rushed. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. 
 The interface dynamically indicates when a child is composing an answer, fostering understanding and patience among all players. 
 Through simple, age-appropriate prompts, lively visuals, and a responsive layout, the game creates an engaging, accessible 
