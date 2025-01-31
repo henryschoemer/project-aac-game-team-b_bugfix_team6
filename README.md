@@ -43,18 +43,25 @@ Discuss what you need to develop this project. This includes background informat
     <td align="center">
         <a href="https://github.com/nathaliavalli">
             <img src="documentation/src/images/nathalia_valli.jpeg" width="100" alt="nathalia_valli.jpeg"/>
-
             <br />
             <sub><b>Nathalia Valli</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/HarpinderFeelsLikeCoding">
-            <img src="documentation/src/images/harpinder.webp" width="100;" alt="harpinder.webb"/>
+            <img src="documentation/src/images/harpinder.webp" width="100;" alt="harpinder.webp"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td></tr>
+    </td>
+    <td align="center">
+        <a href="https://github.com/molly-pop">
+            <img src="documentation/src/images/molly.webp" width="100" alt="molly.webp"/>
+            <br />
+            <sub><b>Nathalia Valli</b></sub>
+        </a>
+    </td>
+    </tr>
 </table>
 
 [//]: # ( readme: collaborators -end )
