@@ -1,7 +1,7 @@
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=17850489)
 <div align="center">
 
-# Project Name
+# Story Quest
 [![Report Issue on Jira](https://img.shields.io/badge/Report%20Issues-Jira-0052CC?style=flat&logo=jira-software)](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/DT/issues)
 [![Deploy Docs](https://github.com/ApplebaumIan/tu-cis-4398-docs-template/actions/workflows/deploy.yml/badge.svg)](https://github.com/ApplebaumIan/tu-cis-4398-docs-template/actions/workflows/deploy.yml)
 [![Documentation Website Link](https://img.shields.io/badge/-Documentation%20Website-brightgreen)](https://applebaumian.github.io/tu-cis-4398-docs-template/)
@@ -9,7 +9,7 @@
 
 </div>
 ## Project Overview
- We will develop a game, called Guess The Phrase, that aims to maximize communication between children who use Augmentative and Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to encourage communication between two players. We aim to integrate existing AAC technology into this game.
+ We will develop a game, called Story Quest : Teamwork Prevails, that aims to maximize communication between children who use Augmentative and Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to encourage communication between two players. We aim to integrate existing AAC technology into this game.
 
 ## Keywords
 
@@ -17,7 +17,7 @@ Section #, as well as any words that quickly give your peers insights into the a
 
 ## Project Abstract
 
-This document proposes a novel application of a text message (SMS or Email) read-out and hands-free call interacted between an Android Smartphone and an infotainment platform (headunit) in a car environment. When a phone receives an SMS or Email, the text message is transferred from the phone to the headunit through a Bluetooth connection. On the headunit, user can control which and when the received SMS or E-mail to be read out through the in-vehicle audio system. The user may press one button on the headunit to activate the hands-free feature to call back the SMS sender.
+This project is a web-based, tablet-friendly "fill-in-the-phrase" game designed for children, with special considerations regarding players who use Augmentative and Alternatve Communication (ACC). In order to promote social inclusion and empathy, the game is offered in two modes -Verbal and AAC- and provides a pause function that allows AAC users to communicate without feeling rushed. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. The interface dynamically indicates when a child is composing an answer, fostering understanding and patience among all players. Through simple, age-appropriate prompts, lively visuals, and a responsive layout, the game creates an engaging, accessible environment that supports the growth of both verbal communicators and children who require additional support.
 
 ## High Level Requirement
 
@@ -25,11 +25,11 @@ Describe the requirements – i.e., what the product does and how it does it fro
 
 ## Conceptual Design
 
-Describe the initial design concept: Hardware/software architecture, programming language, operating system, etc.
+The website will be built with the Next.js Framework primarily for the front-end, and with Convex for the back-end. The language specifically will be TypeScript and we will likely sprinkle in some TailWind CSS. Docusaurus and GitHub Pages will keep track of project progression. We will use Vercel to seemlessly deploy the game.
 
 ## Background
 
-The background will contain a more detailed description of the product and a comparison to existing similar projects/products. A literature search should be conducted and the results listed. Proper citation of sources is required. If there are similar open-source products, you should state whether existing source will be used and to what extent. If there are similar closed-source/proprietary products, you should state how the proposed product will be similar and different.
+Our Project is looking to integrate a AAC tablet and a interactive game for children.
 
 ## Required Resources
 
@@ -41,10 +41,10 @@ Discuss what you need to develop this project. This includes background informat
 <table>
 <tr>
     <td align="center">
-        <a href="https://github.com/ApplebaumIan">
-            <img src="https://avatars.githubusercontent.com/u/9451941?v=4" width="100;" alt="ApplebaumIan"/>
+        <a href="https://github.com/nathaliavalli">
+            <img src="/workspaces/project-aac-game-team-b/documentation/src/images/nathalia_valli.jpeg" width="100;" alt="nathalia_valli.jpeg"/>
             <br />
-            <sub><b>Ian Tyler Applebaum</b></sub>
+            <sub><b>Nathalia Valli</b></sub>
         </a>
     </td>
     <td align="center">
