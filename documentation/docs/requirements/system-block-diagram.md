@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # System Block Diagram
 
-![System Block Diagram](static/img/system_block_diagram.png)
+[System Block Diagram](static/img/system_block_diagram.png)
 
 This system block diagram depicts the high-level design of the StoryQuest: Teamwork Prevails! web application. This is a story-based quiz game
 in which users must fill in the blanks according to pictures on the screen, made to enhance communication and collaboration among school age children
