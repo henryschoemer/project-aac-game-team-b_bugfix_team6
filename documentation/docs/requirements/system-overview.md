@@ -24,3 +24,21 @@ likely sprinkle in some TailWind CSS. Docusaurus
 and GitHub Pages will keep track of project 
 progression. We will use Vercel to seemlessly 
 deploy the game.
+
+## Background
+
+Many current tools on the market are geared towards engaging either AAC users separately, such as the AAC Language Lab<sup>1</sup> or AssistiveWare<sup>2</sup>.
+The AAC Language Lab has web-based games based on stages of learning, and requires a subscription model to use. AssistiveWare has specific apps 
+for specific AAC communication devices.  Still, much of their software encompasses apps targeted towards helping the younger generation of AAC 
+users more comfortable with using assistive technology. There is a gap in the market for learning games based in collaboration between AAC users 
+and non-AAC users.
+
+StoryQuest, in contrast, aims to create a collaborative environment for AAC and non-AAC users alike to engage in play. 
+In a study by Schwartz et al.,<sup>3</sup> the 31 preschool children with significant developmental disabilities who learned to use Picture 
+Exchange Communication Systems to communicate with adults after 11 months, also learned to communicate with peers without disabilities 
+after an additional 3 months of intervention in integrated, play-based activities. Social interactions for development remains important 
+at the grade-school level. 
+
+1. AAC Language Lab: https://aaclanguagelab.com/activities
+2. AssistiveWare: https://www.assistiveware.com/products
+3. Schwartz IS, Garfinkle AN, Bauer J. The picture exchange communication system communicative outcomes for young children with disabilities. Topics in Early Childhood Special Education. 1998;18:144–159. [Google Scholar]
