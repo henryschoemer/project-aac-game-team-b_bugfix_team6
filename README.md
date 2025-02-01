@@ -61,6 +61,27 @@ Discuss what you need to develop this project. This includes background informat
             <sub><b>Molly Barron</b></sub>
         </a>
     </td>
+    <td align="center">
+        <a href="https://github.com/molly-pop">
+            <img src="documentation/src/images/josh.webp" width="100" height="150" alt="josh.webp"/>
+            <br />
+            <sub><b>Josh Varkley</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/molly-pop">
+            <img src="documentation/src/images/blank-avatar.webp" width="100" height="150" alt="blank-avatar.webp"/>
+            <br />
+            <sub><b>Tiffany Truong</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/shaynaodle">
+            <img src="documentation/src/images/blank-avatar.webp" width="100" height="150" alt="blank-avatar.webp"/>
+            <br />
+            <sub><b>Shayna Odle</b></sub>
+        </a>
+    </td>
     </tr>
 </table>
 
