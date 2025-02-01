@@ -42,7 +42,7 @@ Discuss what you need to develop this project. This includes background informat
 <tr>
     <td align="center">
         <a href="https://github.com/nathaliavalli">
-            <img src="documentation/src/images/nathalia_valli.jpeg" width="100" alt="nathalia_valli.jpeg"/>
+            <img src="documentation/src/images/nathalia_valli.jpeg" width="100" length= "150" alt="nathalia_valli.jpeg"/>
             <br />
             <sub><b>Nathalia Valli</b></sub>
         </a>
@@ -51,14 +51,14 @@ Discuss what you need to develop this project. This includes background informat
         <a href="https://github.com/HarpinderFeelsLikeCoding">
             <img src="documentation/src/images/harpinder.webp" width="100;" alt="harpinder.webp"/>
             <br />
-            <sub><b>Null</b></sub>
+            <sub><b>Harpinder Singh</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/molly-pop">
             <img src="documentation/src/images/molly.webp" width="100" alt="molly.webp"/>
             <br />
-            <sub><b>Nathalia Valli</b></sub>
+            <sub><b>Molly Barron</b></sub>
         </a>
     </td>
     </tr>
