@@ -7,10 +7,6 @@
 [![Deploy Docs](https://github.com/Capstone-Projects-2025-Spring/project-aac-game-team-b)](https://github.com/Capstone-Projects-2025-Spring/project-aac-game-team-b)
 [![Documentation Website Link](https://capstone-projects-2025-spring.github.io/project-aac-game-team-b/)](https://capstone-projects-2025-spring.github.io/project-aac-game-team-b/)
 
-[![Report Issue on Jira](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/DT/issues)](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/AGTB/issues?jql=project%20%3D%20%22AGTB%22%20ORDER%20BY%20created%20DESC)
-[![Deploy Docs](https://github.com/ApplebaumIan/tu-cis-4398-docs-template/actions/workflows/deploy.yml)](https://github.com/Capstone-Projects-2025-Spring/project-aac-game-team-b)
-[![Documentation Website Link](https://applebaumian.github.io/tu-cis-4398-docs-template/)](https://capstone-projects-2025-spring.github.io/project-aac-game-team-b/)
-
 </div>
 
 ## Project Overview
