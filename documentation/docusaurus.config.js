@@ -8,7 +8,7 @@
  * The URL or reference to your projects logo!
  * @type {string}
  */
-const logo = '/workspaces/project-aac-game-team-b/documentation/static/img/StoryQuest.png';
+const logo = 'img/StoryQuest.png'; 
 
 const main_template_jira_scripts = () => {
   if (process.env.ORG_NAME === 'ApplebaumIan'){
@@ -223,7 +223,7 @@ const config = {
         systemvars: true,
       },
     ],
-    //'plugin-image-zoom',
+    'plugin-image-zoom',
 
 
   ],
