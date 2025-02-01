@@ -1,11 +1,12 @@
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=17850489)
+<!-- [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=17850489) -->
+
 <div align="center">
 
 # Storyquest: Teamwork Prevails!
-[![Report Issue on Jira](https://img.shields.io/badge/Report%20Issues-Jira-0052CC?style=flat&logo=jira-software)](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/DT/issues)
-[![Deploy Docs](https://github.com/ApplebaumIan/tu-cis-4398-docs-template/actions/workflows/deploy.yml/badge.svg)](https://github.com/ApplebaumIan/tu-cis-4398-docs-template/actions/workflows/deploy.yml)
-[![Documentation Website Link](https://img.shields.io/badge/-Documentation%20Website-brightgreen)](https://applebaumian.github.io/tu-cis-4398-docs-template/)
 
+[![Report Issue on Jira](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/DT/issues)](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/AGTB/issues?jql=project%20%3D%20%22AGTB%22%20ORDER%20BY%20created%20DESC)
+[![Deploy Docs](https://github.com/ApplebaumIan/tu-cis-4398-docs-template/actions/workflows/deploy.yml)](https://github.com/Capstone-Projects-2025-Spring/project-aac-game-team-b)
+[![Documentation Website Link](https://applebaumian.github.io/tu-cis-4398-docs-template/)](https://capstone-projects-2025-spring.github.io/project-aac-game-team-b/)
 
 </div>
 
@@ -31,17 +32,18 @@ The interface dynamically indicates when a child is composing an answer, fosteri
 Through simple, age-appropriate prompts, lively visuals, and a responsive layout, the game creates an engaging, accessible 
 environment that supports the growth of both verbal communicators and children who require additional support. 
 
+
 ## High Level Requirement
 
 Describe the requirements – i.e., what the product does and how it does it from a user point of view – at a high level.
 
 ## Conceptual Design
 
-Describe the initial design concept: Hardware/software architecture, programming language, operating system, etc.
+The website will be built with the Next.js Framework primarily for the front-end, and with Convex for the back-end. The language specifically will be TypeScript and we will likely sprinkle in some TailWind CSS. Docusaurus and GitHub Pages will keep track of project progression. We will use Vercel to seemlessly deploy the game.
 
 ## Background
 
-The background will contain a more detailed description of the product and a comparison to existing similar projects/products. A literature search should be conducted and the results listed. Proper citation of sources is required. If there are similar open-source products, you should state whether existing source will be used and to what extent. If there are similar closed-source/proprietary products, you should state how the proposed product will be similar and different.
+Our Project is looking to integrate a AAC tablet and a interactive game for children.
 
 ## Required Resources
 
@@ -53,21 +55,49 @@ Discuss what you need to develop this project. This includes background informat
 <table>
 <tr>
     <td align="center">
-        <a href="https://github.com/ApplebaumIan">
-            <img src="https://avatars.githubusercontent.com/u/9451941?v=4" width="100;" alt="ApplebaumIan"/>
+        <a href="https://github.com/nathaliavalli">
+            <img src="documentation/src/images/nathalia_valli.JPG" width="100" height="120" alt="nathalia_valli.jpeg"/>
             <br />
-            <sub><b>Ian Tyler Applebaum</b></sub>
+            <sub><b>Nathalia Valli</b></sub>
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/leighflagg">
-            <img src="https://avatars.githubusercontent.com/u/77810293?v=4" width="100;" alt="leighflagg"/>
+        <a href="https://github.com/HarpinderFeelsLikeCoding">
+            <img src="documentation/src/images/harpinder.webp" width="100;" height="120" alt="harpinder.webp"/>
             <br />
-            <sub><b>Null</b></sub>
+            <sub><b>Harpinder Singh</b></sub>
         </a>
-    </td></tr>
+    </td>
+    <td align="center">
+        <a href="https://github.com/molly-pop">
+            <img src="documentation/src/images/molly.webp" width="100" height="120" alt="molly.webp"/>
+            <br />
+            <sub><b>Molly Barron</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/molly-pop">
+            <img src="documentation/src/images/josh.webp" width="100" height="120" alt="josh.webp"/>
+            <br />
+            <sub><b>Josh Varkley</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/molly-pop">
+            <img src="documentation/src/images/blank-avatar.webp" width="100" height="120" alt="blank-avatar.webp"/>
+            <br />
+            <sub><b>Tiffany Truong</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/shaynaodle">
+            <img src="documentation/src/images/blank-avatar.webp" width="100" height="120" alt="blank-avatar.webp"/>
+            <br />
+            <sub><b>Shayna Odle</b></sub>
+        </a>
+    </td>
+    </tr>
 </table>
 
 [//]: # ( readme: collaborators -end )
-
 

@@ -8,7 +8,7 @@
  * The URL or reference to your projects logo!
  * @type {string}
  */
-const logo = 'https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg';
+const logo = '/workspaces/project-aac-game-team-b/documentation/src/images/StoryQuest.png';
 
 const main_template_jira_scripts = () => {
   if (process.env.ORG_NAME === 'ApplebaumIan'){
@@ -23,7 +23,7 @@ const main_template_jira_scripts = () => {
 const rawProjectName = process.env.PROJECT_NAME || 'docs-dev-mode';
 
 // Transform PROJECT_NAME (or fallback) to a title-like string:
-const title = rawProjectName
+const title = "StoryQuest"
   .replaceAll('-', ' ')
   .split(' ')
   .map(word => {
@@ -38,8 +38,8 @@ const title = rawProjectName
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   /*TODO: Change to your project's title and tagline*/
-  title: title,
-  tagline: 'Owls are cool',
+  title: "StoryQuest",
+  tagline: 'Teamwork Prevails',
   /*Unless you move this website to a seperate repo don't change url and baseurl.*/
   url: 'https://'+process.env.ORG_NAME+'.github.io/',
   baseUrl: '/'+process.env.PROJECT_NAME+'/',
@@ -76,8 +76,8 @@ const config = {
           path: 'docs',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/'+process.env.ORG_NAME+'/'+process.env.PROJECT_NAME+'/edit/main/documentation/',
+          // editUrl:
+          //   'https://github.com/'+process.env.ORG_NAME+'/'+process.env.PROJECT_NAME+'/edit/main/documentation/',
           // remarkPlugins: [require('mdx-mermaid')],
 
         },
@@ -118,7 +118,7 @@ const config = {
     ({
       navbar: {
         /*TODO: Change to your project's title*/
-        title: title,
+        title: "StoryQuest",
         logo: {
           alt: 'My Site Logo',
           src: logo,
