@@ -100,4 +100,3 @@ Discuss what you need to develop this project. This includes background informat
 
 [//]: # ( readme: collaborators -end )
 
-##Edit for the deployment
