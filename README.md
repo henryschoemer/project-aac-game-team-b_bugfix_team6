@@ -42,42 +42,42 @@ Discuss what you need to develop this project. This includes background informat
 <tr>
     <td align="center">
         <a href="https://github.com/nathaliavalli">
-            <img src="documentation/src/images/nathalia_valli.JPG" width="100" height="150" alt="nathalia_valli.jpeg"/>
+            <img src="documentation/src/images/nathalia_valli.JPG" width="100" height="120" alt="nathalia_valli.jpeg"/>
             <br />
             <sub><b>Nathalia Valli</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/HarpinderFeelsLikeCoding">
-            <img src="documentation/src/images/harpinder.webp" width="100;" height="150" alt="harpinder.webp"/>
+            <img src="documentation/src/images/harpinder.webp" width="100;" height="120" alt="harpinder.webp"/>
             <br />
             <sub><b>Harpinder Singh</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/molly-pop">
-            <img src="documentation/src/images/molly.webp" width="100" height="150" alt="molly.webp"/>
+            <img src="documentation/src/images/molly.webp" width="100" height="120" alt="molly.webp"/>
             <br />
             <sub><b>Molly Barron</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/molly-pop">
-            <img src="documentation/src/images/josh.webp" width="100" height="150" alt="josh.webp"/>
+            <img src="documentation/src/images/josh.webp" width="100" height="120" alt="josh.webp"/>
             <br />
             <sub><b>Josh Varkley</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/molly-pop">
-            <img src="documentation/src/images/blank-avatar.webp" width="100" height="150" alt="blank-avatar.webp"/>
+            <img src="documentation/src/images/blank-avatar.webp" width="100" height="120" alt="blank-avatar.webp"/>
             <br />
             <sub><b>Tiffany Truong</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/shaynaodle">
-            <img src="documentation/src/images/blank-avatar.webp" width="100" height="150" alt="blank-avatar.webp"/>
+            <img src="documentation/src/images/blank-avatar.webp" width="100" height="120" alt="blank-avatar.webp"/>
             <br />
             <sub><b>Shayna Odle</b></sub>
         </a>
