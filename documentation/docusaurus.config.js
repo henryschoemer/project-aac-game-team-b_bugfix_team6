@@ -223,7 +223,7 @@ const config = {
         systemvars: true,
       },
     ],
-    'plugin-image-zoom',
+    //'plugin-image-zoom',
 
 
   ],
