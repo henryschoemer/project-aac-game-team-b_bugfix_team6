@@ -119,7 +119,7 @@ Our Project is looking to integrate a AAC tablet and a interactive game for chil
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/molly-pop">
+        <a href="https://github.com/tt50">
             <img src="img/tiffany.webp" width="100" height="120" alt="tiffany.webp"/>
             <br />
             <sub><b>Tiffany Truong</b></sub>
