@@ -3,18 +3,16 @@
 <div align="center">
 
 # Storyquest: Teamwork Prevails!
-[![Report Issue on Jira](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/AGTB/issues?jql=project%20%3D%20%22AGTB%22%20ORDER%20BY%20created%20DESC)](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/AGTB/issues?jql=project%20%3D%20%22AGTB%22%20ORDER%20BY%20created%20DESC)
-[![Deploy Docs](https://github.com/Capstone-Projects-2025-Spring/project-aac-game-team-b)](https://github.com/Capstone-Projects-2025-Spring/project-aac-game-team-b)
-[![Documentation Website Link](https://capstone-projects-2025-spring.github.io/project-aac-game-team-b/)](https://capstone-projects-2025-spring.github.io/project-aac-game-team-b/)
+[[Report Issue on Jira](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/AGTB/issues?jql=project%20%3D%20%22AGTB%22%20ORDER%20BY%20created%20DESC)]
+[[Deploy Docs](https://github.com/Capstone-Projects-2025-Spring/project-aac-game-team-b)]
+[[Documentation Website Link](https://capstone-projects-2025-spring.github.io/project-aac-game-team-b/)]
 
 </div>
 
 ## Project Overview
 
 We will develop a game, called "Storyquest: Teamwork Prevails", that aims to maximize communication between children who use 
-Augmentative and 
-Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to 
-encourage communication between two players. We aim to integrate existing AAC technology into this game.
+Augmentative and Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to encourage communication between two players. We aim to integrate existing AAC technology into this game.
 
 ## Keywords
 
@@ -22,19 +20,37 @@ Section #, as well as any words that quickly give your peers insights into the a
 
 ## Project Abstract
 
-This project is a web-based, tablet-friendly "fill-in-the-phrase" story game designed for children, with special considerations 
-regarding players who use Augmentative and Alternatve Communication (ACC). In order to promote social inclusion and empathy, the 
-game is offered in two modes -External AAC Tablet/Voice Control and Built in AAC Tablet- which provides a turn taken function that 
-allows AAC users to communicate without feeling rushed. An embedded or easily accessible AAC-friendly interface ensures minimal 
-screen switching and enables easy participation. 
-The interface dynamically indicates when a child is composing an answer, fostering understanding and patience among all players. 
-Through simple, age-appropriate prompts, lively visuals, and a responsive layout, the game creates an engaging, accessible 
-environment that supports the growth of both verbal communicators and children who require additional support. 
+This project is a web-based, tablet-friendly "fill-in-the-phrase" story game designed for children, with special considerations regarding players who use Augmentative and Alternatve Communication (ACC). In order to promote social inclusion and empathy, the game is offered in two modes -External AAC Tablet/Voice Control and Built in AAC Tablet- which provides a turn taken function that allows AAC users to communicate without feeling rushed. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. The interface dynamically indicates when a child is composing an answer, fostering understanding and patience among all players. Through simple, age-appropriate prompts, lively visuals, and a responsive layout, the game creates an engaging, accessible environment that supports the growth of both verbal communicators and children who require additional support. 
 
 
 ## High Level Requirement
 
-Describe the requirements – i.e., what the product does and how it does it from a user point of view – at a high level.
+    1. User Experience (UX) and Design
+
+        **Bright, colorful, and appealing design:** Use vibrant colors and friendly, playful graphics to make the app visually engaging for kids.
+
+        **Simple navigation:** Ensure the interface is easy for children to understand and use. Buttons should be big, clear, and intuitive.
+
+        **Age-appropriate design:** Tailor the experience to the target age group (e.g., for younger kids, minimize text and use icons or pictures).
+
+    2. Accessibility
+
+        **Audio cues and narration:** Some children may not be able to read yet, so using voiceover narration or sound effects can help.
+
+        **Adjustable difficulty levels:** Include settings to adjust the game difficulty to match the child’s skill level.
+
+    3. Engaging Content
+
+        **Interactive elements:** Kids should feel involved and rewarded during the game. Include interactive features like achievements, rewards, or animations.
+
+        **Clear, non-frustrating feedback:** Kids need immediate feedback about their actions in the game, whether it’s positive reinforcement or gentle guidance when they’re stuck.
+
+    4. Multiplayer/Collaboration Features 
+
+        **Social interaction:** If multiplayer, provide safe, controlled interaction options such as pre-set messages or emojis and voice dictation.
+
+        **Cooperative gameplay:** Enable teamwork if it’s a multiplayer game, with easy communication or task sharing.
+
 
 ## Conceptual Design
 
@@ -46,7 +62,28 @@ Our Project is looking to integrate a AAC tablet and a interactive game for chil
 
 ## Required Resources
 
-Discuss what you need to develop this project. This includes background information you will need to acquire, hardware resources, and software resources. If these are not part of the standard Computer Science Department lab resources, these must be identified early and discussed with the instructor.
+#### Front-End Development
+    **Next.js Framework:** A React-based framework to build the website and game logic. Next.js will handle SSR (Server Side Rendering) and routing, helping with performance and SEO.
+
+    **TypeScript:** The primary language for building the app, ensuring type safety and better development experience.
+
+    **Tailwind CSS:** For fast, responsive design that’s customizable and minimalistic.
+
+    **Vercel:** For seamless deployment, leveraging Vercel’s integration with Next.js for continuous deployment and optimized performance.
+
+    **Docusaurus:** For maintaining project documentation and tracking progress, ideal for keeping all stakeholders in the loop.
+
+    **GitHub Pages:** For hosting documentation, a project roadmap, or related resources.
+
+#### Back-End Development
+    **Convex:** This real-time serverless backend will handle state persistence, interactions, and user data. It integrates well with Next.js for a smooth full-stack experience.
+
+    **Database (Convex DB):** Convex offers a cloud database to manage game data, player progress, and other relevant information in real-time.
+
+    **Authentication Service:** Consider integrating user authentication (like Firebase Authentication or Auth0) to ensure safety and privacy, especially with children’s accounts.
+
+    **Accessibility APIs:** If the AAC device is connected via web standards, APIs like Web Speech API (for text-to-speech and speech recognition) might be useful.
+
 
 ## Collaborators
 
@@ -90,7 +127,7 @@ Discuss what you need to develop this project. This includes background informat
     </td>
     <td align="center">
         <a href="https://github.com/shaynaodle">
-            <img src="img/blank-avatar.webp" width="100" height="120" alt="blank-avatar.webp"/>
+            <img src="img/shayna.webp" width="100" height="120" alt="shayna.webp"/>
             <br />
             <sub><b>Shayna Odle</b></sub>
         </a>
