@@ -18,7 +18,7 @@ environment that supports the growth of both verbal communicators and children w
 
 The website will be built with the Next.js 
 Framework primarily for the front-end, and with 
-Convex for the back-end. The language 
+Convex for the back-end. We are also considering FireBase for back-end to ensure gaming functionality. The language 
 specifically will be TypeScript and we will 
 likely sprinkle in some TailWind CSS. Docusaurus 
 and GitHub Pages will keep track of project 
