@@ -120,7 +120,7 @@ Our Project is looking to integrate a AAC tablet and a interactive game for chil
     </td>
     <td align="center">
         <a href="https://github.com/molly-pop">
-            <img src="img/blank-avatar.webp" width="100" height="120" alt="blank-avatar.webp"/>
+            <img src="img/tiffany.webp" width="100" height="120" alt="tiffany.webp"/>
             <br />
             <sub><b>Tiffany Truong</b></sub>
         </a>
