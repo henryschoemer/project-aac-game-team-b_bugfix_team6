@@ -3,6 +3,4 @@ sidebar_position: 3
 ---
 
 # General Requirements
-
-Since this is just a web app that can be accessed on a tablet, laptop, or a phone, all that is really needed is beyond those 
-products is a connection to the internet. 
+Since this is a web based game, all that is needed is a device that is can connect to the internet and access the web.
