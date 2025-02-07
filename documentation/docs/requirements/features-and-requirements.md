@@ -1,25 +1,49 @@
 ---
 sidebar_position: 4
 ---
+# Functional vs Non-Functional Requirements
 
-# Features and Requirements
-## Functional Requirements
-- Users will be prompted to either create a room or join a room.
-  - Users who create a room will be able to select a difficulty level based on their grade, i.e.        1st grade, 2nd grade, 3rd grade.
-  - All users, those who join a room and the room creator, must select if they have an AAC tablet       or not.
-    - If the user selects that they have a tablet, they will be directed to the game mode that            listens for audio.
-    - If the user selects that they do not have a tablet, they will be provided with an on-screen         tablet catered to the game.
-- Users will be prompted with a sentence in which they have to work together by taking turns to       fill in the blanks.
-  - If the user has a physical tablet, they will refer to the options on the screen and pick the        corresponding answer from their tablet.
-    - To get the application to listen for this audio input, the users will be provided with a            microphone button to press when they are ready to answer.
-  - If the user is using the provided in-game tablet, they will answer by pressing the button from      the on-screen tablet.
-- If a user answers wrong, a friendly message will be displayed on screen and they will be prompted   to try again.
+## **Functional Requirements (Features that define what the system must do)**  
 
-## Non-functional Requirements
-- Stars displayed at the top of the screen will help users see their progression through the story.
-- User interface will be designed to be understandable for young students/AAC users.
-- Microphone button will highlight/change color to indicate listening for audio input.
-- Users will all see the same screen on their devices but will be prompted personally when it is      their turn.
-- The number of blanks per level corresponds to the number of players, i.e., two players will have    two blanks per level.
-- The blank slots will highlight for the user whose turn it is. 
-- For the on-screen tablet users, audio will play out loud when a button is pressed.
+### **1. Accessibility & AAC (Most Critical for Integration)**  
+-  **AAC Keyboard Integration** – Easy access to AAC keyboards for users who require them.  
+-  **On-Screen Tablet Mode** – Players without AAC devices get an in-game alternative.  
+-  **Voice Input Support** – Players using AAC can provide answers using audio input.  
+-  **Audio Feedback** – On-screen tablet users get auditory feedback when selecting an answer.  
+
+### **2. Player Customization (To Enhance Inclusion and User Identity)**  
+-  **Set Player Name** – Players can customize their display name for better identification.  
+-  **AAC Mode Selection** – Players can indicate whether they are using an AAC device or not, determining their interaction mode.  
+
+### **3. Gameplay Mechanics (Essential for Smooth Interaction Between AAC and Non-AAC Users)**  
+-  **Turn-Based System** – The game enforces a structured turn-taking system.  
+-  **Answer Validation** – The game checks player answers for correctness.  
+-  **Retry Mechanism** – Players can try again if they answer incorrectly.  
+-  **Answer Explanation** – Players receive feedback on why their answer was wrong.  
+-  **Story Interaction** – Users interact with fill-in-the-blank stories based on the difficulty level.  
+
+### **4. Room Management (Supporting Seamless Group Play)**  
+-  **Create a Game Room** – Users can create a room for their friends to join.  
+-  **Join an Existing Room** – Users can join a friend's room using a room code or invite link.  
+-  **Select Game Settings** – Users can choose a story, grade level, and the number of players before starting.  
+
+### **5. Story & Content (To Keep the Game Engaging and Inclusive)**  
+-  **Multiple Story Options** – Users can select from different stories.  
+-  **Dynamic Content Scaling** – The number of blanks in the story adjusts based on the number of players.  
+
+### **6. Game Progression & Feedback (Enhancing Engagement and Learning)**  
+-  **Progress Tracking** – Users can see their advancement through the game.  
+-  **Game Completion Summary** – A final screen displays performance stats and options (main menu, restart).  
+-  **Scoring System** – The game tracks and summarizes scores based on correct answers.  
+
+---
+
+## **Non-Functional Requirements (Qualities that describe how the system should perform)**  
+
+### **7. User Experience & Performance**  
+-  **Engaging UI Design** – A visually appealing interface enhances user engagement.  
+-  **Visual Cues for Turn-Taking** – The system must keep track of each players data dynamically.
+-  **Stable Multiplayer Connection** – Ensuring smooth real-time interaction with minimal lag.  
+-  **Scalability for Stories** – The system should be designed to scale the number of available stories to accommodate future expansion.  
+
+---
