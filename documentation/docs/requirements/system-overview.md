@@ -7,8 +7,9 @@ sidebar_position: 1
 ## Project Abstract
 
 This project is a web-based, tablet-friendly "Mad Libs" style story game designed for children to learn how to collaborate, with special considerations 
-regarding players who use Augmentative and Alternatve Communication (ACC). In order to promote social inclusion and empathy, the 
-game is done in a manner that relies on temamates all communicating and wokring as a team in order to get the phrase correct. This is done so AAC users dont feel left behiin and are actively needed in the group. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. 
+regarding players who use Augmentative and Alternative Communication (ACC). In order to promote social inclusion and empathy, the 
+game is done in a manner that relies on teammates all communicating and working as a team in order to get the phrase correct. This is done so AAC users don't 
+feel left behind and are actively needed in the group. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. 
 The interface dynamically indicates when a child is selecting their answer, fostering understanding and patience among all players. 
 Through simple, age-appropriate prompts, lively visuals, and a responsive layout, the game creates an engaging, accessible 
 environment that supports the growth of both verbal communicators and children who require additional supports. 
@@ -21,7 +22,7 @@ Convex for the back-end. We are also considering FireBase for back-end to ensure
 specifically will be TypeScript and we will 
 likely sprinkle in some TailWind CSS, Motion Library, and some ShadCN to make sure it is engaging for children. Docusaurus 
 and GitHub Pages will keep track of project 
-progression. We will use Vercel to seemlessly 
+progression. We will use Vercel to seamlessly 
 deploy the game.
 
 ## Background
