@@ -54,7 +54,7 @@ This project is a web-based, tablet-friendly "fill-in-the-phrase" story game des
 
 ## Conceptual Design
 
-The website will be built with the Next.js Framework primarily for the front-end, and with Convex for the back-end. The language specifically will be TypeScript and we will likely sprinkle in some TailWind CSS. Docusaurus and GitHub Pages will keep track of project progression. We will use Vercel to seemlessly deploy the game.
+The website will be built with the Next.js Framework primarily for the front-end, and with Convex or FireBase for the back-end. The language specifically will be TypeScript and we will likely sprinkle in some TailWind CSS. Docusaurus and GitHub Pages will keep track of project progression. We will use Vercel to seemlessly deploy the game.
 
 ## Background
 
@@ -78,7 +78,7 @@ Our Project is looking to integrate a AAC tablet and a interactive game for chil
 #### Back-End Development
     **Convex:** This real-time serverless backend will handle state persistence, interactions, and user data. It integrates well with Next.js for a smooth full-stack experience.
 
-    **Database (Convex DB):** Convex offers a cloud database to manage game data, player progress, and other relevant information in real-time.
+    **Database (Convex DB or FireBase):** Both offer a cloud database to manage game data, player progress, and other relevant information in real-time. One will be decided on based off of convenience.
 
     **Authentication Service:** Consider integrating user authentication (like Firebase Authentication or Auth0) to ensure safety and privacy, especially with children’s accounts.
 
@@ -119,8 +119,8 @@ Our Project is looking to integrate a AAC tablet and a interactive game for chil
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/molly-pop">
-            <img src="img/blank-avatar.webp" width="100" height="120" alt="blank-avatar.webp"/>
+        <a href="https://github.com/tt50">
+            <img src="img/tiffany.webp" width="100" height="120" alt="tiffany.webp"/>
             <br />
             <sub><b>Tiffany Truong</b></sub>
         </a>

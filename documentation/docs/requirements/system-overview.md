@@ -6,23 +6,23 @@ sidebar_position: 1
 
 ## Project Abstract
 
-This project is a web-based, tablet-friendly "fill-in-the-phrase" story game designed for children, with special considerations 
-regarding players who use Augmentative and Alternatve Communication (ACC). In order to promote social inclusion and empathy, the 
-game is offered in two modes -External AAC Tablet/Voice Control and Built in AAC Tablet- which provides a turn taken function that allows AAC users to communicate without feeling 
-rushed. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. 
-The interface dynamically indicates when a child is composing an answer, fostering understanding and patience among all players. 
+This project is a web-based, tablet-friendly "Mad Libs" style story game designed for children to learn how to collaborate, with special considerations 
+regarding players who use Augmentative and Alternative Communication (ACC). In order to promote social inclusion and empathy, the 
+game is done in a manner that relies on teammates all communicating and working as a team in order to get the phrase correct. This is done so AAC users don't 
+feel left behind and are actively needed in the group. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. 
+The interface dynamically indicates when a child is selecting their answer, fostering understanding and patience among all players. 
 Through simple, age-appropriate prompts, lively visuals, and a responsive layout, the game creates an engaging, accessible 
-environment that supports the growth of both verbal communicators and children who require additional support. 
+environment that supports the growth of both verbal communicators and children who require additional supports. 
 
 ## Conceptual Design
 
 The website will be built with the Next.js 
 Framework primarily for the front-end, and with 
-Convex for the back-end. The language 
+Convex for the back-end. We are also considering FireBase for back-end to ensure gaming functionality. The language 
 specifically will be TypeScript and we will 
-likely sprinkle in some TailWind CSS. Docusaurus 
+likely sprinkle in some TailWind CSS, Motion Library, and some ShadCN to make sure it is engaging for children. Docusaurus 
 and GitHub Pages will keep track of project 
-progression. We will use Vercel to seemlessly 
+progression. We will use Vercel to seamlessly 
 deploy the game.
 
 ## Background
