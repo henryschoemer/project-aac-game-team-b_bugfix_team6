@@ -30,7 +30,7 @@ sidebar_position: 5
 
 ### User guesses an incorrect answer
 
-1. User is a game session using their device
+1. User is in a game session using their device
 2. User is prompted with a story line with a missing word
 3. User types/says a word that is an incorrect answer
 4. User clicks the 'Confirm' button
@@ -41,37 +41,34 @@ sidebar_position: 5
 
 ### User guesses a correct answer
 
-1. User is a game session using their device
+1. User is in a game session using their device
 2. User is prompted with a story line with a missing word
 3. User types/says a word that is the correct answer
 4. User clicks the 'Confirm' button
 5. User is notified that their answer was correct
 6. User is notified that its next player's name turn, and waits for their turn
 
-## Use Case 5: Speech Recognition (AAC User) - Voice Input Recognition from External Device or Verbal Speech 
+## Use Case 5: Player Customization - Player Name Change 
 
-### User wants to answer the question using the speech recognition instead of the built-in AAC device 
+### User wants to change their avatar name 
 
-1. User is given a sentence with a fill-in-the-blank 
-2. User is prompted with answer choices on the screen 
-3. User is given 10 seconds to consider the different answer choices
-4. User is given a warning that the microphone will turn on and will only record sound for a certain amount of time 
-5. User locates the button on their AAC device and presses the button near the microphone.
-6. The application recognizes the speech from the AAC device and records and process it to see if the answer given is correct or incorrect
+1. User joins a game and is brought to a customization screen for their avatar 
+2. User enters their avatar name by using an input field 
+3. User clicks a "done" button to save their avatar name
 
-## Use Case 6: Speech Recognition (Non AAC) - Voice Input Recognition from External Device or Verbal Speech 
+## Use Case 6: Gameplay Mechanics - Retry Mechanism
 
-### User wants to answer the question using the speech recognition instead of the built-in AAC device 
+### User wants to retry the question because they got it wrong 
 
-1. The user is given a sentence with a fill-in-the-blank 
-2. The user is prompted with answer choices on the screen 
-3. The user push's down on the microphone button to record their speech
-4. The application recognizes the verbal speech from the user and records and process to see if the answer given is right or wrong
+1. User has selected the wrong answer to the question
+2. User is given feedback on why the answer they have selected is wrong 
+3. User clicks a button labeled "retry" 
+4. User is given the same question again with the same answer choices 
 
-## Use case 7: Game Mechanics -  Player Joins a Game through the Join Screen 
+## Use case 7: Room Management -  Player Joins a Game through the Join Screen 
 
 ### User wants to join the game the host has made 
 
 1. User clicks on the "Join Game" button 
 2. User inputs the code that the host is given on the host's screen to their input box 
-3. User inputs the correct code and is brought to a lobby with all the other players that are participating in the game session 
+3. User inputs the correct code and is brought to a lobby with all the other players who are participating in the game session 
