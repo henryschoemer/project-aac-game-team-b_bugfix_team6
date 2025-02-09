@@ -6,49 +6,50 @@ sidebar_position: 1
 
 The architecture of StoryQuest is based on a client-server model using modern web technologies. The front-end client is built 
 with React and Next.js, while the back-end leverages Firebase for real-time database synchronization, authentication, and 
-accessible experience for AAC users, incorporating symbol-based commuincation and text-to-speech capabilities. 
+accessible experience for AAC users, incorporating symbol-based communication and text-to-speech capabilities. 
 
 **Requirements**
 ## Components Description
 ### Client (Front-End)
-The client is a React appplication built with Next.js framework, offering server-side rendering for improved performance and SEO. It provides 
+The client is a React application built with Next.js framework, offering server-side rendering for improved performance and SEO. It provides 
 the user interface that students interact with, including AAC features, story navigation, and room management.
 
 **Technologies Used:**
-- React(for UI components)
-- Next.js(for routing and server-side rendering)
-- Tailwind CSS(for responsive and accessible styling)
-- Framer Motion(smooth animations for kids)
-- Shadcn/UI(for pre-built, accessible UI components)
-- TypeScript(for ease of use in JavaScript)
+- React (UI components)
+- Next.js (Routing and server-side rendering)
+- Tailwind CSS (Responsive and accessible styling)
+- Framer Motion (Smooth animations for kids)
+- ShadCN/UI (Pre-built, accessible UI components)
+- TypeScript (Ease of use in JavaScript)
 
 **Responsibilities:**
-- Display the homepage with optionsto create or join arrom
+- Display the homepage with options to create or join a room
 - Render stories and fill-in-the-blank activities
-- Handle AAC interactions(symbol grids, text-to-speech)
+- Handle AAC interactions (symbol grids, text-to-speech)
 - Communicate with Firebase for real-time updates and authentication
 - Provide responsive design for tablets and desktops
 
 **Interface:**
-- Firebase SDK: The client uses Firebases's JavaScript SDK for real-time communication with the backend.
+- Firebase SDK: The client uses the Firebase JavaScript SDK for real-time communication with the back-end.
 - AAC Symbol Library (ARASAAC): Provides visual symbols for communication
 
 ### Server (Back-End)
-The back-end services are managed by Firebase, which provides real-time database capabilities, authentication, and cloud functions for game logic. This architecture minimizes server management overhead while offering scalability and performance.
+The back-end services are managed by Firebase, which provides real-time database capabilities, authentication, and cloud functions for game logic. 
+This architecture minimizes server management overhead while offering scalability and performance.
 
 **Technologies Used:**
 - Firebase Authentication: For secure room joining and session management.
-- Firebase Firestore: A NoSQL reali-time database to store game data, room information, and group progress.
+- Firebase Firestore: A NoSQL real-time database to store game data, room information, and group progress.
 - Firebase Cloud Functions: To handle server-side logic like validating game answers and managing game state.
 
 **Responsibilities:**
 - Manage session tokens.
 - Handle real-time game state updates across all players.
 - Store and retrieve stories, game progress, and player data.
-- Execute server-side logic for game validation (like answer validating)
+- Execute server-side logic for game validation (like answer validation)
 
 **Interfaces:**
-- Client Requests: The client interacts with the server via Firebase SDk calls, which handle real-time data syncing.
+- Client Requests: The client interacts with the server via Firebase SDK calls, which handle real-time data synchronization.
 - Cloud Functions Triggers: Automatically execute server-side logic when certain conditions are met (like when a new answer is submitted)
 
 ### Database
@@ -59,8 +60,8 @@ The back-end services are managed by Firebase, which provides real-time database
 
 **Rooms:**
 - roomId: Unique code for room access
-- hostId: the player who created the room
-- players: List of players in the rooom
+- hostId: The player who created the room
+- players: List of players in the room
 - currentTurn: Tracks whose turn it is
 - storyProgress: Current state of the story
 
@@ -69,7 +70,7 @@ The back-end services are managed by Firebase, which provides real-time database
 - gradeLevel: Target grade level (1st-3rd)
 - content: Story text with blanks
 
-**Responsibilites:**
+**Responsibilities:**
 - Persist user data and game state
 - Support real-time synchronization of game progress
 - Allow dynamic story loading and AAC customization
@@ -79,18 +80,21 @@ The back-end services are managed by Firebase, which provides real-time database
 - Cloud Functions: Perform automated updates (like saving game progress)
 
 ### Database Design
-Here is the database section with an Entity-Relationship Diagram (ERD) and a table design for StoryQuest. Since we are using FireBase Firestore, which is a NoSQL databse, the structure will be document-based, but we can still represent it in a relational style for clairty.
+Here is the database section with an Entity-Relationship Diagram (ERD) and a table design for StoryQuest. 
+Since we are using FireBase Firestore, which is a NoSQL database, the structure will be document-based, 
+but we can still represent it in a relational style for clarity.
 
 Entities and Relationships:
 
-User represents a player. A Room is hosted by One user but can have multiple users (as in players). A room is then associated with one story. Each user in a room has a corresponding playerProgress.
+User represents a player. A Room is hosted by One user but can have multiple users (as in players). 
+A room is then associated with one story. Each user in a room has a corresponding playerProgress.
 
 **Entity-Relationship Diagram**
 *DIAGRAM HERE*
 
 **Table Design**
 
-Here is how the data would be strcutured in Firestore. Though Firestore is a NoSQL databse, this relational layout helps larify the relationshsips.
+Here is how the data would be structured in Firestore. Though Firestore is a NoSQL database, this relational layout helps clarify the relationships.
 
 **Users Collection**
 *Table here*
@@ -102,7 +106,7 @@ Here is how the data would be strcutured in Firestore. Though Firestore is a NoS
 *Table here*
 
 **Stories Collections**
-*Tab;e here*
+*Table here*
 
 **PlayerProgress Subcollection (within Rooms)**
 *Table here*
