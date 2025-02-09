@@ -4,7 +4,8 @@ sidebar_position: 2
 
 # System Block Diagram
 
-![System Block Diagram](/img/system-block-diagram_2_6_25.png)
+![System Block Diagram](/img/system-block-diagram_2_8_25.png)
+*Figure 1: System block diagram showcasing interaction between users, frontend, and backend.*
 
 
 ## Description of Gameplay/Flow
