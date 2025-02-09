@@ -39,7 +39,7 @@ sidebar_position: 5
 5. User selects the number of players
 6. User clicks the "Start" button
 
-## Use case 5: Room Management -  Player Joins a Game through the Join Screen
+## Use Case 5: Room Management - Player Joins a Game through the Join Screen
 
 ### User wants to join the game the host has made
 
