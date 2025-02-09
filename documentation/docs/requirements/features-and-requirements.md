@@ -42,7 +42,7 @@ sidebar_position: 4
 
 ### **7. User Experience & Performance**  
 -  **Engaging UI Design** – A visually appealing interface enhances user engagement.  
--  **Visual Cues for Turn-Taking** – The system must keep track of each players data dynamically.
+-  **Visual Cues for Turn-Taking** – The system must keep track of each player's data dynamically.
 -  **Stable Multiplayer Connection** – Ensuring smooth real-time interaction with minimal lag.  
 -  **Scalability for Stories** – The system should be designed to scale the number of available stories to accommodate future expansion.  
 

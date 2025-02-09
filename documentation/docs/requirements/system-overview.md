@@ -14,11 +14,9 @@ The interface dynamically indicates when a child is selecting their answer.
 
 ## Conceptual Design
 
-The website was built with the Next.js 
-Framework for the front-end, and with 
-Convex for the back-end. FireBase was also used for back-end to ensure gaming functionality. We also used TypeScript, TailWind CSS, Motion Library, and ShadCN. Docusaurus and GitHub Pages kept track of project 
-progression. Vercel was used to 
-deploy the game.
+The front-end of the website was built using a Next.js framework (Typescript), styled with TailwindCSS, ShadCN, and FramerMotion. 
+The back-end uses Firebase to ensure gaming functionality and Firebase Firestore for data storage. Docusaurus and GitHub Pages kept track of project 
+progression. Firebase Cloud hosting was used to deploy the game. 
 
 ## Background
 

@@ -4,32 +4,25 @@ sidebar_position: 2
 
 # System Block Diagram
 
-![System Block Diagram](/img/system-block-diagram_2_6_25.png)
+![System Block Diagram](/img/system-block-diagram_2_8_25.png)
+*Figure 1: System block diagram showcasing interaction between users, frontend, and backend.*
 
 
 ## Description of Gameplay/Flow
 
-This system block diagram depicts the high-level design of the StoryQuest: Teamwork Prevails! web application. This is a story-based quiz game
-in which users must fill in the blanks according to pictures on the screen, made to enhance communication and collaboration among school age children
-who use AAC and school age children who do not. Users can open the web application for our game and either 'Host' or 'Join' a game. Our frontend will contain the 'Host' mode and the
-'Player' mode. Within the 'Player' mode, the game will display questions, and utilizes a built-in AAC tablet on which a Player answers. Once a Player has chosen an answer, the choice
+Figure 1 depicts the high-level design of the StoryQuest: Teamwork Prevails! web application. This is a story-based quiz game
+in which users must fill in the blanks according to pictures on the screen. Users can open the web application for our game and either 'Host' or 'Join' a game. Our frontend will contain the 'Host' mode and the
+'Player' mode. The 'Player' mode will display questions, and utilizes a built-in AAC tablet for Player answers. Once a Player has chosen an answer, the choice
 is sent to the backend to be verified. Answers are sent directly to a database for validation, and once validated, the database sends a response back (Correct/Incorrect) to the frontend to be displayed.
 
 
-## Selecting Technology & Cost Considerations
+## Technology Requirements
 
 ### Frontend / Client-side
-For the frontend we are considering a Next.js framework, hosted on Vercel, under the "Hobby" plan. Next.js is
-an open-source framework, and entirely free to use. Vercel is free to use under the 'Hobby' plan, and $20/month under the 'Pro' plan. We plan to start on the 'Hobby' level, and bump to 'Pro'
-dependent on client-driven scaling. For styling the UI, we are mainly considering TailwindCSS, with the possible addition of ShadCN or MotionLibrary for additional animations. Each of these libraries is
-completely free and open-source.
+Accessed through a web browser on any internet connected device, the frontend uses a Next.js framework (TypeScript) hosted with Firebase. The UI is styled using TailwindCSS, ShadCN (pre-built UIs), 
+and FramerMotion (smooth animation). The built-in AAC tablet uses ARASAAC, an open-source AAC symbol set and CoughDrop API, an advanced AAC specific API. 
 
 ### Backend / Server-Side
 
-For the backend we are considering Convex, an open-source reactive database. It is free under the 'Starter' plan, and $25/month under the 'Professional' plan. As the limits placed on the 'Starter'
-plan are quite large, we do not envision switching to a professional plan during the course of this project. We are also considering Firebase, to further smooth communication between the frontend/backend
-and host both the app and database. Firebase is mainly a free service, but on the 'Blaze' plan it is Pay-As-You-Go. Firebase has free cloud hosting for up to 10 GB (about 5000 static pages), free database
-usage for up to 2 GB (about 40 M chat messages), and free cloud storage for up to 5 GB (up to 2500 high-res photos). We believe that StoryQuest will be well below the limits of the Firebase pricing plan, as we mainly plan
-to store correct answers, storylines, and small images. If client-driven scaling requires more of the app, we can reassess. 
-
- 
+The backend uses Firebase for cloud functions (answer validation, smooth communication) and data storage. Firebase cloud functions are used to handle game logic, while a Cloud Firestore NoSQL database, 
+securely stores user data and game material (stories and questions). Firebase also facilitates user authentication. 
