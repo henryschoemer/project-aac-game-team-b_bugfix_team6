@@ -20,7 +20,7 @@ Section #, as well as any words that quickly give your peers insights into the a
 
 ## Project Abstract
 
-This project is a web-based, tablet-friendly "fill-in-the-phrase" story game designed for children, with special considerations regarding players who use Augmentative and Alternatve Communication (ACC). In order to promote social inclusion and empathy, the game is offered in two modes -External AAC Tablet/Voice Control and Built in AAC Tablet- which provides a turn taken function that allows AAC users to communicate without feeling rushed. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. The interface dynamically indicates when a child is composing an answer, fostering understanding and patience among all players. Through simple, age-appropriate prompts, lively visuals, and a responsive layout, the game creates an engaging, accessible environment that supports the growth of both verbal communicators and children who require additional support. 
+This project is a web-based, tablet-friendly "cloze phrase(*)" style story game designed for children to learn how to collaborate, with special considerations regarding players who use Augmentative and Alternative Communication (ACC). In order to promote social inclusion and empathy, the game relies on teammates all communicating and working as a team in order to get the phrase correct. This is done so AAC users don't feel left behind and are actively needed in the group. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. The interface dynamically indicates when a child is selecting their answer. 
 
 
 ## High Level Requirement
@@ -54,11 +54,16 @@ This project is a web-based, tablet-friendly "fill-in-the-phrase" story game des
 
 ## Conceptual Design
 
-The website will be built with the Next.js Framework primarily for the front-end, and with Convex or FireBase for the back-end. The language specifically will be TypeScript and we will likely sprinkle in some TailWind CSS. Docusaurus and GitHub Pages will keep track of project progression. We will use Vercel to seemlessly deploy the game.
+The website will be built with the Next.js Framework primarily for the front-end, and with Convex for the back-end. The language specifically will be TypeScript and we will likely sprinkle in some TailWind CSS. Docusaurus and GitHub Pages will keep track of project progression. We will use Vercel to seemlessly deploy the game.
 
 ## Background
 
-Our Project is looking to integrate a AAC tablet and a interactive game for children.
+Many current tools on the market are geared towards engaging AAC users, such as the AAC Language Lab1 or AssistiveWare2. 
+The AAC Language Lab has web-based games based on stages of learning, and requires a subscription model to use.
+There is a gap in the market for learning games based in collaboration between AAC users and non-AAC users.
+StoryQuest aims to create a collaborative environment for AAC and non-AAC users to engage in play.
+In a study by Schwartz et al.,3 the 31 preschool children with significant developmental disabilities who learned to use Picture Exchange Communication Systems to communicate with adults after 11 months, also learned to communicate with peers without disabilities after an additional 3 months of intervention in integrated, play-based activities.
+Social interactions for development remains important at the grade-school level.
 
 ## Required Resources
 
@@ -69,16 +74,16 @@ Our Project is looking to integrate a AAC tablet and a interactive game for chil
 
     **Tailwind CSS:** For fast, responsive design that’s customizable and minimalistic.
 
-    **Vercel:** For seamless deployment, leveraging Vercel’s integration with Next.js for continuous deployment and optimized performance.
+    **Firebase:** For seamless deployment.
 
     **Docusaurus:** For maintaining project documentation and tracking progress, ideal for keeping all stakeholders in the loop.
 
     **GitHub Pages:** For hosting documentation, a project roadmap, or related resources.
 
 #### Back-End Development
-    **Convex:** This real-time serverless backend will handle state persistence, interactions, and user data. It integrates well with Next.js for a smooth full-stack experience.
+    **Firestore:** This real-time serverless backend will handle state persistence, interactions, and user data. It integrates well with Next.js for a smooth full-stack experience.
 
-    **Database (Convex DB or FireBase):** Both offer a cloud database to manage game data, player progress, and other relevant information in real-time. One will be decided on based off of convenience.
+    **Database (Convex DB):** Convex offers a cloud database to manage game data, player progress, and other relevant information in real-time.
 
     **Authentication Service:** Consider integrating user authentication (like Firebase Authentication or Auth0) to ensure safety and privacy, especially with children’s accounts.
 
@@ -136,4 +141,6 @@ Our Project is looking to integrate a AAC tablet and a interactive game for chil
 </table>
 
 [//]: # ( readme: collaborators -end )
+
+(*)cloze phrase - a common technique leveraged in speech therapy. Phrases with a word or words intentionally left out, for the purpose of encouraging the listener to fill in the blank. Cloze phrases are used to help children learn language, and can also be used for assessment.
 
