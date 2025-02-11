@@ -6,17 +6,28 @@ sidebar_position: 1
 
 ## Project Abstract
 
-This project is a web-based, tablet-friendly "Mad Libs" style story game designed for children to learn how to collaborate, with special considerations 
-regarding players who use Augmentative and Alternative Communication (ACC). In order to promote social inclusion and empathy, the 
-game relies on teammates all communicating and working as a team in order to get the phrase correct. This is done so AAC users don't 
-feel left behind and are actively needed in the group. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. 
-The interface dynamically indicates when a child is selecting their answer.
+StoryQuest is a web-based, tablet-friendly collaborative storytelling game designed to enhance social inclusion and communication skills, particularly for children who use Augmentative and Alternative Communication (AAC). The game is 
+inspired by a "Mad Libs" style fill-in-the-blank approach, leveraging cloze phrases—a proven technique in speech therapy 
+that helps improve word recall, literacy, and structured communication. To foster teamwork, empathy, and peer engagement, StoryQuest requires all players to work together to complete phrases correctly. The design ensures that AAC users play an essential role in the team, preventing social exclusion and encouraging meaningful participation. A built-in AAC-friendly interface eliminates the need for excessive screen switching, providing seamless accessibility and a fluid user experience. The interface also dynamically indicates when a child is selecting their answer, supporting clear turn-taking and engagement for all players.
 
 ## Conceptual Design
 
-The front-end of the website was built using a Next.js framework (Typescript), styled with TailwindCSS, ShadCN, and FramerMotion. 
-The back-end uses Firebase to ensure gaming functionality and Firebase Firestore for data storage. Docusaurus and GitHub Pages kept track of project 
-progression. Firebase Cloud hosting was used to deploy the game. 
+### Frontend (Client-Side)
+**Framework:**
+- Next.js (React + TypeScript) – Provides an interactive and maintainable UI.
+
+**Styling & UI Components:**
+- TailwindCSS – Ensures responsive, accessible, and customizable styling.
+- ShadCN/UI – Prebuilt, accessible components to speed up development.
+- Framer Motion – Smooth animations and transitions for enhanced engagement.
+
+### Backend (Server-Side & Data Handling)
+- **Firebase Firestore (NoSQL Database)** – Stores game data, user progress, and room states in real-time.
+- **Firebase Cloud Function**s – Manages game logic, including answer validation, player interactions, and scorekeeping.
+
+### Deployment & Project Management
+- **Hosting:** Firebase Cloud Hosting – Ensures fast and scalable deployment.
+- **Version Control & Documentation:** GitHub & Docusaurus – Tracks project progression, documentation, and CI/CD pipeline management.
 
 ## Background
 
