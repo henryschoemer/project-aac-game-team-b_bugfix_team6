@@ -3,3 +3,24 @@ sidebar_position: 4
 ---
 
 # Development Environment
+
+## Documentation:
+Docusaurus
+
+## Required Software, Languages, Frameworks, Management Systems:
+Next.js (React and TypeScript)
+Tailwind CSS
+Shadcn/UI 
+Framer Motion
+ARASAAC (AAC Symbols) 
+CoughDrop API
+Firebase Firestore 
+Firebase Cloud Function
+
+
+## Editors:
+VS Code
+GitHub Codespaces
+
+## Project Management:
+Jira
