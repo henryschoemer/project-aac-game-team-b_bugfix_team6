@@ -41,6 +41,22 @@ sidebar_position: 5
 
 ## Use Case 5: Room Management - Player Joins a Game through the Join Screen
 
+```
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Room Screen
+    participant Database
+
+
+
+
+    User -> D: looks at screen 
+    D ->+ GR: User1 decided to join a game and enters token
+    GR ->+ Database: fetchs token for validation
+    Database -->- GR: Return Token
+```    
+
 ### User wants to join the game the host has made
 
 1. User clicks on the "Join Game" button
