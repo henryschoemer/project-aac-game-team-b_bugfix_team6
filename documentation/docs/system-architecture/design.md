@@ -86,33 +86,116 @@ but we can still represent it in a relational style for clarity.
 
 Entities and Relationships:
 
-User represents a player. A Room is hosted by One user but can have multiple users (as in players). 
-A room is then associated with one story. Each user in a room has a corresponding playerProgress.
+- User represents a player. 
+- A Room is hosted by One user but can have multiple users (as in players). 
+- A room is then associated with one story. 
+- Each user in a room has a corresponding playerProgress.
 
 **Entity-Relationship Diagram**
-*DIAGRAM HERE*
+
+```mermaid
+erDiagram
+    USER {
+        string userId 
+        string name
+        string email
+        json preferences
+        timestamp createdAt
+    }
+
+    ROOM {
+        string roomId 
+        string hostId 
+        string storyId 
+        number gradeLevel
+        number numPlayers
+        string currentTurn 
+        boolean isActive
+        timestamp createdAt
+    }
+
+    STORY {
+        string storyId 
+        string title
+        array content
+        number gradeLevel
+        timestamp createdAt
+    }
+
+    ROOM_PLAYERS {
+        string roomId 
+        string userId 
+        string name
+        timestamp joinedAt
+    }
+
+    PLAYER_PROGRESS {
+        string roomId 
+        string userId 
+        array answers
+        number correctAnswers
+        number attempts
+        timestamp lastActive
+    }
+
+    USER ||--|{ ROOM_PLAYERS : "User joins Room Players"
+    ROOM ||--|{ ROOM_PLAYERS : "Room has Room Players"
+    ROOM ||--|{ PLAYER_PROGRESS : "Player Progress tracks each player"
+    ROOM ||--|{ STORY : "Each room uses a story"
+    STORY ||--|{ ROOM : "Is played in"
+    USER ||--|{ PLAYER_PROGRESS : "Tracks the individual player"
+    ```
 
 **Table Design**
 
 Here is how the data would be structured in Firestore. Though Firestore is a NoSQL database, this relational layout helps clarify the relationships.
 
 **Users Collection**
-*Table here*
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| userId | String | Unique Id (Firebase Auth UID) |
+| name | String | Player's display name |
+| preferences | Map | AAC preferences |
+| createdAt | Timestamp | Account creation date |
 
 **Rooms Collections**
-*Table here*
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| roomId | String | Unique code for room access |
+| hostId | String | User ID of the room host |
+| storyId | String | ID of selected story |
+| difficulty | Number | Difficulty level selected for the room |
+| numPlayers | Number | Number of players (1-4) |
+| currentTurn | String | User Id of player whose turn it is |
+| createdAt | Timestamp | Room creation date |
+| isActive | Boolean | Indicates if the game is in progress | 
 
 **RoomPlayers Subcollection (within rooms)**
-*Table here*
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| userId | String | User Id of the player |
+| name | String | Player's display name |
+| joinedAt | Timestamp | Time when the players joined the room |
 
 **Stories Collections**
-*Table here*
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| storyId | String | Unique id for the story |
+| title | String | Title of the story |
+| content | Array | Story text with blanks marked |
+| difficulty | Number | Intended difficulty level |
+| createdAt | Timestamp | Date when the story was added |
 
 **PlayerProgress Subcollection (within Rooms)**
-*Table here*
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| userId | String | User Id of the player |
+| answers | Array | List of the answers submitted by the player |
+| correctAnswers | Number | Total correct answers by the player |
+| attempts | Number | Total attempts made |
+| lastActive | Timestamp | Last time the player interacted |
 
-
-
+---
 
 In addition to the general requirements the Design Document - Part I Architecture will contain:
 
