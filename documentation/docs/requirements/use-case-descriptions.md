@@ -41,7 +41,7 @@ sidebar_position: 5
 
 ## Use Case 5: Room Management - Player Joins a Game through the Join Screen
 
-```
+```mermaid
 sequenceDiagram 
     actor User
     participant D as Device
