@@ -6,9 +6,15 @@ sidebar_position: 1
 
 ## Project Abstract
 
-StoryQuest is a web-based, tablet-friendly collaborative storytelling game designed to enhance social inclusion and communication skills, particularly for children who use Augmentative and Alternative Communication (AAC). The game is 
-inspired by a "Mad Libs" style fill-in-the-blank approach, leveraging cloze phrases—a proven technique in speech therapy 
-that helps improve word recall, literacy, and structured communication. To foster teamwork, empathy, and peer engagement, StoryQuest requires all players to work together to complete phrases correctly. The design ensures that AAC users play an essential role in the team, preventing social exclusion and encouraging meaningful participation. A built-in AAC-friendly interface eliminates the need for excessive screen switching, providing seamless accessibility and a fluid user experience. The interface also dynamically indicates when a child is selecting their answer, supporting clear turn-taking and engagement for all players.
+StoryQuest is a web-based, tablet-friendly collaborative storytelling game designed to enhance social inclusion and 
+communication skills, particularly for children who use Augmentative and Alternative Communication (AAC). The game is 
+inspired by "Mad Libs", leveraging cloze phrases—a proven technique in speech therapy 
+that helps improve word recall, literacy, and structured communication. To foster teamwork, empathy, and peer engagement, 
+StoryQuest requires all players to work together to complete phrases correctly. The design ensures that AAC users play an 
+essential role in the team, preventing social exclusion and encouraging meaningful participation. A built-in AAC-friendly 
+interface eliminates the need for excessive screen switching, providing seamless accessibility and a fluid user experience. 
+The interface also dynamically indicates when a child is selecting their answer, supporting clear turn-taking and engagement 
+for all players.
 
 ## Conceptual Design
 
