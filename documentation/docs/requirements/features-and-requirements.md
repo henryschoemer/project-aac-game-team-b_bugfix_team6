@@ -7,18 +7,18 @@ sidebar_position: 4
 ## **Functional Requirements**  
 
 ### **1. AAC Keyboard**  
-- The system must have an AAC Keyboard.
+- The system must have an integrated AAC Keyboard.
 - The system must align with the AAC Keyboard so that there is a streamlined series of events.
 - The system must have complimentary auditory enhancements to maintain engagement when pressing buttons.
 
 ### **2. Cloze Phrase Education**
 - The system must be able to leave a word blank so that the children can fill it in.
-- The system must also be able to guide that decision for the kids to make it a little clearer.
+- The system must be able to guide the player to the logical solution through accompanying pictures, highlights, and even audio hints.
 - The system must then repeat the successful phrase to further edcuation.
 
 ### **3. Collaboration**
 - The system must rely on collaboration of the team.
-- The system must have turn-based mechanics.
+- The system must ensure that only one person is allowed to fill in one blank, and then notify the next player when it their turn.
 - The system must have mechanics that rely on multiple people at once.
 
 ### **4. Difficulty Scaling**
@@ -31,7 +31,7 @@ sidebar_position: 4
 - The system must persist so someone can rejoin if disconnected.
 
 ### **6. User Experience**
-- The system must have an engaging turn indicator.
+- The system must have a turn indicator that is visibly highlighted to draw focus and ensure players know whose turn it is.
 - The system must have a retry and feedback system.
 - The system must have Text-to-Speech support to improve engagement.
 - The system must have progress trackers.
