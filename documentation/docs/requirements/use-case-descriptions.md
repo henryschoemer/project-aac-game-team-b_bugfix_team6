@@ -127,6 +127,25 @@ sequenceDiagram
 
 ## Use Case 7: Retry Mechanism
 
+
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Screen
+    participant Database
+
+     User ->> D: looks at screen 
+     D ->>+ GR: User chooses cloze phrase questions answer 
+    GR -->>+ D: User is notified that their answer is wrong
+    loop Until correct answer is given
+        D->>GR :Enters answer
+        GR-->>D: Incorrect, try again
+    end
+
+
+``` 
+
 ### User wants to retry the question because they got it wrong 
 
 1. User has selected the wrong answer to the question
