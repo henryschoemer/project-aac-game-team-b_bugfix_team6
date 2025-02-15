@@ -20,7 +20,7 @@ sidebar_position: 5
 5. User is notified on the host's screen that it will accept input from the AAC device
 
 ```mermaid
-sequenceDiagram 
+sequenceDiagram
     actor User
     participant D as Device
     participant CR as Create Room Screen
@@ -28,12 +28,12 @@ sequenceDiagram
 
     User ->> D: Looks at screen
     D ->>+ CR: User decides to create a game room
-    D ->>+ CR: User setups game options
-    CR ->>+ DB: Saves game room setup data
-    DB -->>- CR: Validate game setup data
-    DB ->> DB: Generate room code
+    D ->>+ CR: User sets up game options
+    CR ->>+ DB: Save game room setup data
+    DB -->> CR: Validate game setup data
+    Note right of DB: Generate room code
     DB -->> CR: Return generated room code
-    CR -->>- D: Display game room code to host
+    CR -->> D: Display game room code to host
 ```
 
 ## Use Case 3: Player Customization - New player profile
@@ -46,16 +46,18 @@ sequenceDiagram
 4. User clicks a "Done" button
 
 ```mermaid
-sequenceDiagram 
+sequenceDiagram
     actor User
     participant D as Device
     participant PS as Profile Screen
     participant DB as Database
 
     User ->> D: Looks at screen
-    D ->> PS: Enters display name in text field and confirms
-    PS ->> DB: Validates user ID and saves display name
-    PS ->> D: User is brought to a waiting screen
+    D ->>+ PS: Enters display name in text field and confirms
+    PS ->>+ DB: Validates user ID and saves display name
+    DB -->>- PS: Validation success response
+    PS -->> D: User is brought to a waiting screen
+
 ```
 
 ## Use Case 4: Room Management - Setting up a new room
