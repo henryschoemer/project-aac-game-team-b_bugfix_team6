@@ -59,6 +59,30 @@ sequenceDiagram
 
 ## Use Case 5: Wrong answer
 
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Screen
+    participant Database
+
+
+
+
+    User ->> D: looks at screen 
+    D ->>+ GR: User is given a cloze phrase question
+    GR ->>+ Database: fetchs cloze phrase question and answer choices
+    Database -->>- GR: Return cloze phrase question and answer choices
+    GR -->>- D: returns cloze phrase question answer
+
+    D ->>+ GR: User chooses cloze phrase questions answer 
+    GR -->>+ D: User is notified that thier answer is wrong
+    loop Until correct answer is given
+        D->>GR :Enters answer
+        GR-->>D: Incorrect, try again
+    end
+```
+
 ### User guesses an incorrect answer
 
 1. User is in a game session using their device
