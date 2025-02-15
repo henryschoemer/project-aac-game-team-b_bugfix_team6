@@ -45,6 +45,19 @@ sequenceDiagram
 3. User selects whether they are using an AAC device or a non-AAC device
 4. User clicks a "Done" button
 
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant PS as Profile Screen
+    participant DB as Database
+
+    User ->> D: Looks at screen
+    D ->> PS: Enters display name in text field and confirms
+    PS ->> DB: Validates user ID and saves display name
+    PS ->> D: User is brought to a waiting screen
+```
+
 ## Use Case 4: Room Management - Setting up a new room
 
 ### User wants to start a new game room
