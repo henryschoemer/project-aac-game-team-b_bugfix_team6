@@ -6,21 +6,6 @@ sidebar_position: 5
 
 ## Use Case 1: Room Management - Setting up a new room
 
-## Use Case 1: Accessibility & AAC - Non AAC device mode
-
-### User does not have an AAC device and wants to use an on-screen keyboard
-1. User indicated they do not have an AAC device during AAC mode 
-2. User is notified that a keyboard layout will be available on their screen during gameplay
-
-## Use Case 2: Accessibility & AAC - AAC device mode
-
-### User wants to use an AAC device
-1. User indicates they have an AAC device
-2. User is instructed to connect their AAC device via Bluetooth or USB
-3. User is notified on the host's screen to verify the AAC device input connection
-4. User successfully connects their AAC device
-5. User is notified on the host's screen that it will accept input from the AAC device
-
 ```mermaid
 sequenceDiagram
     actor User
@@ -37,15 +22,16 @@ sequenceDiagram
     DB -->> CR: Return generated room code
     CR -->> D: Display game room code to host
 ```
+### User wants to start a new game room
 
-## Use Case 3: Player Customization - New player profile
+1. User opens the game on a device
+2. User clicks the "Create a Game Room" button
+3. User selects a story type
+4. User selects a grade level
+5. User selects the number of players
+6. User clicks the "Start" button
 
-### User wants to set up a new player profile and interaction mode
-
-1. User successfully joins a game room
-2. User enters their display name in an input field
-3. User selects whether they are using an AAC device or a non-AAC device
-4. User clicks a "Done" button
+## Use Case 2: Player Customization - New player profile
 
 ```mermaid
 sequenceDiagram
@@ -59,21 +45,7 @@ sequenceDiagram
     PS ->>+ DB: Validates user ID and saves display name
     DB -->>- PS: Validation success response
     PS -->> D: User is brought to a waiting screen
-
 ```
-
-## Use Case 4: Room Management - Setting up a new room
-
-### User wants to start a new game room
-
-1. User opens the game on a device
-2. User clicks the "Create a Game Room" button
-3. User selects a story type
-4. User selects a grade level
-5. User selects the number of players
-6. User clicks the "Start" button
-
-## Use Case 2: Player Customization - New player profile
 
 ### User wants to set up a new player profile and interaction mode
 
@@ -98,7 +70,6 @@ sequenceDiagram
     GR ->+ Database: fetches token for validation
     Database -->- GR: Return Token
 ```    
-
 
 ### User wants to join the game the host has made
 
@@ -151,8 +122,6 @@ sequenceDiagram
 6. User is prompted with the same storyline
 
 ## Use Case 6: Correct answer
-
-
 
 ```mermaid
 sequenceDiagram 
