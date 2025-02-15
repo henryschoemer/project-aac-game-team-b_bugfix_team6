@@ -19,6 +19,23 @@ sidebar_position: 5
 4. User successfully connects their AAC device
 5. User is notified on the host's screen that it will accept input from the AAC device
 
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant CR as Create Room Screen
+    participant DB as Database
+
+    User ->> D: Looks at screen
+    D ->>+ CR: User decides to create a game room
+    D ->>+ CR: User setups game options
+    CR ->>+ DB: Saves game room setup data
+    DB -->>- CR: Validate game setup data
+    DB ->> DB: Generate room code
+    DB -->> CR: Return generated room code
+    CR -->>- D: Display game room code to host
+```
+
 ## Use Case 3: Player Customization - New player profile
 
 ### User wants to set up a new player profile and interaction mode
