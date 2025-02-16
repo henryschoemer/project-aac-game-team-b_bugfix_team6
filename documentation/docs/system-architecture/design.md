@@ -52,6 +52,92 @@ This architecture minimizes server management overhead while offering scalabilit
 - Client Requests: The client interacts with the server via Firebase SDK calls, which handle real-time data synchronization.
 - Cloud Functions Triggers: Automatically execute server-side logic when certain conditions are met (like when a new answer is submitted)
 
+### Class Diagrams 
+```mermaid 
+classDiagram
+
+    StartPage <|-- HostPage 
+    StartPage <|-- PlayerPage
+    PlayerPage <|-- User
+    GameContainer *-- QuestionDisplay : Displays answers 
+    QuestionDisplay *-- Score : Displays score
+    GameContainer o-- AACBoard : Chooses answers
+    GameContainer --|> PlayerPage : Manages turns
+    GameContainer --|> Firebase : Sends answer for validation
+    Firebase --|> PlayerProgress : Updates stats
+    PlayerProgress --|> GameContainer : Sends back stats
+    PlayerProgress --|> Score : Updates score
+    
+    class StartPage {
+        +joinGame()
+        +hostGame()
+    }
+
+    class HostPage {
+	    +String story
+	    +int difficulty
+	    +int numPlayers
+	    +selectStory() String
+	    +selectDifficulty() int
+	    +selectNumPlayers() int
+	    +startGameRoom()
+    }
+
+    class PlayerPage {
+	    +User[] users
+	    +startGame()
+    }
+
+    class GameContainer {
+        +selectedWords: String[]
+	    +updateTurn()
+        +handleSelect(imgUrl: String): void
+    }
+
+    class Score {
+	    -int score
+        +updateScore()
+    }
+
+    class AACBoard {
+        +String[] pictograms
+	   +fetchPictograms(query: String): String[]
+        +onSelect(imgUrl: String): void
+    }
+
+    class User {
+	    -String userId
+	    -String name
+	    +String preferences
+    }
+
+    class Firebase {
+	    +authenticateUser()
+	    +getRoomData(roomId)
+	    +updateGameState(roomId, data)
+	    +validateAnswer(roomId, userId, answer)
+    }
+
+    class PlayerProgress {
+	    -String roomId
+	    -String userId
+	    -String[] answers
+	    -int correctAnswers
+	    -int attempts
+	    +updateProgress()
+    }
+
+    class QuestionDisplay {
+	    +String[] phrase
+	    -String playerAnswer
+	    +int numBlanks
+	    +fillPhraseFromPlayerAnswer()
+	    +displayScore()
+	    +submit()
+	    +validatePhrase() int
+    }
+```
+
 ### Database
 **Users:**
 - userId: Unique identifier
