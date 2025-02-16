@@ -85,6 +85,7 @@ classDiagram
 
     class PlayerPage {
 	    +User[] users
+	    +boolean allUsersJoined
 	    +startGame()
     }
 
@@ -111,7 +112,7 @@ classDiagram
 	    +String preferences
     }
 
-    class Firebase {
+    class FirebaseController {
 	    +authenticateUser()
 	    +getRoomData(roomId)
 	    +updateGameState(roomId, data)
@@ -137,6 +138,13 @@ classDiagram
 	    +validatePhrase() int
     }
 ```
+This class diagram shows the relationships between different components in the StoryQuest system. 
+The system provides a **StartPage**, from which a **User** can navigate to either the **HostPage**, 
+to create a room & change settings, or join a room, leading to the **PlayerPage**, where once all users have joined, 
+one can start the game. Once the game is started, the **GameContainer** takes control. It contains a **QuestionDisplay** 
+and the **AACBoard**. Once a **User** selects an answer on the **AACBoard** it is displayed on the **QuestionDisplay** and 
+sent to **FirebaseController** to be sent to Firebase for validation. Once an answer is validated it is sent to **PlayerProgress** 
+which updates the **GameContainer** and updates **Score**, which sends score to **QuestionDisplay** to be shown. 
 
 ### Database
 **Users:**
