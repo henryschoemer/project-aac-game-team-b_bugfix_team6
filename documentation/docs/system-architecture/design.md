@@ -52,6 +52,100 @@ This architecture minimizes server management overhead while offering scalabilit
 - Client Requests: The client interacts with the server via Firebase SDK calls, which handle real-time data synchronization.
 - Cloud Functions Triggers: Automatically execute server-side logic when certain conditions are met (like when a new answer is submitted)
 
+### Class Diagrams 
+```mermaid 
+classDiagram
+
+    StartPage <|-- HostPage 
+    StartPage <|-- PlayerPage
+    PlayerPage <|-- User
+    GameContainer *-- QuestionDisplay : Displays answers 
+    QuestionDisplay *-- Score : Displays score
+    GameContainer o-- AACBoard : Chooses answers
+    GameContainer --|> PlayerPage : Manages turns
+    GameContainer --|> Firebase : Sends answer for validation
+    Firebase --|> PlayerProgress : Updates stats
+    PlayerProgress --|> GameContainer : Sends back stats
+    PlayerProgress --|> Score : Updates score
+    
+    class StartPage {
+        +joinGame()
+        +hostGame()
+    }
+
+    class HostPage {
+	    +String story
+	    +int difficulty
+	    +int numPlayers
+	    +selectStory() String
+	    +selectDifficulty() int
+	    +selectNumPlayers() int
+	    +startGameRoom()
+    }
+
+    class PlayerPage {
+	    +User[] users
+	    +boolean allUsersJoined
+	    +startGame()
+    }
+
+    class GameContainer {
+        +selectedWords: String[]
+	    +updateTurn()
+        +handleSelect(imgUrl: String): void
+    }
+
+    class Score {
+	    -int score
+        +updateScore()
+    }
+
+    class AACBoard {
+        +String[] pictograms
+	   +fetchPictograms(query: String): String[]
+        +onSelect(imgUrl: String): void
+    }
+
+    class User {
+	    -String userId
+	    -String name
+	    +String preferences
+    }
+
+    class FirebaseController {
+	    +authenticateUser()
+	    +getRoomData(roomId)
+	    +updateGameState(roomId, data)
+	    +validateAnswer(roomId, userId, answer)
+    }
+
+    class PlayerProgress {
+	    -String roomId
+	    -String userId
+	    -String[] answers
+	    -int correctAnswers
+	    -int attempts
+	    +updateProgress()
+    }
+
+    class QuestionDisplay {
+	    +String[] phrase
+	    -String playerAnswer
+	    +int numBlanks
+	    +fillPhraseFromPlayerAnswer()
+	    +displayScore()
+	    +submit()
+	    +validatePhrase() int
+    }
+```
+This class diagram shows the relationships between different components in the StoryQuest system. 
+The system provides a **StartPage**, from which a **User** can navigate to either the **HostPage**, 
+to create a room & change settings, or join a room, leading to the **PlayerPage**, where once all users have joined, 
+one can start the game. Once the game is started, the **GameContainer** takes control. It contains a **QuestionDisplay** 
+and the **AACBoard**. Once a **User** selects an answer on the **AACBoard** it is displayed on the **QuestionDisplay** and 
+sent to **FirebaseController** to be sent to Firebase for validation. Once an answer is validated it is sent to **PlayerProgress** 
+which updates the **GameContainer** and updates **Score**, which sends score to **QuestionDisplay** to be shown. 
+
 ### Database
 **Users:**
 - userId: Unique identifier
