@@ -6,34 +6,44 @@ sidebar_position: 1
 
 ## Project Abstract
 
-This project is a web-based, tablet-friendly "Mad Libs" style story game designed for children to learn how to collaborate, with special considerations 
-regarding players who use Augmentative and Alternative Communication (ACC). In order to promote social inclusion and empathy, the 
-game is done in a manner that relies on teammates all communicating and working as a team in order to get the phrase correct. This is done so AAC users don't 
-feel left behind and are actively needed in the group. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. 
-The interface dynamically indicates when a child is selecting their answer, fostering understanding and patience among all players. 
-Through simple, age-appropriate prompts, lively visuals, and a responsive layout, the game creates an engaging, accessible 
-environment that supports the growth of both verbal communicators and children who require additional supports. 
+StoryQuest is a web-based, tablet-friendly collaborative storytelling game designed to enhance social inclusion and 
+communication skills, particularly for children who use Augmentative and Alternative Communication (AAC). The game is 
+inspired by "Mad Libs", leveraging cloze phrases—a proven technique in speech therapy 
+that helps improve word recall, literacy, and structured communication. To foster teamwork, empathy, and peer engagement, 
+StoryQuest requires all players to work together to complete phrases correctly. The design ensures that AAC users play an 
+essential role in the team, preventing social exclusion and encouraging meaningful participation. A built-in AAC-friendly 
+interface eliminates the need for excessive screen switching, providing seamless accessibility and a fluid user experience. 
+The interface also dynamically indicates when a child is selecting their answer, supporting clear turn-taking and engagement 
+for all players.
 
 ## Conceptual Design
 
-The website will be built with the Next.js 
-Framework primarily for the front-end, and with 
-Convex for the back-end. We are also considering FireBase for back-end to ensure gaming functionality. The language 
-specifically will be TypeScript and we will 
-likely sprinkle in some TailWind CSS, Motion Library, and some ShadCN to make sure it is engaging for children. Docusaurus 
-and GitHub Pages will keep track of project 
-progression. We will use Vercel to seamlessly 
-deploy the game.
+### Frontend (Client-Side)
+**Framework:**
+- Next.js (React + TypeScript) – Provides an interactive and maintainable UI.
+
+**Styling & UI Components:**
+- TailwindCSS – Ensures responsive, accessible, and customizable styling.
+- ShadCN/UI – Prebuilt, accessible components to speed up development.
+- Framer Motion – Smooth animations and transitions for enhanced engagement.
+
+### Backend (Server-Side & Data Handling)
+- **Firebase Firestore (NoSQL Database)** – Stores game data, user progress, and room states in real-time.
+- **Firebase Cloud Function**s – Manages game logic, including answer validation, player interactions, and scorekeeping.
+
+### Deployment & Project Management
+- **Hosting:** Firebase Cloud Hosting – Ensures fast and scalable deployment.
+- **Version Control & Documentation:** GitHub & Docusaurus – Tracks project progression, documentation, and CI/CD pipeline management.
 
 ## Background
 
-Many current tools on the market are geared towards engaging either AAC users separately, such as the AAC Language Lab<sup>1</sup> or AssistiveWare<sup>2</sup>.
+Many current tools on the market are geared towards engaging AAC users, such as the AAC Language Lab<sup>1</sup> or AssistiveWare<sup>2</sup>.
 The AAC Language Lab has web-based games based on stages of learning, and requires a subscription model to use. AssistiveWare has specific apps 
-for specific AAC communication devices.  Still, much of their software encompasses apps targeted towards helping the younger generation of AAC 
+for specific AAC communication devices.  Much of their software apps are targeted towards helping the younger generation of AAC 
 users more comfortable with using assistive technology. There is a gap in the market for learning games based in collaboration between AAC users 
 and non-AAC users.
 
-StoryQuest, in contrast, aims to create a collaborative environment for AAC and non-AAC users alike to engage in play. 
+StoryQuest aims to create a collaborative environment for AAC and non-AAC users to engage in play. 
 In a study by Schwartz et al.,<sup>3</sup> the 31 preschool children with significant developmental disabilities who learned to use Picture 
 Exchange Communication Systems to communicate with adults after 11 months, also learned to communicate with peers without disabilities 
 after an additional 3 months of intervention in integrated, play-based activities. Social interactions for development remains important 
