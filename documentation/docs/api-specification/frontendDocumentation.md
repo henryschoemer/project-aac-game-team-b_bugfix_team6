@@ -1,0 +1,100 @@
+---
+sidebar_position: 5
+---
+# 1. Frontend API Documentation
+Documentation for the frontend classes in Story Quest.
+
+## 1.1 StartPage
+**Description:** Provides UI for players to host or join a game.
+
+#### Methods:
+- `joinGame(int gameID): void` **: Navigates user to existing game room lobby using the unique game ID.**
+  - **Parameters:**
+    - `int: gameID`: the game ID number of the game the player wants to join.
+  - **Returns:** `void`
+  - **Pre-Condition:** User enters a valid game ID.
+  - **Post-Condition:** User is directed to `PlayerPage` class and is connected to the game session.
+  - **Exceptions:** Invalid/expired game ID.
+    
+- `hostGame(): int gameID` **: Creates a new game session.**
+  - **Returns:** `gameID`
+  - **Pre-Condition:** User clicks "Host" button.
+  - **Post-Condition:** A new `gameID` is created and the user is directed to `HostPage`.
+  - **Exception:** Room creation failure on backend.
+
+## 1.2 HostPage
+**Description:** Allows the user to configure the room settings.
+
+#### Data fields:
+- `story : String` : The story chosen by the hsot.
+- `difficulty : int` : The game difficulty level.
+- `numPlayers : int` : The number of players allowed in the game session.
+
+#### Methods:
+- `selectStory() : String story` : **Allows the host to choose a story.**
+  - **Returns:** `story`
+  - **Post-Condition:** The chosen story is stored.
+    
+- `selectDifficulty() : int difficulty` : **Allows the host to choose game difficulty.**
+  - **Returns:** `difficulty`
+  - **Post-Condition:** The chosen difficulty is stored.
+    
+- `selectNumPlayers() : int numPlayers` : **Allows host to select number of players for game session.**
+  - **Returns:** `numPlayers`
+  - **Post-Condition:** Player count is stored.
+    
+- `startGameRoom() : void` : **Initiates game room.**
+  - **Returns:** `void`
+  - **Pre-Condition:** All game settings are chosen.
+  - **Post-Condition:** Game room is created.
+ 
+## 1.3 PlayerPage
+**Description:** Handles player session management.
+
+#### Data fields:
+- `players : Player[]` : A list of all players in the session.
+- `allPlayersJoined : boolean` : True when all players have joined.
+
+#### Methods:
+- `startGame() : void` : **Begins the turn-taking story session.**
+  - **Returns:** `void`
+  - **Pre-Condition:** All players present.
+  - **Exception:** Player connection lost.
+
+## 1.4 GameContainer
+**Description:** Manages game turns and story progression.
+
+#### Data fields:
+- `selectedWords : String[]` : Words chosen from the AAC tablet by players.
+
+#### Methods:
+- `updateTurn() : void` : **Advances to the player whose turn is next.**
+  - **Returns:** `void`
+  - **Pre-Condition:** Previous turn is completed.
+  - **Exception:** Player connection lost.
+
+- `handleSelect(String[] imgUrl) : void` : **Handles selected words from AAC board and updates story.**
+  - **Parameters:**
+    - `String[] imgUrl` : Image URL of AAC board selection.
+  - **Returns:** `void`
+  - **Pre-Condition:** Player picks a word/key.
+  - **Post-Condition:** Word is saved and story is updated.
+
+## 1.5 QuestionDisplay
+**Description:** Displays the cloze phrase sentence for the user to fill in the blanks.
+
+#### Data fields:
+- `phrase : String[]` : The cloze phrase presented.
+- `playerAnswer : String` : The word/key selected by the current player.
+- `numBlanks : int` : The number of blanks in the current phrase.
+
+#### Methods: 
+- `fillPhraseFromPlayerAnswer() : void` : **Updates phrase with player answer.**
+  - **Returns:** `void`
+  - **Pre-Condition:** Player selects a word/key.
+  - **Exception:** Invalid word.
+    
+- `submit() : void` : **submits the word to Firebase.**
+  - **Returns:** `void`
+  - **Post-Condition:** Word is recorded.
+  - **Exception:** Database error.
