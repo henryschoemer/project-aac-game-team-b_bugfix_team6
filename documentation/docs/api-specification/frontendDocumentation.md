@@ -61,7 +61,7 @@ Documentation for the frontend classes in Story Quest.
   - **Pre-Condition:** All players present.
   - **Exception:** Player connection lost.
 
-## 1.4 Game Container
+## 1.4 GameContainer
 **Description:** Manages game turns and story progression.
 
 #### Data fields:
@@ -80,4 +80,21 @@ Documentation for the frontend classes in Story Quest.
   - **Pre-Condition:** Player picks a word/key.
   - **Post-Condition:** Word is saved and story is updated.
 
+## 1.5 QuestionDisplay
+**Description:** Displays the cloze phrase sentence for the user to fill in the blanks.
 
+#### Data fields:
+- `phrase : String[]` : The cloze phrase presented.
+- `playerAnswer : String` : The word/key selected by the current player.
+- `numBlanks : int` : The number of blanks in the current phrase.
+
+#### Methods: 
+- `fillPhraseFromPlayerAnswer() : void` : **Updates phrase with player answer.**
+  - **Returns:** `void`
+  - **Pre-Condition:** Player selects a word/key.
+  - **Exception:** Invalid word.
+    
+- `submit() : void` : **submits the word to Firebase.**
+  - **Returns:** `void`
+  - **Post-Condition:** Word is recorded.
+  - **Exception:** Database error.
