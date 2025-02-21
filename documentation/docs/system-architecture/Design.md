@@ -238,7 +238,7 @@ erDiagram
     ROOM ||--|{ STORY : "Each room uses a story"
     STORY ||--|{ ROOM : "Is played in"
     USER ||--|{ PLAYER_PROGRESS : "Tracks the individual player"
-    ```
+```
 
 **Table Design**
 
@@ -290,7 +290,6 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 | lastActive | Timestamp | Last time the player interacted |
 
 ---
-```
 
 ## Use Case Sequence Diagrams
 
@@ -311,6 +310,7 @@ sequenceDiagram
     Note right of DB: Generate room code
     DB -->> CR: Return generated room code
     CR -->> D: Display game room code to host
+    
 ```
 
 ## Use Case 2: Player Customization - New player profile
