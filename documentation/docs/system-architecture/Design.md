@@ -290,3 +290,151 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 | lastActive | Timestamp | Last time the player interacted |
 
 ---
+```
+
+## Use Case Sequence Diagrams
+
+## Use Case 1: Room Management - Setting up a new room
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant D as Device
+    participant CR as Create Room Screen
+    participant DB as Database
+
+    User ->> D: Looks at screen
+    D ->>+ CR: User decides to create a game room
+    D ->>+ CR: User sets up game options
+    CR ->>+ DB: Save game room setup data
+    DB -->> CR: Validate game setup data
+    Note right of DB: Generate room code
+    DB -->> CR: Return generated room code
+    CR -->> D: Display game room code to host
+```
+
+## Use Case 2: Player Customization - New player profile
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant D as Device
+    participant PS as Profile Screen
+    participant DB as Database
+
+    User ->> D: Looks at screen
+    D ->>+ PS: Enters display name in text field and confirms
+    PS ->>+ DB: Validates user ID and saves display name
+    DB -->>- PS: Validation success response
+    PS -->> D: User is brought to a waiting screen
+```
+
+## Use Case 3: Room Management - Player Joins a Game through the Join Screen
+
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Room Screen
+    participant Database
+
+
+
+
+    User ->> D: Looks at screen 
+    D ->>+ GR: User decided to join a game and enters token
+    GR ->>+ Database: Fetches token for validation
+    Database -->>- GR: Return Token
+```    
+
+## Use Case 4: Accessibility & AAC
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Room Screen
+    participant Database
+
+
+
+
+    User ->> D: Looks at screen 
+    D ->>+ GR: User has joined room
+    GR -->>+ User: Notified that AAC keyboard layout will be available 
+    GR ->>+ Database: Fetches tutorial content
+    Database -->>- GR: Return tutorial content
+    GR -->>+ User: Gives short tutorial on AAC keyboard 
+```
+## Game Mechanics
+
+## Use Case 5: Wrong answer
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Screen
+    participant Database
+
+
+
+
+    User ->> D: looks at screen 
+    D ->>+ GR: User is given a cloze phrase question
+    GR ->>+ Database: Fetches cloze phrase question and answer choices
+    Database -->>- GR: Return cloze phrase question and answer choices
+    GR -->>- D: Returns cloze phrase question answer
+
+    D ->>+ GR: User chooses cloze phrase questions answer 
+    GR -->>+ D: User is notified that their answer is wrong
+    loop Until correct answer is given
+        D->>GR :Enters answer
+        GR-->>D: Incorrect, try again
+    end
+```    
+
+## Use Case 6: Correct answer
+
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Screen
+    participant Database
+
+
+
+
+    User ->> D: Looks at screen 
+    D ->>+ GR: User is given a cloze phrase question
+    GR ->>+ Database: Fetches cloze phrase question and answer choices
+    Database -->>- GR: Return cloze phrase question and answer choices
+    GR -->>- D: Returns cloze phrase question answer
+
+    D ->>+ GR: User chooses cloze phrase questions answer 
+    GR -->>+ D: User is notified that their answer is correct and that is it the next players turn    
+```
+
+## Use Case 7: Retry Mechanism
+
+
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Screen
+    participant Database
+
+     User ->> D: Looks at screen 
+     D ->>+ GR: User chooses cloze phrase questions answer 
+    GR -->>+ D: User is notified that their answer is wrong
+    loop Until correct answer is given
+        D->>GR :Enters answer
+        GR-->>D: Incorrect, try again
+    end
+
+
+``` 
+
+
+
+
