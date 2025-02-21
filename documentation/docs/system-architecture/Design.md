@@ -55,22 +55,10 @@ This architecture minimizes server management overhead while offering scalabilit
 ### Class Diagrams 
 ```mermaid 
 classDiagram
-
-    StartPage <|-- HostPage 
-    StartPage <|-- PlayerPage
-    PlayerPage <|-- User
-    GameContainer *-- QuestionDisplay : Displays answers 
-    QuestionDisplay *-- Score : Displays score
-    GameContainer o-- AACBoard : Chooses answers
-    GameContainer --|> PlayerPage : Manages turns
-    GameContainer --|> Firebase : Sends answer for validation
-    Firebase --|> PlayerProgress : Updates stats
-    PlayerProgress --|> GameContainer : Sends back stats
-    PlayerProgress --|> Score : Updates score
-    
+direction TB
     class StartPage {
-        +joinGame()
-        +hostGame()
+	    +joinGame()
+	    +hostGame()
     }
 
     class HostPage {
@@ -84,8 +72,8 @@ classDiagram
     }
 
     class PlayerPage {
-	    +User[] users
-	    +boolean allUsersJoined
+	    +Player[] player
+        +allPlayersJoined boolean
 	    +startGame()
     }
 
@@ -95,48 +83,41 @@ classDiagram
         +handleSelect(imgUrl: String): void
     }
 
-    class Score {
-	    -int score
-        +updateScore()
-    }
-
     class AACBoard {
         +String[] pictograms
 	   +fetchPictograms(query: String): String[]
         +onSelect(imgUrl: String): void
     }
 
-    class User {
-	    -String userId
-	    -String name
-	    +String preferences
-    }
-
     class FirebaseController {
 	    +authenticateUser()
 	    +getRoomData(roomId)
 	    +updateGameState(roomId, data)
-	    +validateAnswer(roomId, userId, answer)
     }
 
-    class PlayerProgress {
-	    -String roomId
-	    -String userId
-	    -String[] answers
-	    -int correctAnswers
-	    -int attempts
-	    +updateProgress()
-    }
 
     class QuestionDisplay {
 	    +String[] phrase
-	    -String playerAnswer
+	    +String playerAnswer
 	    +int numBlanks
 	    +fillPhraseFromPlayerAnswer()
-	    +displayScore()
 	    +submit()
-	    +validatePhrase() int
     }
+
+    class Player {
+        +String id
+        +String name
+        +String role
+        +setRole()
+    }
+
+    StartPage <|-- HostPage 
+    StartPage <|-- PlayerPage
+    PlayerPage <|-- Player
+    GameContainer *-- QuestionDisplay : Displays answers 
+    GameContainer o-- AACBoard : Chooses answers
+    GameContainer --> PlayerPage : Manages turns
+    GameContainer --> FirebaseController : Sends answer for validation
 ```
 This class diagram shows the relationships between different components in the StoryQuest system. 
 The system provides a **StartPage**, from which a **User** can navigate to either the **HostPage**, 
