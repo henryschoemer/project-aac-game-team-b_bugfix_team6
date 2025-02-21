@@ -55,10 +55,22 @@ This architecture minimizes server management overhead while offering scalabilit
 ### Class Diagrams 
 ```mermaid 
 classDiagram
-direction TB
+
+    StartPage <|-- HostPage 
+    StartPage <|-- PlayerPage
+    PlayerPage <|-- User
+    GameContainer *-- QuestionDisplay : Displays answers 
+    QuestionDisplay *-- Score : Displays score
+    GameContainer o-- AACBoard : Chooses answers
+    GameContainer --|> PlayerPage : Manages turns
+    GameContainer --|> Firebase : Sends answer for validation
+    Firebase --|> PlayerProgress : Updates stats
+    PlayerProgress --|> GameContainer : Sends back stats
+    PlayerProgress --|> Score : Updates score
+    
     class StartPage {
-	    +joinGame()
-	    +hostGame()
+        +joinGame()
+        +hostGame()
     }
 
     class HostPage {
@@ -72,8 +84,8 @@ direction TB
     }
 
     class PlayerPage {
-	    +Player[] player
-        +allPlayersJoined boolean
+	    +User[] users
+	    +boolean allUsersJoined
 	    +startGame()
     }
 
@@ -83,61 +95,56 @@ direction TB
         +handleSelect(imgUrl: String): void
     }
 
+    class Score {
+	    -int score
+        +updateScore()
+    }
+
     class AACBoard {
         +String[] pictograms
 	   +fetchPictograms(query: String): String[]
         +onSelect(imgUrl: String): void
     }
 
+    class User {
+	    -String userId
+	    -String name
+	    +String preferences
+    }
+
     class FirebaseController {
 	    +authenticateUser()
 	    +getRoomData(roomId)
 	    +updateGameState(roomId, data)
+	    +validateAnswer(roomId, userId, answer)
     }
 
+    class PlayerProgress {
+	    -String roomId
+	    -String userId
+	    -String[] answers
+	    -int correctAnswers
+	    -int attempts
+	    +updateProgress()
+    }
 
     class QuestionDisplay {
 	    +String[] phrase
-	    +String playerAnswer
+	    -String playerAnswer
 	    +int numBlanks
 	    +fillPhraseFromPlayerAnswer()
+	    +displayScore()
 	    +submit()
+	    +validatePhrase() int
     }
-
-    class Player {
-        +String id
-        +String name
-        +String role
-        +setRole()
-    }
-
-    StartPage <|-- HostPage 
-    StartPage <|-- PlayerPage
-    PlayerPage <|-- Player
-    GameContainer *-- QuestionDisplay : Displays answers 
-    GameContainer o-- AACBoard : Chooses answers
-    GameContainer --|> PlayerPage : Manages turns
-    GameContainer --|> FirebaseController : Sends answer for validation
 ```
-*Figure 1: Class diagram showing interaction between classes within StoryQuest*
-
 This class diagram shows the relationships between different components in the StoryQuest system. 
-
-The **Player** class encompasses all users who interact with the system. They are subdivided into 'student' and 'host'
-roles within the class.
-
-#### Room Management
-The system has a **StartPage**, a **HostPage**, and a **PlayerPage**. These components make up room management in the game. In **StartPage**, the **Player**
-has the option to join an existing game, or host a game. If a **Player** chooses to join a game, they are led to the **PlayerPage**. This is 
-a waiting room that tracks the players that have entered a game and can trigger the start of the game. If a **Player** instead chooses 
-to host a game, they are led to the **HostPage**. This is a page with administrative control over settings of the game, like story, difficulty, and number of players
-along with the ability to begin hosting.
-
-#### GamePlay
-Once the game is started, the **GameContainer** takes control. It contains a **QuestionDisplay**, which displays selected answer choices and source material for questions, 
-and the **AACBoard**, which contains an self-contained AAC word bank to select answers from. Once a **Player** selects an answer on the **AACBoard** it is displayed on the **QuestionDisplay** and 
-sent to **FirebaseController** to be sent to Firebase for validation (i.e. if a player selects 'Apple' from the offered choices, the image of an 'Apple' is sent back to be added to the scene in 
-**QuestionDisplay**). The game continues until the end of the story. 
+The system provides a **StartPage**, from which a **User** can navigate to either the **HostPage**, 
+to create a room & change settings, or join a room, leading to the **PlayerPage**, where once all users have joined, 
+one can start the game. Once the game is started, the **GameContainer** takes control. It contains a **QuestionDisplay** 
+and the **AACBoard**. Once a **User** selects an answer on the **AACBoard** it is displayed on the **QuestionDisplay** and 
+sent to **FirebaseController** to be sent to Firebase for validation. Once an answer is validated it is sent to **PlayerProgress** 
+which updates the **GameContainer** and updates **Score**, which sends score to **QuestionDisplay** to be shown. 
 
 ### Database
 **Users:**
@@ -231,8 +238,7 @@ erDiagram
     ROOM ||--|{ STORY : "Each room uses a story"
     STORY ||--|{ ROOM : "Is played in"
     USER ||--|{ PLAYER_PROGRESS : "Tracks the individual player"
- ```
-*Figure 2: Entity-relationship diagram showing database design and interaction*
+```
 
 **Table Design**
 
@@ -284,7 +290,6 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 | lastActive | Timestamp | Last time the player interacted |
 
 ---
-```
 
 ## Use Case Sequence Diagrams
 
@@ -305,6 +310,7 @@ sequenceDiagram
     Note right of DB: Generate room code
     DB -->> CR: Return generated room code
     CR -->> D: Display game room code to host
+    
 ```
 
 ## Use Case 2: Player Customization - New player profile
