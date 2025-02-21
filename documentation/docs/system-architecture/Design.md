@@ -116,8 +116,8 @@ direction TB
     PlayerPage <|-- Player
     GameContainer *-- QuestionDisplay : Displays answers 
     GameContainer o-- AACBoard : Chooses answers
-    GameContainer --> PlayerPage : Manages turns
-    GameContainer --> FirebaseController : Sends answer for validation
+    GameContainer --|> PlayerPage : Manages turns
+    GameContainer --|> FirebaseController : Sends answer for validation
 ```
 *Figure 1: Class diagram showing interaction between classes within StoryQuest*
 
