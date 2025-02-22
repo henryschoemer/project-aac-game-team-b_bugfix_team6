@@ -160,20 +160,20 @@ allows the host to define key game settings, such as:
 
 ### Database
 **Users:**
-- userId: Unique identifier
+- userId (PK): Unique identifier
 - name: Player's name
 - preferences: AAC settings, favorite symbols
 
 **Rooms:**
-- roomId: Unique code for room access
-- hostId: The player who created the room
+- roomId (PK): Unique code for room access
+- hostId (FK from the Users table): The player who created the room
 - players: List of players in the room
-- currentTurn: Tracks whose turn it is
+- currentTurn (FK from the users table): Tracks whose turn it is
 - storyProgress: Current state of the story
 
 **Stories:**
-- storyId: Unique ID
-- gradeLevel: Target grade level (1st-3rd)
+- storyId (PK): Unique ID
+- gradeLevel: Target grade level (3 grade max)
 - content: Story text with blanks
 
 **Responsibilities:**
@@ -202,7 +202,7 @@ Entities and Relationships:
 ```mermaid
 erDiagram
     USER {
-        string userId 
+        string userId PK
         string name
         string email
         json preferences
@@ -210,18 +210,18 @@ erDiagram
     }
 
     ROOM {
-        string roomId 
-        string hostId 
-        string storyId 
+        string roomId PK
+        string hostId FK
+        string storyId FK
         number gradeLevel
         number numPlayers
-        string currentTurn 
+        string currentTurn FK
         boolean isActive
         timestamp createdAt
     }
 
     STORY {
-        string storyId 
+        string storyId PK
         string title
         array content
         number gradeLevel
@@ -229,27 +229,16 @@ erDiagram
     }
 
     ROOM_PLAYERS {
-        string roomId 
-        string userId 
+        string roomId FK
+        string userId FK
         string name
         timestamp joinedAt
     }
 
-    PLAYER_PROGRESS {
-        string roomId 
-        string userId 
-        array answers
-        number correctAnswers
-        number attempts
-        timestamp lastActive
-    }
-
-    USER ||--|{ ROOM_PLAYERS : "User joins Room Players"
-    ROOM ||--|{ ROOM_PLAYERS : "Room has Room Players"
-    ROOM ||--|{ PLAYER_PROGRESS : "Player Progress tracks each player"
-    ROOM ||--|{ STORY : "Each room uses a story"
-    STORY ||--|{ ROOM : "Is played in"
-    USER ||--|{ PLAYER_PROGRESS : "Tracks the individual player"
+    USER ||--o{ ROOM_PLAYERS : "joins"
+    ROOM ||--o{ ROOM_PLAYERS : "has"
+    ROOM ||--|{ STORY : "uses"
+    STORY ||--o{ ROOM : "is played in"
 ```
 *Figure 2: An entity-relationship diagram showing interactions within the database*
 
@@ -260,7 +249,7 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 **Users Collection**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| userId | String | Unique Id (Firebase Auth UID) |
+| userId (PK)| String | Unique Id (Firebase Auth UID) |
 | name | String | Player's display name |
 | preferences | Map | AAC preferences |
 | createdAt | Timestamp | Account creation date |
@@ -268,7 +257,7 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 **Rooms Collections**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| roomId | String | Unique code for room access |
+| roomId (PK)| String | Unique code for room access |
 | hostId | String | User ID of the room host |
 | storyId | String | ID of selected story |
 | difficulty | Number | Difficulty level selected for the room |
@@ -280,14 +269,14 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 **RoomPlayers Subcollection (within rooms)**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| userId | String | User Id of the player |
+| userId (PK)| String | User Id of the player |
 | name | String | Player's display name |
 | joinedAt | Timestamp | Time when the players joined the room |
 
 **Stories Collections**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| storyId | String | Unique id for the story |
+| storyId (PK)| String | Unique id for the story |
 | title | String | Title of the story |
 | content | Array | Story text with blanks marked |
 | difficulty | Number | Intended difficulty level |
@@ -296,7 +285,7 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 **PlayerProgress Subcollection (within Rooms)**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| userId | String | User Id of the player |
+| userId (PK)| String | User Id of the player |
 | answers | Array | List of the answers submitted by the player |
 | correctAnswers | Number | Total correct answers by the player |
 | attempts | Number | Total attempts made |
