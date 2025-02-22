@@ -12,15 +12,16 @@
 ## Project Overview
 
 We will develop a game, called "Storyquest: Teamwork Prevails", that aims to maximize communication between children who use 
-Augmentative and Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to encourage communication between two players. We aim to integrate existing AAC technology into this game.
+Augmentative and Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to encourage communication among players.
 
 ## Keywords
+ - AAC - Augmentative and Alternative Communication
+ - Cloze Phrase - Phrases or sentences with words missing that are intended to be filled in by the reader. Cloze phrases are used to assess reading comprehension and to help students learn to predict word meanings. 
 
-Section #, as well as any words that quickly give your peers insights into the application like programming language, development platform, type of application, etc.
 
 ## Project Abstract
 
-This project is a web-based, tablet-friendly "cloze phrase(*)" style story game designed for children to learn how to collaborate, with special considerations regarding players who use Augmentative and Alternative Communication (ACC). In order to promote social inclusion and empathy, the game relies on teammates all communicating and working as a team in order to get the phrase correct. This is done so AAC users don't feel left behind and are actively needed in the group. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. The interface dynamically indicates when a child is selecting their answer. 
+This project is a web-based, tablet-friendly "cloze phrase(*)" style story game designed for children to learn how to collaborate, with special considerations regarding players who use Augmentative and Alternative Communication (ACC). In order to promote social inclusion and empathy, the game relies on teammates all communicating and working as a team in order to get the phrase complete. This is done so AAC users don't feel ostracized and are actively needed in the group. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. The interface dynamically indicates when a child is selecting their answer. 
 
 
 ## High Level Requirement
@@ -43,18 +44,16 @@ This project is a web-based, tablet-friendly "cloze phrase(*)" style story game 
 
         **Interactive elements:** Kids should feel involved and rewarded during the game. Include interactive features like achievements, rewards, or animations.
 
-        **Clear, non-frustrating feedback:** Kids need immediate feedback about their actions in the game, whether it’s positive reinforcement or gentle guidance when they’re stuck.
-
     4. Multiplayer/Collaboration Features 
 
-        **Social interaction:** If multiplayer, provide safe, controlled interaction options such as pre-set messages or emojis and voice dictation.
+        **Social interaction:** Provide safe, controlled interaction options such as pre-set messages or emojis and voice dictation.
 
-        **Cooperative gameplay:** Enable teamwork if it’s a multiplayer game, with easy communication or task sharing.
+        **Cooperative gameplay:** Enable teamwork with easy communication.
 
 
 ## Conceptual Design
 
-The website will be built with the Next.js Framework primarily for the front-end, and with Convex for the back-end. The language specifically will be TypeScript and we will likely sprinkle in some TailWind CSS. Docusaurus and GitHub Pages will keep track of project progression. We will use Vercel to seemlessly deploy the game.
+The website will be built with the Next.js Framework primarily for the front-end, and with Firebase for the back-end. The language specifically is TypeScript and we are using TailWind CSS. Docusaurus and GitHub Pages will keep track of project progression. We will use Vercel to seemlessly deploy the game.
 
 ## Background
 
@@ -74,7 +73,7 @@ Social interactions for development remains important at the grade-school level.
 
     **Tailwind CSS:** For fast, responsive design that’s customizable and minimalistic.
 
-    **Firebase:** For seamless deployment.
+    **Firebase:** For seamless deployment and storing data.
 
     **Docusaurus:** For maintaining project documentation and tracking progress, ideal for keeping all stakeholders in the loop.
 
@@ -82,8 +81,6 @@ Social interactions for development remains important at the grade-school level.
 
 #### Back-End Development
     **Firestore:** This real-time serverless backend will handle state persistence, interactions, and user data. It integrates well with Next.js for a smooth full-stack experience.
-
-    **Database (Convex DB):** Convex offers a cloud database to manage game data, player progress, and other relevant information in real-time.
 
     **Authentication Service:** Consider integrating user authentication (like Firebase Authentication or Auth0) to ensure safety and privacy, especially with children’s accounts.
 
