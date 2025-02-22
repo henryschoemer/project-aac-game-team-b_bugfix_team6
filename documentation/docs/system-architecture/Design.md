@@ -3,8 +3,7 @@ sidebar_position: 1
 ---
 
 **Purpose**
-
-The architecture of StoryQuest is based on a client-server model using modern web technologies. The front-end client is built 
+The front-end client is built 
 with React and Next.js, while the back-end leverages Firebase for real-time database synchronization, authentication, and 
 accessible experience for AAC users, incorporating symbol-based communication and text-to-speech capabilities. 
 
@@ -119,42 +118,62 @@ direction TB
     GameContainer --|> PlayerPage : Manages turns
     GameContainer --|> FirebaseController : Sends answer for validation
 ```
-*Figure 1: Class diagram showing interaction between classes within StoryQuest*
+*Figure 9: Class diagram showing interaction between classes within StoryQuest*
 
 This class diagram shows the relationships between different components in the StoryQuest system.
 
-The **Player** class encompasses all users who interact with the system. They are subdivided into 'student' and 'host'
-roles within the class.
+### Player Management
+The **Player** class encompasses all users who interact with the system. Each player
+has an id, name, and a role, which can be either 'student' or 'host'. The setRole() function 
+assigns a role to a player based on whether they are joining a game or starting a game.
 
 #### Room Management
-The system has a **StartPage**, a **HostPage**, and a **PlayerPage**. These components make up room management in the game. In **StartPage**, the **Player**
-has the option to join an existing game, or host a game. If a **Player** chooses to join a game, they are led to the **PlayerPage**. This is
-a waiting room that tracks the players that have entered a game and can trigger the start of the game. If a **Player** instead chooses
-to host a game, they are led to the **HostPage**. This is a page with administrative control over settings of the game, like story, difficulty, and number of players
-along with the ability to begin hosting.
+The system has a StartPage, HostPage, and a PlayerPage, whcih handle room
+management and game setup.
+- StartPage: This is the initial landing page where a Player can choose to either 
+join an existing game or host a new one. The functions include:
+    - joinGame(): Allows a player to enter an active game session.
+    - hostGame(): Redirects the player to the HostPage to configure a new game session.
 
-#### GamePlay
-Once the game is started, the **GameContainer** takes control. It contains a **QuestionDisplay**, which displays selected answer choices and source material for questions,
-and the **AACBoard**, which contains an self-contained AAC word bank to select answers from. Once a **Player** selects an answer on the **AACBoard** it is displayed on the **QuestionDisplay** and
-sent to **FirebaseController** to be sent to Firebase for validation (i.e. if a player selects 'Apple' from the offered choices, the image of an 'Apple' is sent back to be added to the scene in
-**QuestionDisplay**). The game continues until the end of the story.
+- HostPage: This page provides administrative controls for setting up a new game. It 
+allows the host to define key game settings, such as:
+    - selectStory(): Chooses a story template for the game.
+    - selectDifficulty(): Sets the level of difficulty (easy, medium, or hard).
+    - selectNumPlayers(): Specifies how many players can join the game (4 max).
+    - startGameRoom(): Initializes the game session and transitions to gameplay mode.
+
+- PlayerPage: This acts as a waiting room where players gather before the game begins.
+    - player[]: An array that holds all players currently in the game.
+    - allPlayersJoined: A boolean that checks if all expected players have joined.
+    - startGame(): Triggers the transition from the lobby to gameplay when all players are ready.
+
+
+#### Game Flow Summary
+
+1. Players join a room via StartPage.
+2. The host sets up the game in HostPage.
+3. Players wait in PlayerPage until the game starts.
+4. The game begins under GameContainer, displaying a phrase with blanks to fill.
+5. Players take turns selecting answers from the AACBoard.
+6. The selected word is displayed in QuestionDisplay and sent through FirebaseController.
+7. The game continues turn-by-turn until the story is complete.
 
 ### Database
 **Users:**
-- userId: Unique identifier
+- userId (PK): Unique identifier
 - name: Player's name
 - preferences: AAC settings, favorite symbols
 
 **Rooms:**
-- roomId: Unique code for room access
-- hostId: The player who created the room
+- roomId (PK): Unique code for room access
+- hostId (FK from the Users table): The player who created the room
 - players: List of players in the room
-- currentTurn: Tracks whose turn it is
+- currentTurn (FK from the users table): Tracks whose turn it is
 - storyProgress: Current state of the story
 
 **Stories:**
-- storyId: Unique ID
-- gradeLevel: Target grade level (1st-3rd)
+- storyId (PK): Unique ID
+- gradeLevel: Target grade level (3 grade max)
 - content: Story text with blanks
 
 **Responsibilities:**
@@ -183,7 +202,7 @@ Entities and Relationships:
 ```mermaid
 erDiagram
     USER {
-        string userId 
+        string userId PK
         string name
         string email
         json preferences
@@ -191,18 +210,18 @@ erDiagram
     }
 
     ROOM {
-        string roomId 
-        string hostId 
-        string storyId 
+        string roomId PK
+        string hostId FK
+        string storyId FK
         number gradeLevel
         number numPlayers
-        string currentTurn 
+        string currentTurn FK
         boolean isActive
         timestamp createdAt
     }
 
     STORY {
-        string storyId 
+        string storyId PK
         string title
         array content
         number gradeLevel
@@ -210,27 +229,16 @@ erDiagram
     }
 
     ROOM_PLAYERS {
-        string roomId 
-        string userId 
+        string roomId FK
+        string userId FK
         string name
         timestamp joinedAt
     }
 
-    PLAYER_PROGRESS {
-        string roomId 
-        string userId 
-        array answers
-        number correctAnswers
-        number attempts
-        timestamp lastActive
-    }
-
-    USER ||--|{ ROOM_PLAYERS : "User joins Room Players"
-    ROOM ||--|{ ROOM_PLAYERS : "Room has Room Players"
-    ROOM ||--|{ PLAYER_PROGRESS : "Player Progress tracks each player"
-    ROOM ||--|{ STORY : "Each room uses a story"
-    STORY ||--|{ ROOM : "Is played in"
-    USER ||--|{ PLAYER_PROGRESS : "Tracks the individual player"
+    USER ||--o{ ROOM_PLAYERS : "joins"
+    ROOM ||--o{ ROOM_PLAYERS : "has"
+    ROOM ||--|{ STORY : "uses"
+    STORY ||--o{ ROOM : "is played in"
 ```
 *Figure 2: An entity-relationship diagram showing interactions within the database*
 
@@ -241,7 +249,7 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 **Users Collection**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| userId | String | Unique Id (Firebase Auth UID) |
+| userId (PK)| String | Unique Id (Firebase Auth UID) |
 | name | String | Player's display name |
 | preferences | Map | AAC preferences |
 | createdAt | Timestamp | Account creation date |
@@ -249,7 +257,7 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 **Rooms Collections**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| roomId | String | Unique code for room access |
+| roomId (PK)| String | Unique code for room access |
 | hostId | String | User ID of the room host |
 | storyId | String | ID of selected story |
 | difficulty | Number | Difficulty level selected for the room |
@@ -261,14 +269,14 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 **RoomPlayers Subcollection (within rooms)**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| userId | String | User Id of the player |
+| userId (PK)| String | User Id of the player |
 | name | String | Player's display name |
 | joinedAt | Timestamp | Time when the players joined the room |
 
 **Stories Collections**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| storyId | String | Unique id for the story |
+| storyId (PK)| String | Unique id for the story |
 | title | String | Title of the story |
 | content | Array | Story text with blanks marked |
 | difficulty | Number | Intended difficulty level |
@@ -277,7 +285,7 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 **PlayerProgress Subcollection (within Rooms)**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| userId | String | User Id of the player |
+| userId (PK)| String | User Id of the player |
 | answers | Array | List of the answers submitted by the player |
 | correctAnswers | Number | Total correct answers by the player |
 | attempts | Number | Total attempts made |
