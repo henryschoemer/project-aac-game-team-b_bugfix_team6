@@ -3,11 +3,12 @@ sidebar_position: 1
 ---
 
 **Purpose**
+
 The front-end client is built 
 with React and Next.js, while the back-end leverages Firebase for real-time database synchronization, authentication, and 
 accessible experience for AAC users, incorporating symbol-based communication and text-to-speech capabilities. 
 
-**Requirements**
+
 ## Components Description
 ### Client (Front-End)
 The client is a React application built with Next.js framework, offering server-side rendering for improved performance and SEO. It provides 
@@ -84,7 +85,7 @@ direction TB
 
     class AACBoard {
         +String[] pictograms
-	   +fetchPictograms(query: String): String[]
+	    +fetchPictograms(query: String): String[]
         +onSelect(imgUrl: String): void
     }
 
@@ -118,9 +119,9 @@ direction TB
     GameContainer --|> PlayerPage : Manages turns
     GameContainer --|> FirebaseController : Sends answer for validation
 ```
-*Figure 9: Class diagram showing interaction between classes within StoryQuest*
+*Figure 1: Class diagram showing interactions between classes within StoryQuest*
 
-This class diagram shows the relationships between different components in the StoryQuest system.
+This class diagram shows the relationship between different components in the StoryQuest system.
 
 ### Player Management
 The **Player** class encompasses all users who interact with the system. Each player
@@ -128,7 +129,7 @@ has an id, name, and a role, which can be either 'student' or 'host'. The setRol
 assigns a role to a player based on whether they are joining a game or starting a game.
 
 #### Room Management
-The system has a StartPage, HostPage, and a PlayerPage, whcih handle room
+The system has a StartPage, HostPage, and a PlayerPage, which handle room
 management and game setup.
 - StartPage: This is the initial landing page where a Player can choose to either 
 join an existing game or host a new one. The functions include:
@@ -150,8 +151,8 @@ allows the host to define key game settings, such as:
 
 #### Game Flow Summary
 
-1. Players join a room via StartPage.
-2. The host sets up the game in HostPage.
+1. The host sets up the game in HostPage.
+2. Players join a room via StartPage.
 3. Players wait in PlayerPage until the game starts.
 4. The game begins under GameContainer, displaying a phrase with blanks to fill.
 5. Players take turns selecting answers from the AACBoard.
@@ -246,7 +247,7 @@ erDiagram
 
 Here is how the data would be structured in Firestore. Though Firestore is a NoSQL database, this relational layout helps clarify the relationships.
 
-**Users Collection**
+**Users Collection Figure 3**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
 | userId (PK)| String | Unique Id (Firebase Auth UID) |
@@ -254,7 +255,7 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 | preferences | Map | AAC preferences |
 | createdAt | Timestamp | Account creation date |
 
-**Rooms Collections**
+**Rooms Collections Figure 4**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
 | roomId (PK)| String | Unique code for room access |
@@ -266,14 +267,14 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 | createdAt | Timestamp | Room creation date |
 | isActive | Boolean | Indicates if the game is in progress | 
 
-**RoomPlayers Subcollection (within rooms)**
+**RoomPlayers Subcollection (within rooms) Figure 5**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
 | userId (PK)| String | User Id of the player |
 | name | String | Player's display name |
 | joinedAt | Timestamp | Time when the players joined the room |
 
-**Stories Collections**
+**Stories Collections Figure 6**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
 | storyId (PK)| String | Unique id for the story |
@@ -282,7 +283,7 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 | difficulty | Number | Intended difficulty level |
 | createdAt | Timestamp | Date when the story was added |
 
-**PlayerProgress Subcollection (within Rooms)**
+**PlayerProgress Subcollection (within Rooms) Figure 7**
 | Field | Type | Description |
 | ----- | ---- | ----------- |
 | userId (PK)| String | User Id of the player |
@@ -314,6 +315,7 @@ sequenceDiagram
     CR -->> D: Display game room code to host
     
 ```
+Figure 8
 
 ## Use Case 2: Player Customization - New player profile
 
@@ -330,7 +332,7 @@ sequenceDiagram
     DB -->>- PS: Validation success response
     PS -->> D: User is brought to a waiting screen
 ```
-
+Figure 9
 ## Use Case 3: Room Management - Player Joins a Game through the Join Screen
 
 ```mermaid
@@ -348,7 +350,7 @@ sequenceDiagram
     GR ->>+ Database: Fetches token for validation
     Database -->>- GR: Return Token
 ```    
-
+Figure 10
 ## Use Case 4: Accessibility & AAC
 ```mermaid
 sequenceDiagram 
@@ -367,6 +369,7 @@ sequenceDiagram
     Database -->>- GR: Return tutorial content
     GR -->>+ User: Gives short tutorial on AAC keyboard 
 ```
+Figure 11
 ## Game Mechanics
 
 ## Use Case 5: Wrong answer
@@ -393,7 +396,7 @@ sequenceDiagram
         GR-->>D: Incorrect, try again
     end
 ```    
-
+Figure 12
 ## Use Case 6: Correct answer
 
 ```mermaid
@@ -415,7 +418,7 @@ sequenceDiagram
     D ->>+ GR: User chooses cloze phrase questions answer 
     GR -->>+ D: User is notified that their answer is correct and that is it the next players turn    
 ```
-
+Figure 13
 ## Use Case 7: Retry Mechanism
 
 
@@ -436,7 +439,7 @@ sequenceDiagram
 
 
 ``` 
-
+Figure 14
 
 
 
