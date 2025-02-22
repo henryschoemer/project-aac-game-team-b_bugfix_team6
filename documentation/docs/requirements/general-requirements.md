@@ -9,7 +9,7 @@ sidebar_position: 3
 - Next.js (React and TypeScript) - For building an interactive site that is also easily maintainable.
 
 **UI and Styling**
-- Tailwind CSS - Utility first framework for rapid styling.
+- Tailwind CSS - Utility first framework for styling.
 - ShadCN/UI - Prebuilt UI to speed up the development process
 - FramerMotion - Smooth animations for a better user experience.
 
@@ -20,7 +20,8 @@ sidebar_position: 3
 ## Backend (Server and Data Handling)
 **Backend Services**
 - Firebase Firestore (NoSQL Database) - Real time database for syncing game states, storing user data, and handling room sessions and multiplayer interactions.
-- Firebase Cloud Functions - Gameplay logic, like answer validation, scores, player interactions.
+- Firebase Cloud Functions - Gameplay logic.
+
 ## Deployment
 **Hosting**
 - Firebase Hosting - Fast, scalable hosting for the web application.
