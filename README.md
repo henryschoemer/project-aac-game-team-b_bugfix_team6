@@ -53,7 +53,7 @@ This project is a web-based, tablet-friendly "cloze phrase(*)" style story game 
 
 ## Conceptual Design
 
-The website will be built with the Next.js Framework primarily for the front-end, and with Firebase for the back-end. The language specifically is TypeScript and we are using TailWind CSS. Docusaurus and GitHub Pages will keep track of project progression. We will use Vercel to seemlessly deploy the game.
+The website will be built with the Next.js Framework primarily for the front-end, and with Firebase for the back-end. The language specifically is TypeScript and we are using TailWind CSS. Docusaurus and GitHub Pages will keep track of project progression. We will use Firebase Hosting to seemlessly deploy the game.
 
 ## Background
 

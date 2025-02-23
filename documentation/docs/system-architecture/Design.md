@@ -129,7 +129,7 @@ has an id, name, and a role, which can be either 'student' or 'host'. The setRol
 assigns a role to a player based on whether they are joining a game or starting a game.
 
 #### Room Management
-The system has a StartPage, HostPage, and a PlayerPage, which handle room
+The system has a StartPage, HostPage, and a PlayerPage, all of which handle room
 management and game setup.
 - StartPage: This is the initial landing page where a Player can choose to either 
 join an existing game or host a new one. The functions include:
