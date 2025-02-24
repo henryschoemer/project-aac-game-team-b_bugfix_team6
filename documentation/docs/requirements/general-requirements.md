@@ -20,7 +20,7 @@ sidebar_position: 3
 ## Backend (Server and Data Handling)
 **Backend Services**
 - Firebase Firestore (NoSQL Database) - Real time database for syncing game states, storing user data, and handling room sessions and multiplayer interactions.
-- Firebase Cloud Functions - Gameplay logic.
+- Firebase Cloud Functions - Gameplay logic and room authentication.
 
 ## Deployment
 **Hosting**
