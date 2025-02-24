@@ -107,13 +107,13 @@ sequenceDiagram
 
 ## Use Case 5: Player Chooses an Answer   
 
-### User guesses an incorrect answer
+### User Chooses and Answer
 
 1. User is in a game session using their device
 2. User is prompted with a storyline containing a cloze pharse question
-3. User types or says a word that is an incorrect answer
+3. User chooses an answer choice
 4. User clicks the "Confirm" button
-5. User is notified that their answer was incorrect and is prompted to try again
-6. User is prompted with the same storyline
+5. User is shown their story come to life
+6. User is prompted with another sentence in the story 
 
 
