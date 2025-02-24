@@ -172,6 +172,19 @@ sequenceDiagram
 ## Use Case 7: Difficulty Scaling - User Wants to Change Difficulty  
 ```mermaid
 
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Screen
+    participant GS as Settings
+
+
+
+
+    User ->> D: Looks at screen
+    D ->> GR: Clicks on settings icon
+    GR ->> GS: Changes difficulty
+    GS -->> GR: Returns difficulty changes 
 
 ```
 ### Users Wants to Change From Easy Mode to Medium Mode 
