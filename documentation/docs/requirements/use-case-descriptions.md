@@ -138,11 +138,11 @@ sequenceDiagram
 6. User is prompted with another sentence in the story 
 
 
-## Use Case 6: Collaboration - User Take Turns Answering a Question   
+## Use Case 6: Collaboration - Users Take Turns Answering a Question   
 ```mermaid
 
 ```
-### User Take Turns Answering a Question
+### Users Take Turns Answering a Question
 
 1. User is in a game session using their device
 2. User is prompted with a storyline containing a cloze pharse question
