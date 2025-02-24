@@ -167,3 +167,21 @@ sequenceDiagram
 5. Second player answers 
 6. User is now able to answer a new cloze phrase question
 
+
+
+## Use Case 7: Difficulty Scaling - User Wants to Change Difficulty  
+```mermaid
+
+
+```
+### Users Wants to Change From Easy Mode to Medium Mode 
+
+1. User is in a easy mode game session using their device
+2. User decides to change to medium mode game session
+3. User clicks on the setting button
+4. User is shown diffrent settings options and clicks change difficulty button 
+5. User changes to medium difficulty 
+6. User is now able to answer a medium difficulty cloze phrase question
+
+
+
