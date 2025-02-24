@@ -64,7 +64,7 @@ console.log(player1.role); // Output: "host"
 **Description:** Allows the user to configure the room settings.
 
 #### Data fields:
-- **`story : String`** : The story chosen by the hsot.
+- **`story : String`** : The story chosen by the host.
 - **`difficulty : int`** : The game difficulty level.
 - **`numPlayers : int`** : The number of players allowed in the game session.
 
