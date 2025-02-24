@@ -117,7 +117,7 @@ sequenceDiagram
 
 
 
-    User ->> D: looks at screen 
+    User ->> D: Looks at screen 
     D ->>+ GR: User is given a cloze phrase question
     GR ->>+ Database: Fetches cloze phrase question and answer choices
     Database -->>- GR: Return cloze phrase question and answer choices
@@ -149,7 +149,7 @@ sequenceDiagram
 
 
 
-    User1 ->> D: looks at screen
+    User1 ->> D: Looks at screen
     D ->> GR: User chooses cloze phrase questions answer 
     GR -->> D: User is shown their answer illustrated in the story
 
