@@ -141,6 +141,22 @@ sequenceDiagram
 ## Use Case 6: Collaboration - Users Take Turns Answering a Question   
 ```mermaid
 
+sequenceDiagram 
+    actor User1
+    participant D as Device
+    participant GR as Game Screen
+
+
+
+
+    User1 ->> D: looks at screen
+    D ->> GR: User chooses cloze phrase questions answer 
+    GR -->> D: User is shown their answer illustrated in the story
+
+    GR -->> D: User is shown a pause screen to indicate another player is answering the next question
+
+    D ->> GR: User is able to answer a new cloze phrase question
+
 ```
 ### Users Take Turns Answering a Question
 
