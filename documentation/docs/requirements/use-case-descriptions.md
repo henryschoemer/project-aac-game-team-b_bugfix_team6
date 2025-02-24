@@ -105,7 +105,7 @@ sequenceDiagram
 
 ## Game Mechanics 
 
-## Use Case 5: Player Chooses an Answer   
+## Use Case 5: Cloze Phraze Education - User Chooses an Answer   
 ```mermaid
 
 sequenceDiagram 
@@ -124,7 +124,7 @@ sequenceDiagram
     GR -->>- D: Returns cloze phrase question
 
     D ->>+ GR: User chooses cloze phrase questions answer 
-    GR -->>+ D: User is shown their answer illustrated in the story
+    GR -->>+ D: User is shown their answer illustrated in the story and the pharse the user chose is played aloud 
   
 
 ```
@@ -138,3 +138,15 @@ sequenceDiagram
 6. User is prompted with another sentence in the story 
 
 
+## Use Case 6: Collaboration - User Take Turns Answering a Question   
+```mermaid
+
+```
+### User Take Turns Answering a Question
+
+1. User is in a game session using their device
+2. User is prompted with a storyline containing a cloze pharse question
+3. User chooses an answer choice
+4. User clicks the "Confirm" button
+5. User is shown their story illustrated
+6. User is prompted with another sentence in the story 
