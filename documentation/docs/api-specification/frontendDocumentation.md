@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 ---
-# Frontend API Documentation
+# 1. Frontend API Documentation
 Documentation for the frontend classes in Story Quest.
 
 ## 1.1 Player Class
