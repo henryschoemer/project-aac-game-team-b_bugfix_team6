@@ -31,8 +31,9 @@ sequenceDiagram
 5. User selects the number of players
 6. User clicks the "Start" button
 
-## Use Case 2: Player Customization - New player profile
 
+## Use Case 2: Player Customization - New player profile
+--> We dont have a feature for this one
 ```mermaid
 sequenceDiagram
     actor User
@@ -96,7 +97,7 @@ sequenceDiagram
     GR -->>+ User: Gives short tutorial on AAC keyboard 
 ```
 
-### Users utilize a built-in AAC keyboard regardless of their usual mode of communication
+### Users utilize a built-in AAC keyboard
 1. User joins a room.
 2. User is notified that a keyboard layout will be available on their screen during gameplay
 3. User is given a short tutorial on the AAC keyboard.
@@ -105,6 +106,7 @@ sequenceDiagram
 ## Game Mechanics 
 
 ## Use Case 5: Wrong answer
+--> We're not doing the right or wrong answers anymore
 ```mermaid
 sequenceDiagram 
     actor User
@@ -139,7 +141,8 @@ sequenceDiagram
 6. User is prompted with the same storyline
 
 ## Use Case 6: Correct answer
-
+--> Same here, we're not doing like right r wrong anymore. We are doing it like 'this was just the answer they chose'.
+Like the user chooses an answer from the word bank, and we will just have it set up so it makes sense anyway.
 ```mermaid
 sequenceDiagram 
     actor User
@@ -171,7 +174,7 @@ sequenceDiagram
 6. User is notified that its next player's name turn and waits
 
 ## Use Case 7: Retry Mechanism
-
+--> Same again, no more retry mechanism since they are just not going to be wrong.
 
 ```mermaid
 sequenceDiagram 

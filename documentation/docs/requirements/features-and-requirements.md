@@ -6,9 +6,9 @@ sidebar_position: 4
 ### **1. AAC Keyboard**  
 **Functional**  
 - The system must have an integrated AAC friendly keyboard.
-- The system must readthe content of the button out loud.
+- The system must read the content of the button out loud.
 **Non-Functional**  
-- The system must have tabs that make the AAV tablet easy to find.
+- The system must make the AAC tablet easy to find.
 
 ### **2. Cloze Phraze Education** 
 **Functional**
@@ -26,8 +26,8 @@ sidebar_position: 4
 
 ### **4. Difficulty Scaling**
 **Functional**
-- The system must have an easy mode where one player fills in one blank for thier turn.
-- The system must have a medium mode where one player fills in two blanks for thier turn.
+- The system must have an easy mode where one player fills in one blank for their turn.
+- The system must have a medium mode where one player fills in two blanks for their turn.
 - The system must have a collaborative mode where all players fill in a single phrase together.
 **Non-Functional**
 - The system must then be able to scale as we have more rooms with different settings.
