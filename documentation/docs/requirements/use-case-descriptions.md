@@ -145,8 +145,9 @@ sequenceDiagram
 ### Users Take Turns Answering a Question
 
 1. User is in a game session using their device
-2. User is prompted with a storyline containing a cloze pharse question
-3. User chooses an answer choice
-4. User clicks the "Confirm" button
-5. User is shown their story illustrated
-6. User is prompted with another sentence in the story 
+2. User chooses an answer choice
+3. User is shown their story illustrated
+4. User is prompted with a pause screen indicating another player is answering 
+5. Second player answers 
+6. User is now able to answer a new cloze phrase question
+
