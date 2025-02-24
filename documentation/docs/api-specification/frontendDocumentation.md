@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 2
 ---
 # Frontend API Documentation
 Documentation for the frontend classes in Story Quest.
