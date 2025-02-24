@@ -105,31 +105,7 @@ sequenceDiagram
 
 ## Game Mechanics 
 
-## Use Case 5: Wrong answer
---> We're not doing the right or wrong answers anymore
-```mermaid
-sequenceDiagram 
-    actor User
-    participant D as Device
-    participant GR as Game Screen
-    participant Database
-
-
-
-
-    User ->> D: looks at screen 
-    D ->>+ GR: User is given a cloze phrase question
-    GR ->>+ Database: Fetches cloze phrase question and answer choices
-    Database -->>- GR: Return cloze phrase question and answer choices
-    GR -->>- D: Returns cloze phrase question answer
-
-    D ->>+ GR: User chooses cloze phrase questions answer 
-    GR -->>+ D: User is notified that their answer is wrong
-    loop Until correct answer is given
-        D->>GR :Enters answer
-        GR-->>D: Incorrect, try again
-    end
-```    
+## Use Case 5: Player Chooses an Answer   
 
 ### User guesses an incorrect answer
 
