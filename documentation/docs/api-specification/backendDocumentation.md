@@ -1,10 +1,10 @@
 ---
-sidebar_position: 6
+sidebar_position: 3
 ---
 
-# Backend API Documentation
+# 2. Backend API Documentation
 
-## 1.1 FirebaseController
+## 2.1 FirebaseController
 **Description:** Handles authentication, room data, and game state management.
 
 #### Methods: 
