@@ -106,14 +106,35 @@ sequenceDiagram
 ## Game Mechanics 
 
 ## Use Case 5: Player Chooses an Answer   
+```mermaid
 
-### User Chooses and Answer
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Screen
+    participant Database
+
+
+
+
+    User ->> D: looks at screen 
+    D ->>+ GR: User is given a cloze phrase question
+    GR ->>+ Database: Fetches cloze phrase question and answer choices
+    Database -->>- GR: Return cloze phrase question and answer choices
+    GR -->>- D: Returns cloze phrase question
+
+    D ->>+ GR: User chooses cloze phrase questions answer 
+    GR -->>+ D: User is shown their answer illustrated in the story
+  
+
+```
+### User Chooses an Answer
 
 1. User is in a game session using their device
 2. User is prompted with a storyline containing a cloze pharse question
 3. User chooses an answer choice
 4. User clicks the "Confirm" button
-5. User is shown their story come to life
+5. User is shown their story illustrated
 6. User is prompted with another sentence in the story 
 
 
