@@ -14,7 +14,7 @@
     color: white;
     font-family: 'Slackey', sans-serif;
     text-align: center;
-    font-size: 15px;
+    font-size: 10px;
     box-shadow: 0px 14px 56px -11px #0ba360;
     width: 25em;
     max-width: 40em;
@@ -29,7 +29,11 @@
     background: linear-gradient(to right, #0ba360, #3cba92);
     box-shadow: 0px 14px 56px -11px #0ba360;
 }
-
+/* Changes color of the button*/
+.profile-button {
+    background: linear-gradient(to right, #7f38bd, #7f38bd);
+    box-shadow: 0px 14px 56px -11px #7f38bd;
+}
 .create-button {
     background: linear-gradient(to right, #5676e8, #5676e8);
     box-shadow: 0px 14px 56px -11px #5676e8;
@@ -67,7 +71,15 @@
     right: -20px;
     transition: 0.7s;
 }
-
+/* This will add the word when you hover on the button */
+.profile-button span:after { 
+    content: 'Page';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.7s;
+}
 .button:hover span {
     padding-right: 3.80em;
 }
