@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 
 const avatars = [
-  "story-quest/src/pics/bunny.jpeg",
-  "story-quest/src/pics/coolcat.jpeg",
-  "story-quest/src/pics/kuala.jpeg"
+  "/pics/bunny.jpeg",
+  "/pics/coolcat.jpeg",
+  "/pics/kuala.jpeg"
 ];
 
 export default function ProfilePage() {
