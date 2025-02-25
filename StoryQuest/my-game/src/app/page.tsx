@@ -20,7 +20,10 @@ export default function Home() {
 
                 <div className="button-padding">
                     <div className="button-box">
+                        <Link href="/Profile">
                         <ProfileButton/>
+                        </Link>
+                       
                     </div>
                 </div>
 
