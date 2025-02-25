@@ -105,45 +105,9 @@ sequenceDiagram
 
 ## Game Mechanics 
 
-## Use Case 5: Wrong answer
---> We're not doing the right or wrong answers anymore
+## Use Case 5: Cloze Phraze Education - User Chooses an Answer   
 ```mermaid
-sequenceDiagram 
-    actor User
-    participant D as Device
-    participant GR as Game Screen
-    participant Database
 
-
-
-
-    User ->> D: looks at screen 
-    D ->>+ GR: User is given a cloze phrase question
-    GR ->>+ Database: Fetches cloze phrase question and answer choices
-    Database -->>- GR: Return cloze phrase question and answer choices
-    GR -->>- D: Returns cloze phrase question answer
-
-    D ->>+ GR: User chooses cloze phrase questions answer 
-    GR -->>+ D: User is notified that their answer is wrong
-    loop Until correct answer is given
-        D->>GR :Enters answer
-        GR-->>D: Incorrect, try again
-    end
-```    
-
-### User guesses an incorrect answer
-
-1. User is in a game session using their device
-2. User is prompted with a storyline containing a cloze pharse question
-3. User types or says a word that is an incorrect answer
-4. User clicks the "Confirm" button
-5. User is notified that their answer was incorrect and is prompted to try again
-6. User is prompted with the same storyline
-
-## Use Case 6: Correct answer
---> Same here, we're not doing like right r wrong anymore. We are doing it like 'this was just the answer they chose'.
-Like the user chooses an answer from the word bank, and we will just have it set up so it makes sense anyway.
-```mermaid
 sequenceDiagram 
     actor User
     participant D as Device
@@ -157,46 +121,80 @@ sequenceDiagram
     D ->>+ GR: User is given a cloze phrase question
     GR ->>+ Database: Fetches cloze phrase question and answer choices
     Database -->>- GR: Return cloze phrase question and answer choices
-    GR -->>- D: Returns cloze phrase question answer
+    GR -->>- D: Returns cloze phrase question
 
     D ->>+ GR: User chooses cloze phrase questions answer 
-    GR -->>+ D: User is notified that their answer is correct and that is it the next players turn    
+    GR -->>+ D: User is shown their answer illustrated in the story and the pharse the user chose is played aloud 
+  
+
 ```
-
-
-### User guesses a correct answer
+### User Chooses an Answer
 
 1. User is in a game session using their device
-2. User is prompted with a storyline containing a cloze phrase question
-3. User types or says a word that is the correct answer
+2. User is prompted with a storyline containing a cloze pharse question
+3. User chooses an answer choice
 4. User clicks the "Confirm" button
-5. User is notified that their answer was correct
-6. User is notified that its next player's name turn and waits
+5. User is shown their story illustrated
+6. User is prompted with another sentence in the story 
 
-## Use Case 7: Retry Mechanism
---> Same again, no more retry mechanism since they are just not going to be wrong.
 
+## Use Case 6: Collaboration - Users Take Turns Answering a Question   
 ```mermaid
+
+sequenceDiagram 
+    actor User1
+    participant D as Device
+    participant GR as Game Screen
+
+
+
+
+    User1 ->> D: Looks at screen
+    D ->> GR: User chooses cloze phrase questions answer 
+    GR -->> D: User is shown their answer illustrated in the story
+
+    GR -->> D: User is shown a pause screen to indicate another player is answering the next question
+
+    D ->> GR: User is able to answer a new cloze phrase question
+
+```
+### Users Take Turns Answering a Question
+
+1. User is in a game session using their device
+2. User chooses an answer choice
+3. User is shown their story illustrated
+4. User is prompted with a pause screen indicating another player is answering 
+5. Second player answers 
+6. User is now able to answer a new cloze phrase question
+
+
+
+## Use Case 7: Difficulty Scaling - User Wants to Change Difficulty  
+```mermaid
+
 sequenceDiagram 
     actor User
     participant D as Device
     participant GR as Game Screen
-    participant Database
-
-     User ->> D: Looks at screen 
-     D ->>+ GR: User chooses cloze phrase questions answer 
-    GR -->>+ D: User is notified that their answer is wrong
-    loop Until correct answer is given
-        D->>GR :Enters answer
-        GR-->>D: Incorrect, try again
-    end
+    participant GS as Settings
 
 
-``` 
 
-### User wants to retry the question because they got it wrong 
 
-1. User has selected the wrong answer to the question
-2. User receives feedback explaining why their answer was incorrect
-3. User clicks a "Retry" button
-4. User is given the same question again with the same answer choices 
+    User ->> D: Looks at screen
+    D ->> GR: Clicks on settings icon
+    GR ->> GS: Changes difficulty
+    GS -->> GR: Returns difficulty changes 
+
+```
+### Users Wants to Change From Easy Mode to Medium Mode 
+
+1. User is in a easy mode game session using their device
+2. User decides to change to medium mode game session
+3. User clicks on the setting button
+4. User is shown diffrent settings options and clicks change difficulty button 
+5. User changes to medium difficulty 
+6. User is now able to answer a medium difficulty cloze phrase question
+
+
+
