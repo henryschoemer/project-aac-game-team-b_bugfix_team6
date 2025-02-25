@@ -18,6 +18,7 @@
 
 import React, { useState, useEffect } from "react";
 import stories, { Story, StorySection } from "./stories";//import the stories interface
+import AACKeyboard from "../Components/AACKeyboard";
 
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
@@ -50,15 +51,44 @@ export default function Home() {
   };
 
   const handleWordSelect = (word: string) => {
-    setUserInput(word);
-    const selectedWordData = currentStory?.sections[currentSectionIndex]?.words[word];
-    setCurrentImage({
-      src: `/images/${selectedWordData?.image || null}`, //making the path based on the word button cliked (they are inside my-game/public/images )
-      alt: word,
-      x: selectedWordData?.x || 0,
-      y: selectedWordData?.y || 0,
-    });
-  };
+     //setUserInput(word);
+     if (!currentStory) return;
+
+   const currentWords = currentStory.sections[currentSectionIndex].words;
+
+   if (!currentWords[word]) {
+     alert(`Word "${word}" not found in current section!`);
+     return;
+   }
+     const selectedWordData = currentStory?.sections[currentSectionIndex]?.words[word];
+     /*setCurrentImage({
+       src: `/images/${selectedWordData?.image || null}`, //making the path based on the word button cliked (they are inside my-game/public/images )
+       alt: word,
+       x: selectedWordData?.x || 0,
+       y: selectedWordData?.y || 0,
+     });*/
+
+     if (!selectedWordData) return;
+
+     const newImage= {
+       src: `/images/${selectedWordData?.image || null}`,
+       alt: word,
+       x: selectedWordData.x || 0,
+       y: selectedWordData.y || 0,
+     }
+
+     const newPhrase = phrase.replace("___", word);
+
+     setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
+     setCompletedImages([...completedImages, newImage]); //store completed image
+
+     if (currentSectionIndex < currentStory.sections.length - 1) {
+       setCurrentSectionIndex(currentSectionIndex + 1);
+       setPhrase(currentStory.sections[currentSectionIndex + 1].phrase);
+     } else {
+       setPhrase("The End!");
+     }
+   };
 
   const handleAddImage = () => {
     if (userInput.trim() !== "" && currentImage && currentStory) {
@@ -88,12 +118,28 @@ export default function Home() {
 
   if (!isMounted || !currentStory) return null;
 
+  const handleAACSelect = (word: string) => {
+   console.log("AAC Button Clicked:", word);
+   handleWordSelect(word);
+   };
+
   return (
     <div className="flex w-screen h-screen">
       {/* Left Panel: AAC Tablet */}
-      <div className="w-1/3 bg-gray-200 p-4 flex flex-col justify-center items-center">
-        <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
-          AAC Tablet
+       <div className="w-1/3 bg-gray-200 p-4 flex flex-col justify-center items-center">
+         <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
+           <AACKeyboard 
+           onSelect={handleAACSelect} 
+           symbols={currentStory?.sections[currentSectionIndex] 
+           ? Object.entries(currentStory.sections[currentSectionIndex].words).map(
+           ([word, data]) => ({
+           word: word,
+           image: `/images/${data.image}`,
+           displayText: word
+         }))
+         : []
+       }
+         />
         </h2>
 
         {/* Story Selection */}
@@ -120,7 +166,7 @@ export default function Home() {
           </select>
         </div>
 
-        {/* Word Buttons */}
+        {/* Word Buttons OPTIONAL NOW*/}
         <div className="flex gap-4">
           {currentStory?.sections[currentSectionIndex]?.words &&
             Object.keys(currentStory.sections[currentSectionIndex].words).map((word) => (
@@ -136,7 +182,7 @@ export default function Home() {
         <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded" onClick={handleAddImage}> 
           Add word
         </button>
-        {/* Next Section Button */}
+        {/* Next Section Button  OPTIONAL NOW TOO*/}
         {currentStory?.sections.length > 1 && currentSectionIndex < currentStory.sections.length - 1 && (
           <button className="mt-4 px-4 py-2 bg-green-500 text-white rounded" onClick={handleAddImage}>
             Next Sentence
