@@ -1,6 +1,10 @@
+"use client";
+
 import React from "react";
 import "./HomePageButtonStyles.css";
 import Image from "next/image";
+import {router} from "next/client";
+import {useRouter} from "next/navigation"; // Import useRouter for navigation
 
 
 export const CreateButton: React.FC = () => {
@@ -29,6 +33,21 @@ export const JoinButton: React.FC = () => {
                 className="icon-spacing"
             />
             <span>Join</span>
+        </button>
+    );
+};
+
+
+/* This method will be removed when we implement the room hosting feature */
+export const TemporaryTestingGameButton: React.FC = () => {
+    const router = useRouter();
+
+    return (
+        <button
+            className="button test-button"
+            onClick={() => router.push("/game")} // navigate to game.tsx
+        >
+            <span>Gameplay</span>
         </button>
     );
 };
