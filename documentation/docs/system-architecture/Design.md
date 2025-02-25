@@ -298,6 +298,8 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 
 ## Use Case 1: Room Management - Setting up a new room
 
+[User wants to start a new game room](../requirements/use-case-descriptions.md#user-wants-to-start-a-new-game-room)
+
 ```mermaid
 sequenceDiagram
     actor User
@@ -313,11 +315,12 @@ sequenceDiagram
     Note right of DB: Generate room code
     DB -->> CR: Return generated room code
     CR -->> D: Display game room code to host
-    
 ```
 Figure 8
 
 ## Use Case 2: Player Customization - New player profile
+
+[User wants to set up a new player profile and interaction mode](../requirements/use-case-descriptions.md#user-wants-to-set-up-a-new-player-profile-and-interaction-mode)
 
 ```mermaid
 sequenceDiagram
@@ -334,6 +337,8 @@ sequenceDiagram
 ```
 Figure 9
 ## Use Case 3: Room Management - Player Joins a Game through the Join Screen
+
+[User wants to join the game the host has made](../requirements/use-case-descriptions.md#user-wants-to-join-the-game-the-host-has-made)
 
 ```mermaid
 sequenceDiagram 
@@ -352,6 +357,9 @@ sequenceDiagram
 ```    
 Figure 10
 ## Use Case 4: Accessibility & AAC
+
+[Users utilize a built-in AAC keyboard](../requirements/use-case-descriptions.md#users-utilize-a-built-in-aac-keyboard)
+
 ```mermaid
 sequenceDiagram 
     actor User
@@ -372,34 +380,12 @@ sequenceDiagram
 Figure 11
 ## Game Mechanics
 
-## Use Case 5: Wrong answer
-```mermaid
-sequenceDiagram 
-    actor User
-    participant D as Device
-    participant GR as Game Screen
-    participant Database
+## Use Case 5: Cloze Phraze Education - User Chooses an Answer
 
-
-
-
-    User ->> D: looks at screen 
-    D ->>+ GR: User is given a cloze phrase question
-    GR ->>+ Database: Fetches cloze phrase question and answer choices
-    Database -->>- GR: Return cloze phrase question and answer choices
-    GR -->>- D: Returns cloze phrase question answer
-
-    D ->>+ GR: User chooses cloze phrase questions answer 
-    GR -->>+ D: User is notified that their answer is wrong
-    loop Until correct answer is given
-        D->>GR :Enters answer
-        GR-->>D: Incorrect, try again
-    end
-```    
-Figure 12
-## Use Case 6: Correct answer
+[User Chooses an Answer](../requirements/use-case-descriptions.md#user-chooses-an-answer)
 
 ```mermaid
+
 sequenceDiagram 
     actor User
     participant D as Device
@@ -413,32 +399,59 @@ sequenceDiagram
     D ->>+ GR: User is given a cloze phrase question
     GR ->>+ Database: Fetches cloze phrase question and answer choices
     Database -->>- GR: Return cloze phrase question and answer choices
-    GR -->>- D: Returns cloze phrase question answer
+    GR -->>- D: Returns cloze phrase question
 
     D ->>+ GR: User chooses cloze phrase questions answer 
-    GR -->>+ D: User is notified that their answer is correct and that is it the next players turn    
-```
-Figure 13
-## Use Case 7: Retry Mechanism
+    GR -->>+ D: User is shown their answer illustrated in the story and the pharse the user chose is played aloud 
+  
 
+```
+Figure 12
+## Use Case 6: Collaboration - Users Take Turns Answering a Question
+
+[Users Take Turns Answering a Question](../requirements/use-case-descriptions.md#users-take-turns-answering-a-question)
 
 ```mermaid
+
+sequenceDiagram 
+    actor User1
+    participant D as Device
+    participant GR as Game Screen
+
+
+
+
+    User1 ->> D: Looks at screen
+    D ->> GR: User chooses cloze phrase questions answer 
+    GR -->> D: User is shown their answer illustrated in the story
+
+    GR -->> D: User is shown a pause screen to indicate another player is answering the next question
+
+    D ->> GR: User is able to answer a new cloze phrase question
+
+```
+Figure 13
+## Use Case 7: Difficulty Scaling - User Wants to Change Difficulty
+
+[Users Wants to Change From Easy Mode to Medium Mode](../requirements/use-case-descriptions.md#users-wants-to-change-from-easy-mode-to-medium-mode)
+
+```mermaid
+
 sequenceDiagram 
     actor User
     participant D as Device
     participant GR as Game Screen
-    participant Database
-
-     User ->> D: Looks at screen 
-     D ->>+ GR: User chooses cloze phrase questions answer 
-    GR -->>+ D: User is notified that their answer is wrong
-    loop Until correct answer is given
-        D->>GR :Enters answer
-        GR-->>D: Incorrect, try again
-    end
+    participant GS as Settings
 
 
-``` 
+
+
+    User ->> D: Looks at screen
+    D ->> GR: Clicks on settings icon
+    GR ->> GS: Changes difficulty
+    GS -->> GR: Returns difficulty changes 
+
+```
 Figure 14
 
 
