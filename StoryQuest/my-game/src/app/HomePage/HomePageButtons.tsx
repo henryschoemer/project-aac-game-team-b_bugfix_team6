@@ -34,6 +34,20 @@ export const JoinButton: React.FC = () => {
     );
 };
 
+export const ProfileButton: React.FC = () => {
+    return (
+        <button className="button create-button">
+            <Image
+                src="/profile-icon.svg"
+                alt="profile icon"
+                width={30}
+                height={30}
+                className="icon-spacing"
+            />
+            <span>Join</span>
+        </button>
+    );
+};
 
 /* This method will be removed when we implement the room hosting feature */
 export const TemporaryTestingGameButton: React.FC = () => {
