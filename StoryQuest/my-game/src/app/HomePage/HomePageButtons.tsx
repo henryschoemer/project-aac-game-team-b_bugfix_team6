@@ -3,9 +3,6 @@
 import React from "react";
 import "./HomePageButtonStyles.css";
 import Image from "next/image";
-import {router} from "next/client";
-import {useRouter} from "next/navigation"; // Import useRouter for navigation
-
 
 export const CreateButton: React.FC = () => {
     return (
@@ -40,13 +37,8 @@ export const JoinButton: React.FC = () => {
 
 /* This method will be removed when we implement the room hosting feature */
 export const TemporaryTestingGameButton: React.FC = () => {
-    const router = useRouter();
-
     return (
-        <button
-            className="button test-button"
-            onClick={() => router.push("/game")} // navigate to game.tsx
-        >
+        <button className="button test-button">
             <span>Gameplay</span>
         </button>
     );
