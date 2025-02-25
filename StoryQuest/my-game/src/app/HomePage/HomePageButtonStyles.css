@@ -1,0 +1,82 @@
+/* css styling for home page buttons*/
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 45px;
+    border: none;
+    background: #0ba360;
+    background: linear-gradient(
+            to right,
+            #0ba360, #3cba92
+    );
+    color: white;
+    font-family: 'Slackey', sans-serif;
+    text-align: center;
+    font-size: 15px;
+    box-shadow: 0px 14px 56px -11px #0ba360;
+    width: 25em;
+    max-width: 40em;
+    padding: 3em;
+    transition: all 0.4s;
+    cursor: pointer;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+
+}
+
+.join-button {
+    background: linear-gradient(to right, #0ba360, #3cba92);
+    box-shadow: 0px 14px 56px -11px #0ba360;
+}
+
+.create-button {
+    background: linear-gradient(to right, #5676e8, #5676e8);
+    box-shadow: 0px 14px 56px -11px #5676e8;
+}
+
+.test-button{
+    background: linear-gradient(to right, #f20000, #f20000);
+    box-shadow: 0px 14px 56px -11px #f20000;
+}
+
+.button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    font-size: 2.5em;
+    line-height: 1;
+    transition: 0.4s;
+}
+
+.join-button span:after,
+.create-button span:after {
+    content: 'Room';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.7s;
+}
+
+.test-button span:after {
+    content: 'TEST';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.7s;
+}
+
+.button:hover span {
+    padding-right: 3.80em;
+}
+
+.button:hover span:after {
+    opacity: 4;
+    right: 0;
+}
+
+.icon-spacing {
+    margin-right: 10px;
+}
