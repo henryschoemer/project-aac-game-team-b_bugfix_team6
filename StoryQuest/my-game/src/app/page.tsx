@@ -1,6 +1,6 @@
 import Image from "next/image";
 import AnimatedTitle from '@/app/HomePage/AnimatedTitle';
-import {CreateButton, JoinButton, TemporaryTestingGameButton} from "@/app/HomePage/HomePageButtons";
+import {CreateButton, JoinButton, TemporaryTestingGameButton, ProfileButton} from "@/app/HomePage/HomePageButtons";
 import Link from 'next/link';
 
 import "@/app/HomePage/HomePageStyles.css";
@@ -17,6 +17,15 @@ export default function Home() {
             </div>
 
             <div className="button-container">
+
+                <div className="button-padding">
+                    <div className="button-box">
+                        <Link href="/Profile">
+                        <ProfileButton/>
+                        </Link>
+                       
+                    </div>
+                </div>
 
                 <div className="button-padding">
                     <div className="button-box">

@@ -11,7 +11,7 @@ export const CreateButton: React.FC = () => {
                 src="/circleplus-icon.svg"
                 alt="Creating a room icon"
                 width={30}
-                height={30}
+                height={30} // This changes the width and hight of the svg not the button
                 className="icon-spacing"
             />
             <span>Create</span>
@@ -34,6 +34,20 @@ export const JoinButton: React.FC = () => {
     );
 };
 
+export const ProfileButton: React.FC = () => {
+    return (
+        <button className="button profile-button">
+            <Image
+                src="/profile-icon.svg"
+                alt="profile icon"
+                width={30}
+                height={30}
+                className="icon-spacing"
+            />
+            <span>Profile</span>
+        </button>
+    );
+};
 
 /* This method will be removed when we implement the room hosting feature */
 export const TemporaryTestingGameButton: React.FC = () => {
