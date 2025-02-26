@@ -26,6 +26,11 @@ export default function ProfilePage() {
   };
 
   return (
+    <div className="page-container"
+    style={{
+        backgroundImage: "url('HomePage-Images/Background.jpg')",
+        backgroundSize: "cover",
+    }}>
     <div className="flex flex-col items-center p-4 w-full max-w-md mx-auto">
       {/* Profile Picture */}
       <div className="relative">
@@ -124,6 +129,7 @@ export default function ProfilePage() {
 
         </div>
       </div>
+    </div>
     </div>
   );
 }
