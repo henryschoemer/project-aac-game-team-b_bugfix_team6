@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-
+import Link from 'next/link';
+import {BackButton} from "@/app/HomePage/HomePageButtons";
 const avatars = [
   "/pics/bunny.jpeg",
   "/pics/coolcat.jpeg",
@@ -41,9 +42,8 @@ export default function ProfilePage() {
           <button
             key={avatar}
             onClick={() => setSelectedAvatar(avatar)}
-            className={`w-12 h-12 rounded-full overflow-hidden border-2 ${
-              selectedAvatar === avatar ? "border-blue-400" : "border-transparent"
-            }`}
+            className={`w-12 h-12 rounded-full overflow-hidden border-2 ${selectedAvatar === avatar ? "border-blue-400" : "border-transparent"
+              }`}
           >
             <img src={avatar} alt="avatar" className="object-cover w-full h-full" />
           </button>
@@ -115,6 +115,14 @@ export default function ProfilePage() {
         >
           Save
         </button>
+      </div>
+      <div className="button-padding">
+        <div className="button-box">
+          <Link href="/public">
+            <BackButton />
+          </Link>
+
+        </div>
       </div>
     </div>
   );
