@@ -56,6 +56,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Profile Form */}
+        <div className="flex flex-col w-full mt-6 space-y-4 bg-white shadow-lg rounded-lg p-6 border border-gray-300"> {/*creates the white card background*/}
         <div className="flex flex-col w-full mt-6 space-y-4">
           {/* Name */}
           <label className="flex flex-col">
@@ -74,10 +75,10 @@ export default function ProfilePage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Child's name"
-              className="border-b-2 border-gray-300 focus:border-blue-400 outline-none py-1"
+              className="border-b-2 border-gray-300 focus:border-blue-400 outline-none py-1 text-black"
             />
           </label>
-
+          
           {/* Birthday (Month / Year) */}
           <div className="flex items-center gap-4">
             <label className="flex flex-col flex-1">
@@ -96,7 +97,7 @@ export default function ProfilePage() {
                 value={birthMonth}
                 onChange={(e) => setBirthMonth(e.target.value)}
                 placeholder="Month"
-                className="border-b-2 border-gray-300 focus:border-blue-400 outline-none py-1"
+                className="border-b-2 border-gray-300 focus:border-blue-400 outline-none py-1 text-black"
               />
             </label>
             <label className="flex flex-col flex-1">
@@ -115,7 +116,7 @@ export default function ProfilePage() {
                 value={birthYear}
                 onChange={(e) => setBirthYear(e.target.value)}
                 placeholder="Year"
-                className="border-b-2 border-gray-300 focus:border-blue-400 outline-none py-1"
+                className="border-b-2 border-gray-300 focus:border-blue-400 outline-none py-1 text-black"
               />
             </label>
           </div>
@@ -137,11 +138,11 @@ export default function ProfilePage() {
               value={level}
               onChange={(e) => setLevel(e.target.value)}
               placeholder="Child's level"
-              className="border-b-2 border-gray-300 focus:border-blue-400 outline-none py-1"
+              className="border-b-2 border-gray-300 focus:border-blue-400 outline-none py-1 text-black"
             />
           </label>
         </div>
-
+        </div>
         {/* Action Buttons */}
         <div className="flex flex-col w-full mt-8 gap-4">
           <button
