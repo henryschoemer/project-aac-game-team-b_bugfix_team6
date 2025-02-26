@@ -118,7 +118,7 @@ export default function ProfilePage() {
       </div>
       <div className="button-padding">
         <div className="button-box">
-          <Link href="/public">
+          <Link href="/app">
             <BackButton />
           </Link>
 

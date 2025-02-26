@@ -35,7 +35,7 @@ export const JoinButton: React.FC = () => {
 };
 export const BackButton: React.FC = () => {
     return (
-        <button className="button create-button">
+        <button className="button back-button">
             <Image
                 src="/pics/backspace.svg"
                 alt="Backspace icon"
@@ -43,7 +43,7 @@ export const BackButton: React.FC = () => {
                 height={30}
                 className="icon-spacing"
             />
-            <span>Join</span>
+            <span>Back</span>
         </button>
     );
 };
