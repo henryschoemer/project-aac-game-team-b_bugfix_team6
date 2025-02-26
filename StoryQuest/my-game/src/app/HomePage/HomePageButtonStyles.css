@@ -92,6 +92,7 @@
     top: 0;
     right: -20px;
     transition: 0.7s;
+    font-size: 22px;
 }
 .button:hover span {
     padding-right: 3.80em;
