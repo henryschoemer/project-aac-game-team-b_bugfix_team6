@@ -35,6 +35,10 @@
     background: linear-gradient(to right, #7f38bd, #7f38bd);
     box-shadow: 0px 14px 56px -11px #7f38bd;
 }
+.back-button {
+    background: linear-gradient(to right, #ad0968, #ad0968);
+    box-shadow: 0px 14px 56px -11px #ad0968;
+}
 .create-button {
     background: linear-gradient(to right, #5676e8, #5676e8);
     box-shadow: 0px 14px 56px -11px #5676e8;
@@ -80,6 +84,15 @@
     top: 0;
     right: -20px;
     transition: 0.7s;
+}
+.back-button span:after { 
+    content: 'Button';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.7s;
+    font-size: 22px;
 }
 .button:hover span {
     padding-right: 3.80em;

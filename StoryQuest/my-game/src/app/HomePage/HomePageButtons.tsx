@@ -33,7 +33,20 @@ export const JoinButton: React.FC = () => {
         </button>
     );
 };
-
+export const BackButton: React.FC = () => {
+    return (
+        <button className="button back-button">
+            <Image
+                src="/pics/backspace.svg"
+                alt="Backspace icon"
+                width={30}
+                height={30}
+                className="icon-spacing"
+            />
+            <span>Back</span>
+        </button>
+    );
+};
 export const ProfileButton: React.FC = () => {
     return (
         <button className="button profile-button">
