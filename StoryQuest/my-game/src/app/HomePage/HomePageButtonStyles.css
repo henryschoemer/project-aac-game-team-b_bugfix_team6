@@ -85,6 +85,14 @@
     right: -20px;
     transition: 0.7s;
 }
+.back-button span:after { 
+    content: 'Button';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.7s;
+}
 .button:hover span {
     padding-right: 3.80em;
 }
