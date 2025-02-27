@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import "./CreateRoomButtonStyles";
+import ".HomePage/HomePageButtonStyles";
 import Image from "next/image";
 
 export const TheGardenAdventureButton: React.FC = () => {
