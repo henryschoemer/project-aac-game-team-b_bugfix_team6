@@ -21,7 +21,8 @@
     "paths": {
       "@/*": ["./app/*"]
     },
-    "baseUrl": "."
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "types": ["jest", "node"],
   },
   "include": ["../next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../tailwind.config.ts", "../next.config.ts"],
   "exclude": ["node_modules"]
