@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from 'next/link';
-import { BackButton } from "@/app/HomePage/HomePageButtons";
+import { BackButton } from "../HomePage/HomePageButtons";
 const avatars = [
   "/pics/bunny.jpeg",
   "/pics/coolcat.jpeg",
