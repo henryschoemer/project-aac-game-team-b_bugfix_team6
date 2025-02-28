@@ -2,6 +2,7 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Home from '../page';
 import stories from '../stories';
+import useSound from 'use-sound';
 
 // Set up a mock for the stories import
 jest.mock('../stories', () => ({
@@ -50,8 +51,15 @@ jest.mock('../../Components/AACKeyboard', () => {
   };
 });
 
+//Mock for useSounds
+jest.mock('use-sound', () => ({
+  __esModule: true,
+  default: jest.fn(() => [jest.fn()]),
+}));
 
-//Actual tetsing part below
+
+
+//Actual testing part below
 describe('Home Component', () => {
   beforeEach(() => {
     // Clears all mocks before each test
@@ -102,6 +110,18 @@ describe('Home Component', () => {
     const mouseImage = Array.from(images).find(img => img.src.includes('mouse.svg'));
     expect(mouseImage).toBeInTheDocument();
     expect(mouseImage).toHaveStyle({ left: '50%', top: '80%' });
+  });
+
+  it('plays sound when a valid AAC word is selected', () => {
+    const play = jest.fn();
+    (useSound as jest.Mock).mockReturnValue([play]);
+
+    render(<Home />);
+
+    const mouseButton = screen.getByTestId('aac-button-mouse');
+    fireEvent.click(mouseButton);
+
+    expect(play).toHaveBeenCalledWith({ id: 'mouse' });
   });
 
 

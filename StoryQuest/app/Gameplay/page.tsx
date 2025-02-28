@@ -19,6 +19,7 @@
 import React, { useState, useEffect } from "react";
 import stories, { Story, StorySection } from "./stories";//import the stories interface
 import AACKeyboard from "../Components/AACKeyboard";
+import useSound from 'use-sound';
 
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
@@ -31,6 +32,21 @@ export default function Home() {
   const [completedPhrases, setCompletedPhrases] = useState<string[]>([]);
   const [completedImages, setCompletedImages] = useState<{ src: string; alt: string; x: number; y: number }[]>([]);
   const [currentImage, setCurrentImage] = useState<{ src: string; alt: string; x: number; y: number } | null>(null);
+  const soundUrl = '/sounds/aac_audios.mp3';
+  const [play] = useSound(soundUrl, {
+    sprite: {
+        basket: [0, 650],
+        bear: [2400, 450],
+        bee: [4400, 280],
+        bird: [6330, 420],
+        boy: [8390, 390],
+        butterfly: [10400, 700],
+        ladybug: [12800, 700],
+        lanterns: [15100, 600],
+        mouse: [17300, 550],
+        squirrel: [19400, 650],
+        }
+    });
 
   useEffect(() => {
     setIsMounted(true);
@@ -117,11 +133,15 @@ export default function Home() {
   };
 
   if (!isMounted || !currentStory) return null;
+  const playIndividualIconSounds = (word: string) => {
+      play({ id: word });
+  };
 
   const handleAACSelect = (word: string) => {
-   console.log("AAC Button Clicked:", word);
-   handleWordSelect(word);
-   };
+    console.log("AAC Button Clicked:", word);
+    playIndividualIconSounds(word)
+    handleWordSelect(word);
+  };
 
   return (
     <div className="flex w-screen h-screen">
