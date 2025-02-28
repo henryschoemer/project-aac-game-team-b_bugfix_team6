@@ -129,7 +129,7 @@
     justify-content: flex-start;
     width: 100%;
     max-width: 800px;
-    padding-top: 60px; /* Adds extra space so title isn't cut off */
+    padding-top: 60px; 
     overflow-y: auto;
 }
 
@@ -162,7 +162,7 @@
     margin: 20px 0;
 }
 
-/* Base Button Styling (Matches Homepage) */
+
 .button {
     display: flex;
     justify-content: center;
@@ -208,13 +208,13 @@
     box-shadow: 0px 14px 56px -11px #7f38bd;
 }
 
-/* Create Room Button */
+
 .create-room-button {
     background: linear-gradient(to right, #007bff, #007bff);
     box-shadow: 0px 14px 56px -11px #007bff;
 }
 
-/* Back Button */
+
 .back-button {
     background: linear-gradient(to right, #ad0968, #ad0968);
     box-shadow: 0px 14px 56px -11px #ad0968;
@@ -225,10 +225,10 @@
     padding-right: 3.80em;
 }
 
-.button:hover span:after {
+/*.button:hover span:after {
     opacity: 4;
     right: 0;
-}
+}*/
 
 /* Selected Button Effect */
 .selected {

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from 'next/link';
 import { BackButton } from "../HomePage/HomePageButtons";
 import "./CreateRoomButtonStyles.css";
 
@@ -10,7 +11,7 @@ export default function CreateRoomPage() {
     const [numPlayers, setNumPlayers] = useState<number | null>(null);
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
 
-
+    {/*Handles case where user does not choose all settings*/}
     const handleCreateRoom = () => {
         if (!selectedStory || !numPlayers || !difficultyLevel) {
             alert("Please select a story, player count, and difficulty.");
@@ -25,7 +26,7 @@ export default function CreateRoomPage() {
                  backgroundImage: "url('/HomePage-Images/Background.jpg')",
                  backgroundSize: "cover",
              }}>
-            <div className="content-container"> {/* New wrapper */}
+            <div className="content-container"> 
             <div className="title-container">
                 <h1 className="title-text">Create a Room</h1>
             </div>
@@ -38,9 +39,9 @@ export default function CreateRoomPage() {
                             onClick={() => setSelectedStory("The Garden Adventure")}>
                         <span>The Garden Adventure</span>
                     </button>
-                    <button className={`button story-button ${selectedStory === "Space Quest" ? "selected" : ""}`}
+                    <button className={`button story-button ${selectedStory === "Walk in the Forest" ? "selected" : ""}`}
                             onClick={() => setSelectedStory("Space Quest")}>
-                        <span>Space Quest</span>
+                        <span>Walk in the Forest</span>
                     </button>
                 </div>
             </div>
@@ -80,7 +81,9 @@ export default function CreateRoomPage() {
 
             {/* Back Button */}
             <div className="button-container">
-                <BackButton />
+                <Link href= "/">
+                    <BackButton />
+                </Link>
             </div>
         </div>
     </div>
