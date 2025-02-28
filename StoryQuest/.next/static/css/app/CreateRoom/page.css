@@ -122,6 +122,17 @@
     text-align: center;
 }
 
+.content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 800px;
+    padding-top: 60px; /* Adds extra space so title isn't cut off */
+    overflow-y: auto;
+}
+
 /* Title Styling */
 .title-text {
     font-size: 3em;

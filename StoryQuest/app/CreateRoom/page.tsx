@@ -25,6 +25,7 @@ export default function CreateRoomPage() {
                  backgroundImage: "url('/HomePage-Images/Background.jpg')",
                  backgroundSize: "cover",
              }}>
+            <div className="content-container"> {/* New wrapper */}
             <div className="title-container">
                 <h1 className="title-text">Create a Room</h1>
             </div>
@@ -38,7 +39,7 @@ export default function CreateRoomPage() {
                         <span>The Garden Adventure</span>
                     </button>
                     <button className={`button story-button ${selectedStory === "Space Quest" ? "selected" : ""}`}
-                            onClick={() => setSelectedStory("Walk in the Forest")}>
+                            onClick={() => setSelectedStory("Space Quest")}>
                         <span>Space Quest</span>
                     </button>
                 </div>
@@ -82,5 +83,6 @@ export default function CreateRoomPage() {
                 <BackButton />
             </div>
         </div>
+    </div>
     );
 };

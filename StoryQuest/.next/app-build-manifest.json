@@ -6,28 +6,17 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/CreateRoom/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/CreateRoom/page.css",
-      "static/chunks/app/CreateRoom/page.js"
-    ],
     "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/page.css",
       "static/chunks/app/page.js"
     ],
-    "/Gameplay/page": [
+    "/CreateRoom/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/Gameplay/page.js"
-    ],
-    "/Profile/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/Profile/page.css",
-      "static/chunks/app/Profile/page.js"
+      "static/css/app/CreateRoom/page.css",
+      "static/chunks/app/CreateRoom/page.js"
     ]
   }
 }

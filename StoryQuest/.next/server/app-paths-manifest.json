@@ -1,6 +1,4 @@
 {
   "/page": "app/page.js",
-  "/Gameplay/page": "app/Gameplay/page.js",
-  "/Profile/page": "app/Profile/page.js",
   "/CreateRoom/page": "app/CreateRoom/page.js"
 }
