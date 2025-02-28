@@ -19,6 +19,7 @@
 import React, { useState, useEffect } from "react";
 import stories, { Story, StorySection } from "./stories";//import the stories interface
 import AACKeyboard from "../Components/AACKeyboard";
+import useSound from 'use-sound';
 
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
