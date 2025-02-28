@@ -32,11 +32,15 @@ export default function Home() {
                 {/*CreateButton navigates to create room page*/}
                 <div className="button-padding">
                     <div className="button-box">
-                        <CreateButton/>
+                        <Link href="/CreateRoom">
+                            <CreateButton/>
+                        </Link>
                     </div>
                 </div>
 
+
                 {/*JoinButton navigates to join room page*/}
+
                 <div className="button-padding">
                     <div className="button-box">
                         <JoinButton/>
@@ -45,6 +49,7 @@ export default function Home() {
 
                 {/*Button navigates to gameplay
                 This button will be removed when we implement the room hosting feature*/}
+
                 <div className="button-padding">
                     <div className="button-box">
                         <Link href="/Gameplay">
