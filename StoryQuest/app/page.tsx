@@ -28,14 +28,18 @@ export default function Home() {
 
                 <div className="button-padding">
                     <div className="button-box">
-                        <CreateButton/>
+                        <Link href="/CreateRoom">
+                            <CreateButton/>
+                        </Link>
                     </div>
                 </div>
+
                 <div className="button-padding">
                     <div className="button-box">
                         <JoinButton/>
                     </div>
                 </div>
+
                 <div className="button-padding">
                     <div className="button-box">
                         <Link href="/Gameplay">
