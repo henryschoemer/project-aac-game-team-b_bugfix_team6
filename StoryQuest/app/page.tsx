@@ -11,12 +11,15 @@ export default function Home() {
                  backgroundImage: "url('HomePage-Images/Background.jpg')",
                  backgroundSize: "cover",
              }}>
+
+            {/*Title with animation*/}
             <div className="title-container">
                 <AnimatedTitle/>
             </div>
 
             <div className="button-container">
 
+                {/*ProfileButton navigates to profile page*/}
                 <div className="button-padding">
                     <div className="button-box">
                         <Link href="/Profile">
@@ -26,6 +29,7 @@ export default function Home() {
                     </div>
                 </div>
 
+                {/*CreateButton navigates to create room page*/}
                 <div className="button-padding">
                     <div className="button-box">
                         <Link href="/CreateRoom">
@@ -34,11 +38,17 @@ export default function Home() {
                     </div>
                 </div>
 
+
+                {/*JoinButton navigates to join room page*/}
+
                 <div className="button-padding">
                     <div className="button-box">
                         <JoinButton/>
                     </div>
                 </div>
+
+                {/*Button navigates to gameplay
+                This button will be removed when we implement the room hosting feature*/}
 
                 <div className="button-padding">
                     <div className="button-box">
@@ -48,6 +58,8 @@ export default function Home() {
                     </div>
                 </div>
             </div>
+
+            {/*Copyright text*/}
             <footer>
                 <h1 className="copyright-text">Copyright © 2025 StoryQuest</h1>
             </footer>

@@ -1,5 +1,6 @@
 /* css styling for home page buttons*/
 
+/*applies to all buttons on homepage*/
 .button {
     display: flex;
     justify-content: center;
@@ -25,12 +26,12 @@
 
 }
 
+
+/*Color scheme of the join button*/
 .join-button {
     background: linear-gradient(to right, #0ba360, #3cba92);
     box-shadow: 0px 14px 56px -11px #0ba360;
 }
-/* Changes color of the button*/
-/* Changes color of the button*/
 .profile-button {
     background: linear-gradient(to right, #7f38bd, #7f38bd);
     box-shadow: 0px 14px 56px -11px #7f38bd;
@@ -43,11 +44,11 @@
     background: linear-gradient(to right, #5676e8, #5676e8);
     box-shadow: 0px 14px 56px -11px #5676e8;
 }
-
 .test-button{
     background: linear-gradient(to right, #f20000, #f20000);
     box-shadow: 0px 14px 56px -11px #f20000;
 }
+
 
 .button span {
     cursor: pointer;
@@ -58,6 +59,8 @@
     transition: 0.4s;
 }
 
+/* Text that appears after hovering over button*/
+/* This will add the word when you hover on the button */
 .join-button span:after,
 .create-button span:after {
     content: 'Room';
@@ -67,7 +70,6 @@
     right: -20px;
     transition: 0.7s;
 }
-
 .test-button span:after {
     content: 'TEST';
     position: absolute;
@@ -76,8 +78,7 @@
     right: -20px;
     transition: 0.7s;
 }
-/* This will add the word when you hover on the button */
-.profile-button span:after { 
+.profile-button span:after {
     content: 'Page';
     position: absolute;
     opacity: 0;
@@ -85,7 +86,7 @@
     right: -20px;
     transition: 0.7s;
 }
-.back-button span:after { 
+.back-button span:after {
     content: 'Button';
     position: absolute;
     opacity: 0;
@@ -94,6 +95,8 @@
     transition: 0.7s;
     font-size: 22px;
 }
+
+
 .button:hover span {
     padding-right: 3.80em;
 }
@@ -103,6 +106,7 @@
     right: 0;
 }
 
+/*Spacing between icon and text on the right*/
 .icon-spacing {
     margin-right: 10px;
 }
