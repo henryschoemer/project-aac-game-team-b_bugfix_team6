@@ -11,6 +11,7 @@ export default function Home() {
                  backgroundImage: "url('HomePage-Images/Background.jpg')",
                  backgroundSize: "cover",
              }}>
+            <div className="page-content-container">
 
             {/*Title with animation*/}
             <div className="title-container">
@@ -63,6 +64,7 @@ export default function Home() {
             <footer>
                 <h1 className="copyright-text">Copyright © 2025 StoryQuest</h1>
             </footer>
+        </div>
         </div>
     );
 }
