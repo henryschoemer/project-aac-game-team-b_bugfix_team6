@@ -81,9 +81,11 @@ export default function CreateRoomPage() {
 
             {/* Back Button */}
             <div className="button-container">
+                <div className="button-box">
                 <Link href= "/">
                     <BackButton />
                 </Link>
+                </div>
             </div>
         </div>
     </div>
