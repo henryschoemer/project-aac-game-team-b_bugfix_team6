@@ -125,3 +125,20 @@
     font-weight: bold;
 }
 
+.room-id-input {
+    width: 80%;
+    max-width: 400px; 
+    height: 100px; 
+    padding: 10px 20px; 
+    font-size: 1.5em; 
+    font-family: 'Slackey', sans-serif;
+    border-radius: 30px; 
+    border: 3px solid white; 
+    outline: none;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.8); 
+    color: black;
+    box-shadow: 0px 14px 56px -11px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+

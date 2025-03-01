@@ -1,5 +1,4 @@
 {
-  "/CreateRoom/page": "app/CreateRoom/page.js",
-  "/Profile/page": "app/Profile/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/JoinRoom/page": "app/JoinRoom/page.js"
 }
