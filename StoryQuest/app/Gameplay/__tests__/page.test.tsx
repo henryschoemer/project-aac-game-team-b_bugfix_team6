@@ -132,19 +132,15 @@ describe('Home Component', () => {
     expect(play).toHaveBeenCalledWith({ id: 'mouse' });
   });
 
-
   it('renders the correct phrase in TextToSpeech', () => {
     render(<Home />);
-
-    // Simulate word selection to complete the phrase
     const mouseButton = screen.getByTestId('aac-button-mouse');
     fireEvent.click(mouseButton);
 
-    // Check if TextToSpeech gets the correct text
+    //correct text appears within the TextToSpeech component
     const textToSpeech = screen.getByTestId('text-to-speech');
     expect(textToSpeech).toHaveTextContent("Look in the garden, there is a mouse");
   });
-
 
   it('shows "The End!" when all sections are completed', () => {
     render(<Home />);
