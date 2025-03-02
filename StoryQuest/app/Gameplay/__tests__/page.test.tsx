@@ -57,6 +57,14 @@ jest.mock('use-sound', () => ({
   default: jest.fn(() => [jest.fn()]),
 }));
 
+//Mock for text to speech
+
+jest.mock('../../Components/TextToSpeech', () => {
+  return function MockTextToSpeech({ text }: { text: string }) {
+    return <div data-testid="text-to-speech">{text}</div>;
+  };
+});
+
 
 
 //Actual testing part below
@@ -122,6 +130,19 @@ describe('Home Component', () => {
     fireEvent.click(mouseButton);
 
     expect(play).toHaveBeenCalledWith({ id: 'mouse' });
+  });
+
+
+  it('renders the correct phrase in TextToSpeech', () => {
+    render(<Home />);
+
+    // Simulate word selection to complete the phrase
+    const mouseButton = screen.getByTestId('aac-button-mouse');
+    fireEvent.click(mouseButton);
+
+    // Check if TextToSpeech gets the correct text
+    const textToSpeech = screen.getByTestId('text-to-speech');
+    expect(textToSpeech).toHaveTextContent("Look in the garden, there is a mouse");
   });
 
 

@@ -210,8 +210,9 @@ export default function Home() {
         )}
         {/*Hear Phrase button */}
            <p className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
-               <TextToSpeech text={completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase} />
+               {completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase}
            </p>
+           <TextToSpeech text={completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase} />
       </div>
 
       {/* Right Panel: Game Scene */}
