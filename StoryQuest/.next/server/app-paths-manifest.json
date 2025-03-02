@@ -1,4 +1,6 @@
 {
-  "/page": "app/page.js",
-  "/JoinRoom/page": "app/JoinRoom/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/CreateRoom/page": "app/CreateRoom/page.js",
+  "/Gameplay/page": "app/Gameplay/page.js",
+  "/page": "app/page.js"
 }
