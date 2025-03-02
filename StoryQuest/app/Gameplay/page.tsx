@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import stories, { Story, StorySection } from "./stories";//import the stories interface
 import AACKeyboard from "../Components/AACKeyboard";
 import useSound from 'use-sound';
-
+import TextToSpeech from "../Components/TextToSpeech";
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const [phrase, setPhrase] = useState("");
@@ -208,6 +208,10 @@ export default function Home() {
             Next Sentence
           </button>
         )}
+        {/*Hear Phrase button */}
+           <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
+               <TextToSpeech text={completedPhrase} />
+           </button>
       </div>
 
       {/* Right Panel: Game Scene */}

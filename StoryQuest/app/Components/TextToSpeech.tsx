@@ -45,7 +45,7 @@ const TextToSpeech = ({ text }) => {
 
     return (
         <button onClick={handlePlay} aria-label="Play phrase">
-            🔊
+            Click to hear phrase! 🔊
         </button>
     );
 };
