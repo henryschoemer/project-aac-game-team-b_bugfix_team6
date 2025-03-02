@@ -21,6 +21,8 @@ import stories, { Story, StorySection } from "./stories";//import the stories in
 import AACKeyboard from "../Components/AACKeyboard";
 import useSound from 'use-sound';
 import TextToSpeech from "../Components/TextToSpeech";
+import CompletedStoryButton from "@/Components/CompletedStoryButton";
+
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const [phrase, setPhrase] = useState("");
@@ -236,10 +238,9 @@ export default function Home() {
                {completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase}
            </p>
            <TextToSpeech text={completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase} />
-
       </div>
 
-      {/* Right Panel: Game Scene */}
+        {/* Right Panel: Game Scene */}
       <div
         className="w-2/3 relative bg-cover bg-center flex justify-center items-center"
         style={{
@@ -260,6 +261,18 @@ export default function Home() {
           ))}
         </div>
 
+          {/* Text to speech completed story button*/}
+          {phrase === "The End!" && (
+              <div className="flex items-center mt-4" style={{ position: 'relative', zIndex: 10, bottom: '40px', right: '250px' }}>
+                  {/*Call completedstory button and pass completedphrase map*/}
+                  <CompletedStoryButton
+                      index={completedPhrases.length - 1}
+                      completedPhrase={completedPhrases[completedPhrases.length - 1]}
+                      completedPhrases={completedPhrases}
+                  />
+              </div>
+          )}
+
         {/* Completed Images (positioned directly on the background) */}
         <div className="absolute top-0 left-0 w-full h-full">
           {completedImages.map((image, index) => (
@@ -277,6 +290,7 @@ export default function Home() {
         <p className="mb-2 absolute" style={{ color: "black" }}>
           {phrase}
         </p>
+
         {currentImage && (
           <img
             src={currentImage.src}
