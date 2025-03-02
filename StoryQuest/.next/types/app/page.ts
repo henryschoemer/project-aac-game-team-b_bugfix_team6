@@ -1,4 +1,4 @@
-// File: /Users/shaynaodle/Desktop/project-aac-game-team-b/StoryQuest/app/page.tsx
+// File: /Users/harpindersingh/Cursor Projects/project-aac-game-team-b-1/StoryQuest/app/page.tsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
