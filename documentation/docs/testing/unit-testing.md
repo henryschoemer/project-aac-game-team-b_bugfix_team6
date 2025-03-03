@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 # Unit tests
-(For each method, one or more test cases. A test case consists of input parameter values and expected results. 
+(For each method, there are one or more test cases. A test case consists of input parameter values and expected results. 
 All external classes should be stubbed using mock objects.)
 
 # Purpose
@@ -64,7 +64,9 @@ describe('Component/Method Name', () => {
 
 
 ## Test Cases and Implementation
-Our unit tests are located in `StoryQuest/app/Gameplay/__tests__/page.tsx` and `StoryQuest/app/Profile/profile.test.tsx`
+Our unit tests are located in `StoryQuest/app/Gameplay/__tests__/page.test.tsx`, `StoryQuest/app/Profile/profile.test.tsx`, and `StoryQuest/app/CreateRoom/__tests__/page.test.tsx`.
+
+## Gameplay Testing
 
 Here are the key test cases:
 ### `handleWordSelect()`
@@ -123,6 +125,21 @@ invalid words are selected, demonstrating robust error handling in the AAC inter
 
 ## Profile Testing
 The profile test is an essentail test that makes sure that the profile page is able to renders and takes in data corectly. The test goes through and makes sure the page renders, profile picture selection works, user input is able to update, and the save and delete but preform as expected.
+
+## Room Creation Testing
+The room creation testing ensures that a user is able to initiate settings to accomodate the game room, such as choosing a story, the number of players, and the difficulty level. 
+
+### `renders the CreateRoomPage component`
+This test checks that the component renders properly, ensuring that all setting choices are displayed on the screen. 
+
+### `displays alert when user does not select all settings`
+This test is to ensure that a user cannot create a room without choosing all the settings. For example, if a difficulty is not chosen, an alert is displayed to notify the user.
+
+### `logs correct data when all selections are made`
+This test checks to see that all the data is logged correctly after the user makes their selections.
+
+### `allows user to change selected story`
+This test is to ensure that a user is able to select a different setting than their primary choice and have it still rendered on screen.
 
 ## Test coverage report:
 npx jest --coverage: rn it doesnt go to 100% for all the files.
