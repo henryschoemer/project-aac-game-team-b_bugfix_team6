@@ -22,7 +22,7 @@ export default function CreateRoomPage() {
 
     const handleStoryClick = (story: string) => {
         console.log("Clicked:", story);
-        setSelectedStory((prev) => (prev === story ? null : story)); // Toggle selection
+        setSelectedStory((prev) => (prev === story ? null : story)); 
     };
 
     return (

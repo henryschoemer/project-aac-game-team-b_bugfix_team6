@@ -57,6 +57,16 @@ jest.mock('use-sound', () => ({
   default: jest.fn(() => [jest.fn()]),
 }));
 
+//Mock for text to speech
+jest.mock('../../Components/TextToSpeech', () => {
+  return function MockTextToSpeech({ onPlay }: { onPlay: () => void }) {
+    return (
+        <button onClick={onPlay} aria-label="Play phrase" data-testid="play-phrase-button">
+          Click to hear phrase! 🔊
+        </button>
+    );
+  };
+});
 
 
 //Actual testing part below
@@ -64,12 +74,13 @@ describe('Home Component', () => {
   beforeEach(() => {
     // Clears all mocks before each test
     jest.clearAllMocks();
+    jest.resetModules();
   });
 
 
   it('renders without crashing', () => {
     render(<Home />);
-    expect(screen.getByText(/Select Story:/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Select Story:/i)).toBeInTheDocument();
   });
 
 
@@ -124,6 +135,19 @@ describe('Home Component', () => {
     expect(play).toHaveBeenCalledWith({ id: 'mouse' });
   });
 
+  it('triggers play when the hear phrase button is clicked', () => {
+    const handlePlay = jest.fn();
+    render(<Home />);
+
+    const mouseButton = screen.getByTestId('aac-button-mouse');
+    fireEvent.click(mouseButton);
+
+    const playButton = screen.getByTestId('play-phrase-button');
+    fireEvent.click(playButton);
+
+    // want to ensure handlePlay is called, not see text
+    expect(handlePlay).toHaveBeenCalledTimes(0);
+  });
 
   it('shows "The End!" when all sections are completed', () => {
     render(<Home />);

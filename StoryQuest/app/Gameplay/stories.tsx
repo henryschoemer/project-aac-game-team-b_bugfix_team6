@@ -5,7 +5,7 @@
 //ADDING ANIMATION
 //CHANGE THE SIZE OF THE PICTURES. NEED TO BE BIGGER
 //MAKE BETTER SENTENCE/STORIES
-//THE IMAGES IS SHOWING UP WITH A WHITE BACKGROUND
+
 
 
 // stories.tsx
@@ -30,6 +30,16 @@ export interface StorySection {
           words: {
             mouse: { image: "mouse.svg", x: 50, y: 100 },
             ladybug: {image: "ladybug.svg", x: 60, y:90},
+            //below are tests to see if the keyboard is dynamically initiated correctly
+            apple: {image: "apple.svg", x: 60, y:90},
+            lantern: {image: "lantern.svg", x: 60, y:90},
+            cat: {image: "cat.svg", x: 60, y:90},
+            dog: {image: "dog.svg", x: 60, y:90},
+            bird: {image: "bird.svg", x: 60, y:90},
+            bear: {image: "bear.svg", x: 60, y:90},
+            boy: {image: "boy.svg", x: 60, y:90},
+            squirrel: {image: "squirrel.svg", x: 60, y:90},
+            
           },
         },
         {
@@ -47,6 +57,7 @@ export interface StorySection {
               lanterns: { image: "lantern.svg", x: 80, y:20},
           }
         }
+        
         // ...  can add more sections
       ],
     },
