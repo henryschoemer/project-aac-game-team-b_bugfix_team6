@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import stories, { Story, StorySection } from "./stories";//import the stories interface
 import AACKeyboard from "../Components/AACKeyboard";
 import useSound from 'use-sound';
-
+import TextToSpeech from "../Components/TextToSpeech";
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const [phrase, setPhrase] = useState("");
@@ -184,7 +184,60 @@ export default function Home() {
        }
          />
         </h2>
-        
+
+        {/* Story Selection */}
+        <div className="mb-4">
+          <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Select Story:
+          </label>
+          <select
+            id="story-select"
+            value={currentStory?.title || ""}
+            onChange={(e) => {
+              const selectedStory = stories.find((s) => s.title === e.target.value);
+              if (selectedStory) {
+                handleStoryChange(selectedStory);
+              }
+            }}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            {stories.map((story) => (
+              <option key={story.title} value={story.title}>
+                {story.title}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Word Buttons OPTIONAL NOW*/}
+        <div className="flex gap-4">
+          {currentStory?.sections[currentSectionIndex]?.words &&
+            Object.keys(currentStory.sections[currentSectionIndex].words).map((word) => (
+              <button
+                key={word}
+                className="px-4 py-2 bg-blue-500 text-white rounded"
+                onClick={() => handleWordSelect(word)}
+              >
+                {word}
+              </button>
+            ))}
+        </div>
+        <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded" onClick={handleAddImage}> 
+          Add word
+        </button>
+        {/* Next Section Button  OPTIONAL NOW TOO*/}
+        {currentStory?.sections.length > 1 && currentSectionIndex < currentStory.sections.length - 1 && (
+          <button className="mt-4 px-4 py-2 bg-green-500 text-white rounded" onClick={handleAddImage}>
+            Next Sentence
+          </button>
+        )}
+        {/*Hear Phrase button */}
+           {/*
+           <p className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
+               {completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase}
+           </p>
+           */}
+           <TextToSpeech text={completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase} />
       </div>
 
       {/* Right Panel: Game Scene */}
