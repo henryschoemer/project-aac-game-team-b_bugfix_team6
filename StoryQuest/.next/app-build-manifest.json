@@ -12,11 +12,11 @@
       "static/css/app/page.css",
       "static/chunks/app/page.js"
     ],
-    "/JoinRoom/page": [
+    "/CreateRoom/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/JoinRoom/page.css",
-      "static/chunks/app/JoinRoom/page.js"
+      "static/css/app/CreateRoom/page.css",
+      "static/chunks/app/CreateRoom/page.js"
     ]
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from 'next/link';
 import { BackButton } from "../HomePage/HomePageButtons";
 import "./CreateRoomButtonStyles.css";
@@ -20,6 +20,11 @@ export default function CreateRoomPage() {
         console.log("Room Created:", { selectedStory, numPlayers, difficultyLevel });
     };
 
+    const handleStoryClick = (story: string) => {
+        console.log("Clicked:", story);
+        setSelectedStory((prev) => (prev === story ? null : story)); // Toggle selection
+    };
+
     return (
         <div className="page-container"
              style={{
@@ -35,12 +40,13 @@ export default function CreateRoomPage() {
             <div className="selection-container">
                 <h2>Select a Story</h2>
                 <div className="button-container">
-                    <button className={`button story-button ${selectedStory === "The Garden Adventure" ? "selected" : ""}`}
-                            onClick={() => setSelectedStory("The Garden Adventure")}>
+                    <button 
+                        className={`button story-button ${selectedStory === "The Garden Adventure" ? "selected" : ""}`}
+                        onClick={() => handleStoryClick("The Garden Adventure")}>
                         <span>The Garden Adventure</span>
                     </button>
-                    <button className={`button story-button ${selectedStory === "Walk in the Forest" ? "selected" : ""}`}
-                            onClick={() => setSelectedStory("Space Quest")}>
+                                    <button className={`button story-button ${selectedStory === "Walk in the Forest" ? "selected" : ""}`}
+                            onClick={() => setSelectedStory("Walk in the Forest")}>
                         <span>Walk in the Forest</span>
                     </button>
                 </div>
