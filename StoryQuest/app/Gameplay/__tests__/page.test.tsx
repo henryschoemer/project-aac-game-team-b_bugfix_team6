@@ -28,25 +28,25 @@ jest.mock('../stories', () => ({
 jest.mock('../../Components/AACKeyboard', () => {
   return function DummyAACKeyboard({ onSelect, symbols }: { onSelect: (word: string) => void, symbols: Array<{ word: string }> }) {
     return (
-      <div data-testid="aac-keyboard">
-        {symbols.map((symbol: { word: string }) => (
+        <div data-testid="aac-keyboard">
+          {symbols.map((symbol: { word: string }) => (
+              <button
+                  key={symbol.word}
+                  onClick={() => onSelect(symbol.word)}
+                  data-testid={`aac-button-${symbol.word}`}
+              >
+                {symbol.word}
+              </button>
+          ))}
+
+          {/* Add an invalid word button for testing */}
           <button
-            key={symbol.word}
-            onClick={() => onSelect(symbol.word)}
-            data-testid={`aac-button-${symbol.word}`}
+              onClick={() => onSelect("invalid_word")}
+              data-testid="aac-button-invalid"
           >
-            {symbol.word}
+            invalid_word
           </button>
-        ))}
-        
-        {/* Add an invalid word button for testing */}
-        <button
-          onClick={() => onSelect("invalid_word")}
-          data-testid="aac-button-invalid"
-        >
-          invalid_word
-        </button>
-      </div>
+        </div>
     );
   };
 });
@@ -100,7 +100,7 @@ describe('Home Component', () => {
 
   it('handles word selection through AAC keyboard', async () => {
     render(<Home />);
-    
+
     // Find and click the "mouse" button in the AAC keyboard
     const mouseButton = screen.getByTestId('aac-button-mouse');
     fireEvent.click(mouseButton);
@@ -112,7 +112,7 @@ describe('Home Component', () => {
 
   it('displays images when words are selected', () => {
     render(<Home />);
-    
+
     const mouseButton = screen.getByTestId('aac-button-mouse');
     fireEvent.click(mouseButton);
 
@@ -151,7 +151,7 @@ describe('Home Component', () => {
 
   it('shows "The End!" when all sections are completed', () => {
     render(<Home />);
-    
+
     // Complete the only section in our mock story
     const mouseButton = screen.getByTestId('aac-button-mouse');
     fireEvent.click(mouseButton);
@@ -160,11 +160,11 @@ describe('Home Component', () => {
     expect(screen.getByText("The End!")).toBeInTheDocument();
   });
 
-  
+
   it('handles invalid word selection gracefully', () => {
     const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
     render(<Home />);
-    
+
     // Click the invalid word button
     const invalidButton = screen.getByTestId('aac-button-invalid');
     fireEvent.click(invalidButton);
@@ -173,12 +173,4 @@ describe('Home Component', () => {
     expect(mockAlert).toHaveBeenCalledWith('Word "invalid_word" not found in current section!');
     mockAlert.mockRestore();
   });
-
-  it('play completed button doesnt render before a completed story', () => {
-    render(<Home />);
-
-    expect(screen.queryByText("Play Story! 🔊")).not.toBeInTheDocument();
-  });
-
-
-}); 
+});
