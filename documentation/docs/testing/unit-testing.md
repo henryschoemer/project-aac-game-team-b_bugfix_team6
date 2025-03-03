@@ -64,8 +64,7 @@ describe('Component/Method Name', () => {
 
 
 ## Test Cases and Implementation
-Our unit tests are located in `StoryQuest/app/Gameplay/__tests__/page.test.tsx`, and `StoryQuest/app/Profile/profile.test.tsx`.
-
+Unit tests for GamePlay are located in `StoryQuest/app/Gameplay/__tests__/page.test.tsx`.
 ## Gameplay Testing
 
 Here are the key test cases:
@@ -123,8 +122,9 @@ of the completion message, demonstrating proper game flow handling.
 This test verifies error handling. It uses a Jest spy on window.alert to verify proper error messaging when 
 invalid words are selected, demonstrating robust error handling in the AAC interface.
 
-### `Profile Testing`
-The profile test is an essentail test that makes sure that the profile page is able to renders and takes in data corectly. The test goes through and makes sure the page renders, profile picture selection works, user input is able to update, and the save and delete but preform as expected.
+## Profile Testing
+The profile test is an essential test that makes sure that the profile page is able to render and take in data corectly. The test goes through and makes sure the page renders, profile picture selection works, user input is able to update, and the save and delete button perform as expected.
+Unit tests for profile are located in `StoryQuest/app/Profile/profile.test.tsx`.
 
 
 ## HomePage
