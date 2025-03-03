@@ -170,4 +170,12 @@ describe('Home Component', () => {
     expect(mockAlert).toHaveBeenCalledWith('Word "invalid_word" not found in current section!');
     mockAlert.mockRestore();
   });
+
+  it('play completed button doesnt render before a completed story', () => {
+    render(<Home />);
+
+    expect(screen.queryByText("Play Story! 🔊")).not.toBeInTheDocument();
+  });
+
+
 }); 
