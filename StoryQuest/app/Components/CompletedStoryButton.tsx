@@ -23,6 +23,8 @@ const CompletedStoryButton: React.FC<TextToSpeechCompletedStoryProps> =({index, 
         ));
     };
 
+    // Currently there are bugs with clicking the button on the gameplay screen
+    // Text to speech of the whole story is completely functional
     return (
         <div className="absolute top-0 left-80 w-full h-full">
             <button onClick={playStory} className="text-black">
