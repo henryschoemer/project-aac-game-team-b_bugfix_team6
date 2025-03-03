@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-// text to speech phrase
+// text to speech phrases
 const TextToSpeechCompletedStory = ({ text }) => {
     const [utterance, setUtterance] = useState(null);
 
