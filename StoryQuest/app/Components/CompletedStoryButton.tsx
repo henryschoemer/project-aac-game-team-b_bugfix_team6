@@ -31,9 +31,8 @@ const CompletedStoryButton: React.FC<TextToSpeechCompletedStoryProps> =({index, 
             {/*<button onClick={playStory} className="text-black">
                 Play Story! 🔊
             </button>*/}
+            playStory()
         </div>
-
-    playStory()
 
 );
 
