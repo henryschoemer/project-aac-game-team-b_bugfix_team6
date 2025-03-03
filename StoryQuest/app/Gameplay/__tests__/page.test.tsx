@@ -135,7 +135,7 @@ describe('Home Component', () => {
     expect(play).toHaveBeenCalledWith({ id: 'mouse' });
   });
 
-  it('triggers play when the play button is clicked', () => {
+  it('triggers play when the hear phrase button is clicked', () => {
     const handlePlay = jest.fn();
     render(<Home />);
 

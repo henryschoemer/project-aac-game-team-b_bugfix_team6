@@ -101,6 +101,16 @@ updates, demonstrating integration between the AAC interface and phrase display.
 This test ensures proper image handling. It verifies both image rendering and positioning after word 
 selection, checking specific CSS properties and image presence in the DOM.
 
+### `plays sound when a valid AAC word is selected`
+This test ensures proper sound output. It verifies that when an icon on the AAC board is clicked, 
+the correct phrase is being played aloud to the user by checking the return value of the sound sprite. This 
+ensures engagement via text and audio. 
+
+### `triggers play when the hear phrase button is clicked`
+This test ensures proper sound output. It verifies that when the button 'Click to Hear Phrase' is clicked,
+the most recent user-completed phrase is played aloud. This ensures engagement with the user by integrating their
+actions into gameplay. 
+
 ### `shows "The End!" when all sections are completed`
 This test verifies game completion logic. It simulates completing story sections and checks for the appearance 
 of the completion message, demonstrating proper game flow handling.
