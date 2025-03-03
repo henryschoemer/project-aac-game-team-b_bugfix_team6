@@ -64,7 +64,7 @@ describe('Component/Method Name', () => {
 
 
 ## Test Cases and Implementation
-Our unit tests are located in `StoryQuest/app/Gameplay/__tests__/page.test.tsx`, `StoryQuest/app/Profile/profile.test.tsx`, and `StoryQuest/app/CreateRoom/__tests__/page.test.tsx`.
+Our unit tests are located in `StoryQuest/app/Gameplay/__tests__/page.test.tsx`, and `StoryQuest/app/Profile/profile.test.tsx`.
 
 ## Gameplay Testing
 
@@ -123,11 +123,41 @@ of the completion message, demonstrating proper game flow handling.
 This test verifies error handling. It uses a Jest spy on window.alert to verify proper error messaging when 
 invalid words are selected, demonstrating robust error handling in the AAC interface.
 
-## Profile Testing
+### `Profile Testing`
 The profile test is an essentail test that makes sure that the profile page is able to renders and takes in data corectly. The test goes through and makes sure the page renders, profile picture selection works, user input is able to update, and the save and delete but preform as expected.
+
+
+## HomePage
+Unit tests for HomePage are located in 'StoryQuest/app/__tests__/page.test.tsx'
+
+### `renders the text of the animated title correctly`
+This test verifies that animated title is rendered properly. It checks that the rendered span text matches the
+string characters of ['S', 't', 'o', 'r', 'y', 'Q', 'u', 'e', 's', 't'].
+
+### `renders the copyright text correctly`
+This test verifies that the copyright text in the footer is rendered correctly. It checks that the correct text, 
+'Copyright © 2025 StoryQuest', is displayed on the page.
+
+### `renders profile button correctly`
+This test checks that the profile button is rendered correctly. It ensures that the button is rendered on the page and 
+has the correct text content, 'Profile'.
+
+### `renders create button correctly`
+This test ensures the create button is displayed correctly. It verifies that the button is rendered on the page and
+contains the text 'Create'.
+
+### `renders join button correctly`
+This test ensures the join button is displayed correctly. It confirms that the button is rendered on the page and
+has the text 'Join'.
+
+### `renders gameplay button correctly`
+This test ensures the gameplay button is displayed correctly. It checks that the button is rendered on the page and
+contains the text 'Gameplay'.
+
 
 ## Room Creation Testing
 The room creation testing ensures that a user is able to initiate settings to accomodate the game room, such as choosing a story, the number of players, and the difficulty level. 
+Unit tests for Room Creation are located in `StoryQuest/app/CreateRoom/__tests__/page.test.tsx`.
 
 ### `renders the CreateRoomPage component`
 This test checks that the component renders properly, ensuring that all setting choices are displayed on the screen. 
@@ -141,5 +171,7 @@ This test checks to see that all the data is logged correctly after the user mak
 ### `allows user to change selected story`
 This test is to ensure that a user is able to select a different setting than their primary choice and have it still rendered on screen.
 
+
 ## Test coverage report:
-npx jest --coverage: rn it doesnt go to 100% for all the files.
+npx jest --coverage: This generates the coverage report that showcases even how many lines of code are being tested.
+
