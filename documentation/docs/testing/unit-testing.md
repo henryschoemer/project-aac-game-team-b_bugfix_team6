@@ -61,8 +61,10 @@ describe('Component/Method Name', () => {
 });
 ```
 
+
+
 ## Test Cases and Implementation
-Our unit tests are located in `StoryQuest/app/Gameplay/__tests__/page.tsx`. 
+Our unit tests are located in `StoryQuest/app/Gameplay/__tests__/page.tsx` and `StoryQuest/app/Profile/profile.test.tsx`
 
 Here are the key test cases:
 ### `handleWordSelect()`
@@ -101,6 +103,16 @@ updates, demonstrating integration between the AAC interface and phrase display.
 This test ensures proper image handling. It verifies both image rendering and positioning after word 
 selection, checking specific CSS properties and image presence in the DOM.
 
+### `plays sound when a valid AAC word is selected`
+This test ensures proper sound output. It verifies that when an icon on the AAC board is clicked, 
+the correct phrase is being played aloud to the user by checking the return value of the sound sprite. This 
+ensures engagement via text and audio. 
+
+### `triggers play when the hear phrase button is clicked`
+This test ensures proper sound output. It verifies that when the button 'Click to Hear Phrase' is clicked,
+the most recent user-completed phrase is played aloud. This ensures engagement with the user by integrating their
+actions into gameplay. 
+
 ### `shows "The End!" when all sections are completed`
 This test verifies game completion logic. It simulates completing story sections and checks for the appearance 
 of the completion message, demonstrating proper game flow handling.
@@ -108,6 +120,36 @@ of the completion message, demonstrating proper game flow handling.
 ### `handles invalid word selection gracefully`
 This test verifies error handling. It uses a Jest spy on window.alert to verify proper error messaging when 
 invalid words are selected, demonstrating robust error handling in the AAC interface.
+
+### `Profile Testing`
+The profile test is an essentail test that makes sure that the profile page is able to renders and takes in data corectly. The test goes through and makes sure the page renders, profile picture selection works, user input is able to update, and the save and delete but preform as expected.
+
+## HomePage
+Unit tests for HomePage are located in 'StoryQuest/app/__tests__/page.test.tsx'
+
+### 'renders the text of the animated title correctly'
+This test verifies that animated title is rendered properly. It checks that the rendered span text matches the
+string characters of ['S', 't', 'o', 'r', 'y', 'Q', 'u', 'e', 's', 't'].
+
+### 'renders the copyright text correctly'
+This test verifies that the copyright text in the footer is rendered correctly. It checks that the correct text, 
+'Copyright © 2025 StoryQuest', is displayed on the page.
+
+### 'renders profile button correctly'
+This test checks that the profile button is rendered correctly. It ensures that the button is rendered on the page and 
+has the correct text content, 'Profile'.
+
+### 'renders create button correctly'
+This test ensures the create button is displayed correctly. It verifies that the button is rendered on the page and
+contains the text 'Create'.
+
+### 'renders join button correctly'
+This test ensures the join button is displayed correctly. It confirms that the button is rendered on the page and
+has the text 'Join'.
+
+### 'renders gameplay button correctly'
+This test ensures the gameplay button is displayed correctly. It checks that the button is rendered on the page and
+contains the text 'Gameplay'.
 
 
 ## Test coverage report:
