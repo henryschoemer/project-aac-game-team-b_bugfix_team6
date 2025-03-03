@@ -127,30 +127,30 @@ The profile test is an essentail test that makes sure that the profile page is a
 ## HomePage
 Unit tests for HomePage are located in 'StoryQuest/app/__tests__/page.test.tsx'
 
-### 'renders the text of the animated title correctly'
+### `renders the text of the animated title correctly`
 This test verifies that animated title is rendered properly. It checks that the rendered span text matches the
 string characters of ['S', 't', 'o', 'r', 'y', 'Q', 'u', 'e', 's', 't'].
 
-### 'renders the copyright text correctly'
+### `renders the copyright text correctly`
 This test verifies that the copyright text in the footer is rendered correctly. It checks that the correct text, 
 'Copyright © 2025 StoryQuest', is displayed on the page.
 
-### 'renders profile button correctly'
+### `renders profile button correctly`
 This test checks that the profile button is rendered correctly. It ensures that the button is rendered on the page and 
 has the correct text content, 'Profile'.
 
-### 'renders create button correctly'
+### `renders create button correctly`
 This test ensures the create button is displayed correctly. It verifies that the button is rendered on the page and
 contains the text 'Create'.
 
-### 'renders join button correctly'
+### `renders join button correctly`
 This test ensures the join button is displayed correctly. It confirms that the button is rendered on the page and
 has the text 'Join'.
 
-### 'renders gameplay button correctly'
+### `renders gameplay button correctly`
 This test ensures the gameplay button is displayed correctly. It checks that the button is rendered on the page and
 contains the text 'Gameplay'.
 
 
 ## Test coverage report:
-npx jest --coverage: rn it doesnt go to 100% for all the files.
+npx jest --coverage: This generates the coverage report that showcases even how many lines of code are being tested.
