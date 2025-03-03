@@ -11,9 +11,7 @@ const CompletedStoryButton: React.FC<TextToSpeechCompletedStoryProps> =({index, 
     const isLastPhrase = index === completedPhrases.length - 1; // check story is complete
     if (!isLastPhrase) return null; // story is not complete yet
 
-    const mapCopy = new Map<number, string>( // Copy phrase map
-        completedPhrases.map((phrase, idx) => [idx, phrase])
-    );
+    const mapCopy = new Map<number, string>(completedPhrases.map((phrase, idx) => [idx, phrase])); // Copy phrase map
 
     {/* iterate through the phrase map and pass phrases to TextToSpeech */}
     const playStory = () => {
@@ -31,10 +29,10 @@ const CompletedStoryButton: React.FC<TextToSpeechCompletedStoryProps> =({index, 
             {/*<button onClick={playStory} className="text-black">
                 Play Story! 🔊
             </button>*/}
-            playStory()
+            {playStory()}
         </div>
 
-);
+    );
 
 }
 export default CompletedStoryButton;
