@@ -17,7 +17,7 @@ const CompletedStoryButton: React.FC<TextToSpeechCompletedStoryProps> =({index, 
 
     {/* iterate through the phrase map and pass phrases to TextToSpeech */}
     const playStory = () => {
-        console.log("Button clicked!");
+        //console.log("Button clicked!");
         return Array.from(mapCopy.values()).map((phrase, index) => (
             <TextToSpeechCompletedStory key={index} text={phrase} />
         ));
@@ -26,13 +26,16 @@ const CompletedStoryButton: React.FC<TextToSpeechCompletedStoryProps> =({index, 
     // Currently there are bugs with clicking the button on the gameplay screen
     // Text to speech of the whole story is completely functional
     return (
+
         <div className="absolute top-0 left-80 w-full h-full">
-            <button onClick={playStory} className="text-black">
+            {/*<button onClick={playStory} className="text-black">
                 Play Story! 🔊
-            </button>
-            {playStory()}
+            </button>*/}
         </div>
-    );
+
+    playStory()
+
+);
 
 }
 export default CompletedStoryButton;
