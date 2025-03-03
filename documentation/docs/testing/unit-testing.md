@@ -121,7 +121,7 @@ of the completion message, demonstrating proper game flow handling.
 This test verifies error handling. It uses a Jest spy on window.alert to verify proper error messaging when 
 invalid words are selected, demonstrating robust error handling in the AAC interface.
 
-## Profile Testing
+### `Profile Testing`
 The profile test is an essentail test that makes sure that the profile page is able to renders and takes in data corectly. The test goes through and makes sure the page renders, profile picture selection works, user input is able to update, and the save and delete but preform as expected.
 
 ## Test coverage report:
