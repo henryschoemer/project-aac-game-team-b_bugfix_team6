@@ -9,12 +9,10 @@ sidebar_position: 1
 StoryQuest is a web-based, tablet-friendly collaborative storytelling game designed to enhance social inclusion and 
 communication skills, particularly for children who use Augmentative and Alternative Communication (AAC). The game is 
 inspired by "Mad Libs", and leverages cloze phrases—a proven technique in speech therapy 
-that helps improve word recall, literacy, and structured communication. To foster teamwork, empathy, and peer engagement, 
-StoryQuest requires all players to work together to complete phrases. The design ensures that AAC users play an 
+that helps improve word recall, literacy, and structured communication. The design ensures that AAC users play an 
 essential role in the team, preventing social exclusion and encouraging meaningful participation. A built-in AAC-friendly 
-interface eliminates the need for excessive screen switching, providing seamless accessibility and a fluid user experience for the children. 
-The interface also dynamically indicates when a child is selecting their answer, supporting clear turn-taking and engagement 
-for all players. The users will also have something to do when it is not their turn, whcih must also be engaging and accessible.
+interface eliminates the need for excessive screen switching, providing seamless accessibility. The interface also dynamically indicates when a child is selecting their answer, supporting clear turn-taking and engagement 
+for all players.
 
 ## Conceptual Design
 
@@ -39,7 +37,7 @@ for all players. The users will also have something to do when it is not their t
 
 Many current tools on the market are geared towards engaging AAC users, such as the AAC Language Lab<sup>1</sup> or AssistiveWare<sup>2</sup>.
 The AAC Language Lab has web-based games based on stages of learning, and requires a subscription model to use. AssistiveWare has specific apps 
-for specific AAC communication devices.  Much of their software apps are targeted towards helping the younger generation of AAC 
+for specific AAC communication devices. Much of their apps are targeted towards helping the younger generation of AAC 
 users more comfortable with using assistive technology. There is a gap in the market for learning games based in collaboration between AAC users 
 and non-AAC users.
 
