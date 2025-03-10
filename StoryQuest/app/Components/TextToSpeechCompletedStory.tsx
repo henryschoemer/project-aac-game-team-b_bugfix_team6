@@ -12,8 +12,20 @@ const TextToSpeechCompletedStory = ({ text }) => {
                 const u = new SpeechSynthesisUtterance(text);
                 setUtterance(u);
 
-                // Update speech rate to 0.8
-                u.rate= 0.8;
+                // Get speech voices
+                const voices = speechSynthesis.getVoices();
+                const selectedVoice = voices.find(voice => voice.name === "Google UK English Male"); // man voice
+
+                if (!selectedVoice) {
+                    console.warn("Voice not found, make sure voices are loaded.");
+                    return;
+                }
+
+                // Set speech voices
+                u.voice = selectedVoice;
+
+                // Update speech rate to 0.7
+                u.rate= 0.7;
 
                 // Play speech
                 synth.speak(u);
