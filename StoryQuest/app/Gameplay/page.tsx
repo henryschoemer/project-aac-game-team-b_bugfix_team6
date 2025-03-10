@@ -172,7 +172,7 @@ export default function Home() {
     <div className="flex w-screen h-screen">
       
       {/* Left Panel: AAC Tablet */}
-       <div className="w-1/3 bg-gray-200 p-4 flex flex-col justify-center items-center">
+       <div className="w-1/3 bg-gray-800 p-4 flex flex-col justify-center items-center">
          <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
             {/* Story Selection */}
             <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white bg-blue-600 p-2 rounded-lg">
