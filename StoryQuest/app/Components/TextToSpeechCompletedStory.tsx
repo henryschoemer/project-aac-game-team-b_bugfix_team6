@@ -12,6 +12,9 @@ const TextToSpeechCompletedStory = ({ text }) => {
                 const u = new SpeechSynthesisUtterance(text);
                 setUtterance(u);
 
+                // Update speech rate to 0.8
+                u.rate= 0.8;
+
                 // Play speech
                 synth.speak(u);
 
