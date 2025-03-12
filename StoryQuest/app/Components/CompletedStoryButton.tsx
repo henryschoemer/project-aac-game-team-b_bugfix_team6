@@ -25,10 +25,7 @@ const CompletedStoryButton: React.FC<TextToSpeechCompletedStoryProps> =({index, 
     // Text to speech of the whole story is completely functional
     return (
 
-        <div className="absolute top-0 left-80 w-full h-full">
-            {/*<button onClick={playStory} className="text-black">
-                Play Story! 🔊
-            </button>*/}
+        <div>
             {playStory()}
         </div>
 

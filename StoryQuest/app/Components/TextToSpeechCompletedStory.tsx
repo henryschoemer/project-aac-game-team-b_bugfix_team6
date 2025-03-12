@@ -24,8 +24,8 @@ const TextToSpeechCompletedStory = ({ text }) => {
                 // Set speech voices
                 u.voice = selectedVoice;
 
-                // Update speech rate to 0.7
-                u.rate= 0.7;
+                // Update speech rate to 0.9
+                u.rate= 0.9;
 
                 // Play speech
                 synth.speak(u);
