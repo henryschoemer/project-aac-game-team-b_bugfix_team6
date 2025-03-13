@@ -172,10 +172,10 @@ export default function Home() {
     <div className="flex w-screen h-screen">
       
       {/* Left Panel: AAC Tablet */}
-       <div className="w-1/3 bg-gray-800 p-4 flex flex-col justify-center items-center">
+       <div className="w-1/3 bg-[#63d2cb] p-4 flex flex-col justify-center items-center">
          <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
             {/* Story Selection */}
-            <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white bg-blue-600 p-2 rounded-lg">
+            <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white bg-[#8ae2d5] p-2 rounded-lg">
               Select Story:
             </label>
             <select
@@ -187,7 +187,7 @@ export default function Home() {
                   handleStoryChange(selectedStory);
                 }
               }}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-[#8ae2d5] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               {stories.map((story) => (
                 <option key={story.title} value={story.title}>
