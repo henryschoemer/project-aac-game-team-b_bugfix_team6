@@ -326,14 +326,11 @@ return (
 
           {/* Text to speech completed story button*/}
           {phrase === "The End!" && (
-              <div className="flex items-center mt-4" style={{ position: 'relative', zIndex: 10, bottom: '40px', right: '250px' }}>
-                  {/*Call completedstory button and pass completedphrase map*/}
                   <CompletedStoryButton
                       index={completedPhrases.length - 1}
                       completedPhrase={completedPhrases[completedPhrases.length - 1]}
                       completedPhrases={completedPhrases}
                   />
-              </div>
           )}
 
         {/* Current Phrase and Images */}
