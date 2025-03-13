@@ -324,7 +324,7 @@ return (
       })}
     </AnimatePresence>
 
-          {/* Text to speech completed story button*/}
+          {/* Text to speech completed story*/}
           {phrase === "The End!" && (
                   <CompletedStoryButton
                       index={completedPhrases.length - 1}
