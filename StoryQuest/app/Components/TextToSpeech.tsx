@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 
 interface TextToSpeechProps {
     text: string;
+    u: SpeechSynthesisUtterance;
 }
 
 const TextToSpeech: React.FC<TextToSpeechProps> = ({ text }) => {
     const [isPaused, setIsPaused] = useState(false);
-    const [utterance, setUtterance] = useState(null);
+    const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
 
     useEffect(() => {
         const synth = window.speechSynthesis;
