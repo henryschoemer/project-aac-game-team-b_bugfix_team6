@@ -2,8 +2,11 @@
 
 import React, {useState} from 'react';
 import "./MusicSliderStyling.css";
+import Image from "next/image";
+
 export const HomePageBackgroundMusic: React.FC = () => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const [showControls, setShowControls] = useState(false); // Switch from music note to "play/stop and slider" display
     const [volume, setVolume] = useState(50); // volume range
 
     const handlePlayMusic = () => {
@@ -16,7 +19,7 @@ export const HomePageBackgroundMusic: React.FC = () => {
         }
     };
 
-    const handleStopMusic = () =>{
+    const handleStopMusic = () => {
         const audio = document.getElementById("HomePageBackgroundMusic") as HTMLAudioElement;
         if (audio) {
             audio.pause();
@@ -37,15 +40,49 @@ export const HomePageBackgroundMusic: React.FC = () => {
 
     return (
         <div>
-            {isPlaying ? (
-                <button onClick={handleStopMusic}>Stop Music</button>
-            ) : (
-                <button onClick={handlePlayMusic}>Play Music</button>
+            {!showControls && (
+                <div>
+                    <button onClick={() => setShowControls(true)}>
+                        <Image
+                            src="/music-note.svg"
+                            alt="Music icon"
+                            width={30}
+                            height={30}
+                            className="icon-spacing"
+                        />
+                        Music
+                    </button>
+                </div>
             )}
 
-            <div>
-            <input type="range" min="0" max="100" value={volume} onChange={handleVolumeChange} />
-            </div>
+            {showControls && (
+                <div className="volume-container">
+                    {isPlaying ? (
+                        <button onClick={handleStopMusic}>
+                            <Image
+                                src="/stop-music.svg"
+                                alt="Stop music icon"
+                                width={30}
+                                height={30}
+                                className="icon-spacing"
+                            />
+                            Stop Music</button>
+                    ) : (
+                        <button onClick={handlePlayMusic}>
+                            <Image
+                                src="/play-music.svg"
+                                alt="Play music icon"
+                                width={30}
+                                height={30}
+                                className="icon-spacing"
+                            />
+                            Play Music</button>
+                    )}
+
+                    <input type="range" min="0" max="100" value={volume} onChange={handleVolumeChange}/>
+
+                </div>
+            )}
 
             <audio id="HomePageBackgroundMusic" loop>
                 <source src="/sounds/StoryQuestHomePageMusic.mp3" type="audio/mp3"/>

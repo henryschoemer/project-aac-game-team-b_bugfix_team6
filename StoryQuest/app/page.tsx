@@ -15,9 +15,6 @@ export default function Home() {
              }}>
             <div className="page-content-container">
 
-            {/*Background music that autplays*/}
-            <HomePageBackgroundMusic/>
-
                 {/*Title with animation*/}
             <div className="title-container">
                 <AnimatedTitle/>
@@ -69,6 +66,10 @@ export default function Home() {
 
             {/*Copyright text*/}
             <footer>
+                {/*Background music, with play and stop buttons*/}
+                <div className="music-slider-container">
+                    <HomePageBackgroundMusic/>
+                </div>
                 <h1 className="copyright-text">Copyright © 2025 StoryQuest</h1>
             </footer>
         </div>
