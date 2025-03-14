@@ -7,6 +7,7 @@ interface TextToSpeechProps {
 const TextToSpeech: React.FC<TextToSpeechProps> = ({ text }) => {
     const [isPaused, setIsPaused] = useState(false);
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
+    
 
     useEffect(() => {
         const synth = window.speechSynthesis;
