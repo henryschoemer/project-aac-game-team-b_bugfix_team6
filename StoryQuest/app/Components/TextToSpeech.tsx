@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 interface TextToSpeechProps {
     text: string;
-    u: SpeechSynthesisUtterance;
 }
 
 const TextToSpeech: React.FC<TextToSpeechProps> = ({ text }) => {
@@ -27,7 +26,9 @@ const TextToSpeech: React.FC<TextToSpeechProps> = ({ text }) => {
             synth.resume();
         }
 
-        synth.speak(utterance);
+        if (utterance) {
+            synth.speak(utterance); 
+        }
 
         setIsPaused(false);
     };
