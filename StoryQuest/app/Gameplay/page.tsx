@@ -335,6 +335,7 @@ return (
                       completedPhrase={completedPhrases[completedPhrases.length - 1]}
                       completedPhrases={completedPhrases}
                   />
+              </div>
           )}
 
         {/* Current Phrase and Images */}
