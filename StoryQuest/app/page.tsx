@@ -1,8 +1,10 @@
-import Image from "next/image";
 import AnimatedTitle from './HomePage/AnimatedTitle';
 import {CreateButton, JoinButton, TemporaryTestingGameButton, ProfileButton} from "./HomePage/HomePageButtons";
 import Link from 'next/link';
 import "./HomePage/HomePageStyles.css";
+import {HomePageBackgroundMusic} from "./HomePage/HomePageBackgroundMusic";
+import React from 'react';
+
 
 export default function Home() {
     return (
@@ -13,7 +15,7 @@ export default function Home() {
              }}>
             <div className="page-content-container">
 
-            {/*Title with animation*/}
+                {/*Title with animation*/}
             <div className="title-container">
                 <AnimatedTitle/>
             </div>
@@ -64,6 +66,10 @@ export default function Home() {
 
             {/*Copyright text*/}
             <footer>
+                {/*Background music, with play and stop buttons*/}
+                <div className="music-slider-container">
+                    <HomePageBackgroundMusic/>
+                </div>
                 <h1 className="copyright-text">Copyright © 2025 StoryQuest</h1>
             </footer>
         </div>
