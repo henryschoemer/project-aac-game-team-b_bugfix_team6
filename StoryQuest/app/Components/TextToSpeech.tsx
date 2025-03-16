@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+
 interface TextToSpeechProps {
     text: string;
 }
-const TextToSpeech = ({ text }) => {
+
+const TextToSpeech: React.FC<TextToSpeechProps> = ({ text }) => {
+
     const [isPaused, setIsPaused] = useState(false);
-    const [utterance, setUtterance] = useState(null);
+    const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
 
     useEffect(() => {
         const synth = window.speechSynthesis;
@@ -24,7 +27,9 @@ const TextToSpeech = ({ text }) => {
             synth.resume();
         }
 
-        synth.speak(utterance);
+        if (utterance) {
+            synth.speak(utterance); 
+        }
 
         setIsPaused(false);
     };

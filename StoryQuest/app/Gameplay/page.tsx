@@ -324,10 +324,12 @@ return (
       })}
     </AnimatePresence>
 
-          {/* Text to speech completed story button*/}
+          {/* Text to speech completed story*/}
           {phrase === "The End!" && (
-              <div className="flex items-center mt-4" style={{ position: 'relative', zIndex: 10, bottom: '40px', right: '250px' }}>
+
+              <div>
                   {/*Call completedstory button and pass completedphrase map*/}
+
                   <CompletedStoryButton
                       index={completedPhrases.length - 1}
                       completedPhrase={completedPhrases[completedPhrases.length - 1]}
