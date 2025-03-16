@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-
+interface TextToSpeechProps {
+    text: string;
+}
 const TextToSpeech = ({ text }) => {
     const [isPaused, setIsPaused] = useState(false);
     const [utterance, setUtterance] = useState(null);
