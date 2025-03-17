@@ -33,8 +33,8 @@ export default function CreateRoomPage() {
                  backgroundSize: "cover",
              }}>
 
-            {/*Page Description text to speech*/}
-            {<AutomaticTextToSpeech speechText="Create a Room" />}
+            {/*Create room page description text to speech*/}
+            {<AutomaticTextToSpeech speechText="Please Select a story, Select number of players, Select difficulty, then click on create room" />}
 
             <div className="content-container"> 
             <div className="title-container">

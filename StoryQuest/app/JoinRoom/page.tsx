@@ -25,8 +25,8 @@ export default function JoinRoomPage() {
                  backgroundSize: "cover",
              }}>
 
-            {/*Page Description text to speech*/}
-            {<AutomaticTextToSpeech speechText="Enter a room ID to join" />}
+            {/*join room page Description text to speech*/}
+            {<AutomaticTextToSpeech speechText="Please Enter a room ID, then click on join room" />}
 
             <div className="content-container"> 
             <div className="title-container">
