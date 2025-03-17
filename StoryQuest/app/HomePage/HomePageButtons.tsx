@@ -8,8 +8,6 @@ import Image from "next/image";
 
 /*Create room Button*/
 export const CreateButton: React.FC = () => {
-
-
     return (
         <button className="button join-button">
             <Image
@@ -20,6 +18,7 @@ export const CreateButton: React.FC = () => {
                 height={30}
                 className="icon-spacing"
             />
+
             <span>Create</span>
         </button>
     );
