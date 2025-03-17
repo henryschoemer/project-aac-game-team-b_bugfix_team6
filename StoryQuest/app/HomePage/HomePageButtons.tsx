@@ -7,6 +7,7 @@ import Image from "next/image";
 import useSound from "use-sound";
 
 const popClick = '/sounds/pop-click.mp3';
+const backClick = '/sounds/back-click.mp3';
 
 
 /*Create room Button*/
@@ -49,7 +50,7 @@ export const JoinButton: React.FC = () => {
 
 /*Back Button of profile page*/
 export const BackButton: React.FC = () => {
-    const [play]= useSound(popClick); // use sound hook, play sound
+    const [play]= useSound(backClick); // use sound hook, play sound
 
     return (
         <button className="button back-button" onClick={() => play()}>
@@ -86,10 +87,11 @@ export const ProfileButton: React.FC = () => {
 /*TemporaryTestingGameButton*/
 /* This method will be removed when we implement the room hosting feature */
 export const TemporaryTestingGameButton: React.FC = () => {
-    const [play]= useSound(popClick); // use sound hook, play sound
+    const gameplayStart = '/sounds/gameplay-start.mp3';
+    const [playGameplayStart]= useSound(gameplayStart); // use sound hook
 
     return (
-        <button className="button test-button" onClick={() => play()}>
+        <button className="button test-button" onClick={() => playGameplayStart()}>
             <span>Gameplay</span>
         </button>
     );
