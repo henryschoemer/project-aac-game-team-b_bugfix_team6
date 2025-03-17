@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 
+interface TextToSpeechCompletedStoryProps {
+    text: string;
+}
+
 // Text to speech phrases component
-const TextToSpeechCompletedStory = ({ text }) => {
-    const [utterance, setUtterance] = useState(null);
+const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({ text }) => {
+    const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
 
     // Select voice
