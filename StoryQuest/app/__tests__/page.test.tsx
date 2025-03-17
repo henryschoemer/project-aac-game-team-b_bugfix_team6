@@ -31,17 +31,6 @@ describe('HomePage', () => {
         expect(copyrightText).toBeInTheDocument();
     });
 
-    // Test that the profile button renders correctly
-    it('renders profile button correctly', () => {
-        render(<ProfileButton/>)
-        // Get button element
-        const button = screen.getByRole('button', {name: /profile/i});
-        // Button element is rendered
-        expect(button).toBeInTheDocument();
-        // Button has the text 'Profile'
-        expect(button).toHaveTextContent('Profile');
-    })
-
     // Test that the create button renders correctly
     it('renders create button correctly', () => {
         render(<CreateButton/>)

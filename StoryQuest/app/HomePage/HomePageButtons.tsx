@@ -48,7 +48,7 @@ export const JoinButton: React.FC = () => {
     );
 };
 
-/*Back Button of profile page*/
+/*Back Button - Used on Create Room Page */
 export const BackButton: React.FC = () => {
     const [play]= useSound(backClick); // use sound hook, play sound
 
@@ -65,6 +65,7 @@ export const BackButton: React.FC = () => {
         </button>
     );
 };
+
 
 /*Profile button*/
 export const ProfileButton: React.FC = () => {
@@ -83,6 +84,7 @@ export const ProfileButton: React.FC = () => {
         </button>
     );
 };
+
 
 /*TemporaryTestingGameButton*/
 /* This method will be removed when we implement the room hosting feature */

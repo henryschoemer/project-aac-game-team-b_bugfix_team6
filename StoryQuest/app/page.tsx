@@ -1,5 +1,5 @@
 import AnimatedTitle from './HomePage/AnimatedTitle';
-import {CreateButton, JoinButton, TemporaryTestingGameButton, ProfileButton} from "./HomePage/HomePageButtons";
+import {CreateButton, JoinButton, TemporaryTestingGameButton} from "./HomePage/HomePageButtons";
 import Link from 'next/link';
 import "./HomePage/HomePageStyles.css";
 import {HomePageBackgroundMusic} from "./HomePage/HomePageBackgroundMusic";
@@ -21,16 +21,6 @@ export default function Home() {
             </div>
 
             <div className="button-container">
-
-                {/*ProfileButton navigates to profile page*/}
-                <div className="button-padding">
-                    <div className="button-box">
-                        <Link href="/Profile">
-                            <ProfileButton/>
-                        </Link>
-
-                    </div>
-                </div>
 
                 {/*CreateButton navigates to create room page*/}
                 <div className="button-padding">
