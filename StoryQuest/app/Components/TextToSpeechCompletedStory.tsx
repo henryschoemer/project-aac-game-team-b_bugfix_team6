@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 interface TextToSpeechCompletedStoryProps {
-    text: string;  // text string
-}
-
-// Text to speech phrases component
-const TextToSpeechCompletedStory = ({ text }) => {
     text: string;
 }
+
 
 // Text to speech phrases component
 const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({ text }) => {
