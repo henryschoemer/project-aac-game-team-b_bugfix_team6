@@ -207,6 +207,8 @@ export default function Home() {
          }))
          : []
        }
+       backgroundColor={currentStory?.colorTheme.backgroundColor}
+       buttonColor={currentStory?.colorTheme.buttonColor}
          />
         </h2>
         

@@ -15,12 +15,20 @@ export interface StorySection {
     title: string;
     backgroundImage: string;
     sections: StorySection[]; // Array of sections
+    colorTheme: {
+      backgroundColor: string;
+      buttonColor: string;
+    }
   }
   
   const stories: Story[] = [
     {
       title: "The Garden Adventure",
       backgroundImage: "garden-background.webp",
+      colorTheme: {
+        backgroundColor: "#b4fcdc", // Light green
+        buttonColor: "#63d2cb", // Teal
+      },
       sections: [
         {
           phrase: "Look in the garden, there is a ___",
@@ -54,6 +62,10 @@ export interface StorySection {
     {
       title: "Walk in the forest",
       backgroundImage: "Forest-background.png",
+      colorTheme: {
+        backgroundColor: "#ffcccb", // Light red
+        buttonColor: "#ff6666", // Coral
+      },
       sections: [
         {
           phrase: "In the forest, I look in the sky and see a ___",
