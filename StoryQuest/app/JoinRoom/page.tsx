@@ -5,7 +5,6 @@ import Link from 'next/link';
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { BackButton } from "../HomePage/HomePageButtons";
 import AutomaticTextToSpeech from "@/Components/AutomaticTextToSpeech";
-import ButtonSoundEffects from "@/Components/ButtonSoundEffects";
 
 export default function JoinRoomPage() {
     const [roomId, setRoomId] = useState("");
