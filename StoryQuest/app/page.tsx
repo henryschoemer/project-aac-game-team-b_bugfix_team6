@@ -4,7 +4,6 @@ import Link from 'next/link';
 import "./HomePage/HomePageStyles.css";
 import {HomePageBackgroundMusic} from "./HomePage/HomePageBackgroundMusic";
 import React from 'react';
-import ButtonSoundEffects from "@/Components/ButtonSoundEffects";
 
 
 export default function Home() {
@@ -15,7 +14,6 @@ export default function Home() {
                  backgroundSize: "cover",
              }}>
             <div className="page-content-container">
-                <ButtonSoundEffects />
 
                 {/*Title with animation*/}
             <div className="title-container">

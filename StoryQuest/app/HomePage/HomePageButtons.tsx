@@ -4,12 +4,17 @@ import React from "react";
 import { useEffect, useState } from "react";
 import "./HomePageButtonStyles.css";
 import Image from "next/image";
+import useSound from "use-sound";
+
+const popClick = '/sounds/pop-click.mp3';
 
 
 /*Create room Button*/
 export const CreateButton: React.FC = () => {
+    const [play]= useSound(popClick); // use sound hook, play sound, has to be inside component
+
     return (
-        <button className="button join-button">
+        <button className="button join-button" onClick={() => play()}>
             <Image
                 src="/circleplus-icon.svg"
                 alt="Creating a room icon"
@@ -26,8 +31,10 @@ export const CreateButton: React.FC = () => {
 
 /*Join room Button*/
 export const JoinButton: React.FC = () => {
+    const [play]= useSound(popClick); // use sound hook, play sound
+
     return (
-        <button className="button create-button" >
+        <button className="button create-button" onClick={() => play()}>
             <Image
                 src="/game-icon.svg"
                 alt="Joining a room icon"
@@ -42,8 +49,10 @@ export const JoinButton: React.FC = () => {
 
 /*Back Button of profile page*/
 export const BackButton: React.FC = () => {
+    const [play]= useSound(popClick); // use sound hook, play sound
+
     return (
-        <button className="button back-button">
+        <button className="button back-button" onClick={() => play()}>
             <Image
                 src="/pics/backspace.svg"
                 alt="Backspace icon"
@@ -58,8 +67,10 @@ export const BackButton: React.FC = () => {
 
 /*Profile button*/
 export const ProfileButton: React.FC = () => {
+    const [play]= useSound(popClick); // use sound hook, play sound
+
     return (
-        <button className="button profile-button">
+        <button className="button profile-button" onClick={() => play()}>
             <Image
                 src="/profile-icon.svg"
                 alt="profile icon"
@@ -75,8 +86,10 @@ export const ProfileButton: React.FC = () => {
 /*TemporaryTestingGameButton*/
 /* This method will be removed when we implement the room hosting feature */
 export const TemporaryTestingGameButton: React.FC = () => {
+    const [play]= useSound(popClick); // use sound hook, play sound
+
     return (
-        <button className="button test-button">
+        <button className="button test-button" onClick={() => play()}>
             <span>Gameplay</span>
         </button>
     );
