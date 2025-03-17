@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from 'next/link';
 import { BackButton } from "../HomePage/HomePageButtons";
 import "./CreateRoomButtonStyles.css";
+import AutomaticTextToSpeech from "@/Components/AutomaticTextToSpeech";
 
 
 export default function CreateRoomPage() {
@@ -31,6 +32,10 @@ export default function CreateRoomPage() {
                  backgroundImage: "url('/HomePage-Images/Background.jpg')",
                  backgroundSize: "cover",
              }}>
+
+            {/*Page Description text to speech*/}
+            {<AutomaticTextToSpeech speechText="Create a Room" />}
+
             <div className="content-container"> 
             <div className="title-container">
                 <h1 className="title-text">Create a Room</h1>

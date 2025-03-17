@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from 'next/link';
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { BackButton } from "../HomePage/HomePageButtons";
+import AutomaticTextToSpeech from "@/Components/AutomaticTextToSpeech";
 
 export default function JoinRoomPage() {
     const [roomId, setRoomId] = useState("");
@@ -17,11 +18,16 @@ export default function JoinRoomPage() {
     };
 
     return (
+
         <div className="page-container"
              style={{
                  backgroundImage: "url('/HomePage-Images/Background.jpg')",
                  backgroundSize: "cover",
              }}>
+
+            {/*Page Description text to speech*/}
+            {<AutomaticTextToSpeech speechText="Enter a room ID to join" />}
+
             <div className="content-container"> 
             <div className="title-container">
                 <h1 className="title-text">Enter a Room ID</h1>
