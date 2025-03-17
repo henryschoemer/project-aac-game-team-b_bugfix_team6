@@ -6,6 +6,12 @@ interface TextToSpeechCompletedStoryProps {
 
 // Text to speech phrases component
 const TextToSpeechCompletedStory = ({ text }) => {
+    text: string;
+}
+
+// Text to speech phrases component
+const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({ text }) => {
+    const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
 
     // Select voice

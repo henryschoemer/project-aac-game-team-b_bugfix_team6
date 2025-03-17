@@ -330,7 +330,7 @@ return (
                   {/*Call completedstory button and pass completedphrase map*/}
                   <CompletedStoryButton
                       index={completedPhrases.length - 1}
-                      completedPhrase={completedPhrases[completedPhrases.length - 1]}
+                      //completedPhrase={completedPhrases[completedPhrases.length - 1]}
                       completedPhrases={completedPhrases}
                   />
               </div>
