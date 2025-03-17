@@ -37,38 +37,6 @@ export const JoinButton: React.FC = () => {
     );
 };
 
-/*Back Button of profile page*/
-export const BackButton: React.FC = () => {
-    return (
-        <button className="button back-button">
-            <Image
-                src="/pics/backspace.svg"
-                alt="Backspace icon"
-                width={30}
-                height={30}
-                className="icon-spacing"
-            />
-            <span>Back</span>
-        </button>
-    );
-};
-
-/*Profile button*/
-export const ProfileButton: React.FC = () => {
-    return (
-        <button className="button profile-button">
-            <Image
-                src="/profile-icon.svg"
-                alt="profile icon"
-                width={30}
-                height={30}
-                className="icon-spacing"
-            />
-            <span>Profile</span>
-        </button>
-    );
-};
-
 /*TemporaryTestingGameButton*/
 /* This method will be removed when we implement the room hosting feature */
 export const TemporaryTestingGameButton: React.FC = () => {
