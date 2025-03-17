@@ -10,8 +10,8 @@ import useSound from "use-sound";
 export default function JoinRoomPage() {
     const [roomId, setRoomId] = useState("");
 
-    const confirmClick = '/sounds/confirm-click.mp3';
-    const [playConfirmClick]= useSound(confirmClick); // use sound hook
+    const joinRoomClick = '/sounds/joinroom-click.mp3';
+    const [playJoinRoomClick]= useSound(joinRoomClick); // use sound hook
 
     const handleJoinRoom = () => {
         if (!roomId) {
@@ -50,7 +50,7 @@ export default function JoinRoomPage() {
             <div className="button-container">
                 <button className="button create-room-button" onClick={() =>{
                     handleJoinRoom();
-                    playConfirmClick();
+                    playJoinRoomClick();
                 }}>
                     <span>Join Room</span>
                 </button>

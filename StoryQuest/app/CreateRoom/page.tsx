@@ -16,8 +16,8 @@ export default function CreateRoomPage() {
 
     const selectClick = '/sounds/select-click.mp3';
     const [playButtonClick]= useSound(selectClick); // use sound hook, play sound, has to be inside component
-    const confirmClick = '/sounds/confirm-click.mp3';
-    const [playConfirmClick]= useSound(confirmClick); // use sound hook
+    const createRoomClick = '/sounds/createroom-click.mp3';
+    const [playCreateRoomClick]= useSound(createRoomClick); // use sound hook
 
 
     {/*Handles case where user does not choose all settings*/}
@@ -108,7 +108,7 @@ export default function CreateRoomPage() {
                 <button className="button create-room-button"
                         onClick={() => {
                             handleCreateRoom();
-                            playConfirmClick();
+                            playCreateRoomClick();
                         }}>
                     <span>Create Room</span>
                 </button>
