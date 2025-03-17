@@ -37,6 +37,23 @@ export const JoinButton: React.FC = () => {
     );
 };
 
+/*Back Button - Used on Create Room Page */
+export const BackButton: React.FC = () => {
+    return (
+        <button className="button back-button">
+            <Image
+                src="/pics/backspace.svg"
+                alt="Backspace icon"
+                width={30}
+                height={30}
+                className="icon-spacing"
+            />
+            <span>Back</span>
+        </button>
+    );
+};
+
+
 /*TemporaryTestingGameButton*/
 /* This method will be removed when we implement the room hosting feature */
 export const TemporaryTestingGameButton: React.FC = () => {
