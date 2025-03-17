@@ -63,3 +63,14 @@ export const TemporaryTestingGameButton: React.FC = () => {
         </button>
     );
 };
+
+
+
+/* This method will be removed soon test */
+export const CompletionTestButton: React.FC = () => {
+    return (
+        <button className="button test-button">
+            <span>Completion TEst</span>
+        </button>
+    );
+};
