@@ -4,12 +4,21 @@ import React, { useState, useEffect } from "react";
 import Link from 'next/link';
 import { BackButton } from "../HomePage/HomePageButtons";
 import "./CreateRoomButtonStyles.css";
+import AutomaticTextToSpeech from "@/Components/AutomaticTextToSpeech";
+import useSound from "use-sound";
+
 
 
 export default function CreateRoomPage() {
     const [selectedStory, setSelectedStory] = useState<string | null>(null);
     const [numPlayers, setNumPlayers] = useState<number | null>(null);
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
+
+    const selectClick = '/sounds/select-click.mp3';
+    const [playButtonClick]= useSound(selectClick); // use sound hook, play sound, has to be inside component
+    const createRoomClick = '/sounds/createroom-click.mp3';
+    const [playCreateRoomClick]= useSound(createRoomClick); // use sound hook
+
 
     {/*Handles case where user does not choose all settings*/}
     const handleCreateRoom = () => {
@@ -31,6 +40,10 @@ export default function CreateRoomPage() {
                  backgroundImage: "url('/HomePage-Images/Background.jpg')",
                  backgroundSize: "cover",
              }}>
+
+            {/*Create room page description text to speech*/}
+            {<AutomaticTextToSpeech speechText="Please Select a story, Select number of players, Select difficulty, then click on create room" />}
+
             <div className="content-container"> 
             <div className="title-container">
                 <h1 className="title-text">Create a Room</h1>
@@ -42,11 +55,17 @@ export default function CreateRoomPage() {
                 <div className="button-container">
                     <button 
                         className={`button story-button ${selectedStory === "The Garden Adventure" ? "selected" : ""}`}
-                        onClick={() => handleStoryClick("The Garden Adventure")}>
+                        onClick={() => {
+                            handleStoryClick("The Garden Adventure");
+                            playButtonClick();
+                        }}>
                         <span>The Garden Adventure</span>
                     </button>
-                                    <button className={`button story-button ${selectedStory === "Walk in the Forest" ? "selected" : ""}`}
-                            onClick={() => setSelectedStory("Walk in the Forest")}>
+                    <button className={`button story-button ${selectedStory === "Walk in the Forest" ? "selected" : ""}`}
+                            onClick={() => {
+                                setSelectedStory("Walk in the Forest");
+                                playButtonClick();
+                            }}>
                         <span>Walk in the Forest</span>
                     </button>
                 </div>
@@ -58,7 +77,10 @@ export default function CreateRoomPage() {
                 <div className="button-container">
                     {[2, 3, 4].map((num) => (
                         <button key={num} className={`button player-button ${numPlayers === num ? "selected" : ""}`}
-                                onClick={() => setNumPlayers(num)}>
+                                onClick={() => {
+                                    setNumPlayers(num);
+                                    playButtonClick();
+                                }} >
                             <span>{num} Players</span>
                         </button>
                     ))}
@@ -71,7 +93,10 @@ export default function CreateRoomPage() {
                 <div className="button-container">
                     {["Easy", "Medium", "Hard"].map((level) => (
                         <button key={level} className={`button difficulty-button ${difficultyLevel === level ? "selected" : ""}`}
-                                onClick={() => setDifficultyLevel(level)}>
+                                onClick={() => {
+                                    setDifficultyLevel(level);
+                                    playButtonClick();
+                                }}>
                             <span>{level}</span>
                         </button>
                     ))}
@@ -80,7 +105,11 @@ export default function CreateRoomPage() {
 
             {/* Create Room Button */}
             <div className="button-container">
-                <button className="button create-room-button" onClick={handleCreateRoom}>
+                <button className="button create-room-button"
+                        onClick={() => {
+                            handleCreateRoom();
+                            playCreateRoomClick();
+                        }}>
                     <span>Create Room</span>
                 </button>
             </div>
