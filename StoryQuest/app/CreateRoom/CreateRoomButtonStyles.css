@@ -118,4 +118,117 @@
     .difficulty-button {
       width: 30%;
     }
+    .page-container {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .content-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        padding: 2rem;
+        width: 90%;
+        max-width: 800px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+      
+      .title-container {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      
+      .title-text {
+        font-size: 2.5rem;
+        color: #4a6baf;
+        font-weight: bold;
+      }
+      
+      /* Progress indicators */
+      .progress-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+      }
+      
+      .progress-bubble {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #e0e0e0;
+        color: #666;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 10px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border: 3px solid #ccc;
+      }
+      
+      .progress-bubble.active {
+        background-color: #4caf50;
+        color: white;
+        border-color: #2e7d32;
+      }
+      
+      /* Step container */
+      .step-container {
+        text-align: center;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .step-container h2 {
+        font-size: 1.8rem;
+        color: #4a6baf;
+        margin-bottom: 1.5rem;
+      }
+      
+      /* Big Button Styles */
+      .big-button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .big-button {
+        background-color: #f9f9f9;
+        border: 3px solid #ddd;
+        border-radius: 12px;
+        padding: 1rem;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        height: 80px;
+      }
+      
+      .big-button:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .story-button {
+        background-color: #e3f2fd;
+        border-color: #90caf9;
+      }
+      
+      .story-button:hover {
+        background-color: #bbdefb;
+      }
+      
+      .player-button {
+        background-color: #e8f5e9;
+        border-color: #a5d6a7;
+      }
   }
