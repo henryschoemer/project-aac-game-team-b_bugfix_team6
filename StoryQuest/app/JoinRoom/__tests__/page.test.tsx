@@ -1,3 +1,7 @@
+beforeAll(() => {
+    global.alert = jest.fn(); // Mock alert globally
+});
+
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import useSound from 'use-sound';
