@@ -48,20 +48,38 @@ export const JoinButton: React.FC = () => {
     );
 };
 
-/*Back Button - Used on Create Room Page */
+/*Back Button - Used on Create Room Page and join room page */
 export const BackButton: React.FC = () => {
     const [play]= useSound(backClick); // use sound hook, play sound
 
     return (
         <button className="button back-button" onClick={() => play()}>
             <Image
-                src="/pics/backspace.svg"
+                src="/backspace.svg"
                 alt="Backspace icon"
                 width={30}
                 height={30}
                 className="icon-spacing"
             />
             <span>Back</span>
+        </button>
+    );
+};
+
+/*Home Button - Used on Create Room Page */
+export const HomeButton: React.FC = () => {
+    const [play]= useSound(backClick); // use sound hook, play sound
+
+    return (
+        <button className="button home-button" onClick={() => play()}>
+            <Image
+                src="/home-icon.svg"
+                alt="Home page icon"
+                width={30}
+                height={30}
+                className="icon-spacing"
+            />
+            <span>Home</span>
         </button>
     );
 };

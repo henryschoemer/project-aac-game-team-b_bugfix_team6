@@ -14,8 +14,8 @@ export default function CreateRoomPage() {
     const [playCreateRoomClick] = useSound(createRoomClick); // use sound hook
     const selectOptionClick = '/sounds/select-click.mp3';
     const [playSelectOptionClick] = useSound(selectOptionClick); // use sound hook
-    const goBackCick = '/sounds/back-click.mp3';
-    const [playGoBackClick] = useSound(goBackCick);
+    const goBackClick = '/sounds/back-click.mp3';
+    const [playGoBackClick] = useSound(goBackClick);
 
     // Story Option Selection
     const [currentStep, setCurrentStep] = useState(1);
