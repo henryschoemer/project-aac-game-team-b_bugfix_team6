@@ -9,55 +9,13 @@
 
 .page-content-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     padding-top: 60px;
     height: 100%;
     width: 100%;
     overflow-y: auto;
-}
-
-.button-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.button-padding {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 45px;
-    border: none;
-    font-family: 'Slackey', sans-serif;
-    text-align: center;
-    font-size: 10px;
-    width: 25em;
-    max-width: 40em;
-    padding: 3em;
-    transition: all 0.4s;
-    cursor: pointer;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
-}
-
-.button-box {
-    border: 5px solid white;
-    border-radius: 45px;
-    display: inline-block;
-    margin: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.story-button {
-    background: linear-gradient(to right, #faa43c, #faa43c);
-    box-shadow: 0px 14px 56px -11px #faa43c;
 }
 
 /*Spacing between icon and text on the right*/
@@ -70,6 +28,9 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
+    filter: drop-shadow(3px 3px #edc12f) drop-shadow(3px -3px #edc12f)
+    drop-shadow(-1.5px 1.5px #edc12f) drop-shadow(-1.5px -1.5px #edc12f);
+
 }
 
 .header-container{

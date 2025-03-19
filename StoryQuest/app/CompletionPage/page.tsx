@@ -1,6 +1,7 @@
 import "./CompletionPageStyling.css";
 import React from 'react';
 import Image from "next/image";
+import "@/CreateRoom/CreateRoomButtonStyles.css"
 
 export default function Home() {
     return (
@@ -11,8 +12,7 @@ export default function Home() {
              }}>
             <div className="page-content-container">
                 <div className="flex flex-col items-center p-4 w-full max-w-md mx-auto">
-                    <div
-                        className="flex flex-col w-full mt-6 space-y-4 bg-white shadow-lg rounded-lg p-6 border border-gray-300"> {/*creates the white card background*/}
+                    <div className="flex flex-col w-full mt-6 space-y-4 bg-white shadow-lg rounded-lg p-6 border border-gray-300"> {/*creates the white card background*/}
 
                         <div className="star-container">
                             <Image
@@ -46,23 +46,18 @@ export default function Home() {
                             <h1>Great Work!</h1>
                         </div>
 
-                        <div className="button-container">
-                            <div className="button-padding">
-                                <div className="button-box">
-                                    <button className="story-button">Retry</button>
-                                </div>
-                            </div>
-
-                            <div className="button-padding">
-                                <div className="button-box">
-                                    <button className="story-button">Pick a new story!</button>
-                                </div>
-                            </div>
-
+                        <div>
+                            <button className="story-button">Pick a new story!</button>
                         </div>
+
+                        <div>
+                            <button className="story-button">End Game</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
-    );
+)
+    ;
 }

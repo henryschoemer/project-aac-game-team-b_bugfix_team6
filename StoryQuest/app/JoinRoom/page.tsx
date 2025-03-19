@@ -30,7 +30,7 @@ export default function JoinRoomPage() {
              }}>
 
             {/*join room page Description text to speech*/}
-            {<AutomaticTextToSpeech speechText="Please Enter a room ID, then click on join room" />}
+            {<AutomaticTextToSpeech speechText="Please Enter a room ID" />}
 
             <div className="content-container"> 
             <div className="title-container">
