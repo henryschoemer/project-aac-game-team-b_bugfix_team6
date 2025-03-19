@@ -4,6 +4,7 @@ interface TextToSpeechCompletedStoryProps {
     text: string;
 }
 
+
 // Text to speech phrases component
 const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({ text }) => {
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
@@ -33,23 +34,23 @@ const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({
                 setSelectedVoice(voice); // Save voice
             };
 
-            synth.onvoiceschanged = handleVoicesChanged; // Event listener for synth
+            synth.addEventListener("voiceschanged", handleVoicesChanged); // Synth Event listener
             handleVoicesChanged();
 
             // Cleanup on component unmount and remove event listener
             return () => {
-                synth.onvoiceschanged = null;
+                synth.removeEventListener("voiceschanged", handleVoicesChanged);
             };
         }
     }, []);
 
+    // Text to speech
     useEffect(() => {
         if (typeof window !== "undefined" && window.speechSynthesis && selectedVoice) {
             const synth = window.speechSynthesis;
 
-            if (text && selectedVoice) {
+            if (text) {
                 const u = new SpeechSynthesisUtterance(text);
-                setUtterance(u);
 
                 // Set the selected voice
                 u.voice = selectedVoice;
