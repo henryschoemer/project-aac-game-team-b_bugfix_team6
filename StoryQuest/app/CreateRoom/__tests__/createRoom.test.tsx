@@ -27,8 +27,8 @@ describe("CreateRoomPage", () => {
         expect(screen.queryByText("Pick How Challenging")).not.toBeInTheDocument();
     });
 
-    test("navigates through all steps and creates a room", () => {
-        console.log = jest.fn(); // Mock console.log
+    test("navigates through all steps and creates a room", async () => {
+        jest.spyOn(console, "log").mockImplementation(() => {});
         
         render(<CreateRoomPage />);
         
@@ -57,6 +57,8 @@ describe("CreateRoomPage", () => {
         
         // Click create room button 
         fireEvent.click(screen.getByText("Start Adventure!"));
+
+        await new Promise((resolve) => setTimeout(resolve, 100));
         
         // Expect console.log to be called with correct data
         expect(console.log).toHaveBeenCalledWith("Room Created:", {
