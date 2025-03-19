@@ -29,7 +29,7 @@ export default function JoinRoomPage() {
 
             if (roomSnap.exists()) {
                 alert(`Joining Room: ${roomId}`);
-                router.push(`/room/${roomId}`); // Redirect to room page
+                //router.push(`/room/${roomId}`); // Redirect to room page
             } else {
                 alert("Room not found. Please check the ID.");
             }
