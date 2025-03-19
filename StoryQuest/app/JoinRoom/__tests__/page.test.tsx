@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import useSound from 'use-sound';
-import JoinRoomPage from "@/JoinRoom/page";
+import JoinRoomPage from "@/pages/page";
 
 // mock use-sound
 jest.mock('use-sound', () => ({

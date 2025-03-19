@@ -36,7 +36,7 @@ export default function Home() {
 
                 <div className="button-padding">
                     <div className="button-box">
-                        <Link href="/JoinRoom">
+                        <Link href="/pages">
                             <JoinButton/>
                         </Link>
                     </div>
