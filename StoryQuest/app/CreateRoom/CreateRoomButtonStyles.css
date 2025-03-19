@@ -1,0 +1,121 @@
+.player-button:hover {
+    background-color: #c8e6c9;
+  }
+  
+  .player-icons {
+    display: flex;
+  }
+  
+  .player-icon {
+    font-size: 1.5rem;
+    margin: 0 2px;
+  }
+  
+  .difficulty-button {
+    height: 70px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .difficulty-button.easy {
+    background-color: #e8f5e9;
+    border-color: #81c784;
+  }
+  
+  .difficulty-button.medium {
+    background-color: #fff3e0;
+    border-color: #ffb74d;
+  }
+  
+  .difficulty-button.hard {
+    background-color: #ffebee;
+    border-color: #ef9a9a;
+  }
+  
+  .difficulty-emoji {
+    font-size: 1.8rem;
+    margin-right: 8px;
+  }
+  
+  .button-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+  
+  /* Back step button */
+  .back-step-button {
+    background-color: #f5f5f5;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 16px;
+    margin-top: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .back-step-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Summary styles */
+  .summary-container {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .summary-item {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+  }
+  
+  /* Create room button */
+  .create-room-button {
+    background-color: #4caf50;
+    border-color: #2e7d32;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+  }
+  
+  .create-room-button:hover {
+    background-color: #43a047;
+  }
+  
+  .create-emoji {
+    font-size: 1.8rem;
+    margin-right: 8px;
+  }
+  
+  .final-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .home-button-container {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  /* Responsive adjustments */
+  @media (min-width: 768px) {
+    .big-button-container {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .big-button {
+      width: 45%;
+    }
+    
+    .difficulty-button {
+      width: 30%;
+    }
+  }
