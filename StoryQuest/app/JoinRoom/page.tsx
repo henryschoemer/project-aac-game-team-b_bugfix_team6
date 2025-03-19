@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from 'next/link';
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebaseControls/firebaseConfig";
-import { useRouter } from "next/navigation";
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { BackButton } from "../HomePage/HomePageButtons";
 import AutomaticTextToSpeech from "@/Components/AutomaticTextToSpeech";
@@ -12,7 +11,6 @@ import useSound from "use-sound";
 
 export default function JoinRoomPage() {
     const [roomId, setRoomId] = useState("");
-    const router = useRouter();
 
     const joinRoomClick = '/sounds/joinroom-click.mp3';
     const [playJoinRoomClick]= useSound(joinRoomClick); // use sound hook
@@ -21,21 +19,6 @@ export default function JoinRoomPage() {
         if (!roomId) {
             alert("Please enter a room ID.");
             return;
-        }
-
-        try {
-            const roomRef = doc(db, "rooms", roomId);
-            const roomSnap = await getDoc(roomRef);
-
-            if (roomSnap.exists()) {
-                alert(`Joining Room: ${roomId}`);
-                //router.push(`/room/${roomId}`); // Redirect to room page
-            } else {
-                alert("Room not found. Please check the ID.");
-            }
-        } catch (error) {
-            console.error("Error joining room:", error);
-            alert("Failed to join room.");
         }
     
         alert("Room Joined.");
