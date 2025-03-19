@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from 'next/link';
 import "../CreateRoom/CreateRoomButtonStyles.css";
-import { BackButton } from "../HomePage/HomePageButtons";
+import { BackButton} from "../HomePage/HomePageButtons";
 import AutomaticTextToSpeech from "@/Components/AutomaticTextToSpeech";
 import useSound from "use-sound";
 
@@ -38,6 +38,8 @@ export default function JoinRoomPage() {
             </div>
 
             {/* Room ID Input Field */}
+            <div className="Join-container">
+            <div className="input-container">   
             <input
                 type="text"
                 value={roomId}
@@ -45,14 +47,16 @@ export default function JoinRoomPage() {
                 placeholder="Enter Room ID"
                 className="room-id-input"
             />
+            </div>   
+            </div>
 
             {/* Join Room Button */}
             <div className="button-container">
-                <button className="button create-room-button" onClick={() =>{
+                <button className="button join-button" onClick={() =>{
                     handleJoinRoom();
                     playJoinRoomClick();
                 }}>
-                    <span>Join Room</span>
+                    <span>Join</span>
                 </button>
             </div>
 
