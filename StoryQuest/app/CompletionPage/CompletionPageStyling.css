@@ -7,6 +7,12 @@
     width: 100vw;
 }
 
+.text-color{
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+}
+
 /*Spacing between icon and text on the right*/
 .icon-spacing {
     margin-right: 10px;
@@ -17,10 +23,12 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    filter: drop-shadow(3px 3px #edc12f) drop-shadow(3px -3px #edc12f)
-    drop-shadow(-1.5px 1.5px #edc12f) drop-shadow(-1.5px -1.5px #edc12f);
     padding-bottom: 15px;
+    filter:
+            drop-shadow(0 0 4px #edc12f) /* Outer yellow border */
+            drop-shadow(0 0 2px white); /* Inner white border */
 }
+
 
 .align-container{
     display: flex;
@@ -29,11 +37,18 @@
     justify-content: center;
 }
 
-
+/* setup room button */
+.setup-room-button {
+    background-color: #4caf50;
+    border-color: #2e7d32;
+    color: white;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+}
 
 /* HTML: <div class="ribbon">Your text content</div> */
 .ribbon {
-    font-size: 50px;
+    font-size: 35px;
     font-weight: bold;
     color: #fff;
 }
@@ -43,7 +58,7 @@
     --c: .8em;  /* the cutout part */
 
     padding: 0 calc(var(--s) + .5em) var(--d);
-    line-height: 1.8;
+    line-height: 2.5;
     background:
             conic-gradient(at left  var(--s) bottom var(--d),
             #0000 25%,#0008 0 37.5%,#0004 0) 0   /50% 100% no-repeat,

@@ -58,30 +58,31 @@ export default function Home() {
 
             <div className="content-container">
                 <div className="align-container">
-                    <div className="ribbon">Story Completed</div>
                     {/* Title*/}
+                    <div className="ribbon">Story Completed</div>
+                    <h1 className="text-color">😁 Great Teamwork! 😎 </h1>
 
 
                     <div className="star-container"> {/* Stars*/}
                         <Image
                             src="/star-icon.svg"
                             alt="Star icon"
-                            width={100}
-                            height={100}
+                            width={110}
+                            height={110}
                             className="icon-spacing"
                         />
                         <Image
                             src="/star-icon.svg"
                             alt="Star icon"
-                            width={100}
-                            height={100}
+                            width={150}
+                            height={150}
                             className="icon-spacing"
                         />
                         <Image
                             src="/star-icon.svg"
                             alt="Star icon"
-                            width={100}
-                            height={100}
+                            width={110}
+                            height={110}
                             className="icon-spacing"
                         />
                     </div>
@@ -91,7 +92,14 @@ export default function Home() {
                 </div>
                 {!showStoryOptions && (
                     <div className="button-container align-container">
-                        <button className="button create-room-button" onClick={() => setShowStoryOptions(true)}>
+                        <button className="button setup-room-button" onClick={() => setShowStoryOptions(true)}>
+                            <Image
+                                src="/play-icon.svg"
+                                alt="Play icon"
+                                width={30}
+                                height={30}
+                                className="icon-spacing"
+                            />
                             <span>Play Again</span>
                         </button>
 
@@ -240,7 +248,7 @@ export default function Home() {
 
                         {/* Home Button - Always visible */}
                         {((currentStep !== 1 && currentStep !== 3) || !showStoryOptions) ? null : (
-                            <div className="home-button-container">
+                            <div className="home-button-container align-container">
                                 <Link href="/">
                                     <HomeButton/>
                                 </Link>

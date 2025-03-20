@@ -16,8 +16,38 @@
     transition: all 0.4s;
     cursor: pointer;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
-
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease-out;
 }
+
+.button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px; /* Width of the sliding highlight */
+    height: 100%;
+    transform: translateX(12px) rotate(12deg); /* Initial position and rotation */
+    transition: all 1s ease-out; /* Smooth transition for the sliding effect */
+    opacity: 0.5; /* Semi-transparent effect */
+}
+
+/* Hover effect for the pseudo-element */
+.button:hover::before {
+    transform: translateX(-40px) rotate(12deg); /* Move the highlight to the left */
+    opacity: 0; /* Fade out the highlight */
+}
+
+/* Text styling inside the button */
+.button span {
+    position: relative; /* Ensures text stays above the pseudo-element */
+    z-index: 1; /* Ensures text is on top */
+    font-size: 2.5em;
+    line-height: 1;
+    transition: 0.4s;
+}
+
 
 
 /*Color scheme of the join button*/
@@ -45,8 +75,6 @@
     background: linear-gradient(to right, #f20000, #f20000);
     box-shadow: 0px 14px 56px -11px #f20000;
 }
-
-
 
 .button span {
     cursor: pointer;
@@ -95,12 +123,20 @@
     font-size: 22px;
 }
 
-
-.button:hover span {
+/* Apply hover effect only to buttons with span:after */
+.join-button:hover span,
+.create-button:hover span,
+.test-button:hover span,
+.home-button:hover span,
+.profile-button:hover span {
     padding-right: 3.80em;
 }
 
-.button:hover span:after {
+.join-button:hover span:after,
+.create-button:hover span:after,
+.test-button:hover span:after,
+.home-button:hover span:after,
+.profile-button:hover span:after {
     opacity: 4;
     right: 0;
 }
