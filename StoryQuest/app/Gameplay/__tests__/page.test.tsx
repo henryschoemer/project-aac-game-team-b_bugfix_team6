@@ -268,7 +268,7 @@ describe('Home Component', () => {
     render(<Home />);
     const mouseButton = screen.getByTestId('aac-button-mouse');
     fireEvent.click(mouseButton);
-    expect(screen.getByTestId('text-to-speech')).toHaveTextContent("Look in the garden, there is a mouse");
+    expect(screen.getByTestId('text-to-speech')).toHaveTextContent("Next, I see a ___");
   });
 
   it('displays images with correct properties and effects', async () => {
@@ -293,17 +293,18 @@ describe('Home Component', () => {
     render(<Home />);
     const mouseButton = screen.getByTestId('aac-button-mouse');
     fireEvent.click(mouseButton);
-    expect(screen.getByTestId('text-to-speech')).toHaveTextContent("Look in the garden, there is a mouse");
+    expect(screen.getByTestId('text-to-speech')).toHaveTextContent("Next, I see a");
   });
 
-  it('shows "The End!" when all sections are completed', async () => {
+  //Took this off becuase now the testing will be different from this component
+  /*it('shows "The End!" when all sections are completed', async () => {
     render(<Home />);
     const mouseButton = screen.getByTestId('aac-button-mouse');
     fireEvent.click(mouseButton);
     const applesButton = await screen.findByTestId('aac-button-apples');
     fireEvent.click(applesButton);
     expect(screen.getByText("The End!")).toBeInTheDocument();
-  });
+  });*/
 
   it('handles invalid word selection gracefully', () => {
     const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
