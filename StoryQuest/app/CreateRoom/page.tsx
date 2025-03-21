@@ -3,9 +3,13 @@
 import React, {useState} from "react";
 import Link from 'next/link';
 import {BackButton} from "../HomePage/HomePageButtons";
+import { BackButton } from "../HomePage/HomePageButtons";
+import { db } from "../../firebaseControls/firebaseConfig"; // Import Firestore
+import { collection, addDoc } from "firebase/firestore";
 import "./CreateRoomButtonStyles.css";
 import useSound from "use-sound";
 import AutomaticTextToSpeech from "@/Components/AutomaticTextToSpeech";
+
 
 
 export default function CreateRoomPage() {
@@ -22,6 +26,7 @@ export default function CreateRoomPage() {
     const [selectedStory, setSelectedStory] = useState<string | null>(null);
     const [numPlayers, setNumPlayers] = useState<number | null>(null);
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const handleStoryClick = (story: string) => {
         setSelectedStory(story);
@@ -40,6 +45,24 @@ export default function CreateRoomPage() {
 
     const handleCreateRoom = () => {
         console.log("Room Created:", {selectedStory, numPlayers, difficultyLevel});
+    const handleCreateRoom = async () => {
+        try {
+            // Add room data to Firestore
+            const docRef = await addDoc(collection(db, "rooms"), {
+                story: selectedStory,
+                numPlayers: numPlayers,
+                difficulty: difficultyLevel,
+            });
+
+            console.log("Room Created with ID:", docRef.id);
+            alert(`Room Created! Room ID: ${docRef.id}`);
+        } catch (error) {
+            console.error("Error creating room:", error);
+            alert("Failed to create room.");
+        }
+
+        setLoading(false);
+        console.log("Room Created:", { selectedStory, numPlayers, difficultyLevel });
         // Here you would add your room creation logic
     };
 

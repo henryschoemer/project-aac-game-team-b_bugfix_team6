@@ -218,7 +218,7 @@ export default function Home() {
                {completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase}
            </p>
            */}
-           <TextToSpeech text={completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase} />
+           <TextToSpeech text={phrase} />
       </div>
 
         {/* Right Panel: Game Scene */}

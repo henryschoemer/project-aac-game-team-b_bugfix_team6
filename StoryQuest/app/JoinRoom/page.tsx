@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Link from 'next/link';
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebaseControls/firebaseConfig";
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { BackButton } from "../HomePage/HomePageButtons";
 import AutomaticTextToSpeech from "@/Components/AutomaticTextToSpeech";
@@ -13,11 +15,12 @@ export default function JoinRoomPage() {
     const joinRoomClick = '/sounds/joinroom-click.mp3';
     const [playJoinRoomClick]= useSound(joinRoomClick); // use sound hook
 
-    const handleJoinRoom = () => {
+    const handleJoinRoom = async () => {
         if (!roomId) {
             alert("Please enter a room ID.");
             return;
         }
+    
         alert("Room Joined.");
     };
 
