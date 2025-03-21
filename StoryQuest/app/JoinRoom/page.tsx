@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Link from 'next/link';
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebaseControls/firebaseConfig";
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { BackButton } from "../HomePage/HomePageButtons";
 import AutomaticTextToSpeech from "@/Components/AutomaticTextToSpeech";
@@ -13,11 +15,12 @@ export default function JoinRoomPage() {
     const joinRoomClick = '/sounds/joinroom-click.mp3';
     const [playJoinRoomClick]= useSound(joinRoomClick); // use sound hook
 
-    const handleJoinRoom = () => {
+    const handleJoinRoom = async () => {
         if (!roomId) {
             alert("Please enter a room ID.");
             return;
         }
+    
         alert("Room Joined.");
     };
 
@@ -32,39 +35,39 @@ export default function JoinRoomPage() {
             {/*join room page Description text to speech*/}
             {<AutomaticTextToSpeech speechText="Please Enter a room ID" />}
 
-            <div className="content-container"> 
-            <div className="title-container">
-                <h1 className="title-text">Enter a Room ID</h1>
-            </div>
+            <div className="content-container">
+                <div className="title-container">
+                    <h1 className="title-text">Enter a Room ID</h1>
+                </div>
 
-            {/* Room ID Input Field */}
-            <input
-                type="text"
-                value={roomId}
-                onChange={(e) => setRoomId(e.target.value)}
-                placeholder="Enter Room ID"
-                className="room-id-input"
-            />
+                {/* Room ID Input Field */}
+                <input
+                    type="text"
+                    value={roomId}
+                    onChange={(e) => setRoomId(e.target.value)}
+                    placeholder="Enter Room ID"
+                    className="room-id-input"
+                />
 
-            {/* Join Room Button */}
-            <div className="button-container">
-                <button className="button create-room-button" onClick={() =>{
-                    handleJoinRoom();
-                    playJoinRoomClick();
-                }}>
-                    <span>Join Room</span>
-                </button>
-            </div>
+                {/* Join Room Button */}
+                <div className="button-container">
+                    <button className="button create-room-button" onClick={() =>{
+                        handleJoinRoom();
+                        playJoinRoomClick();
+                    }}>
+                        <span>Join Room</span>
+                    </button>
+                </div>
 
-            {/* Back Button */}
-            <div className="button-container">
-                <div className="button-box">
-                <Link href= "/">
-                    <BackButton />
-                </Link>
+                {/* Back Button */}
+                <div className="button-container">
+                    <div className="button-box">
+                        <Link href= "/">
+                            <BackButton />
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     );
 };

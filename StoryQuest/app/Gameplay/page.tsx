@@ -193,7 +193,7 @@ export default function Home() {
 
   return (
     <div className="flex w-screen h-screen">
-      
+
       {/* Left Panel: AAC Tablet */}
        <div className="w-1/3 bg-[hsl(45,93%,83%)] p-8 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e] transform transition duration-500 hover:scale-105" >
          <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
@@ -219,9 +219,9 @@ export default function Home() {
               ))}
 
             </select>
-           <AACKeyboard 
-           onSelect={handleAACSelect} 
-           symbols={currentStory?.sections[currentSectionIndex] 
+           <AACKeyboard
+           onSelect={handleAACSelect}
+           symbols={currentStory?.sections[currentSectionIndex]
            ? Object.entries(currentStory.sections[currentSectionIndex].words).map(
            ([word, data]) => ({
            word: word,
@@ -234,15 +234,16 @@ export default function Home() {
        buttonColor={currentStory?.colorTheme.buttonColor}
          />
         </h2>
-        
+
         {/*Hear Phrase button */}
            {/*
            <p className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
                {completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase}
            </p>
            */}
-           <TextToSpeech text={completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase} />
-       </div>
+           <TextToSpeech text={phrase} />
+      </div>
+
 
         {/* Right Panel: Game Scene */}
       <div
@@ -275,55 +276,55 @@ export default function Home() {
 if (effect === 'spin') {
   effectComponent = (
     <SpinEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </SpinEffect>
   );
 } else if (effect === 'pulse') {
   effectComponent = (
     <PulseEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </PulseEffect>
   );
 } else if (effect === 'fade') {
   effectComponent = (
     <FadeEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </FadeEffect>
   );
 } else if (effect === 'sideToSide') {
   effectComponent = (
     <SideToSideEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </SideToSideEffect>
   );
 } else if (effect === 'upAndDown') {
     effectComponent = (
       <UpAndDownEffect>
-        <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+        <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
       </UpAndDownEffect>
     );
 
 } else if (effect === 'scaleUp') {
   effectComponent = (
     <ScaleUpEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </ScaleUpEffect>
   );
 } else if (effect === 'bounce') {
   effectComponent = (
     <BounceEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </BounceEffect>
   );
 }else if (effect === 'flip'){
     effectComponent = (
         <FlipEffect>
-            <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+            <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
         </FlipEffect>
     );
 } else {
   effectComponent = (
-    <motion.img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+    <motion.img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
   );
 }
 
