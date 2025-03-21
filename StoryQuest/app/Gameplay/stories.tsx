@@ -4,6 +4,8 @@ export interface StorySection {
   words: {
     [word: string]: {
       image: string;
+      walkCycleImages?: [string, string]; // For walking animations (2 images)
+      walkCycleDuration?: number;
       x: number;
       y: number;
       effect?: 'spin' | 'pulse' | 'fade' | 'bounce'|'flip'|'sideToSide'|'upAndDown'|'scaleUp'|'none'; // Add effect property
@@ -47,7 +49,7 @@ const stories: Story[] = [
         phrase: "And near the flowers, I see a ___",  // New sentence
         words: {
           bee: { image: "bee.svg", x: 70, y: 50, effect: 'pulse' },
-          butterfly: { image: "butterfly.svg", x: 65, y: 45, effect: 'sideToSide' },
+          butterfly: { image: "butterfly.svg",walkCycleImages:["butterfly1.svg","butterfly2.svg"],walkCycleDuration:0.3,x: 65, y: 45, effect: 'sideToSide' },
           basket: { image: "basket.svg", x: 70, y: 65, effect: 'fade' },
           bear: { image: "bear.svg", x: 70, y: 57, effect: 'flip' },
           bird: { image: "bird.svg", x: 70, y: 55, effect: 'flip' },
