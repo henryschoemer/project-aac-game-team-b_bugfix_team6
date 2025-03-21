@@ -1,12 +1,12 @@
 "use client";
 
 import "./CompletionPageStyling.css";
-import React, { useState } from "react";
+import React, {useState} from "react";
 import Image from "next/image";
 import "@/CreateRoom/CreateRoomButtonStyles.css";
 import useSound from "use-sound";
 import Link from "next/link";
-import { HomeButton } from "@/HomePage/HomePageButtons";
+import {HomeButton} from "@/HomePage/HomePageButtons";
 
 export default function Home() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -36,7 +36,7 @@ export default function Home() {
 
     // Using the same room session, so number of players does not need to be updated
     const handleSetNewStory = () => {
-        console.log("Room updated with new story:", { selectedStory });
+        console.log("Room updated with new story:", {selectedStory});
         // Here you would add your room story update logic
     };
 
@@ -60,57 +60,57 @@ export default function Home() {
                 {!showStoryOptions && (
                     <>
                         <div className="align-container">
-                        {/* Title */}
-                        <div className="ribbon">Story Completed</div>
-                        <h1 className="text-color">😁 Great Teamwork! 😎</h1>
+                            {/* Title */}
+                            <div className="ribbon">Story Completed</div>
+                            <h1 className="text-color">😁 Great Teamwork! 😎</h1>
 
-                        {/* Stars */}
-                        <div className="star-container">
-                            <Image
-                                src="/star-icon.svg"
-                                alt="Star icon"
-                                width={110}
-                                height={110}
-                                className="icon-spacing"
-                            />
-                            <Image
-                                src="/star-icon.svg"
-                                alt="Star icon"
-                                width={150}
-                                height={150}
-                                className="icon-spacing"
-                            />
-                            <Image
-                                src="/star-icon.svg"
-                                alt="Star icon"
-                                width={110}
-                                height={110}
-                                className="icon-spacing"
-                            />
-                        </div>
-
-                        {/* Buttons */}
-                        <div className="button-container">
-                            <button
-                                className="button setup-room-button"
-                                onClick={() => setShowStoryOptions(true)}
-                            >
+                            {/* Stars */}
+                            <div className="star-container">
                                 <Image
-                                    src="/play-icon.svg"
-                                    alt="Play icon"
-                                    width={30}
-                                    height={30}
+                                    src="/star-icon.svg"
+                                    alt="Star icon"
+                                    width={110}
+                                    height={110}
                                     className="icon-spacing"
                                 />
-                                <span>Play Again</span>
-                            </button>
-
-                            <div className="home-button-container">
-                                <Link href="/">
-                                    <HomeButton />
-                                </Link>
+                                <Image
+                                    src="/star-icon.svg"
+                                    alt="Star icon"
+                                    width={150}
+                                    height={150}
+                                    className="icon-spacing"
+                                />
+                                <Image
+                                    src="/star-icon.svg"
+                                    alt="Star icon"
+                                    width={110}
+                                    height={110}
+                                    className="icon-spacing"
+                                />
                             </div>
-                        </div>
+
+                            {/* Buttons */}
+                            <div className="button-container">
+                                <button
+                                    className="button setup-room-button"
+                                    onClick={() => setShowStoryOptions(true)}
+                                >
+                                    <Image
+                                        src="/play-icon.svg"
+                                        alt="Play icon"
+                                        width={30}
+                                        height={30}
+                                        className="icon-spacing"
+                                    />
+                                    <span>Play Again</span>
+                                </button>
+
+                                <div className="home-button-container">
+                                    <Link href="/">
+                                        <HomeButton/>
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
                     </>
                 )}
@@ -259,7 +259,7 @@ export default function Home() {
                         {(currentStep !== 1 && currentStep !== 3) || !showStoryOptions ? null : (
                             <div className="home-button-container align-container">
                                 <Link href="/">
-                                    <HomeButton />
+                                    <HomeButton/>
                                 </Link>
                             </div>
                         )}

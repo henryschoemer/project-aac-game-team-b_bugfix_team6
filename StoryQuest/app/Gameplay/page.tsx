@@ -20,6 +20,9 @@ import TextToSpeech from "../Components/TextToSpeech";
 import CompletedStoryButton from "@/Components/CompletedStoryButton";
 import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
+import ContinuePage from "../ContinuePage/page.tsx";
+import "../CompletionPage/CompletionPageStyling.css";
+
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -55,6 +58,7 @@ export default function Home() {
   const [completedImages, setCompletedImages] = useState<{ src: string; alt: string; x: number; y: number }[]>([]);
   const [currentImage, setCurrentImage] = useState<{ src: string; alt: string; x: number; y: number } | null>(null);
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
+  const [storyCompleted, setStoryCompleted] = useState(false); // Used to toggle continue overlay
   const soundUrl = '/sounds/aac_audios.mp3';
   const [play] = useSound(soundUrl, {
     sprite: {
@@ -131,7 +135,15 @@ export default function Home() {
      }
    };
 
-  const handleAddImage = () => {
+  // now just need to check when text to speech is done
+    useEffect(() => {
+        if (phrase === "The End!") {
+            setStoryCompleted(true);
+        }
+    }, [phrase]);
+
+
+    const handleAddImage = () => {
     if (userInput.trim() !== "" && currentImage && currentStory) {
       const newPhrase = phrase.replace("___", userInput);
 
@@ -334,7 +346,13 @@ return (
                       completedPhrases={completedPhrases}
                   />
               </div>
-          )}
+              )}
+          {storyCompleted && (
+              <div className="overlay">
+                  <ContinuePage/>
+              </div>
+          )
+          }
 
         {/* Current Phrase and Images */}
         <p className="mb-2 absolute" style={{ color: "black" }}>

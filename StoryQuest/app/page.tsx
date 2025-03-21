@@ -56,7 +56,7 @@ export default function Home() {
 
                 <div className="button-padding">
                     <div className="button-box">
-                        <Link href="/Continue">
+                        <Link href="/ContinuePage">
                             <CompletionTestButton/>
                         </Link>
                     </div>
