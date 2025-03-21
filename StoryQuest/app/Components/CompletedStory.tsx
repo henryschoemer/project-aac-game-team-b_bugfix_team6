@@ -4,10 +4,11 @@ import TextToSpeechCompletedStory from "@/Components/TextToSpeechCompletedStory"
 interface TextToSpeechCompletedStoryProps {
     index: number;
     completedPhrases: string[];
+    onComplete: () => void; // when text to speech is done
 }
 
 {/*Button that text to speech all lines of the story*/}
-const CompletedStoryButton: React.FC<TextToSpeechCompletedStoryProps> =({index, completedPhrases}) => {
+const CompletedStory: React.FC<TextToSpeechCompletedStoryProps> =({index, completedPhrases, onComplete}) => {
     const isLastPhrase = index === completedPhrases.length - 1; // check story is complete
     if (!isLastPhrase) return null; // story is not complete yet
 
@@ -17,7 +18,8 @@ const CompletedStoryButton: React.FC<TextToSpeechCompletedStoryProps> =({index, 
     const playStory = () => {
         //console.log("Button clicked!");
         return Array.from(mapCopy.values()).map((phrase, index) => (
-            <TextToSpeechCompletedStory key={index} text={phrase} />
+            <TextToSpeechCompletedStory key={index} text={phrase} onComplete={index === completedPhrases.length - 1 ? onComplete : undefined}
+            />
         ));
     };
 
@@ -26,4 +28,4 @@ const CompletedStoryButton: React.FC<TextToSpeechCompletedStoryProps> =({index, 
     );
 
 }
-export default CompletedStoryButton;
+export default CompletedStory;

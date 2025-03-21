@@ -17,11 +17,10 @@ import stories, { Story, StorySection } from "./stories";//import the stories in
 import AACKeyboard from "../Components/AACKeyboard";
 import useSound from 'use-sound';
 import TextToSpeech from "../Components/TextToSpeech";
-import CompletedStoryButton from "@/Components/CompletedStoryButton";
+import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
 import ContinuePage from "../ContinuePage/page.tsx";
-import "../CompletionPage/CompletionPageStyling.css";
 
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
@@ -59,7 +58,8 @@ export default function Home() {
   const [currentImage, setCurrentImage] = useState<{ src: string; alt: string; x: number; y: number } | null>(null);
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used to toggle continue overlay
-  const soundUrl = '/sounds/aac_audios.mp3';
+  const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
+    const soundUrl = '/sounds/aac_audios.mp3';
   const [play] = useSound(soundUrl, {
     sprite: {
         basket: [0, 650],
@@ -135,13 +135,24 @@ export default function Home() {
      }
    };
 
-  // now just need to check when text to speech is done
+    // Delay showContinuePage by a few seconds
     useEffect(() => {
-        if (phrase === "The End!") {
-            setStoryCompleted(true);
-        }
-    }, [phrase]);
+        let timeoutId: NodeJS.Timeout;
 
+        if (storyCompleted) {
+            // 3 sec delay
+            timeoutId = setTimeout(() => {
+                setShowOverlay(true); // Update ShowContinueOverlay
+            }, 5000);
+        }
+
+        // Cleanup the timeout if the component unmounts
+        return () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+        };
+    }, [storyCompleted]);
 
     const handleAddImage = () => {
     if (userInput.trim() !== "" && currentImage && currentStory) {
@@ -179,6 +190,7 @@ export default function Home() {
     playIndividualIconSounds(word)
     handleWordSelect(word);
   };
+
 
   return (
     <div className="flex w-screen h-screen">
@@ -231,7 +243,7 @@ export default function Home() {
            </p>
            */}
            <TextToSpeech text={completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase} />
-      </div>
+       </div>
 
         {/* Right Panel: Game Scene */}
       <div
@@ -340,14 +352,18 @@ return (
           {phrase === "The End!" && (
               <div>
                   {/*Call completedstory button and pass completedphrase map*/}
-                  <CompletedStoryButton
+                  <CompletedStory
                       index={completedPhrases.length - 1}
                       //completedPhrase={completedPhrases[completedPhrases.length - 1]}
                       completedPhrases={completedPhrases}
-                  />
+                      onComplete={() => {
+                          console.log("Gameplay: Story is completed!");
+                          setStoryCompleted(true); // Update state when completed text to speech is done
+                      }}
+                      />
               </div>
               )}
-          {storyCompleted && (
+          {showOverlay && (
               <div className="overlay">
                   <ContinuePage/>
               </div>
