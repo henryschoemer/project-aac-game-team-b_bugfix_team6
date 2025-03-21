@@ -132,16 +132,9 @@ const TextToSpeech: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd }) => {
                 aria-label={isPaused ? "Resume speech" : "Play speech"}
                 className="px-4 py-2 bg-green-500 text-white rounded"
             >
-                {isPaused ? "Resume ⏯" : "Play ⏵"}
+                Play ⏵
             </button>
-            <button
-                onClick={handlePause}
-                aria-label="Pause speech"
-                className="px-4 py-2 bg-yellow-500 text-white rounded"
-                disabled={!utterance || isPaused} // Disable if no utterance or already paused
-            >
-                Pause ⏸
-            </button>
+           
             <button
                 onClick={handleStop}
                 aria-label="Stop speech"
