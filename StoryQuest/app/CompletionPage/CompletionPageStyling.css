@@ -53,9 +53,9 @@
     color: #fff;
 }
 .ribbon {
-    --s: 1.8em; /* the ribbon size */
-    --d: .8em;  /* the depth */
-    --c: .8em;  /* the cutout part */
+    --s: 4.5em; /* the ribbon size */
+    --d: .7em;  /* the depth */
+    --c: .9em;  /* the cutout part */
 
     padding: 0 calc(var(--s) + .5em) var(--d);
     line-height: 2.5;

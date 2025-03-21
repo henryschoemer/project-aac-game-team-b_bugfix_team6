@@ -1,12 +1,12 @@
 "use client";
 
 import "./CompletionPageStyling.css";
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import Image from "next/image";
-import "@/CreateRoom/CreateRoomButtonStyles.css"
+import "@/CreateRoom/CreateRoomButtonStyles.css";
 import useSound from "use-sound";
 import Link from "next/link";
-import {HomeButton} from "@/HomePage/HomePageButtons";
+import { HomeButton } from "@/HomePage/HomePageButtons";
 
 export default function Home() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -14,11 +14,11 @@ export default function Home() {
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
 
     // Button Sound effects
-    const createRoomClick = '/sounds/createroom-click.mp3';
+    const createRoomClick = "/sounds/createroom-click.mp3";
     const [playCreateRoomClick] = useSound(createRoomClick); // use sound hook
-    const selectOptionClick = '/sounds/select-click.mp3';
+    const selectOptionClick = "/sounds/select-click.mp3";
     const [playSelectOptionClick] = useSound(selectOptionClick); // use sound hook
-    const goBackClick = '/sounds/back-click.mp3';
+    const goBackClick = "/sounds/back-click.mp3";
     const [playGoBackClick] = useSound(goBackClick);
 
     // Show story options
@@ -35,9 +35,8 @@ export default function Home() {
     };
 
     // Using the same room session, so number of players does not need to be updated
-
     const handleSetNewStory = () => {
-        console.log("Room updated with new story:", {selectedStory});
+        console.log("Room updated with new story:", { selectedStory });
         // Here you would add your room story update logic
     };
 
@@ -50,67 +49,76 @@ export default function Home() {
     let numPlayers = 2; // hardcoded example, update this to fetch data from room session backend
 
     return (
-        <div className="page-container"
-             style={{
-                 backgroundImage: "url('HomePage-Images/Background.jpg')",
-                 backgroundSize: "cover",
-             }}>
-
+        <div
+            className="page-container"
+            style={{
+                backgroundImage: "url('HomePage-Images/Background.jpg')",
+                backgroundSize: "cover",
+            }}
+        >
             <div className="content-container">
                 <div className="align-container">
-                    {/* Title*/}
-                    <div className="ribbon">Story Completed</div>
-                    <h1 className="text-color">😁 Great Teamwork! 😎 </h1>
-
-
-                    <div className="star-container"> {/* Stars*/}
-                        <Image
-                            src="/star-icon.svg"
-                            alt="Star icon"
-                            width={110}
-                            height={110}
-                            className="icon-spacing"
-                        />
-                        <Image
-                            src="/star-icon.svg"
-                            alt="Star icon"
-                            width={150}
-                            height={150}
-                            className="icon-spacing"
-                        />
-                        <Image
-                            src="/star-icon.svg"
-                            alt="Star icon"
-                            width={110}
-                            height={110}
-                            className="icon-spacing"
-                        />
-                    </div>
-
-                {/* Using same room session: Select story -> Select difficulty -> Play button -> game automatically starts */}
-                {/* If backend cannot be implemented, just remove and keep home page button */}
+                    {/* Using same room session: Select story -> Select difficulty -> Play button -> game automatically starts */}
+                    {/* If backend cannot be implemented, just remove and keep home page button */}
                 </div>
                 {!showStoryOptions && (
-                    <div className="button-container align-container">
-                        <button className="button setup-room-button" onClick={() => setShowStoryOptions(true)}>
+                    <>
+                        <div className="align-container">
+                        {/* Title */}
+                        <div className="ribbon">Story Completed</div>
+                        <h1 className="text-color">😁 Great Teamwork! 😎</h1>
+
+                        {/* Stars */}
+                        <div className="star-container">
                             <Image
-                                src="/play-icon.svg"
-                                alt="Play icon"
-                                width={30}
-                                height={30}
+                                src="/star-icon.svg"
+                                alt="Star icon"
+                                width={110}
+                                height={110}
                                 className="icon-spacing"
                             />
-                            <span>Play Again</span>
-                        </button>
-
-                        <div className="home-button-container">
-                            <Link href="/">
-                                <HomeButton/>
-                            </Link>
+                            <Image
+                                src="/star-icon.svg"
+                                alt="Star icon"
+                                width={150}
+                                height={150}
+                                className="icon-spacing"
+                            />
+                            <Image
+                                src="/star-icon.svg"
+                                alt="Star icon"
+                                width={110}
+                                height={110}
+                                className="icon-spacing"
+                            />
                         </div>
-                    </div>
 
+                        {/* Buttons */}
+                        <div className="button-container">
+                            <button
+                                className="button setup-room-button"
+                                onClick={() => setShowStoryOptions(true)}
+                            >
+                                <Image
+                                    src="/play-icon.svg"
+                                    alt="Play icon"
+                                    width={30}
+                                    height={30}
+                                    className="icon-spacing"
+                                />
+                                <span>Play Again</span>
+                            </button>
+
+                            <div className="home-button-container">
+                                <Link href="/">
+                                    <HomeButton />
+                                </Link>
+                            </div>
+                        </div>
+                        </div>
+                    </>
                 )}
+
                 {showStoryOptions && (
                     <>
                         {/* Progress Indicators - Visual cues for children */}
@@ -118,7 +126,9 @@ export default function Home() {
                             {[1, 2, 3].map((step) => (
                                 <div
                                     key={step}
-                                    className={`progress-bubble ${currentStep >= step ? "active" : ""}`}
+                                    className={`progress-bubble ${
+                                        currentStep >= step ? "active" : ""
+                                    }`}
                                 >
                                     {step}
                                 </div>
@@ -135,8 +145,7 @@ export default function Home() {
                                         onClick={() => {
                                             handleStoryClick("The Garden Adventure");
                                             playSelectOptionClick();
-                                        }
-                                        }
+                                        }}
                                     >
                                         <img
                                             src="/images/garden-background.webp"
@@ -151,8 +160,7 @@ export default function Home() {
                                         onClick={() => {
                                             handleStoryClick("Walk in the Forest");
                                             playSelectOptionClick();
-                                        }
-                                        }
+                                        }}
                                     >
                                         <img
                                             src="/images/Forest-background.png"
@@ -165,8 +173,6 @@ export default function Home() {
                             </div>
                         )}
 
-                        {/* Using same room session, dont need to update player count*/}
-
                         {/* Step 2: Difficulty Selection */}
                         {currentStep === 2 && (
                             <div className="step-container">
@@ -177,8 +183,7 @@ export default function Home() {
                                         onClick={() => {
                                             handleDifficultyClick("Easy");
                                             playSelectOptionClick();
-                                        }
-                                        }
+                                        }}
                                     >
                                         <span>Easy</span>
                                     </button>
@@ -188,8 +193,7 @@ export default function Home() {
                                         onClick={() => {
                                             handleDifficultyClick("Medium");
                                             playSelectOptionClick();
-                                        }
-                                        }
+                                        }}
                                     >
                                         <span>Medium</span>
                                     </button>
@@ -204,10 +208,13 @@ export default function Home() {
                                         <span>Hard</span>
                                     </button>
                                 </div>
-                                <button className="back-step-button" onClick={() => {
-                                    playGoBackClick();
-                                    goBack();
-                                }}>
+                                <button
+                                    className="back-step-button"
+                                    onClick={() => {
+                                        playGoBackClick();
+                                        goBack();
+                                    }}
+                                >
                                     Go Back
                                 </button>
                             </div>
@@ -229,17 +236,23 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className="final-buttons">
-                                    <button className="big-button create-room-button" onClick={() => {
-                                        handleSetNewStory();
-                                        playCreateRoomClick();
-                                    }}>
+                                    <button
+                                        className="big-button create-room-button"
+                                        onClick={() => {
+                                            handleSetNewStory();
+                                            playCreateRoomClick();
+                                        }}
+                                    >
                                         <span className="create-emoji">🎮</span>
                                         <span>Start Adventure!</span>
                                     </button>
-                                    <button className="back-step-button" onClick={() => {
-                                        playGoBackClick();
-                                        goBack();
-                                    }}>
+                                    <button
+                                        className="back-step-button"
+                                        onClick={() => {
+                                            playGoBackClick();
+                                            goBack();
+                                        }}
+                                    >
                                         Change Something
                                     </button>
                                 </div>
@@ -247,10 +260,10 @@ export default function Home() {
                         )}
 
                         {/* Home Button - Always visible */}
-                        {((currentStep !== 1 && currentStep !== 3) || !showStoryOptions) ? null : (
+                        {(currentStep !== 1 && currentStep !== 3) || !showStoryOptions ? null : (
                             <div className="home-button-container align-container">
                                 <Link href="/">
-                                    <HomeButton/>
+                                    <HomeButton />
                                 </Link>
                             </div>
                         )}
