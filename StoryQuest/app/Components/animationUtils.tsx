@@ -4,12 +4,32 @@ import React from 'react';
 
 // SpinEffect: Rotates the children element continuously.
 export const SpinEffect = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    animate={{ rotate: 360 }} // Rotates 360 degrees
-    transition={{ repeat: Infinity, duration: 2, ease: 'linear' }} // Repeats infinitely, 2 seconds per rotation, constant speed
-  >
-    {children}
-  </motion.div>
+    <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 2, ease: 'linear' }}
+    >
+      {children}
+    </motion.div>
+);
+
+// WalkCycleEffect: Alternates between two images to simulate walking.
+export const WalkCycleEffect = ({ image1, image2, duration = 0.4 }: { image1: string; image2: string; duration?: number }) => (
+    <motion.div
+        animate={{ opacity: [1, 0, 1] }} // Fades one image out and the other in
+        transition={{ repeat: Infinity, duration: duration, ease: 'linear' }}
+        style={{ width: '100px', height: '100px', backgroundSize: 'cover' }}
+    >
+      <img
+          src={image1}
+          alt="Walk frame 1"
+          style={{ position: 'absolute', width: '100px', height: '100px', opacity: 1 }}
+      />
+      <img
+          src={image2}
+          alt="Walk frame 2"
+          style={{ position: 'absolute', width: '100px', height: '100px', opacity: 0 }}
+      />
+    </motion.div>
 );
 
 // PulseEffect: Scales the children element in and out, creating a pulsing effect.

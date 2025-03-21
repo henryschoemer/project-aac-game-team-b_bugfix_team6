@@ -134,7 +134,7 @@ const TextToSpeech: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd }) => {
             >
                 Play ⏵
             </button>
-           
+
             <button
                 onClick={handleStop}
                 aria-label="Stop speech"
