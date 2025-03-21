@@ -252,55 +252,55 @@ export default function Home() {
 if (effect === 'spin') {
   effectComponent = (
     <SpinEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </SpinEffect>
   );
 } else if (effect === 'pulse') {
   effectComponent = (
     <PulseEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </PulseEffect>
   );
 } else if (effect === 'fade') {
   effectComponent = (
     <FadeEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </FadeEffect>
   );
 } else if (effect === 'sideToSide') {
   effectComponent = (
     <SideToSideEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </SideToSideEffect>
   );
 } else if (effect === 'upAndDown') {
     effectComponent = (
       <UpAndDownEffect>
-        <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+        <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
       </UpAndDownEffect>
     );
 
 } else if (effect === 'scaleUp') {
   effectComponent = (
     <ScaleUpEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </ScaleUpEffect>
   );
 } else if (effect === 'bounce') {
   effectComponent = (
     <BounceEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </BounceEffect>
   );
 }else if (effect === 'flip'){
     effectComponent = (
         <FlipEffect>
-            <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+            <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
         </FlipEffect>
     );
 } else {
   effectComponent = (
-    <motion.img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+    <motion.img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
   );
 }
 
