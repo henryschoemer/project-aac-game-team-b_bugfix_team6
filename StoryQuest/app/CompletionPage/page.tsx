@@ -51,10 +51,6 @@ export default function Home() {
     return (
         <div
             className="page-container"
-            style={{
-                backgroundImage: "url('HomePage-Images/Background.jpg')",
-                backgroundSize: "cover",
-            }}
         >
             <div className="content-container">
                 <div className="align-container">
