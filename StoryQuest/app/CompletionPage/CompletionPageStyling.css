@@ -1,0 +1,84 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.text-color{
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+/*Spacing between icon and text on the right*/
+.icon-spacing {
+    margin-right: 10px;
+}
+
+.star-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    padding-bottom: 15px;
+    filter:
+            drop-shadow(0 0 4px #edc12f) /* Outer yellow border */
+            drop-shadow(0 0 2px white); /* Inner white border */
+}
+
+
+.align-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* setup room button */
+.setup-room-button {
+    background-color: #4caf50;
+    border-color: #2e7d32;
+    color: white;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+}
+
+/* HTML: <div class="ribbon">Your text content</div> */
+.ribbon {
+    font-size: 35px;
+    font-weight: bold;
+    color: #fff;
+}
+.ribbon {
+    --s: 4.5em; /* the ribbon size */
+    --d: .7em;  /* the depth */
+    --c: .9em;  /* the cutout part */
+
+    padding: 0 calc(var(--s) + .5em) var(--d);
+    line-height: 2.5;
+    background:
+            conic-gradient(at left  var(--s) bottom var(--d),
+            #0000 25%,#0008 0 37.5%,#0004 0) 0   /50% 100% no-repeat,
+            conic-gradient(at right var(--s) bottom var(--d),
+            #0004 62.5%,#0008 0 75%,#0000 0) 100%/50% 100% no-repeat;
+    clip-path: polygon(0 var(--d), var(--s) var(--d),var(--s) 0,calc(100% - var(--s)) 0,calc(100% - var(--s)) var(--d),100% var(--d),calc(100% - var(--c)) calc(50% + var(--d)/2),100% 100%,calc(100% - var(--s) - var(--d)) 100%,calc(100% - var(--s) - var(--d)) calc(100% - var(--d)),calc(var(--s) + var(--d)) calc(100% - var(--d)),calc(var(--s) + var(--d)) 100%,0 100%,var(--c) calc(50% + var(--d)/2));
+    background-color: #CC333F; /* the main color */
+    width: fit-content;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensures it's on top */
+}
+
