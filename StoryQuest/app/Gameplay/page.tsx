@@ -20,8 +20,7 @@ import TextToSpeech from "../Components/TextToSpeech";
 import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
-import ContinuePage from "../ContinuePage/page.tsx";
-
+import CompletionPage from "../CompletionPage/page.tsx";
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -135,7 +134,7 @@ export default function Home() {
      }
    };
 
-    // Delay showContinuePage by a few seconds
+    // Delay showContinuePage by a 3 seconds
     useEffect(() => {
         let timeoutId: NodeJS.Timeout;
 
@@ -143,7 +142,7 @@ export default function Home() {
             // 3 sec delay
             timeoutId = setTimeout(() => {
                 setShowOverlay(true); // Update ShowContinueOverlay
-            }, 5000);
+            }, 3000);
         }
 
         // Cleanup the timeout if the component unmounts
@@ -365,7 +364,7 @@ return (
               )}
           {showOverlay && (
               <div className="overlay">
-                  <ContinuePage/>
+                  <CompletionPage/>
               </div>
           )
           }

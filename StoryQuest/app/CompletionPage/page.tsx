@@ -1,7 +1,7 @@
 "use client";
 
 import "./CompletionPageStyling.css";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Image from "next/image";
 import "@/CreateRoom/CreateRoomButtonStyles.css";
 import useSound from "use-sound";
@@ -20,6 +20,8 @@ export default function Home() {
     const [playSelectOptionClick] = useSound(selectOptionClick); // use sound hook
     const goBackClick = "/sounds/back-click.mp3";
     const [playGoBackClick] = useSound(goBackClick);
+    const completedStorySound = "/sounds/story-completed.mp3";
+    const [playCompletedStorySound] = useSound(completedStorySound);
 
     // Show story options
     const [showStoryOptions, setShowStoryOptions] = useState(false);
@@ -46,6 +48,11 @@ export default function Home() {
         }
     };
 
+    // play song
+    useEffect(() => {
+        playCompletedStorySound();
+    }, [playCompletedStorySound]);
+
     let numPlayers = 2; // hardcoded example, update this to fetch data from room session backend
 
     return (
@@ -62,7 +69,7 @@ export default function Home() {
                         <div className="align-container">
                             {/* Title */}
                             <div className="ribbon">Story Completed</div>
-                            <h1 className="text-color">😁 Great Teamwork! 😎</h1>
+                            <h1 className="text-color"> Great Teamwork! </h1>
 
                             {/* Stars */}
                             <div className="star-container">
