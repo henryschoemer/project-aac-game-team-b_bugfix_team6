@@ -20,7 +20,7 @@ import TextToSpeech from "../Components/TextToSpeech";
 import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
-import CompletionPage from "../CompletionPage/page.tsx";
+import CompletionPage from "../CompletionPage/page";
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
