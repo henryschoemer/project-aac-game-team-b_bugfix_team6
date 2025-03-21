@@ -8,7 +8,7 @@ import useSound from "use-sound";
 import Link from "next/link";
 import {HomeButton} from "@/HomePage/HomePageButtons";
 
-export default function Home() {
+export default function CompletionPage() {
     const [currentStep, setCurrentStep] = useState(1);
     const [selectedStory, setSelectedStory] = useState<string | null>(null);
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);

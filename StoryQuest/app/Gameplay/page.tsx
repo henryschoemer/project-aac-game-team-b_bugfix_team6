@@ -134,7 +134,7 @@ export default function Home() {
      }
    };
 
-    // Delay showContinuePage by a 3 seconds
+    // Delay showContinuePage by 3 seconds
     useEffect(() => {
         let timeoutId: NodeJS.Timeout;
 
