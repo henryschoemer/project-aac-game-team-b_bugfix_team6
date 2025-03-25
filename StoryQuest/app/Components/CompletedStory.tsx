@@ -7,7 +7,7 @@ interface TextToSpeechCompletedStoryProps {
     onComplete: () => void; // when text to speech is done
 }
 
-{/*Button that text to speech all lines of the story*/}
+{/* text to speech all lines of the story*/}
 const CompletedStory: React.FC<TextToSpeechCompletedStoryProps> =({index, completedPhrases, onComplete}) => {
     const isLastPhrase = index === completedPhrases.length - 1; // check story is complete
     if (!isLastPhrase) return null; // story is not complete yet
