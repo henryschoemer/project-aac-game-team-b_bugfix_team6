@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from 'next/link';
 import { BackButton } from "../HomePage/HomePageButtons";
 import { db } from "../../firebaseControls/firebaseConfig"; // Import Firestore
 import { collection, addDoc } from "firebase/firestore";
+import { QRCode } from "react-qrcode-logo";
 import "./CreateRoomButtonStyles.css";
 
 
@@ -14,6 +16,9 @@ export default function CreateRoomPage() {
     const [numPlayers, setNumPlayers] = useState<number | null>(null);
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [roomId, setRoomId] = useState<string | null>(null);
+
+    const router = useRouter();
 
     const handleStoryClick = (story: string) => {
         setSelectedStory(story);
@@ -39,8 +44,10 @@ export default function CreateRoomPage() {
                 difficulty: difficultyLevel,
             });
 
+            //setRoomId(docRef.id); // Store room ID
             console.log("Room Created with ID:", docRef.id);
-            alert(`Room Created! Room ID: ${docRef.id}`);
+            //alert(`Room Created! Room ID: ${docRef.id}`);
+            router.push(`/CreateRoom/qrcode?roomId=${docRef.id}`);
         } catch (error) {
             console.error("Error creating room:", error);
             alert("Failed to create room.");
@@ -194,6 +201,19 @@ export default function CreateRoomPage() {
                                 Change Something
                             </button>
                         </div>
+                    </div>
+                )}
+
+                {/* QR Code Display */}
+                {roomId && (
+                    <div className="step-container">
+                        <h2>Share this QR Code to Join!</h2>
+                        <QRCode 
+                            value={`https://yourapp.com/join/${roomId}`} 
+                            size={256} 
+                            ecLevel="H" 
+                        />
+                        <p>Room ID: {roomId}</p>
                     </div>
                 )}
 
