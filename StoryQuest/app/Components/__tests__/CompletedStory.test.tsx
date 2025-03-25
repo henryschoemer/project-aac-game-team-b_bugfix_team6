@@ -1,9 +1,10 @@
 import React from "react";
 import { render, act } from "@testing-library/react";
 import CompletedStory from "../CompletedStory.tsx"; // Update the import path
+import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import "@testing-library/jest-dom";
 
-// Mock the TextToSpeechCompletedStory component
+// Mock the TextToSpeechTextOnly component
 jest.mock("../CompletedStory.tsx", () => ({
     __esModule: true,
     default: ({ onComplete }: { onComplete: () => void }) => {

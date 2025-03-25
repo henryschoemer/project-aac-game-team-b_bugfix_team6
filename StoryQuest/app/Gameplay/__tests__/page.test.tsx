@@ -90,7 +90,7 @@ jest.mock('use-sound', () => ({
   default: jest.fn(() => [jest.fn()]),
 }));
 
-jest.mock('../../Components/TextToSpeech', () => {
+jest.mock('../../Components/TextToSpeechAACButtons', () => {
   return function MockTextToSpeech({ text }: { text: string }) {
     return <div data-testid="text-to-speech">{text}</div>;
   };
@@ -143,7 +143,7 @@ describe('Home Component', () => {
     expect(play).toHaveBeenCalled();
   });
 
-  it('passes down the text to TextToSpeech', () => {
+  it('passes down the text to TextToSpeechAACButtons', () => {
     render(<Home />);
     const mouseButton = screen.getByTestId('aac-button-mouse');
     fireEvent.click(mouseButton);

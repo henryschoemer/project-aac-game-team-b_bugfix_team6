@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import TextToSpeechCompletedStory from "@/Components/TextToSpeechCompletedStory";
+import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 
 interface TextToSpeechCompletedStoryProps {
     index: number;
@@ -14,11 +14,11 @@ const CompletedStory: React.FC<TextToSpeechCompletedStoryProps> =({index, comple
 
     const mapCopy = new Map<number, string>(completedPhrases.map((phrase, idx) => [idx, phrase])); // Copy phrase map
 
-    {/* iterate through the phrase map and pass phrases to TextToSpeech */}
+    {/* iterate through the phrase map and pass phrases to TextToSpeechAACButtons */}
     const playStory = () => {
         //console.log("Button clicked!");
         return Array.from(mapCopy.values()).map((phrase, index) => (
-            <TextToSpeechCompletedStory key={index} text={phrase} onComplete={index === completedPhrases.length - 1 ? onComplete : undefined}
+            <TextToSpeechTextOnly key={index} text={phrase} onComplete={index === completedPhrases.length - 1 ? onComplete : undefined}
             />
         ));
     };
