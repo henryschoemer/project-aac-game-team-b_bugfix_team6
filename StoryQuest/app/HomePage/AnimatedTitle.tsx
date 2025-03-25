@@ -11,20 +11,35 @@ const AnimatedTitle: React.FC = () => {
     // Characters of the title "StoryQuest"
     const title = ['S', 't', 'o', 'r', 'y', 'Q', 'u', 'e', 's', 't'];
 
+    // Delay times in ms
+    const initialDelay= 500;
+    const waveDelay = 1500;
+    const waveEndDelay = 3650;
 
     useEffect(() => {
 
-        // Intial animation visable after 500ms
-        setTimeout(() => {
+        const initialTimer =setTimeout(() => {
             if (divRef.current) {
                 setIsLoaded(true); // title is loaded in
             }
-        }, 500);
+        }, initialDelay);
 
         // Trigger wave effect after initial animation, after 1500ms
-        setTimeout(() => {
+        const waveTimer = setTimeout(() => {
             setIsWaving(true); // Activate waving animation
-        }, 1500);
+        }, waveDelay);
+
+        // Waves through the letters once
+        const waveEndTimer =setTimeout(() => {
+            setIsWaving(false); // turn off waving animation to prevent motion sickness
+        }, waveEndDelay);
+
+        // cleanup on timers to avoid memory leaks
+        return () => {
+            clearTimeout(initialTimer);
+            clearTimeout(waveTimer);
+            clearTimeout(waveEndTimer);
+        };
     }, []);
 
     return (
