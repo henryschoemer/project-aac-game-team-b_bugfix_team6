@@ -46,6 +46,7 @@ const AnimatedTitle: React.FC = () => {
         <div
             ref={divRef}
             className={`animated-title ${isLoaded ? 'loaded' : ''} ${isWaving ? 'wave' : ''}`}
+            data-testid="animated-title" // ID for testing purposes
         >
             {/*Map each title character in span*/}
             {title.map((char, index) => (
