@@ -17,9 +17,10 @@ import stories, { Story, StorySection } from "./stories";//import the stories in
 import AACKeyboard from "../Components/AACKeyboard";
 import useSound from 'use-sound';
 import TextToSpeech from "../Components/TextToSpeech";
-import CompletedStoryButton from "@/Components/CompletedStoryButton";
+import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
+import CompletionPage from "../CompletionPage/page";
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -55,7 +56,9 @@ export default function Home() {
   const [completedImages, setCompletedImages] = useState<{ src: string; alt: string; x: number; y: number }[]>([]);
   const [currentImage, setCurrentImage] = useState<{ src: string; alt: string; x: number; y: number } | null>(null);
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
-  const soundUrl = '/sounds/aac_audios.mp3';
+  const [storyCompleted, setStoryCompleted] = useState(false); // Used to toggle continue overlay
+  const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
+    const soundUrl = '/sounds/aac_audios.mp3';
   const [play] = useSound(soundUrl, {
     sprite: {
         basket: [0, 650],
@@ -131,7 +134,26 @@ export default function Home() {
      }
    };
 
-  const handleAddImage = () => {
+    // Delay showContinuePage by 3 seconds
+    useEffect(() => {
+        let timeoutId: NodeJS.Timeout;
+
+        if (storyCompleted) {
+            // 3 sec delay
+            timeoutId = setTimeout(() => {
+                setShowOverlay(true); // Update ShowContinueOverlay
+            }, 3000);
+        }
+
+        // Cleanup the timeout if the component unmounts
+        return () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+        };
+    }, [storyCompleted]);
+
+    const handleAddImage = () => {
     if (userInput.trim() !== "" && currentImage && currentStory) {
       const newPhrase = phrase.replace("___", userInput);
 
@@ -168,9 +190,10 @@ export default function Home() {
     handleWordSelect(word);
   };
 
+
   return (
     <div className="flex w-screen h-screen">
-      
+
       {/* Left Panel: AAC Tablet */}
        <div className="w-1/3 bg-[hsl(45,93%,83%)] p-8 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e] transform transition duration-500 hover:scale-105" >
          <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
@@ -196,9 +219,9 @@ export default function Home() {
               ))}
 
             </select>
-           <AACKeyboard 
-           onSelect={handleAACSelect} 
-           symbols={currentStory?.sections[currentSectionIndex] 
+           <AACKeyboard
+           onSelect={handleAACSelect}
+           symbols={currentStory?.sections[currentSectionIndex]
            ? Object.entries(currentStory.sections[currentSectionIndex].words).map(
            ([word, data]) => ({
            word: word,
@@ -211,15 +234,16 @@ export default function Home() {
        buttonColor={currentStory?.colorTheme.buttonColor}
          />
         </h2>
-        
+
         {/*Hear Phrase button */}
            {/*
            <p className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
                {completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase}
            </p>
            */}
-           <TextToSpeech text={completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase} />
+           <TextToSpeech text={phrase} />
       </div>
+
 
         {/* Right Panel: Game Scene */}
       <div
@@ -252,55 +276,55 @@ export default function Home() {
 if (effect === 'spin') {
   effectComponent = (
     <SpinEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </SpinEffect>
   );
 } else if (effect === 'pulse') {
   effectComponent = (
     <PulseEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </PulseEffect>
   );
 } else if (effect === 'fade') {
   effectComponent = (
     <FadeEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </FadeEffect>
   );
 } else if (effect === 'sideToSide') {
   effectComponent = (
     <SideToSideEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </SideToSideEffect>
   );
 } else if (effect === 'upAndDown') {
     effectComponent = (
       <UpAndDownEffect>
-        <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+        <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
       </UpAndDownEffect>
     );
 
 } else if (effect === 'scaleUp') {
   effectComponent = (
     <ScaleUpEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </ScaleUpEffect>
   );
 } else if (effect === 'bounce') {
   effectComponent = (
     <BounceEffect>
-      <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </BounceEffect>
   );
 }else if (effect === 'flip'){
     effectComponent = (
         <FlipEffect>
-            <img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+            <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
         </FlipEffect>
     );
 } else {
   effectComponent = (
-    <motion.img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />
+    <motion.img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
   );
 }
 
@@ -328,13 +352,23 @@ return (
           {phrase === "The End!" && (
               <div>
                   {/*Call completedstory button and pass completedphrase map*/}
-                  <CompletedStoryButton
+                  <CompletedStory
                       index={completedPhrases.length - 1}
                       //completedPhrase={completedPhrases[completedPhrases.length - 1]}
                       completedPhrases={completedPhrases}
-                  />
+                      onComplete={() => {
+                          console.log("Gameplay: Story is completed!");
+                          setStoryCompleted(true); // Update state when completed text to speech is done
+                      }}
+                      />
               </div>
-          )}
+              )}
+          {showOverlay && (
+              <div className="overlay">
+                  <CompletionPage/>
+              </div>
+          )
+          }
 
         {/* Current Phrase and Images */}
         <p className="mb-2 absolute" style={{ color: "black" }}>

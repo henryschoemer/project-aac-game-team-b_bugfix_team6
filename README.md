@@ -14,6 +14,10 @@
 We will develop a game, called "Storyquest: Teamwork Prevails", that aims to maximize communication between children who use 
 Augmentative and Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to encourage communication among players.
 
+## Hosted Link
+This is the current active link, we are planning to change it soon to make it more user friendly: 
+https://project-aac-game-team-b--storyquest-fcdc2.us-central1.hosted.app
+
 ## Keywords
  - AAC - Augmentative and Alternative Communication
  - Cloze Phrase - Phrases or sentences with words missing that are intended to be filled in by the reader. Cloze phrases are used to assess reading comprehension and to help students learn to predict word meanings. 

@@ -1,5 +1,6 @@
 import AnimatedTitle from './HomePage/AnimatedTitle';
-import {CreateButton, JoinButton, TemporaryTestingGameButton} from "./HomePage/HomePageButtons";
+//import {CompletionTestButton, CreateButton, JoinButton, TemporaryTestingGameButton} from "./HomePage/HomePageButtons";
+import { CreateButton, JoinButton, TemporaryTestingGameButton} from "./HomePage/HomePageButtons";
 import Link from 'next/link';
 import "./HomePage/HomePageStyles.css";
 import {HomePageBackgroundMusic} from "./HomePage/HomePageBackgroundMusic";
@@ -52,6 +53,7 @@ export default function Home() {
                         </Link>
                     </div>
                 </div>
+
             </div>
 
             {/*Copyright text*/}

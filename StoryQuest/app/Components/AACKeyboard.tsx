@@ -33,7 +33,7 @@ import { motion } from "framer-motion";
              aria-label={`Select ${symbol.word}`}
              tabIndex={0}
            >
-             <img src={symbol.image} alt={symbol.word} className="w-12 h-12 mb-1" />
+             <img src={symbol.image} alt={symbol.word} className="w-24 h-24 mb-1" />
              <span>{symbol.word}</span>
            </motion.button>
          ))}

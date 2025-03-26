@@ -7,7 +7,7 @@ import '@testing-library/jest-dom';
 jest.mock('next/navigation', () => ({
     useRouter: jest.fn(),
   }));
-  
+
 beforeEach(() => {
     jest.spyOn(console, "log").mockImplementation(() => {});
 });
@@ -35,71 +35,60 @@ describe("CreateRoomPage", () => {
     
     test("renders the first step of CreateRoomPage component", () => {
         render(<CreateRoomPage />);
-        
+
         // Check if title is displayed with new text
         expect(screen.getByText("Let's Create a Game!")).toBeInTheDocument();
-        
+
         // Check for first step content
         expect(screen.getByText("Choose Your Story")).toBeInTheDocument();
         expect(screen.getByText("The Garden Adventure")).toBeInTheDocument();
         expect(screen.getByText("Walk in the Forest")).toBeInTheDocument();
-        
+
         // The player selection and difficulty should not be visible yet
         expect(screen.queryByText("How Many Friends Are Playing?")).not.toBeInTheDocument();
         expect(screen.queryByText("Pick How Challenging")).not.toBeInTheDocument();
     });
+/*
+    test("navigates through all steps and creates a room", () => {
+        console.log = jest.fn(); // Mock console.log
 
-    /*test("navigates through all steps and creates a room", async () => {
-        beforeEach(() => {
-            jest.spyOn(console, "log").mockImplementation(() => {});
-        });
-        
         render(<CreateRoomPage />);
-        
-        await act(async () => {
-            fireEvent.click(screen.getByText("The Garden Adventure"));
-        });
+
         // Step 1: Select a story
-        //fireEvent.click(screen.getByText("The Garden Adventure"));
-        
+        fireEvent.click(screen.getByText("The Garden Adventure"));
+
         // After clicking, we should see step 2
         expect(screen.getByText("How Many Friends Are Playing?")).toBeInTheDocument();
-        
+
         // Step 2: Select number of players
-        await act(async () => {
-            fireEvent.click(screen.getByText("3 Players"));
-        });
-        
+        fireEvent.click(screen.getByText("3 Players"));
+
         // After clicking, we should see step 3
         expect(screen.getByText("Pick How Challenging")).toBeInTheDocument();
-        
+
         // Step 3: Select difficulty (Using actual text from your implementation)
-        await act(async () => {
-            fireEvent.click(screen.getByText("Medium"));
-        });
-        
+        fireEvent.click(screen.getByText("Medium"));
+
         // After clicking, we should see the final step
         expect(screen.getByText("Ready to Play!")).toBeInTheDocument();
-        
+
         // Verify the summary shows our selections
         expect(screen.getByText("Story: The Garden Adventure")).toBeInTheDocument();
         expect(screen.getByText("Players: 3")).toBeInTheDocument();
         expect(screen.getByText("Level: Medium")).toBeInTheDocument();
-        
-        // Click create room button
-        await act(async () => {
-            fireEvent.click(screen.getByText("Start Adventure!"));
-        });
 
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        
+        // Click create room button
+        fireEvent.click(screen.getByText("Start Adventure!"));
+
         // Expect console.log to be called with correct data
         expect(console.log).toHaveBeenCalledWith("Room Created:", {
             selectedStory: "The Garden Adventure",
             numPlayers: 3,
             difficultyLevel: "Medium"
         });
-    });*/
+    });
+    */
+
 
     test("allows navigation back to previous steps", () => {
         render(<CreateRoomPage />);

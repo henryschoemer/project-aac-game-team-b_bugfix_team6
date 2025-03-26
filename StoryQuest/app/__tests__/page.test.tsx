@@ -1,4 +1,4 @@
-import {render, screen, fireEvent} from '@testing-library/react';
+import {render, screen, fireEvent, act} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import AnimatedTitle from "@/HomePage/AnimatedTitle";
 import Footer from '../../app/page';
@@ -21,6 +21,62 @@ describe('HomePage', () => {
             expect(span).toHaveTextContent(characters[index]); // Check if each span has the correct character
         });
     })
+
+    jest.useFakeTimers();
+
+    it('initially does not have loaded or wave classes', () => {
+        render(<AnimatedTitle />);
+
+        const container = screen.getByTestId('animated-title');
+        expect(container).not.toHaveClass('loaded');
+        expect(container).not.toHaveClass('wave');
+    });
+
+    it('adds loaded class after initial delay', () => {
+        render(<AnimatedTitle />);
+
+        act(() => {
+            jest.advanceTimersByTime(500); // initialDelay
+        });
+
+        const container = screen.getByTestId('animated-title');
+        expect(container).toHaveClass('loaded');
+        expect(container).not.toHaveClass('wave');
+    });
+
+    it('adds wave class after wave delay', () => {
+        render(<AnimatedTitle />);
+
+        act(() => {
+            jest.advanceTimersByTime(1500); // waveDelay
+        });
+
+        const container = screen.getByTestId('animated-title');
+        expect(container).toHaveClass('loaded');
+        expect(container).toHaveClass('wave');
+    });
+
+    it('removes wave class after wave end delay', () => {
+        render(<AnimatedTitle />);
+
+        act(() => {
+            jest.advanceTimersByTime(3650); // waveEndDelay
+        });
+
+        const container = screen.getByTestId('animated-title');
+        expect(container).toHaveClass('loaded');
+        expect(container).not.toHaveClass('wave');
+    });
+
+    it('cleans up timers on unmount', () => {
+        const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout');
+        const { unmount } = render(<AnimatedTitle />);
+
+        unmount();
+
+        expect(clearTimeoutSpy).toHaveBeenCalledTimes(3);
+        clearTimeoutSpy.mockRestore();
+    });
 
     // Test that the copyright renders correctly
     it('renders the copyright text correctly', () => {

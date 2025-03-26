@@ -43,7 +43,7 @@ We chose Jest along with the React Testing Library.
    npm test -- --coverage
    
    # Run specific test file
-   npm test -- page.test.tsx
+   npm test -- completionPage.test.tsx
    ```
 
 ## Test Structure
@@ -64,7 +64,7 @@ describe('Component/Method Name', () => {
 
 
 ## Test Cases and Implementation
-Unit tests for GamePlay are located in `StoryQuest/app/Gameplay/__tests__/page.test.tsx`.
+Unit tests for GamePlay are located in `StoryQuest/app/Gameplay/__tests__/completionPage.test.tsx`.
 ## Gameplay Testing
 
 Here are the key test cases:
@@ -128,7 +128,7 @@ Unit tests for profile are located in `StoryQuest/app/Profile/profile.test.tsx`.
 
 
 ## HomePage
-Unit tests for HomePage are located in 'StoryQuest/app/__tests__/page.test.tsx'
+Unit tests for HomePage are located in 'StoryQuest/app/__tests__/completionPage.test.tsx'
 
 ### `renders the text of the animated title correctly`
 This test verifies that animated title is rendered properly. It checks that the rendered span text matches the
@@ -157,7 +157,7 @@ contains the text 'Gameplay'.
 
 ## Room Creation Testing
 The room creation testing ensures that a user is able to initiate settings to accomodate the game room, such as choosing a story, the number of players, and the difficulty level. 
-Unit tests for Room Creation are located in `StoryQuest/app/CreateRoom/__tests__/page.test.tsx`.
+Unit tests for Room Creation are located in `StoryQuest/app/CreateRoom/__tests__/completionPage.test.tsx`.
 
 ### `renders the CreateRoomPage component`
 This test checks that the component renders properly, ensuring that all setting choices are displayed on the screen. 
