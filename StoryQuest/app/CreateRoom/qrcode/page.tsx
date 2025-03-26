@@ -12,7 +12,7 @@ export default function QRCodePage() {
         return <p>Error: No room ID found.</p>;
     }
 
-    const joinRoomUrl = `https://yourwebsite.com/join?roomId=${roomId}`;
+    const joinRoomUrl = `/Gameplay/${roomId}`;
 
     return (
         <div className="qr-code-page">
