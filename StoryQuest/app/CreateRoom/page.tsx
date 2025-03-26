@@ -205,19 +205,6 @@ export default function CreateRoomPage() {
                     </div>
                 )}
 
-                {/* QR Code Display */}
-                {roomId && (
-                    <div className="step-container">
-                        <h2>Share this QR Code to Join!</h2>
-                        <QRCode 
-                            value={`https://yourapp.com/join/${roomId}`} 
-                            size={256} 
-                            ecLevel="H" 
-                        />
-                        <p>Room ID: {roomId}</p>
-                    </div>
-                )}
-
                 {/* Home Button - Always visible */}
                 {(currentStep !== 1 && currentStep !== 4) ? null : (
                     <div className="home-button-container">
