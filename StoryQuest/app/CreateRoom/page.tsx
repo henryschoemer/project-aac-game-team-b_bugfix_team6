@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from 'next/link';
 import { BackButton } from "../HomePage/HomePageButtons";
 import { db } from "../../firebaseControls/firebaseConfig"; // Import Firestore
 import { collection, addDoc } from "firebase/firestore";
+import { QRCode } from "react-qrcode-logo";
 import "./CreateRoomButtonStyles.css";
 import useSound from "use-sound";
 import AutomaticTextToSpeech from "@/Components/AutomaticTextToSpeech";
@@ -24,6 +26,9 @@ export default function CreateRoomPage() {
     const [numPlayers, setNumPlayers] = useState<number | null>(null);
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [roomId, setRoomId] = useState<string | null>(null);
+
+    const router = useRouter();
 
     const handleStoryClick = (story: string) => {
         setSelectedStory(story);
@@ -50,8 +55,11 @@ export default function CreateRoomPage() {
                 difficulty: difficultyLevel,
             });
 
+            //setRoomId(docRef.id); // Store room ID
             console.log("Room Created with ID:", docRef.id);
+            setRoomId(docRef.id);
             alert(`Room Created! Room ID: ${docRef.id}`);
+            router.push(`/CreateRoom/qrcode?roomId=${docRef.id}`);
         } catch (error) {
             console.error("Error creating room:", error);
             alert("Failed to create room.");

@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "storyquest-fcdc2",
+    "staging": "storyquest-fcdc2"
+  },
+  "targets": {},
+  "etags": {}
+}
