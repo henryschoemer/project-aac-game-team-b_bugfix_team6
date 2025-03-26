@@ -2,9 +2,10 @@
 
 import { useSearchParams } from "next/navigation";
 import { QRCode } from "react-qrcode-logo";
+import { Suspense } from "react";
 import "../CreateRoomButtonStyles.css";
 
-export default function QRCodePage() {
+function QRCodeContent() {
     const searchParams = useSearchParams();
     const roomId = searchParams.get("roomId"); // Get room ID from URL
 
@@ -22,3 +23,11 @@ export default function QRCodePage() {
         </div>
     );
 }
+
+export default function QRCodePage() {
+    return (
+        <Suspense fallback={<p>Loading...</p>}>
+            <QRCodeContent />
+        </Suspense>
+    );
+} 
