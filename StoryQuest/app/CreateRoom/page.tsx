@@ -242,7 +242,7 @@ export default function CreateRoomPage() {
 
                 {/* Home Button - Always visible */}
                 {(currentStep !== 1 && currentStep !== 4) ? null : (
-                    <div className="home-button-container">
+                    <div className="home-button-container button-box">
                         <Link href="/">
                             <BackButton/>
                         </Link>

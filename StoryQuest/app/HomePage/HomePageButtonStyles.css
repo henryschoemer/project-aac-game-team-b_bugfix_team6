@@ -47,30 +47,33 @@
     line-height: 1;
     transition: 0.4s;
 }
+
+/*Adding circles for menu buttons*/
 .join-button, .create-button, .test-button{
     margin-left: 30px; /* Push button right to make space for circle */
+    width: 33em;
 }
 
 /*Color scheme of the join button*/
 .create-button {
     background: linear-gradient(to right, #0ba360, #3cba92);
-    box-shadow: 0px 14px 56px -11px #0ba360;
+    box-shadow: 0px 5px 56px -20px #0ba360;
 }
 .back-button {
     background: linear-gradient(to right, #ad0968, #ad0968);
-    box-shadow: 0px 14px 56px -11px #ad0968;
+    box-shadow: 0px 5px 56px -17px #ad0968;
 }
 .home-button {
     background: linear-gradient(to right, #f0af37, #f0af37);
-    box-shadow: 0px 14px 56px -11px #f0af37;
+    box-shadow: 0px 5px 56px -17px #f0af37;
 }
 .join-button {
     background: linear-gradient(to right, #5676e8, #5676e8);
-    box-shadow: 0px 14px 56px -11px #5676e8;
+    box-shadow: 0px 5px 56px -20px #5676e8;
 }
 .test-button{
     background: linear-gradient(to right, #f20000, #f20000);
-    box-shadow: 0px 14px 56px -11px #f20000;
+    box-shadow: 0px 5px 56px -20px #f20000;
 }
 
 .button span {
@@ -143,8 +146,9 @@
     margin-right: 10px;
 }
 
-svg {
-    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+/*shadowing for the icons*/
+.svg-icon {
+    filter: drop-shadow(3px 3px 2px rgb(0 0 0 / 0.2));
 }
 
 /* Container for button and circle */
@@ -157,7 +161,7 @@ svg {
 /* Static circle */
 .button-circle {
     position: absolute;
-    left: -17px;
+    left: -5px;
     width: 93px;
     height: 93px;
     border-radius: 50%;

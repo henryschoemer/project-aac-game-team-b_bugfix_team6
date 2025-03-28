@@ -16,14 +16,16 @@ export const CreateButton: React.FC = () => {
 
     return (
         <div className="button-with-attached-circle">
-            <div className="button-circle icon-shadow">
-            <Image
+            <div className="button-circle">
+                <div className="svg-icon">
+                <Image
                 src="/plus-icon.svg"
                 alt="Creating a room icon"
                 // This changes the width and height of the svg
                 width={60}
                 height={60}
             />
+            </div>
             </div>
             <button className="button create-button" onClick={() => play()}>
             <span>Create</span>
@@ -39,12 +41,14 @@ export const JoinButton: React.FC = () => {
     return (
         <div className="button-with-attached-circle">
             <div className="button-circle">
+                <div className="svg-icon">
                 <Image
                     src="/qr-icon.svg"
                     alt="qr join icon"
                     width={60}
                     height={55}
                 />
+            </div>
             </div>
             <button className="button join-button" onClick={() => play()}>
                 <span>Join</span>
@@ -59,6 +63,7 @@ export const BackButton: React.FC = () => {
 
     return (
         <button className="button back-button" onClick={() => play()}>
+            <div className="svg-icon">
             <Image
                 src="/back-icon.svg"
                 alt="back icon"
@@ -66,6 +71,7 @@ export const BackButton: React.FC = () => {
                 height={40}
                 className="icon-spacing"
             />
+            </div>
             <span>Back</span>
         </button>
     );
@@ -77,13 +83,15 @@ export const HomeButton: React.FC = () => {
 
     return (
         <button className="button home-button" onClick={() => play()}>
+            <div className="svg-icon">
             <Image
                 src="/home-icon.svg"
                 alt="Home page icon"
-                width={30}
-                height={30}
+                width={50}
+                height={50}
                 className="icon-spacing"
             />
+            </div>
             <span>Home</span>
         </button>
     );
@@ -99,12 +107,14 @@ export const TemporaryTestingGameButton: React.FC = () => {
     return (
         <div className="button-with-attached-circle">
             <div className="button-circle">
+                <div className="svg-icon">
                 <Image
                     src="/test.svg"
                     alt="gameplay test icon"
                     width={50}
                     height={50}
                 />
+                </div>
             </div>
         <button className="button test-button" onClick={() => playGameplayStart()}>
             <span>Game</span>
