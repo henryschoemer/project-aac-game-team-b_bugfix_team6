@@ -22,6 +22,7 @@ import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
 import CompletionPage from "../CompletionPage/page";
 
+
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
   return (
@@ -256,15 +257,14 @@ export default function Home() {
         }}
       >
         {/* Completed Phrases (positioned with the text) */}
-        <div className="absolute top-0 left-0 w-full h-full">
-          {completedPhrases.map((completedPhrase, index) => (
-            <div key={index} className="absolute" style={{ top: `${index * 50}px`, left: '20px' }}>
-              <p className="mb-2" style={{ color: "black" }}>
-                {completedPhrase}
-              </p>
-            </div>
-          ))}
-        </div>
+          <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 flex flex-wrap items-center min-h-[80px]">
+              {completedPhrases.map((completedPhrase, index) => (
+                  <p key={index} className="text-black text-lg font-semibold mr-4 animate-[typing_2s_steps(20,_end)_forwards] whitespace-nowrap overflow-hidden">
+                      {completedPhrase}.
+                  </p>
+              ))}
+          </div>
+
 
         {/* Animated Images with Sparkles: Shows selected images with a sparkle effect. */}
         <AnimatePresence>
