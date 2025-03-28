@@ -10,7 +10,7 @@
     font-family: 'Slackey', sans-serif;
     text-align: center;
     font-size: 10px;
-    width: 25em;
+    width: 30em;
     max-width: 40em;
     padding: 3em;
     transition: all 0.4s;
@@ -47,17 +47,14 @@
     line-height: 1;
     transition: 0.4s;
 }
-
-
+.join-button, .create-button, .test-button{
+    margin-left: 30px; /* Push button right to make space for circle */
+}
 
 /*Color scheme of the join button*/
-.join-button {
+.create-button {
     background: linear-gradient(to right, #0ba360, #3cba92);
     box-shadow: 0px 14px 56px -11px #0ba360;
-}
-.profile-button {
-    background: linear-gradient(to right, #7f38bd, #7f38bd);
-    box-shadow: 0px 14px 56px -11px #7f38bd;
 }
 .back-button {
     background: linear-gradient(to right, #ad0968, #ad0968);
@@ -67,7 +64,7 @@
     background: linear-gradient(to right, #f0af37, #f0af37);
     box-shadow: 0px 14px 56px -11px #f0af37;
 }
-.create-button {
+.join-button {
     background: linear-gradient(to right, #5676e8, #5676e8);
     box-shadow: 0px 14px 56px -11px #5676e8;
 }
@@ -141,7 +138,36 @@
     right: 0;
 }
 
-/*Spacing between icon and text on the right*/
+/*Spacing between icon and text on the right, for buttons without circles*/
 .icon-spacing {
     margin-right: 10px;
 }
+
+svg {
+    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+}
+
+/* Container for button and circle */
+.button-with-attached-circle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Static circle */
+.button-circle {
+    position: absolute;
+    left: -17px;
+    width: 93px;
+    height: 93px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: -4px 3px 0 rgba(0, 0, 0, 0.2); /*shadow around the circle*/
+}
+
+
+

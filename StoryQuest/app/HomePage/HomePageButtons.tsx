@@ -15,18 +15,20 @@ export const CreateButton: React.FC = () => {
     const [play]= useSound(popClick); // use sound hook, play sound, has to be inside component
 
     return (
-        <button className="button join-button" onClick={() => play()}>
+        <div className="button-with-attached-circle">
+            <div className="button-circle icon-shadow">
             <Image
-                src="/circleplus-icon.svg"
+                src="/plus-icon.svg"
                 alt="Creating a room icon"
                 // This changes the width and height of the svg
-                width={30}
-                height={30}
-                className="icon-spacing"
+                width={60}
+                height={60}
             />
-
+            </div>
+            <button className="button create-button" onClick={() => play()}>
             <span>Create</span>
         </button>
+        </div>
     );
 };
 
@@ -35,16 +37,19 @@ export const JoinButton: React.FC = () => {
     const [play]= useSound(popClick); // use sound hook, play sound
 
     return (
-        <button className="button create-button" onClick={() => play()}>
-            <Image
-                src="/game-icon.svg"
-                alt="Joining a room icon"
-                width={30}
-                height={30}
-                className="icon-spacing"
-            />
-            <span>Join</span>
-        </button>
+        <div className="button-with-attached-circle">
+            <div className="button-circle">
+                <Image
+                    src="/qr-icon.svg"
+                    alt="qr join icon"
+                    width={60}
+                    height={55}
+                />
+            </div>
+            <button className="button join-button" onClick={() => play()}>
+                <span>Join</span>
+            </button>
+        </div>
     );
 };
 
@@ -55,10 +60,10 @@ export const BackButton: React.FC = () => {
     return (
         <button className="button back-button" onClick={() => play()}>
             <Image
-                src="/backspace.svg"
-                alt="Backspace icon"
-                width={30}
-                height={30}
+                src="/back-icon.svg"
+                alt="back icon"
+                width={40}
+                height={40}
                 className="icon-spacing"
             />
             <span>Back</span>
@@ -85,25 +90,6 @@ export const HomeButton: React.FC = () => {
 };
 
 
-/*Profile button*/
-export const ProfileButton: React.FC = () => {
-    const [play]= useSound(popClick); // use sound hook, play sound
-
-    return (
-        <button className="button profile-button" onClick={() => play()}>
-            <Image
-                src="/profile-icon.svg"
-                alt="profile icon"
-                width={30}
-                height={30}
-                className="icon-spacing"
-            />
-            <span>Profile</span>
-        </button>
-    );
-};
-
-
 /*TemporaryTestingGameButton*/
 /* This method will be removed when we implement the room hosting feature */
 export const TemporaryTestingGameButton: React.FC = () => {
@@ -111,8 +97,18 @@ export const TemporaryTestingGameButton: React.FC = () => {
     const [playGameplayStart]= useSound(gameplayStart); // use sound hook
 
     return (
+        <div className="button-with-attached-circle">
+            <div className="button-circle">
+                <Image
+                    src="/test.svg"
+                    alt="gameplay test icon"
+                    width={50}
+                    height={50}
+                />
+            </div>
         <button className="button test-button" onClick={() => playGameplayStart()}>
-            <span>Gameplay</span>
+            <span>Game</span>
         </button>
+    </div>
     );
 };
