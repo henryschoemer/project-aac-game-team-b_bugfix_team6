@@ -49,7 +49,7 @@ describe('HomePage button sound effects', () => {
         render(<TemporaryTestingGameButton />);
 
         // Find the button element
-        const button = screen.getByRole('button', { name: /gameplay/i });
+        const button = screen.getByRole('button', { name: /game/i });
 
         fireEvent.click(button);
 

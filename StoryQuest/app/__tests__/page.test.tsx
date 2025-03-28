@@ -113,11 +113,11 @@ describe('HomePage', () => {
     it('renders gameplay button correctly', () => {
         render(<TemporaryTestingGameButton/>)
         // Get button element
-        const button = screen.getByRole('button', {name: /gameplay/i});
+        const button = screen.getByRole('button', {name: /game/i});
         // Button element is rendered
         expect(button).toBeInTheDocument();
         // Button has the text 'Gameplay'
-        expect(button).toHaveTextContent('Gameplay');
+        expect(button).toHaveTextContent('Game');
     })
 
 });
