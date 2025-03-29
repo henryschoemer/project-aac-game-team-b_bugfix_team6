@@ -253,6 +253,14 @@
     margin-top: 1.5rem;
     text-align: center;
   }
+
+.button-box {
+  border: 5px solid white;
+  border-radius: 45px;
+  display: inline-block;
+  margin: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 3);
+}
   
   /* Responsive adjustments */
   @media (min-width: 768px) {

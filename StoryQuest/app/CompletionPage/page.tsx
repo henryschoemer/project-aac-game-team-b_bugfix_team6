@@ -73,6 +73,7 @@ export default function CompletionPage() {
 
                             {/* Stars */}
                             <div className="star-container">
+                                <div className="svg-icon">
                                 <Image
                                     src="/star-icon.svg"
                                     alt="Star icon"
@@ -80,6 +81,8 @@ export default function CompletionPage() {
                                     height={110}
                                     className="icon-spacing"
                                 />
+                                </div>
+                                <div className="svg-icon">
                                 <Image
                                     src="/star-icon.svg"
                                     alt="Star icon"
@@ -87,6 +90,8 @@ export default function CompletionPage() {
                                     height={150}
                                     className="icon-spacing"
                                 />
+                                </div>
+                                <div className="svg-icon">
                                 <Image
                                     src="/star-icon.svg"
                                     alt="Star icon"
@@ -94,6 +99,7 @@ export default function CompletionPage() {
                                     height={110}
                                     className="icon-spacing"
                                 />
+                                </div>
                             </div>
 
                             {/* Buttons */}
@@ -102,13 +108,15 @@ export default function CompletionPage() {
                                     className="button setup-room-button"
                                     onClick={() => setShowStoryOptions(true)}
                                 >
+                                    <div className="svg-icon">
                                     <Image
                                         src="/play-icon.svg"
                                         alt="Play icon"
-                                        width={30}
-                                        height={30}
+                                        width={40}
+                                        height={40}
                                         className="icon-spacing"
                                     />
+                                    </div>
                                     <span>Play Again</span>
                                 </button>
 
