@@ -210,8 +210,12 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Hard");
                                     playSelectOptionClick();
                                 }}
+                                onMouseEnter={() => setTooltip("Hard mode: 10 sentences")}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Hard mode: 10 sentences")}
                             >
                                 <span>Hard</span>
+                                {tooltip === "Hard mode: 10 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
                         </div>
                         <button className="back-step-button" onClick={() => {
