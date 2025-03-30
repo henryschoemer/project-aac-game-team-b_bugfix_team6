@@ -5,7 +5,7 @@ interface TextToSpeechProps {
     text: string;
 }
 
-const TextToSpeech: React.FC<TextToSpeechProps> = ({ text }) => {
+const TextToSpeechAACButtons: React.FC<TextToSpeechProps> = ({ text }) => {
 
     const [isPaused, setIsPaused] = useState(false);
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
@@ -59,7 +59,7 @@ const TextToSpeech: React.FC<TextToSpeechProps> = ({ text }) => {
     );
 };
 
-export default TextToSpeech;
+export default TextToSpeechAACButtons;
 */
 import React, { useState, useEffect } from "react";
 
@@ -68,7 +68,7 @@ interface TextToSpeechProps {
     onSpeechEnd?: () => void; // Callback for when speech ends
 }
 
-const TextToSpeech: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd }) => {
+const TextToSpeechAACButtons: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd }) => {
     const [isPaused, setIsPaused] = useState(false);
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
 
@@ -147,4 +147,4 @@ const TextToSpeech: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd }) => {
     );
 };
 
-export default TextToSpeech;
+export default TextToSpeechAACButtons;

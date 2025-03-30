@@ -16,11 +16,12 @@ import React, { useState, useEffect } from "react";
 import stories, { Story, StorySection } from "./stories";//import the stories interface
 import AACKeyboard from "../Components/AACKeyboard";
 import useSound from 'use-sound';
-import TextToSpeech from "../Components/TextToSpeech";
+import TextToSpeechAACButtons from "../Components/TextToSpeechAACButtons";
 import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
 import CompletionPage from "../CompletionPage/page";
+import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
@@ -57,7 +58,7 @@ export default function Home() {
   const [completedImages, setCompletedImages] = useState<{ src: string; alt: string; x: number; y: number }[]>([]);
   const [currentImage, setCurrentImage] = useState<{ src: string; alt: string; x: number; y: number } | null>(null);
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
-  const [storyCompleted, setStoryCompleted] = useState(false); // Used to toggle continue overlay
+  const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
     const soundUrl = '/sounds/aac_audios.mp3';
   const [play] = useSound(soundUrl, {
@@ -135,14 +136,14 @@ export default function Home() {
      }
    };
 
-    // Delay showContinuePage by 3 seconds
+    // Delay completion page overlay by 3 seconds
     useEffect(() => {
         let timeoutId: NodeJS.Timeout;
 
         if (storyCompleted) {
             // 3 sec delay
             timeoutId = setTimeout(() => {
-                setShowOverlay(true); // Update ShowContinueOverlay
+                setShowOverlay(true); // Update show completion page overlay
             }, 3000);
         }
 
@@ -235,7 +236,7 @@ export default function Home() {
        buttonColor={currentStory?.colorTheme.buttonColor}
          />
         </h2>
-           <TextToSpeech text={phrase} />
+           <TextToSpeechAACButtons text={phrase} />
       </div>
 
 
@@ -343,6 +344,9 @@ return (
       })}
     </AnimatePresence>
 
+          {/* Calls AutomaticTextToSpeech, which speech texts the current fill in the blank phrase*/}
+          <TextToSpeechTextOnly text={phrase}/>
+
           {/* Text to speech completed story*/}
           {phrase === "The End!" && (
               <div>
@@ -354,15 +358,20 @@ return (
                           console.log("Gameplay: Story is completed!");
                           setStoryCompleted(true); // Update state when completed text to speech is done
                       }}
-                      />
+                  />
               </div>
-              )}
+          )}
+
+          {/*Completion page overlay that pops up*/}
           {showOverlay && (
               <div className="overlay">
                   <CompletionPage/>
               </div>
-          )
-          }
+          )}
+        {/* Current Phrase and Images */}
+        <p className="mb-2 absolute" style={{ color: "black" }}>
+          {phrase}
+        </p>
       </div>
     </div>
   );

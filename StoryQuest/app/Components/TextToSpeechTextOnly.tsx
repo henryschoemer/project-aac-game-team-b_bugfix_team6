@@ -7,7 +7,7 @@ interface TextToSpeechCompletedStoryProps {
 
 
 // Text to speech phrases component
-const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({ text, onComplete }) => {
+const TextToSpeechTextOnly: React.FC<TextToSpeechCompletedStoryProps> = ({ text, onComplete }) => {
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
 
@@ -51,7 +51,7 @@ const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({
             const synth = window.speechSynthesis;
 
             if (text) {
-                const u = new SpeechSynthesisUtterance(text);
+                const u = new SpeechSynthesisUtterance(text.replace(/_/g, ' '));
 
                 // Set the selected voice
                 u.voice = selectedVoice;
@@ -80,4 +80,4 @@ const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({
     return null;
 };
 
-export default TextToSpeechCompletedStory;
+export default TextToSpeechTextOnly;

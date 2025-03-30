@@ -1,6 +1,13 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import CreateRoomPage from "../page";
+import { render, screen, fireEvent } from "@testing-library/react"; 
+import { act } from "react";
+import { useRouter } from 'next/navigation';
+import CreateRoomPage from "../page"; 
 import '@testing-library/jest-dom';
+
+jest.mock('next/navigation', () => ({
+    useRouter: jest.fn(),
+  }));
+
 beforeEach(() => {
     jest.spyOn(console, "log").mockImplementation(() => {});
 });
@@ -10,6 +17,22 @@ afterEach(() => {
 });
 
 describe("CreateRoomPage", () => {
+    let mockPush: jest.Mock;
+
+    beforeEach(() => {
+        // Reset the mock before each test
+        mockPush = jest.fn();
+        (useRouter as jest.Mock).mockReturnValue({
+        push: mockPush,
+        });
+        jest.spyOn(console, "log").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    
     test("renders the first step of CreateRoomPage component", () => {
         render(<CreateRoomPage />);
 
