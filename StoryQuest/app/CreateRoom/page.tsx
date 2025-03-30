@@ -197,10 +197,13 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Medium");
                                     playSelectOptionClick();
                                 }}
+                                onMouseEnter={() => setTooltip("Medium mode: 5 sentences")}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Medium mode: 5 sentences")}
                             >
                                 <span>Medium</span>
+                                {tooltip === "Medium mode: 5 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
-
                             <button
                                 className="big-button difficulty-button hard"
                                 onClick={() => {
