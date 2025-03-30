@@ -1,34 +1,27 @@
 import type { Config } from "tailwindcss";
-
 export default {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}", 
-    
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       keyframes: {
-        typing: {
-          "0%": {
-            width: "0%",
-            visibility: "hidden"
-          },
-          "100%": {
-            width: "100%"
-          }
+        typewriter: {
+          "0%": { width: "0%" },
+          "100%": { width: "100%" },
         },
-        blink: {
-          "50%": {
-            borderColor: "transparent"
-          },
-          "100%": {
-            borderColor: "white"
-          }
-        }
+        blinkingCursor: {
+          "0%": { borderColor: "rgba(255,255,255,.75)" },
+          "100%": { borderColor: "transparent" },
+        },
       },
       animation: {
-        typing: "typing 2s steps(20) infinite alternate, blink .7s infinite"
+        typewriter: "typewriter 5s steps(50) 1s 1 normal both",
+        blinkingCursor: "blinkingCursor 500ms steps(50) infinite normal",
+      },
+      fontFamily: {
+        mono: ["'Anonymous Pro'", "monospace"],
       },
       colors: {
         background: "var(--background)",

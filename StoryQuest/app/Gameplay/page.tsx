@@ -235,13 +235,6 @@ export default function Home() {
        buttonColor={currentStory?.colorTheme.buttonColor}
          />
         </h2>
-
-        {/*Hear Phrase button */}
-           {/*
-           <p className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
-               {completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase}
-           </p>
-           */}
            <TextToSpeech text={phrase} />
       </div>
 
@@ -257,14 +250,16 @@ export default function Home() {
         }}
       >
         {/* Completed Phrases (positioned with the text) */}
-          <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 flex flex-wrap items-center min-h-[80px]">
+          <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 min-h-[80px] flex items-center gap-2 overflow-hidden whitespace-nowrap">
               {completedPhrases.map((completedPhrase, index) => (
-                  <p key={index} className="text-black text-lg font-semibold mr-4 animate-[typing_2s_steps(20,_end)_forwards] whitespace-nowrap overflow-hidden">
-                      {completedPhrase}.
-                  </p>
+                  <span key={index} className="text-lg text-gray-700">{completedPhrase}</span>
               ))}
+              <span key={phrase} className="text-xl font-semibold text-black">
+              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden w-0 animate-typewriter">
+                {phrase}
+              </span>
+            </span>
           </div>
-
 
         {/* Animated Images with Sparkles: Shows selected images with a sparkle effect. */}
         <AnimatePresence>
@@ -354,7 +349,6 @@ return (
                   {/*Call completedstory button and pass completedphrase map*/}
                   <CompletedStory
                       index={completedPhrases.length - 1}
-                      //completedPhrase={completedPhrases[completedPhrases.length - 1]}
                       completedPhrases={completedPhrases}
                       onComplete={() => {
                           console.log("Gameplay: Story is completed!");
@@ -369,11 +363,6 @@ return (
               </div>
           )
           }
-
-        {/* Current Phrase and Images */}
-        <p className="mb-2 absolute" style={{ color: "black" }}>
-          {phrase}
-        </p>
       </div>
     </div>
   );
