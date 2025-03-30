@@ -26,6 +26,8 @@ export default function CreateRoomPage() {
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [roomId, setRoomId] = useState<string | null>(null);
+    const [tooltip, setTooltip] = useState<string | null>(null);
+
 
     const router = useRouter();
 
@@ -75,10 +77,10 @@ export default function CreateRoomPage() {
 
     return (
         <div className="page-container"
-             style={{
-                 backgroundImage: "url('/HomePage-Images/Background.jpg')",
-                 backgroundSize: "cover",
-             }}>
+            style={{
+                backgroundImage: "url('/HomePage-Images/Background.jpg')",
+                backgroundSize: "cover",
+            }}>
 
             {/*create room page Description text to speech*/}
             {/*<AutomaticTextToSpeech speechText="Please select story options" />*/}
@@ -181,8 +183,12 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Easy");
                                     playSelectOptionClick();
                                 }}
+                                onMouseEnter={() => setTooltip("Easy mode: 3 sentences")}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Easy mode: 3 sentences")}
                             >
                                 <span>Easy</span>
+                                {tooltip === "Easy mode: 3 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
 
                             <button
@@ -251,7 +257,7 @@ export default function CreateRoomPage() {
                 {(currentStep !== 1 && currentStep !== 4) ? null : (
                     <div className="home-button-container button-box">
                         <Link href="/">
-                            <BackButton/>
+                            <BackButton />
                         </Link>
                     </div>
                 )}
