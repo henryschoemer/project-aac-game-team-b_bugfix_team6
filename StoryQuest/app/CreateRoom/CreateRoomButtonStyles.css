@@ -1,4 +1,25 @@
 /* CreateRoomButtonStyles.css */
+.tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s;
+}
+
+.big-button:hover .tooltip,
+.big-button:active .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
 
 .page-container {
     min-height: 100vh;
