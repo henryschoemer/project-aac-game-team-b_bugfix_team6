@@ -26,6 +26,8 @@ export default function CreateRoomPage() {
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [roomId, setRoomId] = useState<string | null>(null);
+    const [tooltip, setTooltip] = useState<string | null>(null);
+
 
     const router = useRouter();
 
@@ -75,10 +77,10 @@ export default function CreateRoomPage() {
 
     return (
         <div className="page-container"
-             style={{
-                 backgroundImage: "url('/HomePage-Images/Background.jpg')",
-                 backgroundSize: "cover",
-             }}>
+            style={{
+                backgroundImage: "url('/HomePage-Images/Background.jpg')",
+                backgroundSize: "cover",
+            }}>
 
             {/*create room page Description text to speech*/}
             {/*<AutomaticTextToSpeech speechText="Please select story options" />*/}
@@ -181,8 +183,12 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Easy");
                                     playSelectOptionClick();
                                 }}
+                                onMouseEnter={() => setTooltip("Easy mode: 3 sentences")}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Easy mode: 3 sentences")}
                             >
                                 <span>Easy</span>
+                                {tooltip === "Easy mode: 3 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
 
                             <button
@@ -191,18 +197,25 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Medium");
                                     playSelectOptionClick();
                                 }}
+                                onMouseEnter={() => setTooltip("Medium mode: 5 sentences")}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Medium mode: 5 sentences")}
                             >
                                 <span>Medium</span>
+                                {tooltip === "Medium mode: 5 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
-
                             <button
                                 className="big-button difficulty-button hard"
                                 onClick={() => {
                                     handleDifficultyClick("Hard");
                                     playSelectOptionClick();
                                 }}
+                                onMouseEnter={() => setTooltip("Hard mode: 10 sentences")}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Hard mode: 10 sentences")}
                             >
                                 <span>Hard</span>
+                                {tooltip === "Hard mode: 10 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
                         </div>
                         <button className="back-step-button" onClick={() => {
@@ -249,9 +262,9 @@ export default function CreateRoomPage() {
 
                 {/* Home Button - Always visible */}
                 {(currentStep !== 1 && currentStep !== 4) ? null : (
-                    <div className="home-button-container">
+                    <div className="home-button-container button-box">
                         <Link href="/">
-                            <BackButton/>
+                            <BackButton />
                         </Link>
                     </div>
                 )}
