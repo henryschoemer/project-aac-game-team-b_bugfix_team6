@@ -251,12 +251,14 @@ export default function Home() {
         }}
       >
         {/* Completed Phrases (positioned with the text) */}
-          <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 min-h-[80px] flex items-center gap-2 overflow-hidden whitespace-nowrap">
-              {completedPhrases.map((completedPhrase, index) => (
-                  <span key={index} className="text-lg text-gray-700">{completedPhrase}</span>
-              ))}
+          <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 whitespace-normal">
+              <div className="flex flex-wrap items-center gap-2 whitespace-normal">
+                  {completedPhrases.map((completedPhrase, index) => (
+                      <span key={index} className="text-lg text-gray-700 text-nowrap">{completedPhrase}</span>
+                  ))}
+              </div>
               <span key={phrase} className="text-xl font-semibold text-black">
-              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden w-0 animate-typewriter">
+              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden w-0 text-nowrap animate-typewriter">
                 {phrase}
               </span>
             </span>
