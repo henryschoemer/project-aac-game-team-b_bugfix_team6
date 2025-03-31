@@ -242,11 +242,11 @@ export default function Home() {
 
         {/* Right Panel: Game Scene */}
       <div
-        className="w-2/3 relative bg-cover bg-center flex justify-center items-center"
+        className="w-2/3 relative bg-cover bg-center flex justify-center items-center pb-20"
         style={{
           backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
         }}
       >
@@ -370,10 +370,6 @@ return (
                   <CompletionPage/>
               </div>
           )}
-        {/* Current Phrase and Images */}
-        <p className="mb-2 absolute" style={{ color: "black" }}>
-          {phrase}
-        </p>
       </div>
     </div>
   );
