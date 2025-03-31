@@ -112,7 +112,7 @@ const stories: Story[] = [
         words: {
           bear: { image: "bear.svg", x: 40, y: 80, effect: 'pulse' },
           basket: { image: "basket.svg", x: 40, y: 80, effect: 'none' },
-          monkey: { image: "monkey.svg", x: 40, y: 80, effect: 'none' },
+          monkey: { image: "monkey.svg", x: 40, y: 70, effect: 'none' },
           squirrel: { image: "Squirrel.svg", x: 40, y: 80, effect: 'none' },
           bird: { image: "bird.svg", x: 40, y: 80, effect: 'none' },
           ladybug: { image: "ladybug.svg", x: 40, y: 80, effect: 'none' }
@@ -144,45 +144,45 @@ const stories: Story[] = [
           {
             phrase: "We are travelling thru space and saw a ___.",
             words: {
-              planet: { image: "planet.svg", x: 50, y: 30, effect: 'spin' },
-              comet: { image: "comet.svg", x: 70, y: 20, effect: 'sideToSide' },
-              astronaut: { image: "astronaut.svg", x: 40, y: 50, effect: 'bounce' },
-              car: { image: "car.svg", x: 60, y: 40, effect: 'flip' },
-              alien: { image: "alien.svg", x: 45, y: 60, effect: 'fade' },
-              star: { image: "star.svg", x: 50, y: 15, effect: 'pulse' }
+              planet: { image: "planet.svg", x: 80, y: 5, effect: 'spin' },
+              comet: { image: "comet.svg", x: 80, y: 5, effect: 'sideToSide' },
+              astronaut: { image: "astronaut.svg", x: 80, y: 5, effect: 'bounce' },
+              car: { image: "car.svg", x: 80, y: 5, effect: 'flip' },
+              alien: { image: "alien.svg", x: 80, y: 5, effect: 'fade' },
+              star: { image: "star.svg", x: 80, y: 5, effect: 'pulse' }
             },
           },
           {
             phrase: "On the moon, we discovered a ___.",
             words: {
-              flag: { image: "flag.svg", x: 50, y: 70, effect: 'none' },
-              rock: { image: "rock.svg", x: 40, y: 80, effect: 'scaleUp' },
-              cow: { image: "cow.svg", x: 60, y: 75, effect: 'none' },
-              treasure: { image: "treasure.svg", x: 45, y: 70, effect: 'pulse' },
-              robot: { image: "robot.svg", x: 50, y: 65, effect: 'sideToSide' },
-              alien: { image: "alien.svg", x: 55, y: 65, effect: 'bounce' }
+              flag: { image: "flag.svg", x: 20, y: 25, effect: 'pulse' },
+              rock: { image: "rock.svg", x: 20, y: 25, effect: 'scaleUp' },
+              cow: { image: "cow.svg", x: 20, y: 20, effect: 'scaleUp' },
+              treasure: { image: "treasure.svg", x: 20, y: 25, effect: 'pulse' },
+              robot: { image: "robot.svg", x: 20, y: 20, effect: 'pulse' },
+              alien: { image: "alien.svg", x: 20, y: 20, effect: 'fade' }
             },
           },
           {
             phrase: "Suddenly, something flew by us. It was a ___.",
             words: {
-              UFO: { image: "ufo.svg", x: 50, y: 10, effect: 'spin' },
-              meteor: { image: "meteor.svg", x: 60, y: 15, effect: 'fade' },
-              rocket: { image: "rocket.svg", x: 40, y: 20, effect: 'upAndDown' },
-              airplane: { image: "airplane.svg", x: 50, y: 30, effect: 'scaleUp' },
-              shootingStar: { image: "shooting-star.svg", x: 70, y: 15, effect: 'sideToSide' },
-              spaceDragon: { image: "space-dragon.svg", x: 45, y: 25, effect: 'bounce' }
+              UFO: { image: "ufo.svg", x: 50, y: 50, effect: 'scaleUp' },
+              meteor: { image: "meteor.svg", x: 50, y: 50, effect: 'fade' },
+              rocket: { image: "rocket.svg", x: 50, y: 50, effect: 'upAndDown' },
+              airplane: { image: "airplane.svg", x: 50, y: 50, effect: 'scaleUp' },
+              shootingStar: { image: "shootingstar.svg", x: 50, y: 50, effect: 'sideToSide' },
+              spaceDragon: { image: "dragon.svg", x: 50, y: 50, effect: 'bounce' }
             }
           },
           {
             phrase: "We also said hi to a ___.",
             words: {
-              Alien: { image: "alien.svg", x: 50, y: 50, effect: 'pulse' },
-              robot: { image: "robot.svg", x: 60, y: 55, effect: 'sideToSide' },
-              spaceCat: { image: "space-cat.svg", x: 45, y: 55, effect: 'fade' },
-              spaceDog: { image: "space-dog.svg", x: 55, y: 50, effect: 'bounce' },
-              astronaut: { image: "astronaut.svg", x: 50, y: 60, effect: 'none' },
-              Wizard: { image: "wizard.svg", x: 50, y: 45, effect: 'spin' }
+              Alien: { image: "alien.svg", x: 5, y: 70, effect: 'pulse' },
+              robot: { image: "robot.svg", x: 5, y: 70, effect: 'sideToSide' },
+              spaceCat: { image: "spacecat.svg", x: 5, y: 70, effect: 'fade' },
+              spaceDog: { image: "spacedog.svg", x: 5, y: 70, effect: 'bounce' },
+              astronaut: { image: "astronaut.svg", x: 5, y: 70, effect: 'none' },
+              Wizard: { image: "wizard.svg", x: 5, y: 70, effect: 'spin' }
             }
           }
         ],
