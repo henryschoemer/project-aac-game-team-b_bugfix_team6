@@ -23,6 +23,7 @@ import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,Scal
 import CompletionPage from "../CompletionPage/page";
 import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 
+
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
   return (
@@ -235,14 +236,6 @@ export default function Home() {
        buttonColor={currentStory?.colorTheme.buttonColor}
          />
         </h2>
-
-        {/*Hear Phrase button */}
-           {/*
-           <p className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
-               {completedPhrases.length > 0 ? completedPhrases[completedPhrases.length - 1] : phrase}
-           </p>
-           */}
-           {/*text to speech play and stop buttons on the aac board*/}
            <TextToSpeechAACButtons text={phrase} />
       </div>
 
@@ -258,15 +251,16 @@ export default function Home() {
         }}
       >
         {/* Completed Phrases (positioned with the text) */}
-        <div className="absolute top-0 left-0 w-full h-full">
-          {completedPhrases.map((completedPhrase, index) => (
-            <div key={index} className="absolute" style={{ top: `${index * 50}px`, left: '20px' }}>
-              <p className="mb-2" style={{ color: "black" }}>
-                {completedPhrase}
-              </p>
-            </div>
-          ))}
-        </div>
+          <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 min-h-[80px] flex items-center gap-2 overflow-hidden whitespace-nowrap">
+              {completedPhrases.map((completedPhrase, index) => (
+                  <span key={index} className="text-lg text-gray-700">{completedPhrase}</span>
+              ))}
+              <span key={phrase} className="text-xl font-semibold text-black">
+              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden w-0 animate-typewriter">
+                {phrase}
+              </span>
+            </span>
+          </div>
 
         {/* Animated Images with Sparkles: Shows selected images with a sparkle effect. */}
         <AnimatePresence>
@@ -374,7 +368,6 @@ return (
                   <CompletionPage/>
               </div>
           )}
-
         {/* Current Phrase and Images */}
         <p className="mb-2 absolute" style={{ color: "black" }}>
           {phrase}
