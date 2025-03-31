@@ -17,7 +17,7 @@ export default {
         },
       },
       animation: {
-        typewriter: "typewriter 5s steps(50) 1s 1 normal both",
+        typewriter: "typewriter 3s steps(50) 1s 1 normal both",
         blinkingCursor: "blinkingCursor 500ms steps(50) infinite normal",
       },
       fontFamily: {
