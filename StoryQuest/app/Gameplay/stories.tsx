@@ -167,7 +167,7 @@ const stories: Story[] = [
             phrase: "Suddenly, something flew by us. It was a ___.",
             words: {
               UFO: { image: "ufo.svg", x: 50, y: 50, effect: 'scaleUp' },
-              meteor: { image: "meteor.svg", x: 50, y: 50, effect: 'fade' },
+              book: { image: "book.svg", x: 50, y: 50, effect: 'fade' },
               rocket: { image: "rocket.svg", x: 50, y: 50, effect: 'upAndDown' },
               airplane: { image: "airplane.svg", x: 50, y: 50, effect: 'scaleUp' },
               shootingStar: { image: "shootingstar.svg", x: 50, y: 50, effect: 'sideToSide' },
