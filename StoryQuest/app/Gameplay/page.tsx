@@ -258,7 +258,7 @@ export default function Home() {
                   ))}
               </div>
               <span key={phrase} className="text-xl font-semibold text-black">
-              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden w-0 text-nowrap animate-typewriter">
+              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden text-nowrap animate-typewriter"  style={{ "--tw-typewriter-width": `${phrase.length}ch` } as React.CSSProperties} >
                 {phrase}
               </span>
             </span>
@@ -327,7 +327,7 @@ if (effect === 'spin') {
 }
 
 return (
-          <div key={index} className="absolute" style={{ left: `${image.x}%`, top: `${image.y}%` }}>
+    <div key={index} className="absolute" style={{left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`,}}>
             {showSparkles[index] ? (
               <SparkleEffect
                 onComplete={() =>
