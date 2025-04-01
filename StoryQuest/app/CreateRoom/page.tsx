@@ -60,7 +60,7 @@ export default function CreateRoomPage() {
             console.log("Room Created with ID:", docRef.id);
             setRoomId(docRef.id);
             alert(`Room Created! Room ID: ${docRef.id}`);
-            router.push(`/CreateRoom/qrcode?roomId=${docRef.id}`);
+            router.push(`/CreateRoom/qrcode?roomId=${docRef.id}&storyTitle=${encodeURIComponent(selectedStory ?? "")}`);
         } catch (error) {
             console.error("Error creating room:", error);
             alert("Failed to create room.");

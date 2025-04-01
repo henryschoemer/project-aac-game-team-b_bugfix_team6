@@ -1,27 +1,15 @@
-//CURRENTLY THE GAME HAVE:
-// - IN THE STORIES.TSX FILE, THERE ARE 2 STORIES WITH 3 SENTENCES EACH.
-// - THERE IS A OPTION ON A DROPDOWN TO CHANGE STORIES (DONT KNOW IF WE WANT TO KEEP IP LIKE THIS)
-
-
-//TO DO:
-//MAKE THE WORD SELECTED IN THE SENTENCE IN BOLD
-
-
-
-
-
 "use client";
 
 import React, { useState, useEffect } from "react";
-import stories, { Story, StorySection } from "./stories";//import the stories interface
-import { useRouter } from "next/router";//To retrieve story based on room settings
-import AACKeyboard from "../Components/AACKeyboard";
+import stories, { Story, StorySection } from "../../stories";//import the stories interface
+import { useParams } from "next/navigation";//To retrieve story based on room settings
+import AACKeyboard from "../../../Components/AACKeyboard";
 import useSound from 'use-sound';
-import TextToSpeechAACButtons from "../Components/TextToSpeechAACButtons";
+import TextToSpeechAACButtons from "../../../Components/TextToSpeechAACButtons";
 import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
-import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
-import CompletionPage from "../CompletionPage/page";
+import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../../../Components/animationUtils";
+import CompletionPage from "../../../CompletionPage/page";
 import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 
 
@@ -77,17 +65,31 @@ export default function Home() {
         }
     });
 
-  const router = useRouter();
-  const { storyTitle } = router.query;
+    const params = useParams();
+console.log("Params:", params); // Debugging
+
+const roomId = params.roomId as string;
+const storyTitleRaw = params.storyTitle as string | undefined;
+const storyTitle = storyTitleRaw ? decodeURIComponent(storyTitleRaw) : null;
 
   //Finding story name in URL
   useEffect(() => {
+
+    console.log("Story Title from URL:", storyTitle);
+    if (!storyTitle) return; // Prevent errors if no title is in the URL
+  
     setIsMounted(true);
   
     if (stories.length > 0) {
-      const selectedStory = stories.find((s) => s.title === storyTitle) || stories[0]; // Default to first story if not found
-      setCurrentStory(selectedStory);
-      setPhrase(selectedStory.sections[0].phrase);
+      const selectedStory = stories.find((s) => s.title === storyTitle);
+  
+      if (selectedStory) {
+        setCurrentStory(selectedStory);
+        setPhrase(selectedStory.sections[0].phrase);
+      } else {
+        setCurrentStory(stories[0]); // Default to first story if not found
+        setPhrase(stories[0].sections[0].phrase);
+      }
     }
   }, [storyTitle]);
 
