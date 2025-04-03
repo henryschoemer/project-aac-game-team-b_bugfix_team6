@@ -9,6 +9,11 @@ jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }));
 
+jest.mock('jsqr', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({ data: 'mocked QR result' })),
+}));
+
 // Mock useSound
 jest.mock('use-sound', () => ({
   __esModule: true,
