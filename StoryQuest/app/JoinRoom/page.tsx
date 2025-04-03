@@ -8,7 +8,7 @@ import "../CreateRoom/CreateRoomButtonStyles.css";
 import { BackButton } from "../HomePage/HomePageButtons";
 import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useSound from "use-sound";
-import Camera from "../Components/Camera"; // ✅ Correct import
+import Camera from "../Components/Camera";
 import jsQR from "jsqr";
 
 export default function JoinRoomPage() {
@@ -24,21 +24,25 @@ export default function JoinRoomPage() {
     };
 
     const processQRCode = (imageData: string) => {
-        const img = new Image();
+        const img = new Image(); // creates the image
         img.onload = () => {
-            const canvas = document.createElement("canvas");
+            // .onload waits for the image to load before moving on
+
+            const canvas = document.createElement("canvas"); // This will create a canvas for the image 
             const ctx = canvas.getContext("2d");
             if (!ctx) return;
 
             canvas.width = img.width;
             canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
+            ctx.drawImage(img, 0, 0); // this will draw the image of the qr code to the canvas
 
             const imageDataObj = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
             try {
+                // thiswill now try to read the qrcode
                 const code = jsQR(imageDataObj.data, imageDataObj.width, imageDataObj.height);
                 if (code) {
+                    //good qr code
                     setRoomId(code.data);
                     handleJoinRoom(code.data);
                 } else {
