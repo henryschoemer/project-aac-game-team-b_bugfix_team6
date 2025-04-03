@@ -18,8 +18,8 @@ export default function JoinRoomPage() {
     const joinRoomClick = "/sounds/joinroom-click.mp3";
     const [playJoinRoomClick] = useSound(joinRoomClick);
 
-    // Function to handle image capture from Camera component
-    const handleCapturedImage = (imageData: string) => {
+
+    const handleCapturedImage = (imageData: string) => { // handles image 
         processQRCode(imageData);
     };
 
@@ -63,6 +63,7 @@ export default function JoinRoomPage() {
         }
 
         try {
+            // This will go into firebase and try to find the room id 
             const roomRef = doc(db, "rooms", scannedRoomId);
             const roomDoc = await getDoc(roomRef);
 
