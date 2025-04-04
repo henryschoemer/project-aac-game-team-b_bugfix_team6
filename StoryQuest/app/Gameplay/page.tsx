@@ -250,21 +250,23 @@ export default function Home() {
 
         {/* Right Panel: Game Scene */}
       <div
-        className="w-2/3 relative bg-cover bg-center flex justify-center items-center"
+        className="w-2/3 relative bg-cover bg-center flex justify-center items-center pb-20"
         style={{
           backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
         }}
       >
         {/* Completed Phrases (positioned with the text) */}
-          <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 min-h-[80px] flex items-center gap-2 overflow-hidden whitespace-nowrap">
-              {completedPhrases.map((completedPhrase, index) => (
-                  <span key={index} className="text-lg text-gray-700">{completedPhrase}</span>
-              ))}
+          <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 whitespace-normal">
+              <div className="flex flex-wrap items-center gap-2 whitespace-normal">
+                  {completedPhrases.map((completedPhrase, index) => (
+                      <span key={index} className="text-lg text-gray-700 text-nowrap">{completedPhrase}</span>
+                  ))}
+              </div>
               <span key={phrase} className="text-xl font-semibold text-black">
-              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden w-0 animate-typewriter">
+              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden text-nowrap animate-typewriter"  style={{ "--tw-typewriter-width": `${phrase.length}ch` } as React.CSSProperties} >
                 {phrase}
               </span>
             </span>
@@ -333,7 +335,7 @@ if (effect === 'spin') {
 }
 
 return (
-          <div key={index} className="absolute" style={{ left: `${image.x}%`, top: `${image.y}%` }}>
+    <div key={index} className="absolute" style={{left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`,}}>
             {showSparkles[index] ? (
               <SparkleEffect
                 onComplete={() =>
@@ -376,10 +378,6 @@ return (
                   <CompletionPage/>
               </div>
           )}
-        {/* Current Phrase and Images */}
-        <p className="mb-2 absolute" style={{ color: "black" }}>
-          {phrase}
-        </p>
       </div>
     </div>
   );
