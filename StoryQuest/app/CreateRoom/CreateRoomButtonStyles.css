@@ -299,3 +299,34 @@
       width: 30%;
     }
   }
+
+  /*QR code style*/
+  .qr-code-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.qr-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: fit-content;
+    border: 3px solid #ddd;
+}
+
+.qr-instruction {
+    font-size: 1.2rem;
+    color: #4a6baf;
+    font-weight: bold;
+    margin-top: 10px;
+}

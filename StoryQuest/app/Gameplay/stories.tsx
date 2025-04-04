@@ -89,7 +89,7 @@ const stories: Story[] = [
 
   //NEW STORY - NUMBER 2
   {
-    title: "Walk in the forest",
+    title: "Walk in the Forest",
     backgroundImage: "Forest-background.png",
     colorTheme: {
       backgroundColor: "#ffcccb", // Light red
