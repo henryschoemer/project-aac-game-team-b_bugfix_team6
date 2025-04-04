@@ -11,7 +11,8 @@ import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../../../Components/animationUtils";
 import CompletionPage from "../../../CompletionPage/page";
 import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
-
+import { db } from "../../../../firebaseControls/firebaseConfig";
+import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore"; // to update the firestore database with game data
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -65,12 +66,38 @@ export default function Home() {
         }
     });
 
-    const params = useParams();
+//Grabbing roomID and story title from URL
+//roomID stores in firestore
+//story chosen from create room becomes default story
+const params = useParams();
 console.log("Params:", params); // Debugging
 
 const roomId = params.roomId as string;
-const storyTitleRaw = params.storyTitle as string | undefined;
-const storyTitle = storyTitleRaw ? decodeURIComponent(storyTitleRaw) : null;
+const storyTitleURL = params.storyTitle as string | undefined;
+const storyTitle = storyTitleURL ? decodeURIComponent(storyTitleURL) : null;
+
+
+//This is the snapshot used to retrieve game state in firestore
+useEffect(() => {
+  if (!roomId) return;
+
+  const gameRef = doc(db, "games", roomId);
+
+  const unsubscribe = onSnapshot(gameRef, (snapshot) => {
+    if (snapshot.exists()) {
+      const gameData = snapshot.data();
+      console.log("Firestore data received:", gameData);
+
+      setCurrentSectionIndex(gameData.currentSectionIndex);
+      setPhrase(gameData.currentPhrase);
+      setCompletedPhrases(gameData.completedPhrases || []);
+      setCompletedImages(gameData.completedImages || []);
+      setStoryCompleted(gameData.gameStatus === "completed");
+    }
+  });
+
+  return () => unsubscribe();
+}, [roomId]);
 
   //Finding story name in URL
   useEffect(() => {
@@ -113,7 +140,7 @@ const storyTitle = storyTitleRaw ? decodeURIComponent(storyTitleRaw) : null;
     setShowSparkles([]); // Reset sparkle effects when changing stories
   };
 
-  const handleWordSelect = (word: string) => {
+  const handleWordSelect = async (word: string) => {
      //setUserInput(word);
      if (!currentStory) return;
 
@@ -141,6 +168,38 @@ const storyTitle = storyTitleRaw ? decodeURIComponent(storyTitleRaw) : null;
      }
 
      const newPhrase = phrase.replace("___", word);
+    
+
+     //This is where game state gets updated in firestore
+     const gameRef = doc(db, "games", roomId);
+     const docSnap = await getDoc(gameRef);
+
+     //if game already exists just update game document, else create new game document
+     if (docSnap.exists()) {
+      await updateDoc(gameRef, {
+        completedPhrases: [...completedPhrases, newPhrase],
+        completedImages: [...completedImages, newImage],
+        currentSectionIndex: currentSectionIndex < currentStory.sections.length - 1
+          ? currentSectionIndex + 1
+          : currentSectionIndex,
+        currentPhrase: currentSectionIndex < currentStory.sections.length - 1
+          ? currentStory.sections[currentSectionIndex + 1].phrase
+          : "The End!",
+        lastUpdated: new Date(),
+      });
+     } else {
+      await setDoc(gameRef, {
+        completedPhrases: [...completedPhrases, newPhrase],
+        completedImages: [...completedImages, newImage],
+        currentSectionIndex: currentSectionIndex < currentStory.sections.length - 1
+          ? currentSectionIndex + 1
+          : currentSectionIndex,
+        currentPhrase: currentSectionIndex < currentStory.sections.length - 1
+          ? currentStory.sections[currentSectionIndex + 1].phrase
+          : "The End!",
+        lastUpdated: new Date(),
+      });
+     }
 
      setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
      setCompletedImages([...completedImages, newImage]); //store completed image
