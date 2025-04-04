@@ -37,7 +37,7 @@ const stories: Story[] = [
     },
     sections: [
       {
-        phrase: "Look in the garden, there is a ___",
+        phrase: "Look in the garden, there is a ___.",
         words: {
           mouse: { image: "mouse.svg", x: 30, y: 65, effect: 'flip', width: 80, height: 80 },
           ladybug: { image: "ladybug.svg", x: 60, y: 75, effect: 'sideToSide' },
@@ -48,7 +48,7 @@ const stories: Story[] = [
         },
       },
       {
-        phrase: "And near the flowers, I see a ___",  // New sentence
+        phrase: "And near the flowers, I see a ___.",  // New sentence
         words: {
           bee: { image: "bee.svg", x: 70, y: 50, effect: 'pulse' },
           butterfly: { image: "butterfly.svg",walkCycleImages:["butterfly1.svg","butterfly2.svg"],walkCycleDuration:0.3,x: 65, y: 45, effect: 'sideToSide' },
@@ -97,7 +97,7 @@ const stories: Story[] = [
     },
     sections: [
       {
-        phrase: "In the forest, I look in the sky and see a ___",
+        phrase: "In the forest, I look in the sky and see a ___.",
         words: {
           bird: { image: "bird.svg", x: 40, y: 5, effect: 'fade' },
           airplane: { image: "airplane.svg", x: 40, y: 5, effect: 'pulse' },
@@ -108,7 +108,7 @@ const stories: Story[] = [
         },
       },
       {
-        phrase: "In the path there is a ___",  // New sentence
+        phrase: "In the path there is a ___.",  // New sentence
         words: {
           bear: { image: "bear.svg", x: 40, y: 80, effect: 'pulse' },
           basket: { image: "basket.svg", x: 40, y: 80, effect: 'none' },

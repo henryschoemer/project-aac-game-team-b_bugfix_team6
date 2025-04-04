@@ -9,7 +9,7 @@ export default {
       keyframes: {
         typewriter: {
           "0%": { width: "0%" },
-          "100%": { width: "100%" },
+          "100%": { width: "var(--tw-typewriter-width, 50ch)" },
         },
         blinkingCursor: {
           "0%": { borderColor: "rgba(255,255,255,.75)" },
@@ -17,7 +17,7 @@ export default {
         },
       },
       animation: {
-        typewriter: "typewriter 5s steps(50) 1s 1 normal both",
+        typewriter: "typewriter 3s steps(50) 1s 1 normal both",
         blinkingCursor: "blinkingCursor 500ms steps(50) infinite normal",
       },
       fontFamily: {
