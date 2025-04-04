@@ -14,8 +14,8 @@ function QRCodeContent() {
         return <p>Error: No room ID found.</p>;
     }
 
-    //const joinRoomUrl = `https://project-aac-game-team-b--storyquest-fcdc2.us-central1.hosted.app/Gameplay/${roomId}`;
-    const joinRoomUrl = `/Gameplay/${roomId}/${storyTitle}`;
+    const joinRoomUrl = `https://project-aac-game-team-b--storyquest-fcdc2.us-central1.hosted.app/Gameplay/${roomId}/${storyTitle}`;
+    //const joinRoomUrl = `/Gameplay/${roomId}/${storyTitle}`;
 
     return (
         <div className="page-container"
