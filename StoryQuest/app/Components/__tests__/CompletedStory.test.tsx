@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
 import CompletedStory from '../CompletedStory';
-import TextToSpeechTextOnly from '@/Components/TextToSpeechTextOnly.tsx';
+import TextToSpeechPhrases from '@/Components/TextToSpeechPhrases.tsx';
 
-// Mock the TextToSpeechTextOnly component
-jest.mock('../TextToSpeechTextOnly.tsx', () => {
+// Mock the TextToSpeechPhrases component
+jest.mock('../TextToSpeechPhrases.tsx', () => {
     return jest.fn(({ text, onComplete }) => {
         // Simulate the speech ending immediately
         React.useEffect(() => {
@@ -39,10 +39,10 @@ describe('CompletedStory', () => {
         );
 
         expect(container.firstChild).toBeNull();
-        expect(TextToSpeechTextOnly).not.toHaveBeenCalled();
+        expect(TextToSpeechPhrases).not.toHaveBeenCalled();
     });
 
-    it('renders TextToSpeechTextOnly for each phrase when on last phrase', async () => {
+    it('renders TextToSpeechPhrases for each phrase when on last phrase', async () => {
         render(
             <CompletedStory
                 index={completedPhrases.length - 1} // Last phrase
@@ -56,12 +56,12 @@ describe('CompletedStory', () => {
             await new Promise(resolve => setTimeout(resolve, 50));
         });
 
-        // Check that TextToSpeechTextOnly was called for each phrase
-        expect(TextToSpeechTextOnly).toHaveBeenCalledTimes(completedPhrases.length);
+        // Check that TextToSpeechPhrases was called for each phrase
+        expect(TextToSpeechPhrases).toHaveBeenCalledTimes(completedPhrases.length);
 
         // Verify each phrase was passed correctly
         completedPhrases.forEach((phrase, index) => {
-            expect(TextToSpeechTextOnly).toHaveBeenCalledWith(
+            expect(TextToSpeechPhrases).toHaveBeenCalledWith(
                 expect.objectContaining({
                     text: phrase,
                     onComplete: index === completedPhrases.length - 1 ? mockOnComplete : undefined
@@ -98,7 +98,7 @@ describe('CompletedStory', () => {
         );
 
         // Get all mock calls
-        const textToSpeechCalls = (TextToSpeechTextOnly as jest.Mock).mock.calls;
+        const textToSpeechCalls = (TextToSpeechPhrases as jest.Mock).mock.calls;
 
         // First and middle phrases should have undefined onComplete
         for (let i = 0; i < completedPhrases.length - 1; i++) {

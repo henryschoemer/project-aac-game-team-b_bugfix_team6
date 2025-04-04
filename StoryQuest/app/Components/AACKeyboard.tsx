@@ -1,5 +1,6 @@
 import React from "react"
 import { motion } from "framer-motion";
+import useTextToSpeech from "./useTextToSpeech";
 
  interface AACKeyboardProps {
    onSelect: (word: string) => void; 
@@ -14,6 +15,7 @@ import { motion } from "framer-motion";
   backgroundColor = "#b4fcdc", 
   buttonColor = "#63d2cb"
 }) => {
+     const {speak } = useTextToSpeech();
    return (
      <div 
       className="p-4 border border-gray-300 rounded-lg shadow-md"
@@ -27,7 +29,10 @@ import { motion } from "framer-motion";
              className="p-2 text-white rounded flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
              style={{ backgroundColor: buttonColor }} 
 
-             onClick={() => onSelect(symbol.word)}
+             onClick={() => {
+                 onSelect(symbol.word);
+                 speak(symbol.word);
+           }}
              whileHover={{ scale: 1.1 }}
              whileTap={{ scale: 0.9 }}
              aria-label={`Select ${symbol.word}`}

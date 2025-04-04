@@ -6,7 +6,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebaseControls/firebaseConfig";
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { BackButton } from "../HomePage/HomePageButtons";
-import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useSound from "use-sound";
 
 export default function JoinRoomPage() {
@@ -32,8 +31,6 @@ export default function JoinRoomPage() {
                  backgroundSize: "cover",
              }}>
 
-            {/*join room page Description text to speech*/}
-            {<TextToSpeechTextOnly text="Please Enter a room ID" />}
 
             <div className="content-container">
                 <div className="title-container">

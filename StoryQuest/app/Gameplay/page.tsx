@@ -12,7 +12,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import stories, { Story, StorySection } from "./stories";//import the stories interface
 import AACKeyboard from "../Components/AACKeyboard";
 import useSound from 'use-sound';
@@ -21,7 +21,8 @@ import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
 import CompletionPage from "../CompletionPage/page";
-import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
+import TextToSpeechPhrases from "@/Components/TextToSpeechPhrases";
+import useTextToSpeech from "@/Components/useTextToSpeech";
 
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
@@ -47,6 +48,7 @@ const getImageAnimation = () => ({
 });
 
 export default function Home() {
+  const { speak } = useTextToSpeech(); // usetexttospeech hook
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const [phrase, setPhrase] = useState("");
   const [userInput, setUserInput] = useState("");
@@ -60,8 +62,10 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
-    const soundUrl = '/sounds/aac_audios.mp3';
-  const [play] = useSound(soundUrl, {
+
+   /*
+     const soundUrl = '/sounds/aac_audios.mp3';
+   const [play] = useSound(soundUrl, {
     sprite: {
         basket: [0, 650],
         bear: [2400, 450],
@@ -75,6 +79,7 @@ export default function Home() {
         squirrel: [19400, 650],
         }
     });
+    */
 
   useEffect(() => {
     setIsMounted(true);
@@ -182,13 +187,18 @@ export default function Home() {
   };
 
   if (!isMounted || !currentStory) return null;
-  const playIndividualIconSounds = (word: string) => {
-      play({ id: word });
-  };
+
+  /*
+    const playIndividualIconSounds = (word: string) => {
+        //play({ id: word });
+        console.log("speak in gamepaly", word);
+        speak(word);
+    };
+   */
 
   const handleAACSelect = (word: string) => {
     console.log("AAC Button Clicked:", word);
-    playIndividualIconSounds(word)
+    //playIndividualIconSounds(word)
     handleWordSelect(word);
   };
 
@@ -345,7 +355,7 @@ return (
     </AnimatePresence>
 
           {/* Calls AutomaticTextToSpeech, which speech texts the current fill in the blank phrase*/}
-          <TextToSpeechTextOnly text={phrase}/>
+          <TextToSpeechPhrases text={phrase}/>
 
           {/* Text to speech completed story*/}
           {phrase === "The End!" && (
