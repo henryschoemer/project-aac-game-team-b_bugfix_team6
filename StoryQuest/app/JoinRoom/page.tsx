@@ -6,7 +6,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebaseControls/firebaseConfig";
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { BackButton } from "../HomePage/HomePageButtons";
-import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useSound from "use-sound";
 import Camera from "../Components/Camera";
 import jsQR from "jsqr";
@@ -92,6 +91,12 @@ export default function JoinRoomPage() {
             
             {<TextToSpeechTextOnly text="Please scan a room QR code" />}
             
+             style={{
+                 backgroundImage: "url('/HomePage-Images/Background.jpg')",
+                 backgroundSize: "cover",
+             }}>
+
+
             <div className="content-container">
                 <div className="title-container">
                     <h1 className="title-text">Scan Room QR Code</h1>
