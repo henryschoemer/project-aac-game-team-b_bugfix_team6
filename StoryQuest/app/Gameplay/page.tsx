@@ -14,7 +14,6 @@
 
 import React, { useState, useEffect } from "react";
 import stories, { Story, StorySection } from "./stories";//import the stories interface
-import { useRouter } from "next/router";//To retrieve story based on room settings
 import AACKeyboard from "../Components/AACKeyboard";
 import useSound from 'use-sound';
 import TextToSpeechAACButtons from "../Components/TextToSpeechAACButtons";
@@ -77,28 +76,13 @@ export default function Home() {
         }
     });
 
-  const router = useRouter();
-  const { storyTitle } = router.query;
-
-  //Finding story name in URL
   useEffect(() => {
-    setIsMounted(true);
-  
-    if (stories.length > 0) {
-      const selectedStory = stories.find((s) => s.title === storyTitle) || stories[0]; // Default to first story if not found
-      setCurrentStory(selectedStory);
-      setPhrase(selectedStory.sections[0].phrase);
-    }
-  }, [storyTitle]);
-
-
-  /*useEffect(() => {
     setIsMounted(true);
     if (stories.length > 0) {
       setCurrentStory(stories[0]);
       setPhrase(stories[0].sections[0].phrase);
     }
-  }, []);*/
+  }, []);
 
   const handleStoryChange = (story: Story) => {
     setCurrentStory(story);
