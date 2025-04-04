@@ -15,7 +15,7 @@ import useTextToSpeech from "./useTextToSpeech";
   backgroundColor = "#b4fcdc", 
   buttonColor = "#63d2cb"
 }) => {
-     const {speak } = useTextToSpeech();
+     //const {speak } = useTextToSpeech();
    return (
      <div 
       className="p-4 border border-gray-300 rounded-lg shadow-md"
@@ -31,7 +31,8 @@ import useTextToSpeech from "./useTextToSpeech";
 
              onClick={() => {
                  onSelect(symbol.word);
-                 speak(symbol.word);
+                 //speak(symbol.word);
+                 //console.log("aac click");
            }}
              whileHover={{ scale: 1.1 }}
              whileTap={{ scale: 0.9 }}

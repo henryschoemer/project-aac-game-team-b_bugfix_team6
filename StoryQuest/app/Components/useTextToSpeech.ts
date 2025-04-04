@@ -54,10 +54,19 @@ const useTextToSpeech = () => {
         u.rate = 1; // Update speech rate to 1
         currentUtterance.current = u;
 
+        u.onstart = () => {
+            console.log("tts started:", text);
+        };
+
         // onend event listener
         u.onend = () => {
+            console.log("tts completed:", text);
             currentUtterance.current = null;
         };
+
+        u.onerror=()=>{
+            console.log("tts error:", text);
+        }
 
         window.speechSynthesis.speak(u); // Play speech
     };

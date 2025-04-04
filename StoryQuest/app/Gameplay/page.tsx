@@ -188,17 +188,15 @@ export default function Home() {
 
   if (!isMounted || !currentStory) return null;
 
-  /*
     const playIndividualIconSounds = (word: string) => {
         //play({ id: word });
-        console.log("speak in gamepaly", word);
+        console.log("speak in gameplay", word);
         speak(word);
     };
-   */
 
   const handleAACSelect = (word: string) => {
     console.log("AAC Button Clicked:", word);
-    //playIndividualIconSounds(word)
+    playIndividualIconSounds(word);
     handleWordSelect(word);
   };
 

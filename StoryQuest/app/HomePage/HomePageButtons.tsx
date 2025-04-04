@@ -36,7 +36,6 @@ export const CreateButton: React.FC = () => {
             <button className="button create-button" onClick={() => play()}
             onMouseEnter={() => {
                 handleClick();
-                console.log("Create Room tts")
             }}
 
             >

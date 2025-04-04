@@ -61,13 +61,8 @@ const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, 
                 // Update speech rate to 0.9
                 u.rate = 0.9;
 
-                u.onstart = () => {
-                    console.log("tts started:", text);
-                };
-
                 // onend event listener
                 u.onend = () => {
-                    console.log("tts completed:", text);
                     setExternalSpeaking(false); // notify hook component is done speaking
                         onComplete?.(); // Trigger the callback when TTS is done
                 };
