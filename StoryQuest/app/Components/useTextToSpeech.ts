@@ -4,8 +4,6 @@ import React, {useState, useEffect, useRef} from "react";
 const useTextToSpeech = () => {
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
     const currentUtterance = useRef<SpeechSynthesisUtterance | null>(null);
-    const [isExternalSpeaking, setIsExternalSpeaking] = useState(false); // if the texttospeechphrases compoent is speaking
-
 
     // Select voice
     const selectVoice = () => {
@@ -45,7 +43,7 @@ const useTextToSpeech = () => {
 
     // Text to speech
     const speak = (text: string ) => {
-        if (typeof window === "undefined" || !window.speechSynthesis || !selectedVoice || isExternalSpeaking) return;
+        if (typeof window === "undefined" || !window.speechSynthesis || !selectedVoice ) return;
 
         stop();
 
@@ -79,7 +77,7 @@ const useTextToSpeech = () => {
     };
 
 
-    return { speak, stop , setExternalSpeaking: setIsExternalSpeaking}; // return the speak function, used as a hook
+    return { speak, stop}; // return the speak function, used as a hook
 };
 
 export default useTextToSpeech;

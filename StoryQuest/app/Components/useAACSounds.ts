@@ -6,6 +6,7 @@ const useAACSounds = () => {
     const volumeLevel = 2; // increased mp3 sound volume
 
     // sound hooks for MP3 files
+    const [playApples] = useSound(`${soundBaseUrl}apples.mp3`, { volume: volumeLevel });
     const [playAirplane] = useSound(`${soundBaseUrl}airplane.mp3`, { volume: volumeLevel });
     const [playAlien] = useSound(`${soundBaseUrl}alien.mp3`, { volume: volumeLevel });
     const [playAstronaut] = useSound(`${soundBaseUrl}astronaut.mp3`, { volume: volumeLevel });
@@ -51,14 +52,15 @@ const useAACSounds = () => {
 
     // play function for each word
     const soundMap: Record<string, () => void> = {
+        apples: playApples,
         airplane: playAirplane,
-        alien: playAlien,
+        Alien: playAlien,
         astronaut: playAstronaut,
         balloon: playBalloon,
         basket: playBasket,
         bear: playBear,
         bee: playBee,
-        bird: playBird,
+        birds: playBird,
         book: playBook,
         boy: playBoy,
         butterfly: playButterfly,
@@ -92,7 +94,7 @@ const useAACSounds = () => {
         treasure: playTreasure,
         UFO: playUFO,
         witch: playWitch,
-        wizard: playWizard,
+        Wizard: playWizard,
     };
 
     const playSound = (word: string) => {

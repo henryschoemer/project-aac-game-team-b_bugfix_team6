@@ -7,6 +7,7 @@ import "@/CreateRoom/CreateRoomButtonStyles.css";
 import useSound from "use-sound";
 import Link from "next/link";
 import {HomeButton} from "@/HomePage/HomePageButtons";
+import useTextToSpeech from "@/Components/useTextToSpeech";
 
 export default function CompletionPage() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -22,6 +23,8 @@ export default function CompletionPage() {
     const [playGoBackClick] = useSound(goBackClick);
     const completedStorySound = "/sounds/story-completed.mp3";
     const [playCompletedStorySound] = useSound(completedStorySound);
+    const [tooltip, setTooltip] = useState<string | null>(null);
+    const { speak } = useTextToSpeech();
 
     // Show story options
     const [showStoryOptions, setShowStoryOptions] = useState(false);
@@ -107,6 +110,7 @@ export default function CompletionPage() {
                                 <button
                                     className="button setup-room-button"
                                     onClick={() => setShowStoryOptions(true)}
+                                    onMouseEnter={() => speak("Play Again")}
                                 >
                                     <div className="svg-icon">
                                     <Image
@@ -157,6 +161,7 @@ export default function CompletionPage() {
                                             handleStoryClick("The Garden Adventure");
                                             playSelectOptionClick();
                                         }}
+                                        onMouseEnter={() => speak("The Garden Adventure")}
                                     >
                                         <img
                                             src="/images/garden-background.webp"
@@ -172,6 +177,7 @@ export default function CompletionPage() {
                                             handleStoryClick("Walk in the Forest");
                                             playSelectOptionClick();
                                         }}
+                                        onMouseEnter={() => speak("Walk in the Forest")}
                                     >
                                         <img
                                             src="/images/Forest-background.png"
@@ -195,8 +201,15 @@ export default function CompletionPage() {
                                             handleDifficultyClick("Easy");
                                             playSelectOptionClick();
                                         }}
+                                        onMouseEnter={() => {
+                                            setTooltip("Easy mode: 3 sentences")
+                                            speak("Easy mode: 3 sentences")
+                                        }}
+                                        onMouseLeave={() => setTooltip(null)}
+                                        onTouchStart={() => setTooltip("Easy mode: 3 sentences")}
                                     >
                                         <span>Easy</span>
+                                        {tooltip === "Easy mode: 3 sentences" && <span className="tooltip">{tooltip}</span>}
                                     </button>
 
                                     <button
@@ -205,26 +218,38 @@ export default function CompletionPage() {
                                             handleDifficultyClick("Medium");
                                             playSelectOptionClick();
                                         }}
+                                        onMouseEnter={() => {
+                                            setTooltip("Medium mode: 5 sentences")
+                                            speak("Medium mode: 5 sentences")
+                                        }}
+                                        onMouseLeave={() => setTooltip(null)}
+                                        onTouchStart={() => setTooltip("Medium mode: 5 sentences")}
                                     >
                                         <span>Medium</span>
+                                        {tooltip === "Medium mode: 5 sentences" && <span className="tooltip">{tooltip}</span>}
                                     </button>
-
                                     <button
                                         className="big-button difficulty-button hard"
                                         onClick={() => {
                                             handleDifficultyClick("Hard");
                                             playSelectOptionClick();
                                         }}
+                                        onMouseEnter={() => {
+                                            setTooltip("Hard mode: 10 sentences")
+                                            speak("Hard mode: 10 sentences")
+                                        }}
+                                        onMouseLeave={() => setTooltip(null)}
+                                        onTouchStart={() => setTooltip("Hard mode: 10 sentences")}
                                     >
                                         <span>Hard</span>
+                                        {tooltip === "Hard mode: 10 sentences" && <span className="tooltip">{tooltip}</span>}
                                     </button>
                                 </div>
-                                <button
-                                    className="back-step-button"
-                                    onClick={() => {
-                                        playGoBackClick();
-                                        goBack();
-                                    }}
+                                <button className="back-step-button" onClick={() => {
+                                    playGoBackClick();
+                                    goBack();
+                                }}
+                                        onMouseEnter={()=> speak("Go Back")}
                                 >
                                     Go Back
                                 </button>
@@ -253,6 +278,7 @@ export default function CompletionPage() {
                                             handleSetNewStory();
                                             playCreateRoomClick();
                                         }}
+                                        onMouseEnter={()=> speak("Start Adventure!")}
                                     >
                                         <span className="create-emoji">🎮</span>
                                         <span>Start Adventure!</span>
@@ -263,6 +289,7 @@ export default function CompletionPage() {
                                             playGoBackClick();
                                             goBack();
                                         }}
+                                        onMouseEnter={()=> speak("Change Something")}
                                     >
                                         Change Something
                                     </button>

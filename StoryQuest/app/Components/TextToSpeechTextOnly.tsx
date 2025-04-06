@@ -10,7 +10,6 @@ const TextToSpeechTextOnly: React.FC<TextToSpeechCompletedStoryProps> = ({ text,
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
 
-
     // Select voice
     function selectVoice() {
         const voices = speechSynthesis.getVoices();
