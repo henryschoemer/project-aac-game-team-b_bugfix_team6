@@ -6,7 +6,7 @@ interface TextToSpeechCompletedStoryProps {
 }
 
 // Text to speech phrases component, mainly used for story phrases text to speech
-const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, onComplete }) => {
+const TextToSpeechTextOnly: React.FC<TextToSpeechCompletedStoryProps> = ({ text, onComplete }) => {
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
 
@@ -82,4 +82,4 @@ const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, 
     return null;
 };
 
-export default TextToSpeechPhrases;
+export default TextToSpeechTextOnly;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
-import TextToSpeechPhrases from '../TextToSpeechPhrases.tsx';
+import TextToSpeechTextOnly from '../TextToSpeechTextOnly.tsx';
 
 // Mock SpeechSynthesis API
 class MockSpeechSynthesisUtterance {
@@ -49,7 +49,7 @@ describe('TextToSpeechPhrases', () => {
     });
 
     it('initializes and selects a preferred voice', async () => {
-        render(<TextToSpeechPhrases text="Test" />);
+        render(<TextToSpeechTextOnly text="Test" />);
 
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve, 50));
@@ -64,7 +64,7 @@ describe('TextToSpeechPhrases', () => {
 
     it('text to speech with underscores replaced', async () => {
         const testText = "Look in the garden, there is a ___";
-        render(<TextToSpeechPhrases text={testText} />);
+        render(<TextToSpeechTextOnly text={testText} />);
 
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve, 50));
@@ -78,7 +78,7 @@ describe('TextToSpeechPhrases', () => {
 
     it('calls onComplete when speech finishes', async () => {
         const mockOnComplete = jest.fn();
-        render(<TextToSpeechPhrases text="Test complete" onComplete={mockOnComplete} />);
+        render(<TextToSpeechTextOnly text="Test complete" onComplete={mockOnComplete} />);
 
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve, 50));
@@ -93,7 +93,7 @@ describe('TextToSpeechPhrases', () => {
     });
 
     it('cancels speech when unmounted', async () => {
-        const { unmount } = render(<TextToSpeechPhrases text="Test" />);
+        const { unmount } = render(<TextToSpeechTextOnly text="Test" />);
 
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve, 50));
@@ -104,7 +104,7 @@ describe('TextToSpeechPhrases', () => {
     });
 
     it('does not speak when text is empty', async () => {
-        render(<TextToSpeechPhrases text="" />);
+        render(<TextToSpeechTextOnly text="" />);
 
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve, 50));

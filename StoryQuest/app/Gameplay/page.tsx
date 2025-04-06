@@ -21,7 +21,7 @@ import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
 import CompletionPage from "../CompletionPage/page";
-import TextToSpeechPhrases from "@/Components/TextToSpeechPhrases";
+import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useAACSounds from '@/Components/useAACSounds';
 
 
@@ -62,8 +62,6 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
-
-
 
   useEffect(() => {
     setIsMounted(true);
@@ -337,7 +335,7 @@ return (
     </AnimatePresence>
 
           {/* Calls AutomaticTextToSpeech, which speech texts the current fill in the blank phrase*/}
-          <TextToSpeechPhrases text={phrase}/>
+          <TextToSpeechTextOnly text={phrase}/>
 
           {/* Text to speech completed story*/}
           {phrase === "The End!" && (
