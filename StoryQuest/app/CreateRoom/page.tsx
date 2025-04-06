@@ -122,6 +122,7 @@ export default function CreateRoomPage() {
                                 <span>The Garden Adventure</span>
                             </button>
 
+
                             <button
                                 className="big-button story-button"
                                 onClick={() => {
@@ -135,6 +136,21 @@ export default function CreateRoomPage() {
                                     className="button-icon"
                                 />
                                 <span>Walk in the Forest</span>
+                            </button>
+
+                            <button
+                                className="big-button story-button"
+                                onClick={() => {
+                                    handleStoryClick("Space Adventure");
+                                    playSelectOptionClick();
+                                }}
+                            >
+                                <img
+                                    src="/images/space-background.svg"
+                                    alt="space"
+                                    className="button-icon"
+                                />
+                                <span>Space Adventure</span>
                             </button>
                         </div>
                     </div>
