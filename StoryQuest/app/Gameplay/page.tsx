@@ -22,7 +22,7 @@ import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
 import CompletionPage from "../CompletionPage/page";
 import TextToSpeechPhrases from "@/Components/TextToSpeechPhrases";
-import useTextToSpeech from "@/Components/useTextToSpeech";
+import useAACSounds from '@/Components/useAACSounds';
 
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
@@ -48,8 +48,8 @@ const getImageAnimation = () => ({
 });
 
 export default function Home() {
-  const { speak } = useTextToSpeech(); // usetexttospeech hook
-  const [currentStory, setCurrentStory] = useState<Story | null>(null);
+    const { playSound } = useAACSounds(); // aac mp3 sound hook
+    const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const [phrase, setPhrase] = useState("");
   const [userInput, setUserInput] = useState("");
   const [addedImage, setAddedImage] = useState<string | null>(null);
@@ -63,23 +63,7 @@ export default function Home() {
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
 
-   /*
-     const soundUrl = '/sounds/aac_audios.mp3';
-   const [play] = useSound(soundUrl, {
-    sprite: {
-        basket: [0, 650],
-        bear: [2400, 450],
-        bee: [4400, 280],
-        bird: [6330, 420],
-        boy: [8390, 390],
-        butterfly: [10400, 700],
-        ladybug: [12800, 700],
-        lanterns: [15100, 600],
-        mouse: [17300, 550],
-        squirrel: [19400, 650],
-        }
-    });
-    */
+
 
   useEffect(() => {
     setIsMounted(true);
@@ -189,9 +173,7 @@ export default function Home() {
   if (!isMounted || !currentStory) return null;
 
     const playIndividualIconSounds = (word: string) => {
-        //play({ id: word });
-        console.log("speak in gameplay", word);
-        speak(word);
+        playSound(word);
     };
 
   const handleAACSelect = (word: string) => {

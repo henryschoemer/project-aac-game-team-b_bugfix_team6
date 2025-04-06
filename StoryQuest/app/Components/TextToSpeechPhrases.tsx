@@ -9,7 +9,6 @@ interface TextToSpeechCompletedStoryProps {
 const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, onComplete }) => {
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
-    const { setExternalSpeaking } = useTextToSpeech(); // notify useTextToSpeech hook that compoent is currently speaking
 
 
     // Select voice
@@ -53,7 +52,6 @@ const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, 
 
                 const u = new SpeechSynthesisUtterance(text.replace(/_/g, ' '));
 
-                setExternalSpeaking(true);
 
                 // Set the selected voice
                 u.voice = selectedVoice;
@@ -63,13 +61,11 @@ const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, 
 
                 // onend event listener
                 u.onend = () => {
-                    setExternalSpeaking(false); // notify hook component is done speaking
                         onComplete?.(); // Trigger the callback when TTS is done
                 };
 
                 // speech error
                 u.onerror = (event) => {
-                    setExternalSpeaking(false);
                 };
 
                 // Play speech
@@ -78,7 +74,6 @@ const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, 
                 // Cleanup on component unmount
                 return () => {
                     synth.cancel();
-                    setExternalSpeaking(false);
                     setUtterance(null)
                 };
         }
