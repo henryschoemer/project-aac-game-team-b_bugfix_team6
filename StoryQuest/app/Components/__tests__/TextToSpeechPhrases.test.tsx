@@ -23,7 +23,7 @@ const mockVoices = [
     { name: "Daniel", lang: "en-US" }
 ];
 
-describe('TextToSpeechTextOnly', () => {
+describe('TextToSpeechPhrases', () => {
     let mockSpeak: jest.Mock;
     let mockCancel: jest.Mock;
     let mockGetVoices: jest.Mock;
