@@ -1,6 +1,6 @@
 // Effects.tsx
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 // SpinEffect: Rotates the children element continuously.
 export const SpinEffect = ({ children }: { children: React.ReactNode }) => (
@@ -110,3 +110,15 @@ export const FlipEffect = ({ children }: { children: React.ReactNode }) => (
     {children}
   </motion.div>
 );
+
+
+// SlideAcrossEffect: Slides the children element from a specified start position to a specified end position, centered vertically.
+export const SlideAcrossEffect = ({ children, distance = 350 }: { children: React.ReactNode; distance?: number }) => (
+  <motion.div
+    animate={{ x: [-distance, distance] }} 
+    transition={{ repeat: 0, duration: 3, ease: 'easeInOut' }} // Repeat infinitely, 2 seconds per cycle
+  >
+    {children}
+  </motion.div>
+);
+  
