@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import useTextToSpeech from "@/Components/useTextToSpeech";
+
 interface TextToSpeechCompletedStoryProps {
     text: string;
     onComplete?: () => void; // when text to speech is done
 }
 
-// Text to speech phrases component, mainly used for story phrases text to speech
-const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, onComplete }) => {
+
+// Text to speech phrases component
+const TextToSpeechTextOnly: React.FC<TextToSpeechCompletedStoryProps> = ({ text, onComplete }) => {
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
-
 
     // Select voice
     function selectVoice() {
@@ -47,11 +47,11 @@ const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, 
 
     // Text to speech
     useEffect(() => {
-        if (typeof window !== "undefined" && window.speechSynthesis && selectedVoice && text) {
+        if (typeof window !== "undefined" && window.speechSynthesis && selectedVoice) {
             const synth = window.speechSynthesis;
 
+            if (text) {
                 const u = new SpeechSynthesisUtterance(text.replace(/_/g, ' '));
-
 
                 // Set the selected voice
                 u.voice = selectedVoice;
@@ -66,6 +66,9 @@ const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, 
 
                 // speech error
                 u.onerror = (event) => {
+                    if (onComplete) {
+                        onComplete(); // Trigger the callback when TTS is done
+                    }
                 };
 
                 // Play speech
@@ -76,10 +79,11 @@ const TextToSpeechPhrases: React.FC<TextToSpeechCompletedStoryProps> = ({ text, 
                     synth.cancel();
                     setUtterance(null)
                 };
+            }
         }
     }, [text, selectedVoice]);
 
     return null;
 };
 
-export default TextToSpeechPhrases;
+export default TextToSpeechTextOnly;

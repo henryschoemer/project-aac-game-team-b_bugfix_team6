@@ -6,6 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebaseControls/firebaseConfig";
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { BackButton } from "../HomePage/HomePageButtons";
+import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useSound from "use-sound";
 import Camera from "../Components/Camera";
 import jsQR from "jsqr";
@@ -64,15 +65,39 @@ export default function JoinRoomPage() {
             setErrorMessage("No room ID detected.");
             return;
         }
-
+    
         try {
-            // This will go into firebase and try to find the room id 
-            const roomRef = doc(db, "rooms", scannedRoomId);
+            // The scanned URL might be the full URL instead of just the room ID
+            // Extract just the room ID from the URL if needed
+            let roomIdToCheck = scannedRoomId;
+            
+            // Check if the scanned value is a URL (from your QR code)
+            if (scannedRoomId.startsWith("http")) {
+                // Parse the URL to extract the roomId
+                const urlParts = scannedRoomId.split('/');
+                // The roomId should be the second-to-last segment in your URL structure
+                // /Gameplay/roomId/storyTitle
+                roomIdToCheck = urlParts[urlParts.length - 2];
+            }
+    
+            console.log("Checking room ID:", roomIdToCheck);
+            
+            // Now check if this room exists in Firebase
+            const roomRef = doc(db, "rooms", roomIdToCheck);
             const roomDoc = await getDoc(roomRef);
-
+    
             if (roomDoc.exists()) {
                 playJoinRoomClick();
-                alert(`Room Joined: ${scannedRoomId}`);
+                
+                // Extract storyTitle if it's in the URL
+                let storyTitle = "";
+                if (scannedRoomId.startsWith("http")) {
+                    const urlParts = scannedRoomId.split('/');
+                    storyTitle = urlParts[urlParts.length - 1];
+                }
+                
+                // Navigate to the gameplay page with the extracted roomId and storyTitle
+                window.location.href = `/Gameplay/${roomIdToCheck}/${storyTitle}`;
             } else {
                 setErrorMessage("Room not found. Please check the QR code and try again.");
             }
@@ -91,12 +116,6 @@ export default function JoinRoomPage() {
             
             {<TextToSpeechTextOnly text="Please scan a room QR code" />}
             
-             style={{
-                 backgroundImage: "url('/HomePage-Images/Background.jpg')",
-                 backgroundSize: "cover",
-             }}>
-
-
             <div className="content-container">
                 <div className="title-container">
                     <h1 className="title-text">Scan Room QR Code</h1>
