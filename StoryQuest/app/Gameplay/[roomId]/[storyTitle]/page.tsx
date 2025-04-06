@@ -47,6 +47,8 @@ export default function Home() {
   const [completedPhrases, setCompletedPhrases] = useState<string[]>([]);
   const [completedImages, setCompletedImages] = useState<{ src: string; alt: string; x: number; y: number }[]>([]);
   const [currentImage, setCurrentImage] = useState<{ src: string; alt: string; x: number; y: number } | null>(null);
+  const [currentTurn, setCurrentTurn] = useState<number>(1);
+  const [playerNumber, setPlayerNumber] = useState<number | null>(null);
   const [lastPlayedWord, setLastPlayedWord] = useState<string | null>(null);
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
@@ -92,6 +94,7 @@ useEffect(() => {
       setPhrase(gameData.currentPhrase);
       setCompletedPhrases(gameData.completedPhrases || []);
       setCompletedImages(gameData.completedImages || []);
+      setCurrentTurn(gameData.currentTurn || 1);
       setStoryCompleted(gameData.gameStatus === "completed");
 
       const lastWord = gameData.lastWordSelected?.word;
@@ -125,6 +128,18 @@ useEffect(() => {
       }
     }
   }, [storyTitle]);
+
+  useEffect(() => {
+    // Just for demo: alternate between player 1 and 2 randomly
+    const storedPlayer = sessionStorage.getItem(`player-${roomId}`);
+    if (storedPlayer) {
+      setPlayerNumber(parseInt(storedPlayer));
+    } else {
+      const newPlayer = Math.random() < 0.5 ? 1 : 2;
+      sessionStorage.setItem(`player-${roomId}`, newPlayer.toString());
+      setPlayerNumber(newPlayer);
+    }
+  }, [roomId]);
 
 
   /*useEffect(() => {
@@ -197,6 +212,7 @@ useEffect(() => {
           word,
           timestamp: new Date(),
         },
+        currentTurn: currentTurn === 1 ? 2 : 1,
         lastUpdated: new Date(),
         gameStatus: isLastSection ? "completed" : "in_progress",
       });
@@ -214,6 +230,7 @@ useEffect(() => {
           word,
           timestamp: new Date(),
         },
+        currentTurn: 1,
         lastUpdated: new Date(),
         gameStatus: isLastSection ? "completed" : "in_progress",
       });
@@ -222,6 +239,7 @@ useEffect(() => {
      setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
      setCompletedImages([...completedImages, newImage]); //store completed image
      setShowSparkles((prev) => [...prev, true]); // Trigger sparkle effect for the new image.
+     setCurrentPlayer(prev => (prev === 1 ? 2 : 1));
 
      if (currentSectionIndex < currentStory.sections.length - 1) {
        setCurrentSectionIndex(currentSectionIndex + 1);
@@ -282,6 +300,10 @@ useEffect(() => {
   };
 
   const handleAACSelect = (word: string) => {
+    if (playerNumber !== currentTurn) {
+      alert("It's not your turn!");
+      return;
+    }
     console.log("AAC Button Clicked:", word);
     playIndividualIconSounds(word)
     handleWordSelect(word);
@@ -316,6 +338,17 @@ useEffect(() => {
               ))}
 
             </select>
+
+            <div className="flex justify-around mb-6">
+              <div className={`p-4 rounded-lg text-center w-1/3 font-bold text-lg transition-all
+                ${currentTurn === 1 ? 'bg-yellow-300 border-4 border-yellow-500 shadow-md' : 'bg-gray-200'}`}>
+                Player 1
+              </div>
+              <div className={`p-4 rounded-lg text-center w-1/3 font-bold text-lg transition-all
+                ${currentTurn === 2 ? 'bg-blue-300 border-4 border-blue-500 shadow-md' : 'bg-gray-200'}`}>
+                Player 2
+              </div>
+            </div>
            <AACKeyboard
            onSelect={handleAACSelect}
            symbols={currentStory?.sections[currentSectionIndex]
