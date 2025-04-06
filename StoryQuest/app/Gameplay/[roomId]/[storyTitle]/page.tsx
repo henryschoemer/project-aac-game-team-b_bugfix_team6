@@ -47,6 +47,7 @@ export default function Home() {
   const [completedPhrases, setCompletedPhrases] = useState<string[]>([]);
   const [completedImages, setCompletedImages] = useState<{ src: string; alt: string; x: number; y: number }[]>([]);
   const [currentImage, setCurrentImage] = useState<{ src: string; alt: string; x: number; y: number } | null>(null);
+  const [lastPlayedWord, setLastPlayedWord] = useState<string | null>(null);
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
@@ -76,7 +77,6 @@ const roomId = params.roomId as string;
 const storyTitleURL = params.storyTitle as string | undefined;
 const storyTitle = storyTitleURL ? decodeURIComponent(storyTitleURL) : null;
 
-
 //This is the snapshot used to retrieve game state in firestore
 useEffect(() => {
   if (!roomId) return;
@@ -93,11 +93,17 @@ useEffect(() => {
       setCompletedPhrases(gameData.completedPhrases || []);
       setCompletedImages(gameData.completedImages || []);
       setStoryCompleted(gameData.gameStatus === "completed");
+
+      const lastWord = gameData.lastWordSelected?.word;
+      if (lastWord && lastWord !== lastPlayedWord) {
+        play({ id: lastWord });
+        setLastPlayedWord(lastWord);
+      }
     }
   });
 
   return () => unsubscribe();
-}, [roomId]);
+}, [roomId, play, lastPlayedWord]);
 
   //Finding story name in URL
   useEffect(() => {
@@ -174,6 +180,8 @@ useEffect(() => {
      const gameRef = doc(db, "games", roomId);
      const docSnap = await getDoc(gameRef);
 
+     const isLastSection = currentSectionIndex >= currentStory.sections.length - 1;
+
      //if game already exists just update game document, else create new game document
      if (docSnap.exists()) {
       await updateDoc(gameRef, {
@@ -185,7 +193,12 @@ useEffect(() => {
         currentPhrase: currentSectionIndex < currentStory.sections.length - 1
           ? currentStory.sections[currentSectionIndex + 1].phrase
           : "The End!",
+        lastWordSelected: {
+          word,
+          timestamp: new Date(),
+        },
         lastUpdated: new Date(),
+        gameStatus: isLastSection ? "completed" : "in_progress",
       });
      } else {
       await setDoc(gameRef, {
@@ -197,7 +210,12 @@ useEffect(() => {
         currentPhrase: currentSectionIndex < currentStory.sections.length - 1
           ? currentStory.sections[currentSectionIndex + 1].phrase
           : "The End!",
+        lastWordSelected: {
+          word,
+          timestamp: new Date(),
+        },
         lastUpdated: new Date(),
+        gameStatus: isLastSection ? "completed" : "in_progress",
       });
      }
 
