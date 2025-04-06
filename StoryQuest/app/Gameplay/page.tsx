@@ -1,14 +1,5 @@
-//CURRENTLY THE GAME HAVE:
-// - IN THE STORIES.TSX FILE, THERE ARE 2 STORIES WITH 3 SENTENCES EACH.
-// - THERE IS A OPTION ON A DROPDOWN TO CHANGE STORIES (DONT KNOW IF WE WANT TO KEEP IP LIKE THIS)
 
-
-//TO DO:
-//MAKE THE WORD SELECTED IN THE SENTENCE IN BOLD
-
-
-
-
+// GAMEPLAY
 
 "use client";
 
@@ -19,7 +10,7 @@ import useSound from 'use-sound';
 import TextToSpeechAACButtons from "../Components/TextToSpeechAACButtons";
 import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
-import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
+import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect, SlideAcrossEffect} from "../Components/animationUtils";
 import CompletionPage from "../CompletionPage/page";
 import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 
@@ -246,7 +237,7 @@ export default function Home() {
         style={{
           backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
           backgroundSize: "cover",
-          backgroundPosition: "center bottom",
+          backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
         }}
       >
@@ -269,7 +260,7 @@ export default function Home() {
       {completedImages.map((image, index) => {
         const imageData = currentStory?.sections.flatMap(section => Object.values(section.words)).find(data => `/images/${data.image}` === image.src);
         const effect = imageData?.effect || 'none'; // Get the effect, default to 'none'
-
+        
         let effectComponent = null;
 if (effect === 'spin') {
   effectComponent = (
@@ -313,6 +304,13 @@ if (effect === 'spin') {
     <BounceEffect>
       <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </BounceEffect>
+  );
+
+}else if (effect === 'SlideAcrossEffect') {
+  effectComponent = (
+    <SlideAcrossEffect>
+        <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+    </SlideAcrossEffect>
   );
 }else if (effect === 'flip'){
     effectComponent = (

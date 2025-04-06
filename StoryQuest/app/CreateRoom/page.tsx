@@ -41,7 +41,7 @@ export default function CreateRoomPage() {
         setCurrentStep(3);
     };
 
-    const handleDifficultyClick = (level: string) => {
+    const handleDifficultyClick = (level: string) => { //NEED TO USE THIS ON GAMEPLAY TO SELECT STORIES 1,2,OR 3
         setDifficultyLevel(level);
         setCurrentStep(4);
     };

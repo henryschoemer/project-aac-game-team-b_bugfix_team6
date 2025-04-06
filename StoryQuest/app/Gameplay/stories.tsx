@@ -1,14 +1,17 @@
 // stories.tsx
+
+//EASY MODE
+
+
+
 export interface StorySection {
   phrase: string;
   words: {
     [word: string]: {
       image: string;
-      walkCycleImages?: [string, string]; // For walking animations (2 images)
-      walkCycleDuration?: number;
       x: number;
       y: number;
-      effect?: 'spin' | 'pulse' | 'fade' | 'bounce'|'flip'|'sideToSide'|'upAndDown'|'scaleUp'|'none'; // Add effect property
+      effect?: 'spin' | 'pulse' | 'fade' | 'bounce'|'flip'|'sideToSide'|'upAndDown'|'scaleUp'|'none'|'SlideAcrossEffect'; // Add effect property
       width?: number; // Add width property
       height?: number; // Add height property
     };
@@ -39,35 +42,24 @@ const stories: Story[] = [
       {
         phrase: "Look in the garden, there is a ___.",
         words: {
-          mouse: { image: "mouse.svg", x: 30, y: 65, effect: 'flip', width: 80, height: 80 },
-          ladybug: { image: "ladybug.svg", x: 60, y: 75, effect: 'sideToSide' },
-          bird: { image: "bird.svg", x: 30, y: 20, effect: 'upAndDown' },
+          mouse: { image: "mouse.svg", x: 25, y: 90, effect: 'flip', width: 80, height: 80 },
+          ladybug: { image: "ladybug.svg", x: 26, y: 90, effect: 'sideToSide' },
+          bird: { image: "bird.svg", x: 26, y: 90, effect: 'upAndDown' },
           squirrel: { image: "Squirrel.svg", x: 40, y: 70, effect: 'fade' },
-          boy: { image: "boy.svg", x: 35, y: 60, effect: 'fade', width: 250, height: 280 },
+          boy: { image: "boy.svg", x: 35, y: 90, effect: 'fade', width: 250, height: 280 },
           bear: { image: "bear.svg", x: 40, y: 70, effect: 'fade' }
-        },
-      },
-      {
-        phrase: "And near the flowers, I see a ___.",  // New sentence
-        words: {
-          bee: { image: "bee.svg", x: 70, y: 50, effect: 'pulse' },
-          butterfly: { image: "butterfly.svg",walkCycleImages:["butterfly1.svg","butterfly2.svg"],walkCycleDuration:0.3,x: 65, y: 45, effect: 'sideToSide' },
-          basket: { image: "basket.svg", x: 70, y: 65, effect: 'fade' },
-          bear: { image: "bear.svg", x: 70, y: 57, effect: 'flip' },
-          bird: { image: "bird.svg", x: 70, y: 55, effect: 'flip' },
-          ladybug: { image: "ladybug.svg", x: 70, y: 50, effect: 'pulse' }
         },
       },
 
       {
-        phrase: "  In the middle of the clouds there is a ___.",
+        phrase: "And near the flowers, I see a ___.",  
         words: {
-          bird: { image: "bird.svg", x: 20, y: 40, effect: 'fade' },
-          sun: { image: "sun.svg", x: 25, y: 35, effect: 'scaleUp' },
-          moon: { image: "moon.svg", x: 25, y: 38, effect: 'pulse' },
-          witch: { image: "witch.svg", x: 25, y: 35, effect: 'scaleUp' },
-          balloon: { image: "balloon.svg", x: 25, y: 35, effect: 'fade' },
-          rainbow: { image: "rainbow.svg", x: 20, y: 28, effect: 'scaleUp' }
+          bee: { image: "bee.svg", x: 70, y: 50, effect: 'pulse' },
+          butterfly: { image: "butterfly.svg",x: 65, y: 45, effect: 'sideToSide' },
+          basket: { image: "basket.svg", x: 70, y: 65, effect: 'fade' },
+          bear: { image: "bear.svg", x: 70, y: 50, effect: 'flip' },
+          bird: { image: "bird.svg", x: 70, y: 50, effect: 'flip' },
+          ladybug: { image: "ladybug.svg", x: 70, y: 50, effect: 'pulse' }
         },
       },
 
@@ -90,7 +82,7 @@ const stories: Story[] = [
   //NEW STORY - NUMBER 2
   {
     title: "Walk in the Forest",
-    backgroundImage: "Forest-background.png",
+    backgroundImage: "Forest-background.jpg",
     colorTheme: {
       backgroundColor: "#ffcccb", // Light red
       buttonColor: "#ff6666", // Coral
@@ -166,25 +158,15 @@ const stories: Story[] = [
           {
             phrase: "Suddenly, something flew by us. It was a ___.",
             words: {
-              UFO: { image: "ufo.svg", x: 50, y: 50, effect: 'scaleUp' },
-              book: { image: "book.svg", x: 50, y: 50, effect: 'fade' },
-              rocket: { image: "rocket.svg", x: 50, y: 50, effect: 'upAndDown' },
-              airplane: { image: "airplane.svg", x: 50, y: 50, effect: 'scaleUp' },
-              shootingStar: { image: "shootingstar.svg", x: 50, y: 50, effect: 'sideToSide' },
-              spaceDragon: { image: "dragon.svg", x: 50, y: 50, effect: 'bounce' }
+              UFO: { image: "ufo.svg", x: 30, y: 20, effect: 'SlideAcrossEffect' },
+              book: { image: "book.svg", x: 30, y: 20, effect: 'SlideAcrossEffect' },
+              rocket: { image: "rocket.svg", x: 30, y: 20, effect: 'SlideAcrossEffect' },
+              airplane: { image: "airplane.svg", x: 30, y: 20, effect: 'SlideAcrossEffect' },
+              shootingStar: { image: "shootingstar.svg", x: 30, y: 20, effect: 'SlideAcrossEffect' },
+              spaceDragon: { image: "dragon.svg", x: 30, y: 20, effect: 'SlideAcrossEffect' }
             }
           },
-          {
-            phrase: "We also said hi to a ___.",
-            words: {
-              Alien: { image: "alien.svg", x: 5, y: 70, effect: 'pulse' },
-              robot: { image: "robot.svg", x: 5, y: 70, effect: 'sideToSide' },
-              spaceCat: { image: "spacecat.svg", x: 5, y: 70, effect: 'fade' },
-              spaceDog: { image: "spacedog.svg", x: 5, y: 70, effect: 'bounce' },
-              astronaut: { image: "astronaut.svg", x: 5, y: 70, effect: 'none' },
-              Wizard: { image: "wizard.svg", x: 5, y: 70, effect: 'spin' }
-            }
-          }
+          
         ],
       },
 
