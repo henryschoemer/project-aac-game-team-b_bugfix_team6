@@ -1,5 +1,4 @@
-// hooks/__tests__/useAACSounds.test.ts
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import useAACSounds from '../useAACSounds';
 
 // Mock use-sound to return a mock play function
