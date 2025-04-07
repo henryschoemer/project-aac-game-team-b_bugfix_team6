@@ -175,12 +175,12 @@ export interface StorySection {
             {
               phrase: "We also said hi to a ___.",
               words: {
-                Alien: { image: "alien.svg", x: 5, y: 70, effect: 'pulse' },
+                alien: { image: "alien.svg", x: 5, y: 70, effect: 'pulse' },
                 robot: { image: "robot.svg", x: 5, y: 70, effect: 'sideToSide' },
                 spaceCat: { image: "spacecat.svg", x: 5, y: 70, effect: 'fade' },
                 spaceDog: { image: "spacedog.svg", x: 5, y: 70, effect: 'bounce' },
                 astronaut: { image: "astronaut.svg", x: 5, y: 70, effect: 'none' },
-                Wizard: { image: "wizard.svg", x: 5, y: 70, effect: 'spin' }
+                wizard: { image: "wizard.svg", x: 5, y: 70, effect: 'spin' }
               }
             }
           ],
