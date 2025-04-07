@@ -1,27 +1,19 @@
-//CURRENTLY THE GAME HAVE:
-// - IN THE STORIES.TSX FILE, THERE ARE 2 STORIES WITH 3 SENTENCES EACH.
-// - THERE IS A OPTION ON A DROPDOWN TO CHANGE STORIES (DONT KNOW IF WE WANT TO KEEP IP LIKE THIS)
 
-
-//TO DO:
-//MAKE THE WORD SELECTED IN THE SENTENCE IN BOLD
-
-
-
-
+// GAMEPLAY
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import stories, { Story, StorySection } from "./stories";//import the stories interface
 import AACKeyboard from "../Components/AACKeyboard";
 import useSound from 'use-sound';
 import TextToSpeechAACButtons from "../Components/TextToSpeechAACButtons";
 import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
-import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../Components/animationUtils";
+import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect, SlideAcrossEffect} from "../Components/animationUtils";
 import CompletionPage from "../CompletionPage/page";
 import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
+import useAACSounds from '@/Components/useAACSounds';
 
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
@@ -47,7 +39,8 @@ const getImageAnimation = () => ({
 });
 
 export default function Home() {
-  const [currentStory, setCurrentStory] = useState<Story | null>(null);
+    const { playSound } = useAACSounds(); // aac mp3 sound hook
+    const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const [phrase, setPhrase] = useState("");
   const [userInput, setUserInput] = useState("");
   const [addedImage, setAddedImage] = useState<string | null>(null);
@@ -60,21 +53,6 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
-    const soundUrl = '/sounds/aac_audios.mp3';
-  const [play] = useSound(soundUrl, {
-    sprite: {
-        basket: [0, 650],
-        bear: [2400, 450],
-        bee: [4400, 280],
-        bird: [6330, 420],
-        boy: [8390, 390],
-        butterfly: [10400, 700],
-        ladybug: [12800, 700],
-        lanterns: [15100, 600],
-        mouse: [17300, 550],
-        squirrel: [19400, 650],
-        }
-    });
 
   useEffect(() => {
     setIsMounted(true);
@@ -182,13 +160,14 @@ export default function Home() {
   };
 
   if (!isMounted || !currentStory) return null;
-  const playIndividualIconSounds = (word: string) => {
-      play({ id: word });
-  };
+
+    const playIndividualIconSounds = (word: string) => {
+        playSound(word);
+    };
 
   const handleAACSelect = (word: string) => {
     console.log("AAC Button Clicked:", word);
-    playIndividualIconSounds(word)
+    playIndividualIconSounds(word);
     handleWordSelect(word);
   };
 
@@ -246,7 +225,7 @@ export default function Home() {
         style={{
           backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
           backgroundSize: "cover",
-          backgroundPosition: "center bottom",
+          backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
         }}
       >
@@ -269,7 +248,7 @@ export default function Home() {
       {completedImages.map((image, index) => {
         const imageData = currentStory?.sections.flatMap(section => Object.values(section.words)).find(data => `/images/${data.image}` === image.src);
         const effect = imageData?.effect || 'none'; // Get the effect, default to 'none'
-
+        
         let effectComponent = null;
 if (effect === 'spin') {
   effectComponent = (
@@ -313,6 +292,13 @@ if (effect === 'spin') {
     <BounceEffect>
       <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </BounceEffect>
+  );
+
+}else if (effect === 'SlideAcrossEffect') {
+  effectComponent = (
+    <SlideAcrossEffect>
+        <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+    </SlideAcrossEffect>
   );
 }else if (effect === 'flip'){
     effectComponent = (

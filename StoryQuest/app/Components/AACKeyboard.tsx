@@ -25,8 +25,7 @@ import { motion } from "framer-motion";
            <motion.button
              key={symbol.word}
              className="p-2 text-white rounded flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-             style={{ backgroundColor: buttonColor }} 
-
+             style={{ backgroundColor: buttonColor }}
              onClick={() => onSelect(symbol.word)}
              whileHover={{ scale: 1.1 }}
              whileTap={{ scale: 0.9 }}

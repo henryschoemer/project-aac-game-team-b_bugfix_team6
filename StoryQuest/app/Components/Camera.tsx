@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import useTextToSpeech from "@/Components/useTextToSpeech";
 
 interface CameraProps {
   setHotspotImage: (imageData: string) => void;
@@ -11,6 +12,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
+  const { speak } = useTextToSpeech();
 
   const startCamera = async () => {
     // Stop any existing stream
@@ -69,6 +71,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
       <div className="flex flex-wrap justify-center gap-2">
         <button
           onClick={startCamera}
+          //onMouseEnter={() => speak("Start Camera")}
           className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700"
         >
           Start Camera
@@ -76,6 +79,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         
         <button
           onClick={flipCamera}
+          //onMouseEnter={() => speak("Flip Camera")}
           className="bg-purple-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-purple-700"
           disabled={!stream}
         >
@@ -84,6 +88,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         
         <button
           onClick={captureImage}
+          //onMouseEnter={() => speak("Capture Image")}
           className="bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-green-700"
           disabled={!stream}
         >

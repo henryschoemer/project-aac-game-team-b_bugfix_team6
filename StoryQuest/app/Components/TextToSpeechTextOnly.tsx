@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-
+import useTextToSpeech from "@/Components/useTextToSpeech";
 interface TextToSpeechCompletedStoryProps {
     text: string;
     onComplete?: () => void; // when text to speech is done
 }
 
-
-// Text to speech phrases component
+// Text to speech phrases component, mainly used for story phrases text to speech
 const TextToSpeechTextOnly: React.FC<TextToSpeechCompletedStoryProps> = ({ text, onComplete }) => {
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
@@ -47,11 +46,11 @@ const TextToSpeechTextOnly: React.FC<TextToSpeechCompletedStoryProps> = ({ text,
 
     // Text to speech
     useEffect(() => {
-        if (typeof window !== "undefined" && window.speechSynthesis && selectedVoice) {
+        if (typeof window !== "undefined" && window.speechSynthesis && selectedVoice && text) {
             const synth = window.speechSynthesis;
 
-            if (text) {
                 const u = new SpeechSynthesisUtterance(text.replace(/_/g, ' '));
+
 
                 // Set the selected voice
                 u.voice = selectedVoice;
@@ -61,9 +60,11 @@ const TextToSpeechTextOnly: React.FC<TextToSpeechCompletedStoryProps> = ({ text,
 
                 // onend event listener
                 u.onend = () => {
-                    if (onComplete) {
-                        onComplete(); // Trigger the callback when TTS is done
-                    }
+                        onComplete?.(); // Trigger the callback when TTS is done
+                };
+
+                // speech error
+                u.onerror = (event) => {
                 };
 
                 // Play speech
@@ -72,8 +73,8 @@ const TextToSpeechTextOnly: React.FC<TextToSpeechCompletedStoryProps> = ({ text,
                 // Cleanup on component unmount
                 return () => {
                     synth.cancel();
+                    setUtterance(null)
                 };
-            }
         }
     }, [text, selectedVoice]);
 

@@ -9,6 +9,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { QRCode } from "react-qrcode-logo";
 import "./CreateRoomButtonStyles.css";
 import useSound from "use-sound";
+import useTextToSpeech from "@/Components/useTextToSpeech";
 
 export default function CreateRoomPage() {
     // Button Sound effects
@@ -27,6 +28,7 @@ export default function CreateRoomPage() {
     const [loading, setLoading] = useState(false);
     const [roomId, setRoomId] = useState<string | null>(null);
     const [tooltip, setTooltip] = useState<string | null>(null);
+    const { speak } = useTextToSpeech();
 
 
     const router = useRouter();
@@ -41,7 +43,7 @@ export default function CreateRoomPage() {
         setCurrentStep(3);
     };
 
-    const handleDifficultyClick = (level: string) => {
+    const handleDifficultyClick = (level: string) => { //NEED TO USE THIS ON GAMEPLAY TO SELECT STORIES 1,2,OR 3
         setDifficultyLevel(level);
         setCurrentStep(4);
     };
@@ -113,6 +115,7 @@ export default function CreateRoomPage() {
                                     handleStoryClick("The Garden Adventure");
                                     playSelectOptionClick();
                                 }}
+                                onMouseEnter={() => speak("The Garden Adventure")}
                             >
                                 <img
                                     src="/images/garden-background.webp"
@@ -122,12 +125,14 @@ export default function CreateRoomPage() {
                                 <span>The Garden Adventure</span>
                             </button>
 
+
                             <button
                                 className="big-button story-button"
                                 onClick={() => {
                                     handleStoryClick("Walk in the Forest");
                                     playSelectOptionClick();
                                 }}
+                                onMouseEnter={() => speak("Walk in the Forest")}
                             >
                                 <img
                                     src="/images/Forest-background.png"
@@ -135,6 +140,22 @@ export default function CreateRoomPage() {
                                     className="button-icon"
                                 />
                                 <span>Walk in the Forest</span>
+                            </button>
+
+                            <button
+                                className="big-button story-button"
+                                onClick={() => {
+                                    handleStoryClick("Space Adventure");
+                                    playSelectOptionClick();
+                                }}
+                                onMouseEnter={() => speak("Space Adventure")}
+                            >
+                                <img
+                                    src="/images/space-background.svg"
+                                    alt="space"
+                                    className="button-icon"
+                                />
+                                <span>Space Adventure</span>
                             </button>
                         </div>
                     </div>
@@ -153,6 +174,7 @@ export default function CreateRoomPage() {
                                         handlePlayerClick(num);
                                         playSelectOptionClick();
                                     }}
+                                    onMouseEnter={()=> speak(num+"Players")}
                                 >
                                     <div className="player-icons">
                                         {[...Array(num)].map((_, index) => (
@@ -166,7 +188,9 @@ export default function CreateRoomPage() {
                         <button className="back-step-button" onClick={() => {
                             playGoBackClick();
                             goBack();
-                        }}>
+                        }}
+                                onMouseEnter={()=> speak("Go Back")}
+                        >
                             Go Back
                         </button>
                     </div>
@@ -183,7 +207,10 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Easy");
                                     playSelectOptionClick();
                                 }}
-                                onMouseEnter={() => setTooltip("Easy mode: 3 sentences")}
+                                onMouseEnter={() => {
+                                    setTooltip("Easy mode: 3 sentences")
+                                    speak("Easy mode: 3 sentences")
+                                }}
                                 onMouseLeave={() => setTooltip(null)}
                                 onTouchStart={() => setTooltip("Easy mode: 3 sentences")}
                             >
@@ -197,7 +224,10 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Medium");
                                     playSelectOptionClick();
                                 }}
-                                onMouseEnter={() => setTooltip("Medium mode: 5 sentences")}
+                                onMouseEnter={() => {
+                                    setTooltip("Medium mode: 5 sentences")
+                                    speak("Medium mode: 5 sentences")
+                                }}
                                 onMouseLeave={() => setTooltip(null)}
                                 onTouchStart={() => setTooltip("Medium mode: 5 sentences")}
                             >
@@ -210,7 +240,10 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Hard");
                                     playSelectOptionClick();
                                 }}
-                                onMouseEnter={() => setTooltip("Hard mode: 10 sentences")}
+                                onMouseEnter={() => {
+                                    setTooltip("Hard mode: 10 sentences")
+                                    speak("Hard mode: 10 sentences")
+                                }}
                                 onMouseLeave={() => setTooltip(null)}
                                 onTouchStart={() => setTooltip("Hard mode: 10 sentences")}
                             >
@@ -221,7 +254,9 @@ export default function CreateRoomPage() {
                         <button className="back-step-button" onClick={() => {
                             playGoBackClick();
                             goBack();
-                        }}>
+                        }}
+                                onMouseEnter={()=> speak("Go Back")}
+                        >
                             Go Back
                         </button>
                     </div>
@@ -246,14 +281,18 @@ export default function CreateRoomPage() {
                             <button className="big-button create-room-button" onClick={() => {
                                 handleCreateRoom();
                                 playCreateRoomClick();
-                            }}>
+                            }}
+                                   onMouseEnter={()=> speak("Start Adventure!")}
+                            >
                                 <span className="create-emoji">🎮</span>
                                 <span>Start Adventure!</span>
                             </button>
                             <button className="back-step-button" onClick={() => {
                                 playGoBackClick();
                                 goBack();
-                            }}>
+                            }}
+                                    onMouseEnter={()=> speak("Change Something")}
+                            >
                                 Change Something
                             </button>
                         </div>
