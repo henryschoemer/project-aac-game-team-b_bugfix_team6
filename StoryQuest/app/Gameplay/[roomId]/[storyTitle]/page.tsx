@@ -6,11 +6,11 @@ import { useParams } from "next/navigation";//To retrieve story based on room se
 import AACKeyboard from "../../../Components/AACKeyboard";
 import useSound from 'use-sound';
 import TextToSpeechAACButtons from "../../../Components/TextToSpeechAACButtons";
-import CompletedStory from "@/Components/CompletedStory";
+import CompletedStory2 from "@/Components/CompletedStory2";
 import {motion, AnimatePresence} from "framer-motion";
 import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect, SlideAcrossEffect} from "../../../Components/animationUtils";
 import CompletionPage from "../../../CompletionPage/page";
-import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
+import TextToSpeechTextOnly2 from "@/Components/TextToSpeechTextOnly2";
 import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore"; // to update the firestore database with game data
@@ -52,6 +52,7 @@ export default function Home() {
   const [currentTurn, setCurrentTurn] = useState<number>(1);
   const [playerNumber, setPlayerNumber] = useState<number | null>(null);
   const [lastPlayedWord, setLastPlayedWord] = useState<string | null>(null);
+  const [ttsReady, setTtsReady] = useState(false);
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
@@ -99,6 +100,12 @@ useEffect(() => {
       setCurrentTurn(gameData.currentTurn || 1);
       setStoryCompleted(gameData.gameStatus === "completed");
 
+      if (gameData.gameStatus === "completed" && gameData.ttsDone) {
+        setTimeout(() => {
+          setShowOverlay(true);
+        }, 3000);
+      }
+
       const lastWord = gameData.lastWordSelected?.word;
       if (lastWord && lastWord !== lastPlayedWord) {
         play({ id: lastWord });
@@ -111,7 +118,7 @@ useEffect(() => {
 }, [roomId, play, lastPlayedWord]);
 
   //Finding story name in URL
-  useEffect(() => {
+  /*useEffect(() => {
 
     console.log("Story Title from URL:", storyTitle);
     if (!storyTitle) return; // Prevent errors if no title is in the URL
@@ -129,28 +136,80 @@ useEffect(() => {
         setPhrase(stories[0].sections[0].phrase);
       }
     }
-  }, [storyTitle]);
+  }, [storyTitle]);*/
 
   useEffect(() => {
-    // Just for demo: alternate between player 1 and 2 randomly
-    const storedPlayer = sessionStorage.getItem(`player-${roomId}`);
-    if (storedPlayer) {
-      setPlayerNumber(parseInt(storedPlayer));
-    } else {
-      const newPlayer = Math.random() < 0.5 ? 1 : 2;
-      sessionStorage.setItem(`player-${roomId}`, newPlayer.toString());
-      setPlayerNumber(newPlayer);
-    }
-  }, [roomId]);
-
+    if (!storyTitle || stories.length === 0) return;
+  
+    const selectedStory = stories.find((s) => s.title === storyTitle);
+    const storyToUse = selectedStory || stories[0];
+  
+    setCurrentStory(storyToUse);
+    setPhrase(storyToUse.sections[0].phrase);
+    setIsMounted(true);
+  }, [storyTitle, stories]);
 
   useEffect(() => {
+    if (!roomId || !currentStory) return;
+  
+    const assignPlayer = async () => {
+      const gameRef = doc(db, "games", roomId);
+      const docSnap = await getDoc(gameRef);
+  
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
+        sessionStorage.setItem("player-uid", myId);
+  
+        if (data.player1Id === myId) {
+          setPlayerNumber(1);
+        } else if (data.player2Id === myId) {
+          setPlayerNumber(2);
+        } else if (!data.player1Id) {
+          await updateDoc(gameRef, { player1Id: myId });
+          setPlayerNumber(1);
+        } else if (!data.player2Id) {
+          await updateDoc(gameRef, { player2Id: myId });
+          setPlayerNumber(2);
+        } else {
+          alert("Room is full!");
+        }
+      } else {
+        // Game doesn't exist, create new game with player1
+        const myId = crypto.randomUUID();
+        sessionStorage.setItem("player-uid", myId);
+  
+        await setDoc(gameRef, {
+          player1Id: myId,
+          currentTurn: 1,
+          completedPhrases: [],
+          completedImages: [],
+          currentSectionIndex: 0,
+          currentPhrase: currentStory.sections[0].phrase,
+          lastUpdated: new Date(),
+          gameStatus: "in_progress",
+        });
+  
+        setPlayerNumber(1);
+      }
+    };
+  
+    assignPlayer();
+  }, [roomId, currentStory]);
+
+
+  /*useEffect(() => {
     setIsMounted(true);
     if (stories.length > 0) {
       setCurrentStory(stories[0]);
       setPhrase(stories[0].sections[0].phrase);
     }
-  }, []);
+  }, []);*/
+
+  const handleStart = () => {
+    speechSynthesis.getVoices(); // Prime voice loading
+    setTtsReady(true);
+  };
 
   const handleStoryChange = (story: Story) => {
     setCurrentStory(story);
@@ -192,51 +251,39 @@ useEffect(() => {
 
      const newPhrase = phrase.replace("___", word);
     
-
+     if (!playerNumber) {
+      console.warn("Player number not yet available. Aborting update.");
+      return;
+    }
      //This is where game state gets updated in firestore
      const gameRef = doc(db, "games", roomId);
      const docSnap = await getDoc(gameRef);
 
      const isLastSection = currentSectionIndex >= currentStory.sections.length - 1;
+     const nextTurn = currentTurn === 1 ? 2 : 1;
 
      //if game already exists just update game document, else create new game document
-     if (docSnap.exists()) {
-      await updateDoc(gameRef, {
-        completedPhrases: [...completedPhrases, newPhrase],
-        completedImages: [...completedImages, newImage],
-        currentSectionIndex: currentSectionIndex < currentStory.sections.length - 1
-          ? currentSectionIndex + 1
-          : currentSectionIndex,
-        currentPhrase: currentSectionIndex < currentStory.sections.length - 1
-          ? currentStory.sections[currentSectionIndex + 1].phrase
-          : "The End!",
-        lastWordSelected: {
-          word,
-          timestamp: new Date(),
-        },
-        currentTurn: currentTurn === 1 ? 2 : 1,
-        lastUpdated: new Date(),
-        gameStatus: isLastSection ? "completed" : "in_progress",
-      });
-     } else {
-      await setDoc(gameRef, {
-        completedPhrases: [...completedPhrases, newPhrase],
-        completedImages: [...completedImages, newImage],
-        currentSectionIndex: currentSectionIndex < currentStory.sections.length - 1
-          ? currentSectionIndex + 1
-          : currentSectionIndex,
-        currentPhrase: currentSectionIndex < currentStory.sections.length - 1
-          ? currentStory.sections[currentSectionIndex + 1].phrase
-          : "The End!",
-        lastWordSelected: {
-          word,
-          timestamp: new Date(),
-        },
-        currentTurn: playerNumber === 1 ? 2 : 1,
-        lastUpdated: new Date(),
-        gameStatus: isLastSection ? "completed" : "in_progress",
-      });
-     }
+     const gameDataToSave = {
+      completedPhrases: [...completedPhrases, newPhrase],
+      completedImages: [...completedImages, newImage],
+      currentSectionIndex: isLastSection ? currentSectionIndex : currentSectionIndex + 1,
+      currentPhrase: isLastSection
+        ? "The End!"
+        : currentStory.sections[currentSectionIndex + 1].phrase,
+      lastWordSelected: {
+        word,
+        timestamp: new Date(),
+      },
+      currentTurn: nextTurn,
+      lastUpdated: new Date(),
+      gameStatus: isLastSection ? "completed" : "in_progress",
+    };
+    
+    if (docSnap.exists()) {
+      await updateDoc(gameRef, gameDataToSave);
+    } else {
+      await setDoc(gameRef, gameDataToSave);
+    }
 
      setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
      setCompletedImages([...completedImages, newImage]); //store completed image
@@ -252,7 +299,7 @@ useEffect(() => {
    };
 
     // Delay completion page overlay by 3 seconds
-    useEffect(() => {
+    /*useEffect(() => {
         let timeoutId: NodeJS.Timeout;
 
         if (storyCompleted) {
@@ -268,7 +315,7 @@ useEffect(() => {
                 clearTimeout(timeoutId);
             }
         };
-    }, [storyCompleted]);
+    }, [storyCompleted]);*/
 
     const handleAddImage = () => {
     if (userInput.trim() !== "" && currentImage && currentStory) {
@@ -303,13 +350,26 @@ useEffect(() => {
 
   const handleAACSelect = (word: string) => {
     if (playerNumber !== currentTurn) {
-      alert("It's not your turn!");
+      alert("Waiting for other player");
       return;
     }
     console.log("AAC Button Clicked:", word);
     playIndividualIconSounds(word);
     handleWordSelect(word);
   };
+
+  if (!ttsReady) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-yellow-100">
+        <button
+          onClick={handleStart}
+          className="w-[80%] h-[30vh] text-5xl bg-orange-500 text-white font-extrabold rounded-[2rem] shadow-2xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center animate-pulse"
+        >
+          🎮 START GAME
+        </button>
+      </div>
+    );
+  }
 
 
   return (
@@ -341,22 +401,30 @@ useEffect(() => {
 
             </select>
 
-            <div className="flex justify-around mb-6">
-              <div className={`p-4 rounded-lg text-center w-1/3 font-bold text-lg transition-all
-                ${currentTurn === 1 ? 'bg-yellow-300 border-4 border-yellow-500 shadow-md' : 'bg-gray-200'}`}>
-                Player 1
-              </div>
-              <div className={`p-4 rounded-lg text-center w-1/3 font-bold text-lg transition-all
-                ${currentTurn === 2 ? 'bg-blue-300 border-4 border-blue-500 shadow-md' : 'bg-gray-200'}`}>
-                Player 2
+            <div className="flex flex-col items-center justify-center mb-6 space-y-4">
+              {/* Player Boxes */}
+              <div className="flex space-x-8">
+                <div className={`p-6 rounded-2xl w-40 text-center text-2xl font-extrabold transition-all border-4
+                  ${currentTurn === 1 ? 'bg-yellow-300 border-yellow-600 shadow-lg scale-105' : 'bg-gray-200 border-gray-400'}`}>
+                  👤 Player 1
+                </div>
+                <div className={`p-6 rounded-2xl w-40 text-center text-2xl font-extrabold transition-all border-4
+                  ${currentTurn === 2 ? 'bg-blue-300 border-blue-600 shadow-lg scale-105' : 'bg-gray-200 border-gray-400'}`}>
+                  👤 Player 2
+                </div>
               </div>
 
+              {/* Turn Status Message */}
               {playerNumber && (
-                <div className="mb-4 text-lg font-semibold">
+                <div className="mt-4 text-center">
                   {playerNumber === currentTurn ? (
-                    <p className="text-green-600 animate-pulse">Your Turn!</p>
+                    <p className="text-4xl font-extrabold text-green-600 animate-pulse">
+                      ✅ YOUR TURN!
+                    </p>
                   ) : (
-                    <p className="text-gray-500">⏳ Waiting for Player {currentTurn}...</p>
+                    <p className="text-3xl text-gray-600">
+                      ⏳ Waiting for <span className="font-bold">Player {currentTurn}</span>...
+                    </p>
                   )}
                 </div>
               )}
@@ -494,18 +562,22 @@ return (
     </AnimatePresence>
 
           {/* Calls AutomaticTextToSpeech, which speech texts the current fill in the blank phrase*/}
-          <TextToSpeechTextOnly text={phrase}/>
+          {phrase && (
+            <TextToSpeechTextOnly2 key={phrase} text={phrase} />
+)}
 
           {/* Text to speech completed story*/}
           {phrase === "The End!" && (
               <div>
                   {/*Call completedstory button and pass completedphrase map*/}
-                  <CompletedStory
+                  <CompletedStory2
                       index={completedPhrases.length - 1}
                       completedPhrases={completedPhrases}
+                      roomId={roomId}
                       onComplete={() => {
-                          console.log("Gameplay: Story is completed!");
-                          setStoryCompleted(true); // Update state when completed text to speech is done
+                        console.log("Gameplay: Story is completed!");
+                        setStoryCompleted(true);
+                        //setShowOverlay(true); // Show the CompletionPage immediately after speech finishes
                       }}
                   />
               </div>
