@@ -148,6 +148,7 @@ export default function CreateRoomPage() {
                                     handleStoryClick("Space Adventure");
                                     playSelectOptionClick();
                                 }}
+                                onMouseEnter={() => speak("Space Adventure")}
                             >
                                 <img
                                     src="/images/space-background.svg"

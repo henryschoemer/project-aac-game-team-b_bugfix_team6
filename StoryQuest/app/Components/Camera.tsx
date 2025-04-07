@@ -71,7 +71,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
       <div className="flex flex-wrap justify-center gap-2">
         <button
           onClick={startCamera}
-          onMouseEnter={() => speak("Start Camera")}
+          //onMouseEnter={() => speak("Start Camera")}
           className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700"
         >
           Start Camera
@@ -79,7 +79,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         
         <button
           onClick={flipCamera}
-          onMouseEnter={() => speak("Flip Camera")}
+          //onMouseEnter={() => speak("Flip Camera")}
           className="bg-purple-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-purple-700"
           disabled={!stream}
         >
@@ -88,7 +88,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         
         <button
           onClick={captureImage}
-          onMouseEnter={() => speak("Capture Image")}
+          //onMouseEnter={() => speak("Capture Image")}
           className="bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-green-700"
           disabled={!stream}
         >
