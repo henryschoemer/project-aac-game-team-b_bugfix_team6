@@ -134,7 +134,7 @@ const stories: Story[] = [
         },
         sections: [
           {
-            phrase: "We are travelling thru space and saw a ___.",
+            phrase: "We were travelling through space and we saw a ___.",
             words: {
               planet: { image: "planet.svg", x: 80, y: 5, effect: 'spin' },
               comet: { image: "comet.svg", x: 80, y: 5, effect: 'sideToSide' },
