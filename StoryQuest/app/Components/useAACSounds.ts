@@ -15,6 +15,7 @@ const useAACSounds = () => {
     const [playBear] = useSound(`${soundBaseUrl}bear.mp3`, { volume: volumeLevel });
     const [playBee] = useSound(`${soundBaseUrl}bee.mp3`, { volume: volumeLevel });
     const [playBird] = useSound(`${soundBaseUrl}bird.mp3`, { volume: volumeLevel });
+    const [playBirds] = useSound(`${soundBaseUrl}birds.mp3`, { volume: volumeLevel });
     const [playBook] = useSound(`${soundBaseUrl}book.mp3`, { volume: volumeLevel });
     const [playBoy] = useSound(`${soundBaseUrl}boy.mp3`, { volume: volumeLevel });
     const [playButterfly] = useSound(`${soundBaseUrl}butterfly.mp3`, { volume: volumeLevel });
@@ -54,13 +55,14 @@ const useAACSounds = () => {
     const soundMap: Record<string, () => void> = {
         apples: playApples,
         airplane: playAirplane,
-        Alien: playAlien,
+        alien: playAlien,
         astronaut: playAstronaut,
         balloon: playBalloon,
         basket: playBasket,
         bear: playBear,
         bee: playBee,
-        birds: playBird,
+        bird: playBird,
+        birds: playBirds,
         book: playBook,
         boy: playBoy,
         butterfly: playButterfly,
@@ -94,7 +96,7 @@ const useAACSounds = () => {
         treasure: playTreasure,
         UFO: playUFO,
         witch: playWitch,
-        Wizard: playWizard,
+        wizard: playWizard,
     };
 
     const playSound = (word: string) => {
