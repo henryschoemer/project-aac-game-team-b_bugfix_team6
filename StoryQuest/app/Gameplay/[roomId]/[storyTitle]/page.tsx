@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import stories, { Story, StorySection } from "../../stories";//import the stories interface
 import { useParams } from "next/navigation";//To retrieve story based on room settings
 import AACKeyboard from "../../../Components/AACKeyboard";
@@ -8,9 +8,10 @@ import useSound from 'use-sound';
 import TextToSpeechAACButtons from "../../../Components/TextToSpeechAACButtons";
 import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
-import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect} from "../../../Components/animationUtils";
+import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect, SlideAcrossEffect} from "../../../Components/animationUtils";
 import CompletionPage from "../../../CompletionPage/page";
 import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
+import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore"; // to update the firestore database with game data
 
@@ -38,6 +39,7 @@ const getImageAnimation = () => ({
 
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
+  const { playSound } = useAACSounds(); // aac mp3 sound hook
   const [phrase, setPhrase] = useState("");
   const [userInput, setUserInput] = useState("");
   const [addedImage, setAddedImage] = useState<string | null>(null);
@@ -47,6 +49,9 @@ export default function Home() {
   const [completedPhrases, setCompletedPhrases] = useState<string[]>([]);
   const [completedImages, setCompletedImages] = useState<{ src: string; alt: string; x: number; y: number }[]>([]);
   const [currentImage, setCurrentImage] = useState<{ src: string; alt: string; x: number; y: number } | null>(null);
+  const [currentTurn, setCurrentTurn] = useState<number>(1);
+  const [playerNumber, setPlayerNumber] = useState<number | null>(null);
+  const [lastPlayedWord, setLastPlayedWord] = useState<string | null>(null);
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
@@ -76,7 +81,6 @@ const roomId = params.roomId as string;
 const storyTitleURL = params.storyTitle as string | undefined;
 const storyTitle = storyTitleURL ? decodeURIComponent(storyTitleURL) : null;
 
-
 //This is the snapshot used to retrieve game state in firestore
 useEffect(() => {
   if (!roomId) return;
@@ -92,12 +96,19 @@ useEffect(() => {
       setPhrase(gameData.currentPhrase);
       setCompletedPhrases(gameData.completedPhrases || []);
       setCompletedImages(gameData.completedImages || []);
+      setCurrentTurn(gameData.currentTurn || 1);
       setStoryCompleted(gameData.gameStatus === "completed");
+
+      const lastWord = gameData.lastWordSelected?.word;
+      if (lastWord && lastWord !== lastPlayedWord) {
+        play({ id: lastWord });
+        setLastPlayedWord(lastWord);
+      }
     }
   });
 
   return () => unsubscribe();
-}, [roomId]);
+}, [roomId, play, lastPlayedWord]);
 
   //Finding story name in URL
   useEffect(() => {
@@ -120,14 +131,26 @@ useEffect(() => {
     }
   }, [storyTitle]);
 
+  useEffect(() => {
+    // Just for demo: alternate between player 1 and 2 randomly
+    const storedPlayer = sessionStorage.getItem(`player-${roomId}`);
+    if (storedPlayer) {
+      setPlayerNumber(parseInt(storedPlayer));
+    } else {
+      const newPlayer = Math.random() < 0.5 ? 1 : 2;
+      sessionStorage.setItem(`player-${roomId}`, newPlayer.toString());
+      setPlayerNumber(newPlayer);
+    }
+  }, [roomId]);
 
-  /*useEffect(() => {
+
+  useEffect(() => {
     setIsMounted(true);
     if (stories.length > 0) {
       setCurrentStory(stories[0]);
       setPhrase(stories[0].sections[0].phrase);
     }
-  }, []);*/
+  }, []);
 
   const handleStoryChange = (story: Story) => {
     setCurrentStory(story);
@@ -174,6 +197,8 @@ useEffect(() => {
      const gameRef = doc(db, "games", roomId);
      const docSnap = await getDoc(gameRef);
 
+     const isLastSection = currentSectionIndex >= currentStory.sections.length - 1;
+
      //if game already exists just update game document, else create new game document
      if (docSnap.exists()) {
       await updateDoc(gameRef, {
@@ -185,7 +210,13 @@ useEffect(() => {
         currentPhrase: currentSectionIndex < currentStory.sections.length - 1
           ? currentStory.sections[currentSectionIndex + 1].phrase
           : "The End!",
+        lastWordSelected: {
+          word,
+          timestamp: new Date(),
+        },
+        currentTurn: currentTurn === 1 ? 2 : 1,
         lastUpdated: new Date(),
+        gameStatus: isLastSection ? "completed" : "in_progress",
       });
      } else {
       await setDoc(gameRef, {
@@ -197,13 +228,20 @@ useEffect(() => {
         currentPhrase: currentSectionIndex < currentStory.sections.length - 1
           ? currentStory.sections[currentSectionIndex + 1].phrase
           : "The End!",
+        lastWordSelected: {
+          word,
+          timestamp: new Date(),
+        },
+        currentTurn: playerNumber === 1 ? 2 : 1,
         lastUpdated: new Date(),
+        gameStatus: isLastSection ? "completed" : "in_progress",
       });
      }
 
      setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
      setCompletedImages([...completedImages, newImage]); //store completed image
      setShowSparkles((prev) => [...prev, true]); // Trigger sparkle effect for the new image.
+     //setCurrentTurn(prev => (prev === 1 ? 2 : 1));
 
      if (currentSectionIndex < currentStory.sections.length - 1) {
        setCurrentSectionIndex(currentSectionIndex + 1);
@@ -260,12 +298,16 @@ useEffect(() => {
 
   if (!isMounted || !currentStory) return null;
   const playIndividualIconSounds = (word: string) => {
-      play({ id: word });
+      playSound(word);
   };
 
   const handleAACSelect = (word: string) => {
+    if (playerNumber !== currentTurn) {
+      alert("It's not your turn!");
+      return;
+    }
     console.log("AAC Button Clicked:", word);
-    playIndividualIconSounds(word)
+    playIndividualIconSounds(word);
     handleWordSelect(word);
   };
 
@@ -298,6 +340,27 @@ useEffect(() => {
               ))}
 
             </select>
+
+            <div className="flex justify-around mb-6">
+              <div className={`p-4 rounded-lg text-center w-1/3 font-bold text-lg transition-all
+                ${currentTurn === 1 ? 'bg-yellow-300 border-4 border-yellow-500 shadow-md' : 'bg-gray-200'}`}>
+                Player 1
+              </div>
+              <div className={`p-4 rounded-lg text-center w-1/3 font-bold text-lg transition-all
+                ${currentTurn === 2 ? 'bg-blue-300 border-4 border-blue-500 shadow-md' : 'bg-gray-200'}`}>
+                Player 2
+              </div>
+
+              {playerNumber && (
+                <div className="mb-4 text-lg font-semibold">
+                  {playerNumber === currentTurn ? (
+                    <p className="text-green-600 animate-pulse">Your Turn!</p>
+                  ) : (
+                    <p className="text-gray-500">⏳ Waiting for Player {currentTurn}...</p>
+                  )}
+                </div>
+              )}
+            </div>
            <AACKeyboard
            onSelect={handleAACSelect}
            symbols={currentStory?.sections[currentSectionIndex]
@@ -319,21 +382,23 @@ useEffect(() => {
 
         {/* Right Panel: Game Scene */}
       <div
-        className="w-2/3 relative bg-cover bg-center flex justify-center items-center"
+        className="w-2/3 relative bg-cover bg-center flex justify-center items-center pb-20"
         style={{
           backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
         }}
       >
         {/* Completed Phrases (positioned with the text) */}
-          <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 min-h-[80px] flex items-center gap-2 overflow-hidden whitespace-nowrap">
-              {completedPhrases.map((completedPhrase, index) => (
-                  <span key={index} className="text-lg text-gray-700">{completedPhrase}</span>
-              ))}
+        <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 whitespace-normal">
+              <div className="flex flex-wrap items-center gap-2 whitespace-normal">
+                  {completedPhrases.map((completedPhrase, index) => (
+                      <span key={index} className="text-lg text-gray-700 text-nowrap">{completedPhrase}</span>
+                  ))}
+              </div>
               <span key={phrase} className="text-xl font-semibold text-black">
-              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden w-0 animate-typewriter">
+              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden text-nowrap animate-typewriter"  style={{ "--tw-typewriter-width": `${phrase.length}ch` } as React.CSSProperties} >
                 {phrase}
               </span>
             </span>
@@ -389,6 +454,13 @@ if (effect === 'spin') {
       <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
     </BounceEffect>
   );
+
+}else if (effect === 'SlideAcrossEffect') {
+  effectComponent = (
+    <SlideAcrossEffect>
+        <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+    </SlideAcrossEffect>
+  );
 }else if (effect === 'flip'){
     effectComponent = (
         <FlipEffect>
@@ -402,7 +474,7 @@ if (effect === 'spin') {
 }
 
 return (
-          <div key={index} className="absolute" style={{ left: `${image.x}%`, top: `${image.y}%` }}>
+  <div key={index} className="absolute" style={{left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`,}}>
             {showSparkles[index] ? (
               <SparkleEffect
                 onComplete={() =>
@@ -445,10 +517,6 @@ return (
                   <CompletionPage/>
               </div>
           )}
-        {/* Current Phrase and Images */}
-        <p className="mb-2 absolute" style={{ color: "black" }}>
-          {phrase}
-        </p>
       </div>
     </div>
   );
