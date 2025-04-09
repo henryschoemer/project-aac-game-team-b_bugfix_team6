@@ -117,7 +117,12 @@ export default function JoinRoomPage() {
             {<TextToSpeechTextOnly text="Please scan a room QR code" />}
             
             <div className="content-container">
-                <div className="title-container">
+                <div className="title-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ transform: "scale(0.7)", marginRight: "-10px" }}>
+                <Link href="/">
+                        <BackButton />
+                </Link>
+                </div>
                     <h1 className="title-text">Scan Room QR Code</h1>
                 </div>
 
@@ -131,15 +136,6 @@ export default function JoinRoomPage() {
                         {errorMessage}
                     </p>
                 )}
-
-                {/* Back Button */}
-                <div className="button-container">
-                    <div className="button-box">
-                        <Link href="/">
-                            <BackButton />
-                        </Link>
-                    </div>
-                </div>
             </div>
         </div>
     );
