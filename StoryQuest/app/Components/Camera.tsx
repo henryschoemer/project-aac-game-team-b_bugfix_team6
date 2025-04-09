@@ -223,7 +223,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
           className="bg-green-600 text-white font-bold py-4 px-8 rounded-lg shadow-md hover:bg-green-700 text-xl w-3/4 max-w-sm"
           disabled={!stream}
         >
-          Capture Manually
+          Capture
         </button>
         
         {!scanning && (
