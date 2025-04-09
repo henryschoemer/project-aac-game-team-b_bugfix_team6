@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
  interface AACKeyboardProps {
    onSelect: (word: string) => void; 
    symbols: { word: string; image: string }[];
-   backgroundColor?: string; // Background color of the AAC tablet
-   buttonColor?: string; // Background color of the button
+   backgroundColor?: string;
+   buttonColor?: string;
  }
 
  const AACKeyboard: React.FC<AACKeyboardProps> = ({ 

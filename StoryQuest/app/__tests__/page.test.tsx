@@ -2,7 +2,7 @@ import {render, screen, fireEvent, act} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import AnimatedTitle from "@/HomePage/AnimatedTitle";
 import Footer from '../../app/page';
-import {ProfileButton, CreateButton, JoinButton, TemporaryTestingGameButton} from "@/HomePage/HomePageButtons";
+import { CreateButton, JoinButton, TemporaryTestingGameButton} from "@/HomePage/HomePageButtons";
 import Home from "../../app/page";
 
 describe('HomePage', () => {
