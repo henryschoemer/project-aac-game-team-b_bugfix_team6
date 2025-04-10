@@ -5,11 +5,12 @@ import Link from "next/link";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebaseControls/firebaseConfig";
 import "../CreateRoom/CreateRoomButtonStyles.css";
-import { BackButton } from "../HomePage/HomePageButtons";
+import { ExitButton } from "../HomePage/HomePageButtons";
 import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useSound from "use-sound";
 import Camera from "../Components/Camera";
 import jsQR from "jsqr";
+
 
 export default function JoinRoomPage() {
     const [roomId, setRoomId] = useState("");
@@ -113,14 +114,12 @@ export default function JoinRoomPage() {
                 backgroundImage: "url('/HomePage-Images/Background.jpg')",
                 backgroundSize: "cover",
             }}>
-            
-            {<TextToSpeechTextOnly text="Please scan a room QR code" />}
-            
+
             <div className="content-container">
                 <div className="title-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div style={{ transform: "scale(0.7)", marginRight: "-10px" }}>
                 <Link href="/">
-                        <BackButton />
+                        <ExitButton />
                 </Link>
                 </div>
                     <h1 className="title-text">Scan Room QR Code</h1>
