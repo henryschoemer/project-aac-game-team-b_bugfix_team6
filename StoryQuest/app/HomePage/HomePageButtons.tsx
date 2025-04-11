@@ -55,7 +55,7 @@ export const JoinButton: React.FC = () => {
             <div className="button-circle">
                 <div className="svg-icon">
                 <Image
-                    src="/qr-icon.svg"
+                    src="/Join-Room2.svg"
                     alt="qr join icon"
                     width={60}
                     height={55}
