@@ -10,6 +10,7 @@ import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useSound from "use-sound";
 import Camera from "../Components/Camera";
 import jsQR from "jsqr";
+import Image from "next/image";
 
 export default function JoinRoomPage() {
     const [roomId, setRoomId] = useState("");
@@ -150,8 +151,20 @@ export default function JoinRoomPage() {
                     <h1 className="title-text">Scan Room QR Code</h1>
                 </div>
 
+                <div className="mt-6 mx-auto max-w-[300px] bg-white p-4 rounded-xl shadow-md border-2 border-teal-300">
+                    <h2 className="text-lg font-semibold mb-2 text-gray-950">How to join with QR code:</h2>
+                    <Image 
+                        src="/diagrams/QR Code Join Room.png" 
+                        alt="How to join with QR code: 1) Find code 2) Scan code 3) Play together"
+                        width={600}
+                        height={400}
+                        className="rounded-lg w-full h-auto"
+                        priority
+                    />
+                </div>
+
                 {/* Camera Component for QR Code Scanning */}
-                <div className="camera-container">
+                <div className="camera-container pt-5">
                     <Camera setHotspotImage={handleCapturedImage} />
                 </div>
 
