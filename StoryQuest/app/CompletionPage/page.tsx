@@ -6,7 +6,7 @@ import Image from "next/image";
 import "@/CreateRoom/CreateRoomButtonStyles.css";
 import useSound from "use-sound";
 import Link from "next/link";
-import {HomeButton} from "@/HomePage/HomePageButtons";
+import {ExitButton, HomeButton} from "@/HomePage/HomePageButtons";
 import useTextToSpeech from "@/Components/useTextToSpeech";
 import useButtonFeedback from "@/Components/ButtonClickSounds";
 
@@ -39,6 +39,7 @@ export default function CompletionPage() {
 
     // Using the same room session, so number of players does not need to be updated
     const handleSetNewStory = () => {
+        speak("Start Adventure!");
         console.log("Room updated with new story:", {selectedStory});
         // Here you would add your room story update logic
     };
@@ -55,12 +56,14 @@ export default function CompletionPage() {
             speak(text);
     }
 
+    const handlePlayAgain = (text:string) => {
+        buttonHandler('select', text, speak);
+    };
+
     // play song
     useEffect(() => {
         playCompletedStorySound();
     }, [playCompletedStorySound]);
-
-    let numPlayers = 2; // hardcoded example, update this to fetch data from room session backend
 
     return (
         <div
@@ -114,8 +117,8 @@ export default function CompletionPage() {
                                 <button
                                     className="button setup-room-button"
                                     onClick={() => {
+                                        handlePlayAgain('play again');
                                         setShowStoryOptions(true)
-                                        speak("Play Again");
                                     }}
                                     onMouseEnter={() => speak("Play Again")}
                                 >
@@ -273,49 +276,45 @@ export default function CompletionPage() {
                         )}
 
                         {/* Step 3: Review and Create */}
-                        {currentStep === 3 && (
-                            <div className="step-container">
-                                <h2>Ready to Play!</h2>
-                                <div className="summary-container">
-                                    <div className="summary-item">
-                                        <p>Story: {selectedStory}</p>
+                            {currentStep === 3 && (
+                                <div className="step-container">
+                                    <h2>Ready to Play!</h2>
+                                    <div className="summary-container">
+                                        <div className="summary-item">
+                                            <p>Story: {selectedStory}</p>
+                                        </div>
+                                        <div className="summary-item">
+                                            <p>Players: {4}</p>
+                                        </div>
+                                        <div className="summary-item">
+                                            <p>Level: {difficultyLevel}</p>
+                                        </div>
                                     </div>
-                                    <div className="summary-item">
-                                        <p>Players: {numPlayers}</p>
-                                    </div>
-                                    <div className="summary-item">
-                                        <p>Level: {difficultyLevel}</p>
-                                    </div>
-                                </div>
-                                <div className="final-buttons">
-                                    <button
-                                        className="big-button create-room-button"
-                                        onClick={() => {
+                                    <div className="final-buttons">
+                                        <button className="big-button create-room-button" onClick={() => {
                                             handleSetNewStory();
                                         }}
-                                        onMouseEnter={()=> handleOnMouseEnter("Start Adventure!")}
-                                    >
-                                        <span className="create-emoji">🎮</span>
-                                        <span>Start Adventure!</span>
-                                    </button>
-                                    <button
-                                        className="back-step-button"
-                                        onClick={() => {
+                                                onMouseEnter={()=> handleOnMouseEnter("Start Adventure!")}
+                                        >
+                                            <span className="create-emoji">🎮</span>
+                                            <span>Start Adventure!</span>
+                                        </button>
+                                        <button className="back-step-button" onClick={() => {
                                             goBack("Change Something");
                                         }}
-                                        onMouseEnter={()=> speak("Change Something")}
-                                    >
-                                        Change Something
-                                    </button>
+                                                onMouseEnter={()=> handleOnMouseEnter("Change Something")}
+                                        >
+                                            Change Something
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
                         {/* Home Button - Always visible */}
                         {(currentStep !== 1 && currentStep !== 3) || !showStoryOptions ? null : (
                             <div className="home-button-container align-container">
                                 <Link href="/">
-                                    <HomeButton/>
+                                    <ExitButton/>
                                 </Link>
                             </div>
                         )}

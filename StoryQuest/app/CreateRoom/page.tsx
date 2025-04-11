@@ -13,11 +13,6 @@ import useTextToSpeech from "@/Components/useTextToSpeech";
 import useButtonFeedback from "@/Components/ButtonClickSounds";
 
 export default function CreateRoomPage() {
-    // Button Sound effects
-    const createRoomClick = '/sounds/createroom-click.mp3';
-    const selectOptionClick = '/sounds/select-click.mp3';
-    const goBackClick = '/sounds/back-click.mp3';
-
     // Story Option Selection
     const [currentStep, setCurrentStep] = useState(1);
     const [selectedStory, setSelectedStory] = useState<string | null>(null);
@@ -28,7 +23,6 @@ export default function CreateRoomPage() {
     const [tooltip, setTooltip] = useState<string | null>(null);
     const {speak} = useTextToSpeech(); // useTextToSpeech hook
     const { buttonHandler, isSpeaking } = useButtonFeedback();
-
 
     const router = useRouter();
 
@@ -51,6 +45,7 @@ export default function CreateRoomPage() {
     };
 
     const handleCreateRoom = async () => {
+        speak("Start Adventure!");
         setLoading(true);
         try {
             // Add room data to Firestore
@@ -96,7 +91,6 @@ export default function CreateRoomPage() {
 
             {/*create room page Description text to speech*/}
             {/*<AutomaticTextToSpeech speechText="Please select story options" />*/}
-
             <div className="content-container">
                 <div className="title-container">
                     <h1 className="title-text">Let's Create a Game!</h1>

@@ -2,6 +2,8 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import jsQR from "jsqr";
+import useTextToSpeech from "@/Components/useTextToSpeech";
+import useButtonFeedback from "@/Components/ButtonClickSounds";
 
 interface CameraProps {
   setHotspotImage: (imageData: string) => void;
@@ -15,6 +17,8 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
   const [scanning, setScanning] = useState(false);
   const [lastDetectedCode, setLastDetectedCode] = useState<string | null>(null);
   const scanIntervalRef = useRef<number | null>(null);
+  const {speak} = useTextToSpeech(); // useTextToSpeech hook
+  const { buttonHandler, isSpeaking } = useButtonFeedback();
 
   const startCamera = async () => {
     // Stop any existing stream
@@ -209,7 +213,10 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
           {cameraError}
           <button 
-            onClick={startCamera}
+            onClick={()=>{
+              buttonHandler('select','retry',speak)
+              {startCamera}
+            }}
             className="ml-4 bg-red-600 text-white px-2 py-1 rounded text-sm"
           >
             Retry
@@ -219,7 +226,10 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
       
       <div className="flex flex-col items-center w-full gap-2">
         <button
-          onClick={captureImage}
+          onClick={()=>{
+            buttonHandler('select','capture',speak)
+            {captureImage}
+          }}
           className="bg-green-600 text-white font-bold py-4 px-8 rounded-lg shadow-md hover:bg-green-700 text-xl w-3/4 max-w-sm"
           disabled={!stream}
         >
@@ -228,7 +238,10 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         
         {!scanning && (
           <button
-            onClick={restartScanning}
+            onClick={()=>{
+              buttonHandler('select','Resume scanning',speak)
+              {restartScanning}
+          }}
             className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 mt-2"
           >
             Resume Scanning

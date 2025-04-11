@@ -12,9 +12,9 @@ const useButtonFeedback = () => {
 
     // button handler
     const buttonHandler = (
-        soundType: 'create' | 'select' | 'back' | 'pop'| 'gameplay',
+        soundType: 'create' | 'select' | 'back' | 'pop'| 'gameplay', // Button mp3 sounds
         text: string,
-        speakFn: (text: string) => void
+        speakFn: (text: string) => void // speak
     ) => {
 
         const soundMap = {
@@ -26,7 +26,7 @@ const useButtonFeedback = () => {
         };
         soundMap[soundType]();
 
-        const estimatedDuration = text.length * 100;
+        const estimatedDuration = text.length * 100; // Estimated duration text to speech on the word
 
         setTimeout(() => {
             speakFn(text); // button click text to speech

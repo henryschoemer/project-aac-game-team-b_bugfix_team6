@@ -70,7 +70,6 @@ export const ExitButton: React.FC = () => {
         buttonHandler('back', "Exit", speak);
     };
 
-
     return (
         <button
             className="button back-button"
