@@ -1,5 +1,4 @@
 // stories.tsx
-// I think we delete this one
 export interface StorySection {
     phrase: string;
     words: {
