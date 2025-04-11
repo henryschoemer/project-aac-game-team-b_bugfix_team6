@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import jsQR from "jsqr";
 import useTextToSpeech from "@/Components/useTextToSpeech";
-import useButtonFeedback from "@/Components/ButtonClickSounds";
+import useButtonFeedback from "@/Components/useButtonClickSounds";
 
 interface CameraProps {
   setHotspotImage: (imageData: string) => void;

@@ -1,6 +1,9 @@
 import useSound from "use-sound";
 import {useState} from "react";
 
+// Hook for interface button clicks and text to speech
+// Uses mp3 for the click sound
+// Allows for text to speech on passed text
 const useButtonFeedback = () => {
     const [isSpeaking, setIsSpeaking] = useState(false);
     // button sounds
@@ -13,8 +16,8 @@ const useButtonFeedback = () => {
     // button handler
     const buttonHandler = (
         soundType: 'create' | 'select' | 'back' | 'pop'| 'gameplay', // Button mp3 sounds
-        text: string,
-        speakFn: (text: string) => void // speak
+        text: string, // passed text
+        speakFn: (text: string) => void // speak hook that was passed
     ) => {
 
         const soundMap = {
@@ -31,7 +34,7 @@ const useButtonFeedback = () => {
         setTimeout(() => {
             speakFn(text); // button click text to speech
             setTimeout(() => setIsSpeaking(false), estimatedDuration);
-        }, 100);
+        }, 100); 
     };
 
     return { buttonHandler, isSpeaking };

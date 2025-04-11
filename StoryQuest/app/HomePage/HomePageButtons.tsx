@@ -1,11 +1,11 @@
 "use client";
 
-import React, {useCallback} from "react";
+import React from "react";
 import "./HomePageButtonStyles.css";
 import Image from "next/image";
 import useSound from "use-sound";
 import useTextToSpeech from "@/Components/useTextToSpeech";
-import useButtonFeedback from "@/Components/ButtonClickSounds";
+import useButtonFeedback from "@/Components/useButtonClickSounds";
 
 /*Create room Button*/
 export const CreateButton: React.FC = () => {
@@ -65,59 +65,40 @@ export const JoinButton: React.FC = () => {
 export const ExitButton: React.FC = () => {
     const {speak} = useTextToSpeech(); // useTextToSpeech hook
     const { buttonHandler, isSpeaking } = useButtonFeedback();
-    const handleClick = () => {
-        if (!isSpeaking)
-        buttonHandler('back', "Exit", speak);
+    const handleClick = (text:string) => {
+        buttonHandler('back', text, speak);
     };
+
+    const handleOnMouseEnter = (text: string) => {
+        if(!isSpeaking) // to avoid button audio cutoff
+            speak(text);
+    }
 
     return (
         <button
             className="button back-button"
-            onClick={handleClick}
+            onClick={() => {
+                handleClick("Exit");
+            }}
+            onMouseEnter={() => handleOnMouseEnter("Exit")}
         >
             <div className="svg-icon">
-            <Image
-                src="/back-icon.svg"
-                alt="back icon"
-                width={40}
-                height={40}
-                className="icon-spacing"
-            />
+                <Image
+                    src="/back-icon.svg"
+                    alt="back icon"
+                    width={40}
+                    height={40}
+                    className="icon-spacing"
+                />
             </div>
             <span>Exit</span>
         </button>
     );
 };
 
-/*Home Button - Used on Create Room Page */
-export const HomeButton: React.FC = () => {
-    const {speak} = useTextToSpeech(); // useTextToSpeech hook
-    const {buttonHandler} = useButtonFeedback();
-    const handleClick = () => {
-        buttonHandler('back', "Home Menu", speak);
-    };
-
-    return (
-        <button className="button home-button" onClick={handleClick}
-                onMouseEnter={() => speak("Home Menu")}
-        >
-            <div className="svg-icon">
-            <Image
-                src="/home-icon.svg"
-                alt="Home page icon"
-                width={50}
-                height={50}
-                className="icon-spacing"
-            />
-            </div>
-            <span>Home</span>
-        </button>
-    );
-};
-
 
 /*TemporaryTestingGameButton*/
-/* This method will be removed when we implement the room hosting feature */
+/* This method will be removed when the room hosting feature is fully functional*/
 export const TemporaryTestingGameButton: React.FC = () => {
     const {speak} = useTextToSpeech(); // useTextToSpeech hook
     const {buttonHandler} = useButtonFeedback();

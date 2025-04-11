@@ -1,6 +1,6 @@
-// hooks/useAACSounds.ts
 import useSound from 'use-sound';
 
+//Hook for playing AAC keyboard button sounds, uses mp3 files for each button
 const useAACSounds = () => {
     const soundBaseUrl = '/aacSounds/';
     const volumeLevel = 2; // increased mp3 sound volume

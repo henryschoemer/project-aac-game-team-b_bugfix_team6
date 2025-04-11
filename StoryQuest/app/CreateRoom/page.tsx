@@ -10,7 +10,7 @@ import { QRCode } from "react-qrcode-logo";
 import "./CreateRoomButtonStyles.css";
 import useSound from "use-sound";
 import useTextToSpeech from "@/Components/useTextToSpeech";
-import useButtonFeedback from "@/Components/ButtonClickSounds";
+import useButtonFeedback from "@/Components/useButtonClickSounds";
 
 export default function CreateRoomPage() {
     // Story Option Selection
@@ -45,7 +45,7 @@ export default function CreateRoomPage() {
     };
 
     const handleCreateRoom = async () => {
-        speak("Start Adventure!");
+        buttonHandler('select',"Start Adventure!", speak);
         setLoading(true);
         try {
             // Add room data to Firestore
@@ -74,10 +74,9 @@ export default function CreateRoomPage() {
             setCurrentStep(currentStep - 1);
         }
         buttonHandler('back', text, speak);
-
     };
 
-    const handleOnMouseEnter =(text:String)=>{
+    const handleOnMouseEnter =(text:string)=>{
         if(!isSpeaking) // to avoid button click audio cutoff
             speak(text);
     }

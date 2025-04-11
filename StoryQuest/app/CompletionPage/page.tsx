@@ -6,9 +6,9 @@ import Image from "next/image";
 import "@/CreateRoom/CreateRoomButtonStyles.css";
 import useSound from "use-sound";
 import Link from "next/link";
-import {ExitButton, HomeButton} from "@/HomePage/HomePageButtons";
+import {ExitButton} from "@/HomePage/HomePageButtons";
 import useTextToSpeech from "@/Components/useTextToSpeech";
-import useButtonFeedback from "@/Components/ButtonClickSounds";
+import useButtonFeedback from "@/Components/useButtonClickSounds";
 
 export default function CompletionPage() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -33,13 +33,13 @@ export default function CompletionPage() {
 
     const handleDifficultyClick = (level: string) => { //NEED TO USE THIS ON GAMEPLAY TO SELECT STORIES 1,2,OR 3
         setDifficultyLevel(level);
-        setCurrentStep(4);
+        setCurrentStep(3);
         buttonHandler('select', level+" mode", speak)
     };
 
     // Using the same room session, so number of players does not need to be updated
     const handleSetNewStory = () => {
-        speak("Start Adventure!");
+        buttonHandler('select',"Start Adventure!", speak);
         console.log("Room updated with new story:", {selectedStory});
         // Here you would add your room story update logic
     };
@@ -51,7 +51,7 @@ export default function CompletionPage() {
         buttonHandler('back', text, speak);
     };
 
-    const handleOnMouseEnter =(text:String)=>{
+    const handleOnMouseEnter =(text:string)=>{
         if(!isSpeaking) // to avoid button click audio cutoff
             speak(text);
     }
@@ -136,7 +136,7 @@ export default function CompletionPage() {
 
                                 <div className="home-button-container">
                                     <Link href="/">
-                                        <HomeButton/>
+                                        <ExitButton/>
                                     </Link>
                                 </div>
                             </div>
@@ -310,7 +310,7 @@ export default function CompletionPage() {
                                 </div>
                             )}
 
-                        {/* Home Button - Always visible */}
+                        {/* Exit/Home Button - Always visible */}
                         {(currentStep !== 1 && currentStep !== 3) || !showStoryOptions ? null : (
                             <div className="home-button-container align-container">
                                 <Link href="/">
@@ -322,5 +322,4 @@ export default function CompletionPage() {
                 )}
             </div>
         </div>
-    );
-}
+    )};
