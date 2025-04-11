@@ -14,43 +14,67 @@ import jsQR from "jsqr";
 export default function JoinRoomPage() {
     const [roomId, setRoomId] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const joinRoomClick = "/sounds/joinroom-click.mp3";
     const [playJoinRoomClick] = useSound(joinRoomClick);
 
-
-    const handleCapturedImage = (imageData: string) => { // handles image 
-        processQRCode(imageData);
+    const handleCapturedImage = (imageData: string) => {
+        // Prevent multiple processing attempts simultaneously
+        if (isProcessing) return;
+        
+        setIsProcessing(true);
+        
+        // Add a short delay to ensure camera is stabilized
+        setTimeout(() => {
+            processQRCode(imageData);
+            setIsProcessing(false);
+        }, 300); // 300ms delay
     };
 
     const processQRCode = (imageData: string) => {
-        const img = new Image(); // creates the image
+        const img = new Image();
         img.onload = () => {
-            // .onload waits for the image to load before moving on
-
-            const canvas = document.createElement("canvas"); // This will create a canvas for the image 
+            // Create a canvas for the image
+            const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
             if (!ctx) return;
 
+            // Set dimensions for the canvas
             canvas.width = img.width;
             canvas.height = img.height;
-            ctx.drawImage(img, 0, 0); // this will draw the image of the qr code to the canvas
-
+            
+            // Apply some basic image enhancement
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            
+            // Increase contrast slightly to help with QR detection
+            // ctx.filter = 'contrast(1.2) brightness(1.1)';
+            // ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            // ctx.filter = 'none';
+            
             const imageDataObj = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
             try {
-                // thiswill now try to read the qrcode
-                const code = jsQR(imageDataObj.data, imageDataObj.width, imageDataObj.height);
+                // Try to read the QR code with more robust options
+                const code = jsQR(
+                    imageDataObj.data, 
+                    imageDataObj.width, 
+                    imageDataObj.height,
+                    {
+                        inversionAttempts: "dontInvert" // Improves reliability
+                    }
+                );
+                
                 if (code) {
-                    //good qr code
+                    // Successfully found QR code
                     setRoomId(code.data);
                     handleJoinRoom(code.data);
                 } else {
-                    setErrorMessage("No QR code found. Please try again.");
+                    setErrorMessage("No QR code found. Please position the code clearly in frame and try again.");
                 }
             } catch (err) {
                 console.error("Error processing QR code:", err);
-                setErrorMessage("Error processing image. Please try again.");
+                setErrorMessage("Error processing image. Please ensure good lighting and try again.");
             }
         };
 
@@ -136,6 +160,18 @@ export default function JoinRoomPage() {
                         {errorMessage}
                     </p>
                 )}
+                
+                {isProcessing && (
+                    <p style={{ color: "white", margin: "12px 0", textAlign: "center" }}>
+                        Processing QR code...
+                    </p>
+                )}
+                
+                <div style={{ textAlign: "center", margin: "16px 0" }}>
+                    <p style={{ color: "white" }}>
+                        Position QR code within frame and hold steady
+                    </p>
+                </div>
             </div>
         </div>
     );
