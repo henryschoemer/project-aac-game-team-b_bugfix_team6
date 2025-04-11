@@ -3,23 +3,16 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from 'next/link';
-import { BackButton } from "../HomePage/HomePageButtons";
+import { ExitButton } from "../HomePage/HomePageButtons";
 import { db } from "../../firebaseControls/firebaseConfig"; // Import Firestore
 import { collection, addDoc } from "firebase/firestore";
 import { QRCode } from "react-qrcode-logo";
 import "./CreateRoomButtonStyles.css";
 import useSound from "use-sound";
 import useTextToSpeech from "@/Components/useTextToSpeech";
+import useButtonFeedback from "@/Components/useButtonClickSounds";
 
 export default function CreateRoomPage() {
-    // Button Sound effects
-    const createRoomClick = '/sounds/createroom-click.mp3';
-    const [playCreateRoomClick] = useSound(createRoomClick); // use sound hook
-    const selectOptionClick = '/sounds/select-click.mp3';
-    const [playSelectOptionClick] = useSound(selectOptionClick); // use sound hook
-    const goBackClick = '/sounds/back-click.mp3';
-    const [playGoBackClick] = useSound(goBackClick);
-
     // Story Option Selection
     const [currentStep, setCurrentStep] = useState(1);
     const [selectedStory, setSelectedStory] = useState<string | null>(null);
@@ -28,27 +21,31 @@ export default function CreateRoomPage() {
     const [loading, setLoading] = useState(false);
     const [roomId, setRoomId] = useState<string | null>(null);
     const [tooltip, setTooltip] = useState<string | null>(null);
-    const { speak } = useTextToSpeech();
-
+    const {speak} = useTextToSpeech(); // useTextToSpeech hook
+    const { buttonHandler, isSpeaking } = useButtonFeedback();
 
     const router = useRouter();
 
     const handleStoryClick = (story: string) => {
         setSelectedStory(story);
         setCurrentStep(2);
+        buttonHandler('select', story, speak)
     };
 
     const handlePlayerClick = (num: number) => {
         setNumPlayers(num);
         setCurrentStep(3);
+        buttonHandler('select', num+" players", speak)
     };
 
     const handleDifficultyClick = (level: string) => { //NEED TO USE THIS ON GAMEPLAY TO SELECT STORIES 1,2,OR 3
         setDifficultyLevel(level);
         setCurrentStep(4);
+        buttonHandler('select', level+" mode", speak)
     };
 
     const handleCreateRoom = async () => {
+        buttonHandler('select',"Start Adventure!", speak);
         setLoading(true);
         try {
             // Add room data to Firestore
@@ -61,6 +58,7 @@ export default function CreateRoomPage() {
             //setRoomId(docRef.id); // Store room ID
             console.log("Room Created with ID:", docRef.id);
             setRoomId(docRef.id);
+            buttonHandler('create', "Room Created", speak);
             alert(`Room Created! Room ID: ${docRef.id}`);
             router.push(`/CreateRoom/qrcode?roomId=${docRef.id}&storyTitle=${encodeURIComponent(selectedStory ?? "")}`);
         } catch (error) {
@@ -71,11 +69,17 @@ export default function CreateRoomPage() {
         }
     };
 
-    const goBack = () => {
+    const goBack = (text:string) => {
         if (currentStep > 1) {
             setCurrentStep(currentStep - 1);
         }
+        buttonHandler('back', text, speak);
     };
+
+    const handleOnMouseEnter =(text:string)=>{
+        if(!isSpeaking) // to avoid button click audio cutoff
+            speak(text);
+    }
 
     return (
         <div className="page-container"
@@ -86,7 +90,6 @@ export default function CreateRoomPage() {
 
             {/*create room page Description text to speech*/}
             {/*<AutomaticTextToSpeech speechText="Please select story options" />*/}
-
             <div className="content-container">
                 <div className="title-container">
                     <h1 className="title-text">Let's Create a Game!</h1>
@@ -113,9 +116,8 @@ export default function CreateRoomPage() {
                                 className="big-button story-button"
                                 onClick={() => {
                                     handleStoryClick("The Garden Adventure");
-                                    playSelectOptionClick();
                                 }}
-                                onMouseEnter={() => speak("The Garden Adventure")}
+                                onMouseEnter={() => handleOnMouseEnter("The Garden Adventure")}
                             >
                                 <img
                                     src="/images/garden-background.webp"
@@ -130,9 +132,8 @@ export default function CreateRoomPage() {
                                 className="big-button story-button"
                                 onClick={() => {
                                     handleStoryClick("Walk in the Forest");
-                                    playSelectOptionClick();
                                 }}
-                                onMouseEnter={() => speak("Walk in the Forest")}
+                                onMouseEnter={() => handleOnMouseEnter("Walk in the Forest")}
                             >
                                 <img
                                     src="/images/Forest-background.png"
@@ -146,9 +147,8 @@ export default function CreateRoomPage() {
                                 className="big-button story-button"
                                 onClick={() => {
                                     handleStoryClick("Space Adventure");
-                                    playSelectOptionClick();
                                 }}
-                                onMouseEnter={() => speak("Space Adventure")}
+                                onMouseEnter={() => handleOnMouseEnter("Space Adventure")}
                             >
                                 <img
                                     src="/images/space-background.svg"
@@ -172,9 +172,8 @@ export default function CreateRoomPage() {
                                     className="big-button player-button"
                                     onClick={() => {
                                         handlePlayerClick(num);
-                                        playSelectOptionClick();
                                     }}
-                                    onMouseEnter={()=> speak(num+"Players")}
+                                    onMouseEnter={()=> handleOnMouseEnter(num+" Players")}
                                 >
                                     <div className="player-icons">
                                         {[...Array(num)].map((_, index) => (
@@ -186,10 +185,10 @@ export default function CreateRoomPage() {
                             ))}
                         </div>
                         <button className="back-step-button" onClick={() => {
-                            playGoBackClick();
-                            goBack();
+                            goBack("Go Back");
                         }}
-                                onMouseEnter={()=> speak("Go Back")}
+                                onMouseEnter={()=> handleOnMouseEnter("Go Back")
+                                }
                         >
                             Go Back
                         </button>
@@ -205,11 +204,10 @@ export default function CreateRoomPage() {
                                 className="big-button difficulty-button easy"
                                 onClick={() => {
                                     handleDifficultyClick("Easy");
-                                    playSelectOptionClick();
                                 }}
                                 onMouseEnter={() => {
                                     setTooltip("Easy mode: 3 sentences")
-                                    speak("Easy mode: 3 sentences")
+                                    handleOnMouseEnter("Easy mode: 3 sentences")
                                 }}
                                 onMouseLeave={() => setTooltip(null)}
                                 onTouchStart={() => setTooltip("Easy mode: 3 sentences")}
@@ -222,11 +220,10 @@ export default function CreateRoomPage() {
                                 className="big-button difficulty-button medium"
                                 onClick={() => {
                                     handleDifficultyClick("Medium");
-                                    playSelectOptionClick();
                                 }}
                                 onMouseEnter={() => {
                                     setTooltip("Medium mode: 5 sentences")
-                                    speak("Medium mode: 5 sentences")
+                                    handleOnMouseEnter("Medium mode: 5 sentences")
                                 }}
                                 onMouseLeave={() => setTooltip(null)}
                                 onTouchStart={() => setTooltip("Medium mode: 5 sentences")}
@@ -238,11 +235,10 @@ export default function CreateRoomPage() {
                                 className="big-button difficulty-button hard"
                                 onClick={() => {
                                     handleDifficultyClick("Hard");
-                                    playSelectOptionClick();
                                 }}
                                 onMouseEnter={() => {
                                     setTooltip("Hard mode: 10 sentences")
-                                    speak("Hard mode: 10 sentences")
+                                    handleOnMouseEnter("Hard mode: 10 sentences")
                                 }}
                                 onMouseLeave={() => setTooltip(null)}
                                 onTouchStart={() => setTooltip("Hard mode: 10 sentences")}
@@ -252,10 +248,9 @@ export default function CreateRoomPage() {
                             </button>
                         </div>
                         <button className="back-step-button" onClick={() => {
-                            playGoBackClick();
-                            goBack();
+                            goBack("Go Back");
                         }}
-                                onMouseEnter={()=> speak("Go Back")}
+                                onMouseEnter={()=> handleOnMouseEnter("Go Back")}
                         >
                             Go Back
                         </button>
@@ -280,18 +275,16 @@ export default function CreateRoomPage() {
                         <div className="final-buttons">
                             <button className="big-button create-room-button" onClick={() => {
                                 handleCreateRoom();
-                                playCreateRoomClick();
                             }}
-                                   onMouseEnter={()=> speak("Start Adventure!")}
+                                   onMouseEnter={()=> handleOnMouseEnter("Start Adventure!")}
                             >
                                 <span className="create-emoji">🎮</span>
                                 <span>Start Adventure!</span>
                             </button>
                             <button className="back-step-button" onClick={() => {
-                                playGoBackClick();
-                                goBack();
+                                goBack("Change Something");
                             }}
-                                    onMouseEnter={()=> speak("Change Something")}
+                                    onMouseEnter={()=> handleOnMouseEnter("Change Something")}
                             >
                                 Change Something
                             </button>
@@ -303,7 +296,7 @@ export default function CreateRoomPage() {
                 {(currentStep !== 1 && currentStep !== 4) ? null : (
                     <div className="home-button-container button-box">
                         <Link href="/">
-                            <BackButton />
+                            <ExitButton />
                         </Link>
                     </div>
                 )}

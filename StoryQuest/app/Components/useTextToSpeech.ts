@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 
-// Text to speech phrases hook, used for button or quick sounds
+// Text to speech phrases hook, used for button click/hovers or quick sounds
 const useTextToSpeech = () => {
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
     const currentUtterance = useRef<SpeechSynthesisUtterance | null>(null);

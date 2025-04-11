@@ -6,8 +6,9 @@ import Image from "next/image";
 import "@/CreateRoom/CreateRoomButtonStyles.css";
 import useSound from "use-sound";
 import Link from "next/link";
-import {HomeButton} from "@/HomePage/HomePageButtons";
+import {ExitButton} from "@/HomePage/HomePageButtons";
 import useTextToSpeech from "@/Components/useTextToSpeech";
+import useButtonFeedback from "@/Components/useButtonClickSounds";
 
 export default function CompletionPage() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -15,16 +16,11 @@ export default function CompletionPage() {
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
 
     // Button Sound effects
-    const createRoomClick = "/sounds/createroom-click.mp3";
-    const [playCreateRoomClick] = useSound(createRoomClick); // use sound hook
-    const selectOptionClick = "/sounds/select-click.mp3";
-    const [playSelectOptionClick] = useSound(selectOptionClick); // use sound hook
-    const goBackClick = "/sounds/back-click.mp3";
-    const [playGoBackClick] = useSound(goBackClick);
     const completedStorySound = "/sounds/story-completed.mp3";
     const [playCompletedStorySound] = useSound(completedStorySound);
     const [tooltip, setTooltip] = useState<string | null>(null);
-    const { speak } = useTextToSpeech();
+    const {speak} = useTextToSpeech(); // useTextToSpeech hook
+    const { buttonHandler, isSpeaking } = useButtonFeedback();
 
     // Show story options
     const [showStoryOptions, setShowStoryOptions] = useState(false);
@@ -32,31 +28,42 @@ export default function CompletionPage() {
     const handleStoryClick = (story: string) => {
         setSelectedStory(story);
         setCurrentStep(2);
+        buttonHandler('select', story, speak)
     };
 
-    const handleDifficultyClick = (level: string) => {
+    const handleDifficultyClick = (level: string) => { //NEED TO USE THIS ON GAMEPLAY TO SELECT STORIES 1,2,OR 3
         setDifficultyLevel(level);
         setCurrentStep(3);
+        buttonHandler('select', level+" mode", speak)
     };
 
     // Using the same room session, so number of players does not need to be updated
     const handleSetNewStory = () => {
+        buttonHandler('select',"Start Adventure!", speak);
         console.log("Room updated with new story:", {selectedStory});
         // Here you would add your room story update logic
     };
 
-    const goBack = () => {
+    const goBack = (text:string) => {
         if (currentStep > 1) {
             setCurrentStep(currentStep - 1);
         }
+        buttonHandler('back', text, speak);
+    };
+
+    const handleOnMouseEnter =(text:string)=>{
+        if(!isSpeaking) // to avoid button click audio cutoff
+            speak(text);
+    }
+
+    const handlePlayAgain = (text:string) => {
+        buttonHandler('select', text, speak);
     };
 
     // play song
     useEffect(() => {
         playCompletedStorySound();
     }, [playCompletedStorySound]);
-
-    let numPlayers = 2; // hardcoded example, update this to fetch data from room session backend
 
     return (
         <div
@@ -109,7 +116,10 @@ export default function CompletionPage() {
                             <div className="button-container">
                                 <button
                                     className="button setup-room-button"
-                                    onClick={() => setShowStoryOptions(true)}
+                                    onClick={() => {
+                                        handlePlayAgain('play again');
+                                        setShowStoryOptions(true)
+                                    }}
                                     onMouseEnter={() => speak("Play Again")}
                                 >
                                     <div className="svg-icon">
@@ -126,7 +136,7 @@ export default function CompletionPage() {
 
                                 <div className="home-button-container">
                                     <Link href="/">
-                                        <HomeButton/>
+                                        <ExitButton/>
                                     </Link>
                                 </div>
                             </div>
@@ -159,9 +169,8 @@ export default function CompletionPage() {
                                         className="big-button story-button"
                                         onClick={() => {
                                             handleStoryClick("The Garden Adventure");
-                                            playSelectOptionClick();
                                         }}
-                                        onMouseEnter={() => speak("The Garden Adventure")}
+                                        onMouseEnter={() => handleOnMouseEnter("The Garden Adventure")}
                                     >
                                         <img
                                             src="/images/garden-background.webp"
@@ -175,9 +184,8 @@ export default function CompletionPage() {
                                         className="big-button story-button"
                                         onClick={() => {
                                             handleStoryClick("Walk in the Forest");
-                                            playSelectOptionClick();
                                         }}
-                                        onMouseEnter={() => speak("Walk in the Forest")}
+                                        onMouseEnter={() => handleOnMouseEnter("Walk in the Forest")}
                                     >
                                         <img
                                             src="/images/Forest-background.png"
@@ -185,6 +193,21 @@ export default function CompletionPage() {
                                             className="button-icon"
                                         />
                                         <span>Walk in the Forest</span>
+                                    </button>
+
+                                    <button
+                                        className="big-button story-button"
+                                        onClick={() => {
+                                            handleStoryClick("Space Adventure");
+                                        }}
+                                        onMouseEnter={() => handleOnMouseEnter("Space Adventure")}
+                                    >
+                                        <img
+                                            src="/images/space-background.svg"
+                                            alt="space"
+                                            className="button-icon"
+                                        />
+                                        <span>Space Adventure</span>
                                     </button>
                                 </div>
                             </div>
@@ -199,11 +222,10 @@ export default function CompletionPage() {
                                         className="big-button difficulty-button easy"
                                         onClick={() => {
                                             handleDifficultyClick("Easy");
-                                            playSelectOptionClick();
                                         }}
                                         onMouseEnter={() => {
                                             setTooltip("Easy mode: 3 sentences")
-                                            speak("Easy mode: 3 sentences")
+                                            handleOnMouseEnter("Easy mode: 3 sentences")
                                         }}
                                         onMouseLeave={() => setTooltip(null)}
                                         onTouchStart={() => setTooltip("Easy mode: 3 sentences")}
@@ -216,11 +238,10 @@ export default function CompletionPage() {
                                         className="big-button difficulty-button medium"
                                         onClick={() => {
                                             handleDifficultyClick("Medium");
-                                            playSelectOptionClick();
                                         }}
                                         onMouseEnter={() => {
                                             setTooltip("Medium mode: 5 sentences")
-                                            speak("Medium mode: 5 sentences")
+                                            handleOnMouseEnter("Medium mode: 5 sentences")
                                         }}
                                         onMouseLeave={() => setTooltip(null)}
                                         onTouchStart={() => setTooltip("Medium mode: 5 sentences")}
@@ -232,11 +253,10 @@ export default function CompletionPage() {
                                         className="big-button difficulty-button hard"
                                         onClick={() => {
                                             handleDifficultyClick("Hard");
-                                            playSelectOptionClick();
                                         }}
                                         onMouseEnter={() => {
                                             setTooltip("Hard mode: 10 sentences")
-                                            speak("Hard mode: 10 sentences")
+                                            handleOnMouseEnter("Hard mode: 10 sentences")
                                         }}
                                         onMouseLeave={() => setTooltip(null)}
                                         onTouchStart={() => setTooltip("Hard mode: 10 sentences")}
@@ -246,10 +266,9 @@ export default function CompletionPage() {
                                     </button>
                                 </div>
                                 <button className="back-step-button" onClick={() => {
-                                    playGoBackClick();
-                                    goBack();
+                                    goBack("Go Back");
                                 }}
-                                        onMouseEnter={()=> speak("Go Back")}
+                                        onMouseEnter={()=> handleOnMouseEnter("Go Back")}
                                 >
                                     Go Back
                                 </button>
@@ -257,51 +276,45 @@ export default function CompletionPage() {
                         )}
 
                         {/* Step 3: Review and Create */}
-                        {currentStep === 3 && (
-                            <div className="step-container">
-                                <h2>Ready to Play!</h2>
-                                <div className="summary-container">
-                                    <div className="summary-item">
-                                        <p>Story: {selectedStory}</p>
+                            {currentStep === 3 && (
+                                <div className="step-container">
+                                    <h2>Ready to Play!</h2>
+                                    <div className="summary-container">
+                                        <div className="summary-item">
+                                            <p>Story: {selectedStory}</p>
+                                        </div>
+                                        <div className="summary-item">
+                                            <p>Players: {4}</p>
+                                        </div>
+                                        <div className="summary-item">
+                                            <p>Level: {difficultyLevel}</p>
+                                        </div>
                                     </div>
-                                    <div className="summary-item">
-                                        <p>Players: {numPlayers}</p>
-                                    </div>
-                                    <div className="summary-item">
-                                        <p>Level: {difficultyLevel}</p>
-                                    </div>
-                                </div>
-                                <div className="final-buttons">
-                                    <button
-                                        className="big-button create-room-button"
-                                        onClick={() => {
+                                    <div className="final-buttons">
+                                        <button className="big-button create-room-button" onClick={() => {
                                             handleSetNewStory();
-                                            playCreateRoomClick();
                                         }}
-                                        onMouseEnter={()=> speak("Start Adventure!")}
-                                    >
-                                        <span className="create-emoji">🎮</span>
-                                        <span>Start Adventure!</span>
-                                    </button>
-                                    <button
-                                        className="back-step-button"
-                                        onClick={() => {
-                                            playGoBackClick();
-                                            goBack();
+                                                onMouseEnter={()=> handleOnMouseEnter("Start Adventure!")}
+                                        >
+                                            <span className="create-emoji">🎮</span>
+                                            <span>Start Adventure!</span>
+                                        </button>
+                                        <button className="back-step-button" onClick={() => {
+                                            goBack("Change Something");
                                         }}
-                                        onMouseEnter={()=> speak("Change Something")}
-                                    >
-                                        Change Something
-                                    </button>
+                                                onMouseEnter={()=> handleOnMouseEnter("Change Something")}
+                                        >
+                                            Change Something
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
-                        {/* Home Button - Always visible */}
+                        {/* Exit/Home Button - Always visible */}
                         {(currentStep !== 1 && currentStep !== 3) || !showStoryOptions ? null : (
                             <div className="home-button-container align-container">
                                 <Link href="/">
-                                    <HomeButton/>
+                                    <ExitButton/>
                                 </Link>
                             </div>
                         )}
@@ -309,5 +322,4 @@ export default function CompletionPage() {
                 )}
             </div>
         </div>
-    );
-}
+    )};
