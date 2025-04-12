@@ -376,7 +376,7 @@ useEffect(() => {
     <div className="flex w-screen h-screen">
 
       {/* Left Panel: AAC Tablet */}
-       <div className="w-1/3 bg-[hsl(45,93%,83%)] p-8 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e] transform transition duration-500 hover:scale-105" >
+       <div className="w-1/3 bg-[hsl(45,93%,83%)] p-8 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e]" >
          <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
             {/* Story Selection */}
             <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white bg-[#8ae2d5] p-2 rounded-lg">

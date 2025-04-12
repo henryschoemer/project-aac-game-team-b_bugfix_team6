@@ -16,7 +16,7 @@ import { motion } from "framer-motion";
 }) => {
    return (
      <div 
-      className="p-4 border border-gray-300 rounded-lg shadow-md"
+      className="p-4 border border-gray-300 rounded-lg shadow-md transform transition duration-500 hover:scale-105"
       style={{ backgroundColor }}
       >
        <h3 className="text-lg font-bold mb-2 text-center text-white">AAC Keyboard</h3>
