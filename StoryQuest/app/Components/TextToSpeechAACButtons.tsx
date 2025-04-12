@@ -126,7 +126,7 @@ const TextToSpeechAACButtons: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd
     };
 
     return (
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2 mt-1">
             <button
                 onClick={handlePlay}
                 aria-label={isPaused ? "Resume speech" : "Play speech"}
