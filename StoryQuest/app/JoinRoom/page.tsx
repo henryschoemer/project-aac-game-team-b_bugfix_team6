@@ -33,37 +33,31 @@ export default function JoinRoomPage() {
             setIsProcessing(false);
         }, 300); // 300ms delay
     };
-
     const processQRCode = (imageData: string) => {
-        const img = new Image();
+        // Use HTMLImageElement constructor explicitly to avoid conflicts with Next.js Image
+        const img = new window.Image();
         img.onload = () => {
             // Create a canvas for the image
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
             if (!ctx) return;
-
+    
             // Set dimensions for the canvas
             canvas.width = img.width;
             canvas.height = img.height;
             
-            // Apply some basic image enhancement
+            //image enhancement
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             
-            // Increase contrast slightly to help with QR detection
-            // ctx.filter = 'contrast(1.2) brightness(1.1)';
-            // ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            // ctx.filter = 'none';
-            
-            const imageDataObj = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
+            // Attempt to decode the QR code
             try {
-                // Try to read the QR code with more robust options
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 const code = jsQR(
-                    imageDataObj.data, 
-                    imageDataObj.width, 
-                    imageDataObj.height,
+                    imageData.data, 
+                    imageData.width, 
+                    imageData.height,
                     {
-                        inversionAttempts: "dontInvert" // Improves reliability
+                        inversionAttempts: "dontInvert" 
                     }
                 );
                 
@@ -72,18 +66,20 @@ export default function JoinRoomPage() {
                     setRoomId(code.data);
                     handleJoinRoom(code.data);
                 } else {
-                    setErrorMessage("No QR code found. Please position the code clearly in frame and try again.");
+                    setErrorMessage("No QR code detected. Please position the code clearly and try again.");
                 }
             } catch (err) {
                 console.error("Error processing QR code:", err);
-                setErrorMessage("Error processing image. Please ensure good lighting and try again.");
+                setErrorMessage("Error processing QR code. Please try again.");
             }
         };
-
-        img.src = imageData;
+    
         img.onerror = () => {
             setErrorMessage("Error loading captured image. Please try again.");
+            setIsProcessing(false);
         };
+    
+        img.src = imageData;
     };
 
     const handleJoinRoom = async (scannedRoomId: string) => {
