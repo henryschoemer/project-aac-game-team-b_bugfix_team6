@@ -46,7 +46,7 @@ export default function JoinRoomPage() {
             canvas.width = img.width;
             canvas.height = img.height;
             
-            // Apply some basic image enhancement
+            //image enhancement
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             
             // Attempt to decode the QR code
@@ -57,7 +57,7 @@ export default function JoinRoomPage() {
                     imageData.width, 
                     imageData.height,
                     {
-                        inversionAttempts: "dontInvert" // Improves reliability
+                        inversionAttempts: "dontInvert" 
                     }
                 );
                 
