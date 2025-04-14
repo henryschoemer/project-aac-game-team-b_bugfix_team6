@@ -29,6 +29,8 @@ const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
+const availableAvatars = ["🐯", "🐻", "🐘", "🐵", "🐬", "🦋"];
+
 // getImageAnimation: Returns a reusable animation configuration for images.
 const getImageAnimation = () => ({
   initial: { opacity: 0, scale: 0.5 }, // Start with a small, transparent image.
@@ -54,6 +56,9 @@ export default function Home() {
   const [maxPlayers, setMaxPlayers] = useState<number>(4);
   const [lastPlayedWord, setLastPlayedWord] = useState<string | null>(null);
   const [ttsReady, setTtsReady] = useState(false);
+  const [avatarModalOpen, setAvatarModalOpen] = useState<boolean>(false);//Opens window for player to choose avatar
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+  const [playerAvatars, setPlayerAvatars] = useState<{ [key: number]: string | undefined }>({});
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
@@ -102,6 +107,14 @@ useEffect(() => {
       setCurrentTurn(gameData.currentTurn || 1);
       setStoryCompleted(gameData.gameStatus === "completed");
 
+      //Sets avatars in array to match with player numbers
+      setPlayerAvatars({
+        1: gameData.player1Avatar,
+        2: gameData.player2Avatar,
+        3: gameData.player3Avatar,
+        4: gameData.player4Avatar,
+      });
+
       if (gameData.gameStatus === "completed" && gameData.ttsDone) {
         setTimeout(() => {
           setShowOverlay(true);
@@ -140,7 +153,7 @@ useEffect(() => {
       // Also retrieve the room doc to access numPlayers if needed
       const roomRef = doc(db, "rooms", roomId);
       const roomSnap = await getDoc(roomRef);
-      let roomNumPlayers = 4; // Provide a safe default
+      let roomNumPlayers = 4; // default
       if (roomSnap.exists()) {
         const roomData = roomSnap.data();
         roomNumPlayers = roomData.numPlayers;
@@ -157,6 +170,7 @@ useEffect(() => {
           if (!gameDoc.exists()) {
             transaction.set(gameRef, {
               player1Id: myId,
+              player1Avatar: selectedAvatar,
               currentTurn: 1,
               maxPlayers: roomNumPlayers, // using value from room document
               completedPhrases: [],
@@ -170,7 +184,7 @@ useEffect(() => {
             return;
           }
   
-          // Otherwise, check what player slot is available in the transaction.
+          // check what player slot is available in the transaction
           const data = gameDoc.data();
   
           if (data.player1Id === myId) {
@@ -187,18 +201,18 @@ useEffect(() => {
             return;
           }
   
-          // Assign the next free slot, verifying using maxPlayers (or roomNumPlayers)
+          // Assign the next free slot, using maxPlayers (or roomNumPlayers)
           if (!data.player1Id) {
-            transaction.update(gameRef, { player1Id: myId });
+            transaction.update(gameRef, { player1Id: myId, player1Avatar: selectedAvatar });
             setPlayerNumber(1);
           } else if (!data.player2Id && (data.maxPlayers || roomNumPlayers) > 1) {
-            transaction.update(gameRef, { player2Id: myId });
+            transaction.update(gameRef, { player2Id: myId, player2Avatar: selectedAvatar });
             setPlayerNumber(2);
           } else if (!data.player3Id && (data.maxPlayers || roomNumPlayers) > 2) {
-            transaction.update(gameRef, { player3Id: myId });
+            transaction.update(gameRef, { player3Id: myId, player3Avatar: selectedAvatar });
             setPlayerNumber(3);
           } else if (!data.player4Id && (data.maxPlayers || roomNumPlayers) > 3) {
-            transaction.update(gameRef, { player4Id: myId });
+            transaction.update(gameRef, { player4Id: myId, player4Avatar: selectedAvatar });
             setPlayerNumber(4);
           } else {
             throw new Error("Room is full!");
@@ -222,8 +236,13 @@ useEffect(() => {
   }, []);*/
 
   const handleStart = () => {
-    speechSynthesis.getVoices(); // Prime voice loading
-    setTtsReady(true);
+    // If no avatar is selected yet, open the modal.
+    if (!selectedAvatar) {
+      setAvatarModalOpen(true);
+    } else {
+      speechSynthesis.getVoices(); // Prime voice loading
+      setTtsReady(true);
+    }
   };
 
   const handleStoryChange = (story: Story) => {
@@ -376,17 +395,57 @@ useEffect(() => {
 
   if (!ttsReady) {
     return (
-      <div className="flex items-center justify-center h-screen bg-yellow-100">
-        <button
-          onClick={handleStart}
-          className="w-[80%] h-[30vh] text-5xl bg-orange-500 text-white font-extrabold rounded-[2rem] shadow-2xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center animate-pulse"
-        >
-          🎮 START GAME
-        </button>
-      </div>
+      <>
+        {/* Render the Avatar Selection Modal if it should be open */}
+        {/*Gives player window to choose an avatar*/}
+        {avatarModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-8 rounded-lg max-w-xs mx-auto">
+              <h2 className="text-2xl font-bold mb-4 text-center text-black">Choose Your Avatar</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {availableAvatars.map((avatar) => (
+                  <button
+                    key={avatar}
+                    onClick={() => setSelectedAvatar(avatar)}
+                    className={`text-4xl p-2 rounded-full border-4 ${
+                      selectedAvatar === avatar ? "border-green-500" : "border-transparent"
+                    }`}
+                  >
+                    {avatar}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => {
+                  if (selectedAvatar) {
+                    setAvatarModalOpen(false);
+                    // Now that the avatar is selected, set TTS as ready.
+                    speechSynthesis.getVoices();
+                    setTtsReady(true);
+                  } else {
+                    alert("Please select an avatar.");
+                  }
+                }}
+                className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded"
+              >
+                ✅
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* If the avatar modal is not open, render the START GAME button */}
+        <div className="flex items-center justify-center h-screen bg-yellow-100">
+          <button
+            onClick={handleStart}
+            className="w-[80%] h-[30vh] text-5xl bg-orange-500 text-white font-extrabold rounded-[2rem] shadow-2xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center animate-pulse"
+          >
+            🎮 START GAME
+          </button>
+        </div>
+      </>
     );
   }
-
 
   return (
     <div className="flex w-screen h-screen">
@@ -416,26 +475,25 @@ useEffect(() => {
               ))}
 
             </select>
-
+            
+            {/* Displays player turns on AAC panel*/}
             {playerNumber && (
               <div className="flex flex-col items-center justify-center mb-6 space-y-4">
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                   {Array.from({ length: maxPlayers }, (_, i) => i + 1).map((num) => {
-                    let bgColor = 'bg-gray-200';
-                    let borderColor = 'border-gray-400';
-                    if (num === 1) { bgColor = 'bg-yellow-300'; borderColor = 'border-yellow-600'; }
-                    else if (num === 2) { bgColor = 'bg-blue-300'; borderColor = 'border-blue-600'; }
-                    else if (num === 3) { bgColor = 'bg-green-300'; borderColor = 'border-green-600'; }
-                    else if (num === 4) { bgColor = 'bg-red-300'; borderColor = 'border-red-600'; }
-              
+                    // Get the avatar for this player number. Use a default if none exists.
+                    const avatarToShow = playerAvatars[num] || availableAvatars[num - 1] || "👤";
+
                     return (
-                      <div 
-                        key={num}
-                        className={`p-6 rounded-2xl text-center text-2xl font-extrabold transition-all border-4 ${
-                          currentTurn === num ? `${bgColor} ${borderColor} shadow-lg scale-105` : 'bg-gray-200 border-gray-400'
-                        }`}
-                      >
-                        {`Player ${num}`}
+                      <div key={num} className="flex flex-col items-center">
+                        <span
+                          className={`text-5xl p-2 rounded-full ${
+                            currentTurn === num ? "border-4 border-green-500" : "border-2 border-gray-400"
+                          }`}
+                        >
+                          {avatarToShow}
+                        </span>
+                        <span className="text-xl font-bold">{`Player ${num}`}</span>
                       </div>
                     );
                   })}
