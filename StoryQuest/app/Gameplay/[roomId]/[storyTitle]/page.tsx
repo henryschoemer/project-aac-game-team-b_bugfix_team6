@@ -13,7 +13,7 @@ import CompletionPage from "../../../CompletionPage/page";
 import TextToSpeechTextOnly2 from "@/Components/TextToSpeechTextOnly2";
 import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
-import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore"; // to update the firestore database with game data
+import { doc, getDoc, setDoc, updateDoc, onSnapshot, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -51,6 +51,7 @@ export default function Home() {
   const [currentImage, setCurrentImage] = useState<{ src: string; alt: string; x: number; y: number } | null>(null);
   const [currentTurn, setCurrentTurn] = useState<number>(1);
   const [playerNumber, setPlayerNumber] = useState<number | null>(null);
+  const [maxPlayers, setMaxPlayers] = useState<number>(4);
   const [lastPlayedWord, setLastPlayedWord] = useState<string | null>(null);
   const [ttsReady, setTtsReady] = useState(false);
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
@@ -92,7 +93,8 @@ useEffect(() => {
     if (snapshot.exists()) {
       const gameData = snapshot.data();
       console.log("Firestore data received:", gameData);
-
+  
+      setMaxPlayers(gameData.maxPlayers || 4);
       setCurrentSectionIndex(gameData.currentSectionIndex);
       setPhrase(gameData.currentPhrase);
       setCompletedPhrases(gameData.completedPhrases || []);
@@ -117,27 +119,6 @@ useEffect(() => {
   return () => unsubscribe();
 }, [roomId, play, lastPlayedWord]);
 
-  //Finding story name in URL
-  /*useEffect(() => {
-
-    console.log("Story Title from URL:", storyTitle);
-    if (!storyTitle) return; // Prevent errors if no title is in the URL
-  
-    setIsMounted(true);
-  
-    if (stories.length > 0) {
-      const selectedStory = stories.find((s) => s.title === storyTitle);
-  
-      if (selectedStory) {
-        setCurrentStory(selectedStory);
-        setPhrase(selectedStory.sections[0].phrase);
-      } else {
-        setCurrentStory(stories[0]); // Default to first story if not found
-        setPhrase(stories[0].sections[0].phrase);
-      }
-    }
-  }, [storyTitle]);*/
-
   useEffect(() => {
     if (!storyTitle || stories.length === 0) return;
   
@@ -155,67 +136,82 @@ useEffect(() => {
     if (!roomId || !currentStory) return;
   
     const assignPlayer = async () => {
-      //To grab number of players chosen in create room
-      const roomRef = doc(db, "rooms", roomId);
-      const roomDocSnap = await getDoc(roomRef);
-
       const gameRef = doc(db, "games", roomId);
-      const docSnap = await getDoc(gameRef);
-
+      // Also retrieve the room doc to access numPlayers if needed
+      const roomRef = doc(db, "rooms", roomId);
+      const roomSnap = await getDoc(roomRef);
+      let roomNumPlayers = 4; // Provide a safe default
+      if (roomSnap.exists()) {
+        const roomData = roomSnap.data();
+        roomNumPlayers = roomData.numPlayers;
+      }
+  
       const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
       sessionStorage.setItem("player-uid", myId);
   
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        // Check if the player already has an assigned slot
-        if (data.player1Id === myId) {
-          setPlayerNumber(1);
-        } else if (data.player2Id === myId) {
-          setPlayerNumber(2);
-        } else if (data.player3Id === myId) {
-          setPlayerNumber(3);
-        } else if (data.player4Id === myId) {
-          setPlayerNumber(4);
-        }
-        // If not, assign the next free slot (only if the total players is less than or equal to the room's numPlayers)
-        else if (!data.player1Id) {
-          await updateDoc(gameRef, { player1Id: myId });
-          setPlayerNumber(1);
-        } else if (!data.player2Id && data.maxPlayers > 1) {
-          await updateDoc(gameRef, { player2Id: myId });
-          setPlayerNumber(2);
-        } else if (!data.player3Id && data.maxPlayers > 2) {
-          await updateDoc(gameRef, { player3Id: myId });
-          setPlayerNumber(3);
-        } else if (!data.player4Id && data.maxPlayers > 3) {
-          await updateDoc(gameRef, { player4Id: myId });
-          setPlayerNumber(4);
-        } else {
-          alert("Room is full!");
-        }
-      } else {
-        if (roomDocSnap.exists()) {
-          const data = roomDocSnap.data();
-          // If the game document doesn't exist, create one.
-          await setDoc(gameRef, {
-            player1Id: myId,
-            currentTurn: 1,
-            maxPlayers: data.numPlayers, // you can save this here as well
-            completedPhrases: [],
-            completedImages: [],
-            currentSectionIndex: 0,
-            currentPhrase: currentStory.sections[0].phrase,
-            lastUpdated: new Date(),
-            gameStatus: "in_progress",
-          });
-          setPlayerNumber(1);
-        }
+      try {
+        await runTransaction(db, async (transaction) => {
+          const gameDoc = await transaction.get(gameRef);
+  
+          // If the game doc doesn't exist, create it.
+          if (!gameDoc.exists()) {
+            transaction.set(gameRef, {
+              player1Id: myId,
+              currentTurn: 1,
+              maxPlayers: roomNumPlayers, // using value from room document
+              completedPhrases: [],
+              completedImages: [],
+              currentSectionIndex: 0,
+              currentPhrase: currentStory.sections[0].phrase,
+              lastUpdated: new Date(),
+              gameStatus: "in_progress",
+            });
+            setPlayerNumber(1);
+            return;
+          }
+  
+          // Otherwise, check what player slot is available in the transaction.
+          const data = gameDoc.data();
+  
+          if (data.player1Id === myId) {
+            setPlayerNumber(1);
+            return;
+          } else if (data.player2Id === myId) {
+            setPlayerNumber(2);
+            return;
+          } else if (data.player3Id === myId) {
+            setPlayerNumber(3);
+            return;
+          } else if (data.player4Id === myId) {
+            setPlayerNumber(4);
+            return;
+          }
+  
+          // Assign the next free slot, verifying using maxPlayers (or roomNumPlayers)
+          if (!data.player1Id) {
+            transaction.update(gameRef, { player1Id: myId });
+            setPlayerNumber(1);
+          } else if (!data.player2Id && (data.maxPlayers || roomNumPlayers) > 1) {
+            transaction.update(gameRef, { player2Id: myId });
+            setPlayerNumber(2);
+          } else if (!data.player3Id && (data.maxPlayers || roomNumPlayers) > 2) {
+            transaction.update(gameRef, { player3Id: myId });
+            setPlayerNumber(3);
+          } else if (!data.player4Id && (data.maxPlayers || roomNumPlayers) > 3) {
+            transaction.update(gameRef, { player4Id: myId });
+            setPlayerNumber(4);
+          } else {
+            throw new Error("Room is full!");
+          }
+        });
+      } catch (error) {
+        console.error("Player assignment transaction failed: ", error);
+        alert("Failed to join the room. Please try again.");
       }
     };
   
     assignPlayer();
   }, [roomId, currentStory]);
-
 
   /*useEffect(() => {
     setIsMounted(true);
@@ -423,19 +419,19 @@ useEffect(() => {
 
             {playerNumber && (
               <div className="flex flex-col items-center justify-center mb-6 space-y-4">
-                <div className="flex space-x-4">
-                  {[1, 2, 3, 4].map((num) => {
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                  {Array.from({ length: maxPlayers }, (_, i) => i + 1).map((num) => {
                     let bgColor = 'bg-gray-200';
                     let borderColor = 'border-gray-400';
                     if (num === 1) { bgColor = 'bg-yellow-300'; borderColor = 'border-yellow-600'; }
                     else if (num === 2) { bgColor = 'bg-blue-300'; borderColor = 'border-blue-600'; }
                     else if (num === 3) { bgColor = 'bg-green-300'; borderColor = 'border-green-600'; }
                     else if (num === 4) { bgColor = 'bg-red-300'; borderColor = 'border-red-600'; }
-
+              
                     return (
                       <div 
                         key={num}
-                        className={`p-6 rounded-2xl w-40 text-center text-2xl font-extrabold transition-all border-4 ${
+                        className={`p-6 rounded-2xl text-center text-2xl font-extrabold transition-all border-4 ${
                           currentTurn === num ? `${bgColor} ${borderColor} shadow-lg scale-105` : 'bg-gray-200 border-gray-400'
                         }`}
                       >
