@@ -82,3 +82,32 @@
     z-index: 1000; /* Ensures it's on top */
 }
 
+/* AAC Container */
+.aac-blocking-container {
+    width: 33.333%; /* w-1/3 */
+    background-color: hsl(45, 93%, 83%); /* bg-[hsl(45,93%,83%)] */
+    padding: 2rem; /* p-8 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1); /* shadow-lg */
+    border: 10px solid #e09f3e; /* border-[10px] border-[#e09f3e] */
+    position: relative; /* Needed for overlay positioning */
+}
+
+/* Gray Overlay (appears when blocked) */
+.aac-blocking-container.blocked::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent gray */
+    border-radius: inherit; /* Matches parent rounded corners */
+    z-index: 1; /* Ensures overlay is above content */
+    pointer-events: auto; /* Blocks interactions inside */
+}

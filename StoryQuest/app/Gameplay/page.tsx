@@ -53,6 +53,7 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
+    const [showBlockAACButtonOverlay, setShowBlockAACButtonOverlay] = useState(false); // Is shown at "The end!" phrase
 
   useEffect(() => {
     setIsMounted(true);
@@ -113,6 +114,14 @@ export default function Home() {
        setPhrase("The End!");
      }
    };
+
+  // Block AAC board overlay
+    useEffect(() => {
+        if (phrase === "The End!") {
+            setShowBlockAACButtonOverlay(true);
+            console.log("true");
+        }
+    }, [phrase]);
 
     // Delay completion page overlay by 3 seconds
     useEffect(() => {
@@ -176,8 +185,9 @@ export default function Home() {
     <div className="flex w-screen h-screen">
 
       {/* Left Panel: AAC Tablet */}
-       <div className="w-1/3 bg-[hsl(45,93%,83%)] p-8 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e]">
-         <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
+        {/*<div className="w-1/3 bg-[hsl(45,93%,83%)] p-8 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e]">*/}
+        <div className={`aac-blocking-container ${showBlockAACButtonOverlay ? 'blocked' : ''}`}>
+            <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
             {/* Story Selection */}
             <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white bg-[#8ae2d5] p-2 rounded-lg">
               Select Story:
@@ -336,17 +346,19 @@ return (
           <TextToSpeechTextOnly text={phrase}/>
 
           {/* Text to speech completed story*/}
+          {/* Text to speech completed story */}
           {phrase === "The End!" && (
               <div>
-                  {/*Call completedstory button and pass completedphrase map*/}
-                  <CompletedStory
-                      index={completedPhrases.length - 1}
-                      completedPhrases={completedPhrases}
-                      onComplete={() => {
-                          console.log("Gameplay: Story is completed!");
-                          setStoryCompleted(true); // Update state when completed text to speech is done
-                      }}
-                  />
+                  {!storyCompleted && (
+                      <CompletedStory
+                          index={completedPhrases.length - 1}
+                          completedPhrases={completedPhrases}
+                          onComplete={() => {
+                              console.log("Gameplay: Story is completed!");
+                              setStoryCompleted(true);
+                          }}
+                      />
+                  )}
               </div>
           )}
 
@@ -356,6 +368,7 @@ return (
                   <CompletionPage/>
               </div>
           )}
+
       </div>
     </div>
   );
