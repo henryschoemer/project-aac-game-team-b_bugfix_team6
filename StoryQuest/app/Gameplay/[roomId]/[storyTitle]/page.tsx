@@ -149,48 +149,67 @@ useEffect(() => {
     setIsMounted(true);
   }, [storyTitle, stories]);
 
+
+  //Assigning player #'s
   useEffect(() => {
     if (!roomId || !currentStory) return;
   
     const assignPlayer = async () => {
+      //To grab number of players chosen in create room
+      const roomRef = doc(db, "rooms", roomId);
+      const roomDocSnap = await getDoc(roomRef);
+
       const gameRef = doc(db, "games", roomId);
       const docSnap = await getDoc(gameRef);
+
+      const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
+      sessionStorage.setItem("player-uid", myId);
   
       if (docSnap.exists()) {
         const data = docSnap.data();
-        const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
-        sessionStorage.setItem("player-uid", myId);
-  
+        // Check if the player already has an assigned slot
         if (data.player1Id === myId) {
           setPlayerNumber(1);
         } else if (data.player2Id === myId) {
           setPlayerNumber(2);
-        } else if (!data.player1Id) {
+        } else if (data.player3Id === myId) {
+          setPlayerNumber(3);
+        } else if (data.player4Id === myId) {
+          setPlayerNumber(4);
+        }
+        // If not, assign the next free slot (only if the total players is less than or equal to the room's numPlayers)
+        else if (!data.player1Id) {
           await updateDoc(gameRef, { player1Id: myId });
           setPlayerNumber(1);
-        } else if (!data.player2Id) {
+        } else if (!data.player2Id && data.maxPlayers > 1) {
           await updateDoc(gameRef, { player2Id: myId });
           setPlayerNumber(2);
+        } else if (!data.player3Id && data.maxPlayers > 2) {
+          await updateDoc(gameRef, { player3Id: myId });
+          setPlayerNumber(3);
+        } else if (!data.player4Id && data.maxPlayers > 3) {
+          await updateDoc(gameRef, { player4Id: myId });
+          setPlayerNumber(4);
         } else {
           alert("Room is full!");
         }
       } else {
-        // Game doesn't exist, create new game with player1
-        const myId = crypto.randomUUID();
-        sessionStorage.setItem("player-uid", myId);
-  
-        await setDoc(gameRef, {
-          player1Id: myId,
-          currentTurn: 1,
-          completedPhrases: [],
-          completedImages: [],
-          currentSectionIndex: 0,
-          currentPhrase: currentStory.sections[0].phrase,
-          lastUpdated: new Date(),
-          gameStatus: "in_progress",
-        });
-  
-        setPlayerNumber(1);
+        if (roomDocSnap.exists()) {
+          const data = roomDocSnap.data();
+          // If the game document doesn't exist, create one.
+          await setDoc(gameRef, {
+            player1Id: myId,
+            currentTurn: 1,
+            maxPlayers: data.numPlayers, // you can save this here as well
+            completedPhrases: [],
+            completedImages: [],
+            currentSectionIndex: 0,
+            currentPhrase: currentStory.sections[0].phrase,
+            lastUpdated: new Date(),
+            gameStatus: "in_progress",
+          });
+          setPlayerNumber(1);
+        }
       }
     };
   
@@ -251,39 +270,40 @@ useEffect(() => {
 
      const newPhrase = phrase.replace("___", word);
     
-     if (!playerNumber) {
-      console.warn("Player number not yet available. Aborting update.");
-      return;
-    }
+     
      //This is where game state gets updated in firestore
      const gameRef = doc(db, "games", roomId);
      const docSnap = await getDoc(gameRef);
 
-     const isLastSection = currentSectionIndex >= currentStory.sections.length - 1;
-     const nextTurn = currentTurn === 1 ? 2 : 1;
+     if (docSnap.exists()) {
+      const data = docSnap.data();
+      const maxPlayers = data.maxPlayers || 4;
+      const nextTurn = currentTurn === maxPlayers ? 1 : currentTurn + 1;
+      const isLastSection = currentSectionIndex >= currentStory.sections.length - 1;
 
-     //if game already exists just update game document, else create new game document
-     const gameDataToSave = {
-      completedPhrases: [...completedPhrases, newPhrase],
-      completedImages: [...completedImages, newImage],
-      currentSectionIndex: isLastSection ? currentSectionIndex : currentSectionIndex + 1,
-      currentPhrase: isLastSection
-        ? "The End!"
-        : currentStory.sections[currentSectionIndex + 1].phrase,
-      lastWordSelected: {
-        word,
-        timestamp: new Date(),
-      },
-      currentTurn: nextTurn,
-      lastUpdated: new Date(),
-      gameStatus: isLastSection ? "completed" : "in_progress",
-    };
-    
-    if (docSnap.exists()) {
-      await updateDoc(gameRef, gameDataToSave);
-    } else {
-      await setDoc(gameRef, gameDataToSave);
-    }
+      //if game already exists just update game document, else create new game document
+      const gameDataToSave = {
+        completedPhrases: [...completedPhrases, newPhrase],
+        completedImages: [...completedImages, newImage],
+        currentSectionIndex: isLastSection ? currentSectionIndex : currentSectionIndex + 1,
+        currentPhrase: isLastSection
+          ? "The End!"
+          : currentStory.sections[currentSectionIndex + 1].phrase,
+        lastWordSelected: {
+          word,
+          timestamp: new Date(),
+        },
+        currentTurn: nextTurn,
+        lastUpdated: new Date(),
+        gameStatus: isLastSection ? "completed" : "in_progress",
+      };
+
+      if (docSnap.exists()) {
+        await updateDoc(gameRef, gameDataToSave);
+      } else {
+        await setDoc(gameRef, gameDataToSave);
+      }
+     }
 
      setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
      setCompletedImages([...completedImages, newImage]); //store completed image
@@ -401,34 +421,40 @@ useEffect(() => {
 
             </select>
 
-            <div className="flex flex-col items-center justify-center mb-6 space-y-4">
-              {/* Player Boxes */}
-              <div className="flex space-x-8">
-                <div className={`p-6 rounded-2xl w-40 text-center text-2xl font-extrabold transition-all border-4
-                  ${currentTurn === 1 ? 'bg-yellow-300 border-yellow-600 shadow-lg scale-105' : 'bg-gray-200 border-gray-400'}`}>
-                  👤 Player 1
-                </div>
-                <div className={`p-6 rounded-2xl w-40 text-center text-2xl font-extrabold transition-all border-4
-                  ${currentTurn === 2 ? 'bg-blue-300 border-blue-600 shadow-lg scale-105' : 'bg-gray-200 border-gray-400'}`}>
-                  👤 Player 2
-                </div>
-              </div>
+            {playerNumber && (
+              <div className="flex flex-col items-center justify-center mb-6 space-y-4">
+                <div className="flex space-x-4">
+                  {[1, 2, 3, 4].map((num) => {
+                    let bgColor = 'bg-gray-200';
+                    let borderColor = 'border-gray-400';
+                    if (num === 1) { bgColor = 'bg-yellow-300'; borderColor = 'border-yellow-600'; }
+                    else if (num === 2) { bgColor = 'bg-blue-300'; borderColor = 'border-blue-600'; }
+                    else if (num === 3) { bgColor = 'bg-green-300'; borderColor = 'border-green-600'; }
+                    else if (num === 4) { bgColor = 'bg-red-300'; borderColor = 'border-red-600'; }
 
-              {/* Turn Status Message */}
-              {playerNumber && (
+                    return (
+                      <div 
+                        key={num}
+                        className={`p-6 rounded-2xl w-40 text-center text-2xl font-extrabold transition-all border-4 ${
+                          currentTurn === num ? `${bgColor} ${borderColor} shadow-lg scale-105` : 'bg-gray-200 border-gray-400'
+                        }`}
+                      >
+                        {`Player ${num}`}
+                      </div>
+                    );
+                  })}
+                </div>
                 <div className="mt-4 text-center">
                   {playerNumber === currentTurn ? (
-                    <p className="text-4xl font-extrabold text-green-600 animate-pulse">
-                      ✅ YOUR TURN!
-                    </p>
+                    <p className="text-4xl font-extrabold text-green-600 animate-pulse">✅ YOUR TURN!</p>
                   ) : (
                     <p className="text-3xl text-gray-600">
                       ⏳ Waiting for <span className="font-bold">Player {currentTurn}</span>...
                     </p>
                   )}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
            <AACKeyboard
            onSelect={handleAACSelect}
            symbols={currentStory?.sections[currentSectionIndex]

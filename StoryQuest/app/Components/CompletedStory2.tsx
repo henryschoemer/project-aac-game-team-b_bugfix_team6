@@ -16,36 +16,58 @@ const CompletedStory2: React.FC<TextToSpeechCompletedStoryProps> = ({
   onComplete,
   roomId,
 }) => {
+  // Expect index to be completedPhrases.length - 1 indicating that the game is done.
   const isLastPhrase = index === completedPhrases.length - 1;
-  const [currentIndex, setCurrentIndex] = useState(0);
 
+  // currentIndex for individual phrase tracking.
+  const [currentIndex, setCurrentIndex] = useState(0);
+  // When true, we switch from individual phrase reading to full-story reading.
+  const [finalRead, setFinalRead] = useState(false);
+
+  // When the game is complete, start with the first phrase.
   useEffect(() => {
     if (isLastPhrase) {
-      setCurrentIndex(0); // Start from the beginning when phrase is "The End!"
+      setCurrentIndex(0);
     }
   }, [isLastPhrase]);
 
-  // Only run once the story is completed
+  // Render nothing unless the story is complete.
   if (!isLastPhrase) return null;
 
   const handlePhraseComplete = async () => {
-
-
-    if (currentIndex < completedPhrases.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
+    if (!finalRead) {
+      // If we haven't started reading the full story yet:
+      if (currentIndex < completedPhrases.length - 1) {
+        // Continue reading the next individual phrase.
+        setCurrentIndex((prev) => prev + 1);
+      } else {
+        // All individual phrases have been read.
+        // Switch to final reading mode.
+        setFinalRead(true);
+      }
     } else {
-      onComplete(); // All phrases spoken
-    }
-
-    await updateDoc(doc(db, "games", roomId), {
-        ttsDone: true
+      // Final full-story reading is complete:
+      // Update Firestore so that other players know the TTS finished.
+      await updateDoc(doc(db, "games", roomId), {
+        ttsDone: true,
       });
+      // Optionally, add a short delay before calling onComplete.
+      setTimeout(() => {
+        onComplete();
+      }, 1000);
+    }
   };
+
+  // Decide what text to read.
+  // If in finalRead mode, join all completed phrases into one continuous string.
+  const textToSpeak = finalRead
+    ? completedPhrases.join(" ")
+    : completedPhrases[currentIndex];
 
   return (
     <TextToSpeechTextOnly2
-      key={currentIndex}
-      text={completedPhrases[currentIndex]}
+      key={finalRead ? "final" : currentIndex}
+      text={textToSpeak}
       onComplete={handlePhraseComplete}
     />
   );
