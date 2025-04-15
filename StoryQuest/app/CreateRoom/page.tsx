@@ -136,11 +136,27 @@ export default function CreateRoomPage() {
                                 onMouseEnter={() => handleOnMouseEnter("Walk in the Forest")}
                             >
                                 <img
-                                    src="/images/Forest-background.png"
+                                    src="/images/forest-background.jpg"
                                     alt="Forest"
                                     className="button-icon"
                                 />
                                 <span>Walk in the Forest</span>
+                            </button>
+
+
+                            <button
+                                className="big-button story-button"
+                                onClick={() => {
+                                    handleStoryClick("Under the sea");
+                                }}
+                                onMouseEnter={() => handleOnMouseEnter("Under the sea")}
+                            >
+                                <img
+                                    src="/images/ocean-background.png"
+                                    alt="Forest"
+                                    className="button-icon"
+                                />
+                                <span>Under the sea</span>
                             </button>
 
                             <button
@@ -198,7 +214,7 @@ export default function CreateRoomPage() {
                 {/* Step 3: Difficulty Selection */}
                 {currentStep === 3 && (
                     <div className="step-container">
-                        <h2>Pick How Challenging</h2>
+                        <h2>Pick game difficulty</h2>
                         <div className="big-button-container">
                             <button
                                 className="big-button difficulty-button easy"
@@ -206,14 +222,14 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Easy");
                                 }}
                                 onMouseEnter={() => {
-                                    setTooltip("Easy mode: 3 sentences")
-                                    handleOnMouseEnter("Easy mode: 3 sentences")
+                                    setTooltip("Easy mode: 4 sentences")
+                                    handleOnMouseEnter("Easy mode: 4 sentences")
                                 }}
                                 onMouseLeave={() => setTooltip(null)}
-                                onTouchStart={() => setTooltip("Easy mode: 3 sentences")}
+                                onTouchStart={() => setTooltip("Easy mode: 4 sentences")}
                             >
                                 <span>Easy</span>
-                                {tooltip === "Easy mode: 3 sentences" && <span className="tooltip">{tooltip}</span>}
+                                {tooltip === "Easy mode: 4 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
 
                             <button
@@ -222,14 +238,14 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Medium");
                                 }}
                                 onMouseEnter={() => {
-                                    setTooltip("Medium mode: 5 sentences")
-                                    handleOnMouseEnter("Medium mode: 5 sentences")
+                                    setTooltip("Medium mode: 8 sentences")
+                                    handleOnMouseEnter("Medium mode: 8 sentences")
                                 }}
                                 onMouseLeave={() => setTooltip(null)}
-                                onTouchStart={() => setTooltip("Medium mode: 5 sentences")}
+                                onTouchStart={() => setTooltip("Medium mode: 8 sentences")}
                             >
                                 <span>Medium</span>
-                                {tooltip === "Medium mode: 5 sentences" && <span className="tooltip">{tooltip}</span>}
+                                {tooltip === "Medium mode: 8 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
                             <button
                                 className="big-button difficulty-button hard"
@@ -237,14 +253,14 @@ export default function CreateRoomPage() {
                                     handleDifficultyClick("Hard");
                                 }}
                                 onMouseEnter={() => {
-                                    setTooltip("Hard mode: 10 sentences")
-                                    handleOnMouseEnter("Hard mode: 10 sentences")
+                                    setTooltip("Hard mode: 12 sentences")
+                                    handleOnMouseEnter("Hard mode: 12 sentences")
                                 }}
                                 onMouseLeave={() => setTooltip(null)}
-                                onTouchStart={() => setTooltip("Hard mode: 10 sentences")}
+                                onTouchStart={() => setTooltip("Hard mode: 12 sentences")}
                             >
                                 <span>Hard</span>
-                                {tooltip === "Hard mode: 10 sentences" && <span className="tooltip">{tooltip}</span>}
+                                {tooltip === "Hard mode: 12 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
                         </div>
                         <button className="back-step-button" onClick={() => {

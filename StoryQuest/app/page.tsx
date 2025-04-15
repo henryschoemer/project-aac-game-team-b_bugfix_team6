@@ -43,17 +43,6 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/*Button navigates to gameplay
-                This button will be removed when we implement the room hosting feature*/}
-
-                <div className="button-padding">
-                    <div className="button-box">
-                        <Link href="/Gameplay">
-                            <TemporaryTestingGameButton/>
-                        </Link>
-                    </div>
-                </div>
-
             </div>
 
             {/*Copyright text*/}
