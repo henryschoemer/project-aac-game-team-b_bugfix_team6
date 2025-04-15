@@ -1,8 +1,5 @@
 // stories.tsx
 
-//EASY MODE
-//there are 3 sentences for each story to be completed
-
 
 
 export interface StorySection {

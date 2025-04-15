@@ -147,7 +147,7 @@ describe("CreateRoomPage", () => {
         fireEvent.click(screen.getByText("Change Something"));
         
         // Should be at difficulty selection
-        expect(screen.getByText("Pick How Challenging")).toBeInTheDocument();
+        expect(screen.getByText("Pick game difficulty")).toBeInTheDocument();
         
         // Change to a different difficulty
         fireEvent.click(screen.getByText("Medium")); // Medium
