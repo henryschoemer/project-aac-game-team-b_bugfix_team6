@@ -539,18 +539,43 @@ useEffect(() => {
         }}
       >
         {/* Completed Phrases (positioned with the text) */}
-        <div className="absolute bottom-0 left-0 w-full bg-white p-4 rounded-t-lg shadow-lg border-t border-gray-300 whitespace-normal">
-              <div className="flex flex-wrap items-center gap-2 whitespace-normal">
-                  {completedPhrases.map((completedPhrase, index) => (
-                      <span key={index} className="text-lg text-gray-700 text-nowrap">{completedPhrase}</span>
-                  ))}
-              </div>
-              <span key={phrase} className="text-xl font-semibold text-black">
-              <span className="inline-block border-r-2 border-black pr-2 overflow-hidden text-nowrap animate-typewriter"  style={{ "--tw-typewriter-width": `${phrase.length}ch` } as React.CSSProperties} >
-                {phrase}
-              </span>
-            </span>
+        {/* Storybook Text Display */}
+        <div className="absolute bottom-0 left-0 w-full min-h-[180px] bg-[url('/images/parchment-texture.png')] bg-cover p-6 border-t-8 border-amber-800 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
+          {/* Decorative scroll ends */}
+          <div className="absolute -top-6 left-4 right-4 flex justify-between pointer-events-none">
+            <span className="text-5xl text-amber-800">✧</span>
+            <span className="text-5xl text-amber-800">✧</span>
+        </div>
+
+        <div className="max-w-6xl mx-auto">
+          {/* Completed story phrases */}
+          <div className="flex flex-wrap gap-3 mb-3">
+          {completedPhrases.map((completedPhrase, index) => (
+          <span 
+            key={index} 
+            className="text-3xl font-['Short_Stack'] text-amber-900 bg-white/70 px-3 py-1 rounded-lg"
+          >
+          {completedPhrase}
+          </span>
+        ))}
+      </div>
+
+        {/* Current phrase with magical effects */}
+        <div className="relative">
+          <span className="text-5xl font-bold font-['Patrick_Hand'] text-amber-900 animate-pulse">
+            {phrase}
+            <span className="ml-1 inline-block w-2 h-10 bg-amber-600 animate-blink"></span>
+          </span>
+          
+          {/* Floating fairydust particles */}
+          <div className="absolute -top-8 left-0 right-0 flex justify-between px-10">
+            <span className="text-3xl opacity-70 animate-float">✨</span>
+            <span className="text-2xl opacity-60 animate-float delay-100">❋</span>
+            <span className="text-3xl opacity-80 animate-float delay-200">✧</span>
           </div>
+        </div>
+      </div>
+    </div>
 
         {/* Animated Images with Sparkles: Shows selected images with a sparkle effect. */}
         <AnimatePresence>
