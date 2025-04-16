@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
-import TextToSpeechTextOnly from '../TextToSpeechTextOnly.tsx';
+import TextToSpeechTextOnly from '../TextToSpeechTextOnly';
 
 // Mock SpeechSynthesis API
 class MockSpeechSynthesisUtterance {
