@@ -68,25 +68,24 @@ describe('useButtonFeedback', () => {
             });
         });
 
-        it('should call speakFn after 100ms delay', () => {
+        it('should call speakFn after 350ms delay', () => {
             const { result } = renderHook(() => useButtonFeedback());
-
+          
             act(() => {
-                result.current.buttonHandler('select', 'test message', mockSpeak);
+              result.current.buttonHandler('select', 'test message', mockSpeak);
             });
-
+          
             // Sound should be called immediately
             expect(mockPlaySelect).toHaveBeenCalled();
             expect(mockSpeak).not.toHaveBeenCalled();
-
-            // Fast-forward 100ms
+          
+            // Fast-forward 350ms
             act(() => {
-                jest.advanceTimersByTime(100);
+              jest.advanceTimersByTime(350);
             });
-
+          
             // Now speak should be called
             expect(mockSpeak).toHaveBeenCalledWith('test message');
-        });
-
+          });
     });
 });

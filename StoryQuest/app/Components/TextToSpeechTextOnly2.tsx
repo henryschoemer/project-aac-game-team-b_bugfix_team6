@@ -1,86 +1,4 @@
-//AutoReader fix for after you join a room, uncomment if wrong for the Join Room Functionality!
-/*import React, { useEffect, useState } from "react";
-
-interface TextToSpeechCompletedStoryProps {
-  text: string;
-  onComplete?: () => void; // Callback when TTS ends
-}
-
-const TextToSpeechTextOnly2: React.FC<TextToSpeechCompletedStoryProps> = ({
-  text,
-  onComplete,
-}) => {
-  const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
-  const [isVoiceReady, setIsVoiceReady] = useState(false);
-
-  // Select preferred voice
-  const selectVoice = () => {
-    const voices = speechSynthesis.getVoices();
-    const preferredVoices = [
-      "Google UK English Male",
-      "Microsoft David - English (United States)",
-      "Daniel",
-    ];
-    return voices.find((v) => preferredVoices.includes(v.name)) || voices[0] || null;
-  };
-
-  // Wait for voices to load
-  useEffect(() => {
-    const synth = window.speechSynthesis;
-    
-
-    const loadVoices = () => {
-      const voice = selectVoice();
-      if (voice) {
-        setSelectedVoice(voice);
-        setIsVoiceReady(true);
-      }
-    };
-
-    // If voices are already available
-    if (synth.getVoices().length > 0) {
-      loadVoices();
-    } else {
-      // Wait for voices to be loaded asynchronously
-      synth.addEventListener("voiceschanged", loadVoices);
-    }
-
-    return () => {
-      synth.removeEventListener("voiceschanged", loadVoices);
-    };
-  }, []);
-
-  // Trigger speech when text or selectedVoice changes
-  useEffect(() => {
-    if (!text || !selectedVoice || !isVoiceReady) return;
-
-    const utterance = new SpeechSynthesisUtterance(text.replace(/_/g, " "));
-    utterance.voice = selectedVoice;
-    utterance.rate = 0.9;
-
-    utterance.onend = () => {
-      onComplete?.();
-    };
-
-    utterance.onerror = (e) => {
-      console.warn("Speech synthesis error:", e);
-    };
-
-    window.speechSynthesis.cancel(); // cancel ongoing first
-    window.speechSynthesis.speak(utterance);
-
-    return () => {
-      window.speechSynthesis.cancel();
-    };
-  }, [text, selectedVoice, isVoiceReady, onComplete]);
-
-  return null;
-};
-
-export default TextToSpeechTextOnly2;
-*/
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface TextToSpeechCompletedStoryProps {
   text: string;
@@ -91,71 +9,145 @@ const TextToSpeechTextOnly2: React.FC<TextToSpeechCompletedStoryProps> = ({
   text,
   onComplete,
 }) => {
-  const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
-  const [isVoiceReady, setIsVoiceReady] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const voicesLoadedRef = useRef(false);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const attemptCountRef = useRef(0);
+  const maxAttempts = 5;
 
-  // Select preferred voice
-  const selectVoice = () => {
-    const voices = window.speechSynthesis.getVoices();
-    const preferredVoices = [
-      "Google UK English Male",
-      "Microsoft David - English (United States)",
-      "Daniel",
-    ];
-    return voices.find((v) => preferredVoices.includes(v.name)) || voices[0] || null;
-  };
-
-  // New: Robust voice loading with retry logic
-  const initializeTTS = () => {
+  // Initialize speech synthesis
+  useEffect(() => {
     if (typeof window === 'undefined' || !window.speechSynthesis) {
-      setTimeout(initializeTTS, 100);
+      console.warn("Speech synthesis not supported");
       return;
     }
 
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-      const voice = selectVoice();
-      setSelectedVoice(voice);
-      setIsVoiceReady(true);
-    } else {
-      window.speechSynthesis.addEventListener('voiceschanged', () => {
-        const voice = selectVoice();
-        setSelectedVoice(voice);
-        setIsVoiceReady(true);
-      });
-    }
-  };
+    const handleVoicesChanged = () => {
+      if (voicesLoadedRef.current) return;
+      voicesLoadedRef.current = true;
+      setIsReady(true);
+    };
 
-  useEffect(() => {
-    initializeTTS();
+    // Try getting voices immediately
+    const voices = window.speechSynthesis.getVoices();
+    if (voices && voices.length > 0) {
+      voicesLoadedRef.current = true;
+      setIsReady(true);
+    } else {
+      // Wait for voices to load
+      window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
+    }
+
+    // For Safari, which might not trigger voiceschanged
+    const safariFallbackTimer = setTimeout(() => {
+      if (!voicesLoadedRef.current) {
+        console.warn("Voice loading timed out, trying to proceed anyway");
+        setIsReady(true);
+      }
+    }, 1000);
+
     return () => {
-      window.speechSynthesis?.cancel();
+      window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
+      clearTimeout(safariFallbackTimer);
+      if (utteranceRef.current) {
+        window.speechSynthesis.cancel();
+      }
     };
   }, []);
 
-  // New: Speech execution with ready checks
+  // Select best available voice for the platform
+  const selectVoice = () => {
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices || voices.length === 0) return null;
+
+    // Try to find a voice by name or language
+    const preferredVoiceNames = [
+      "Google UK English Male",
+      "Microsoft David",
+      "Daniel",
+      "Alex", // Good for Safari allegedly 
+    ];
+
+    // Try by name first
+    for (const name of preferredVoiceNames) {
+      const voice = voices.find(v => v.name.includes(name));
+      if (voice) return voice;
+    }
+
+    // Then try to find any English voice
+    const englishVoice = voices.find(v => v.lang.includes('en'));
+    if (englishVoice) return englishVoice;
+
+    // Fall back to the first voice
+    return voices[0];
+  };
+
+  // Speak the text when ready
   useEffect(() => {
-    if (!text) return;
+    if (!text || !isReady) return;
 
-    const speakWhenReady = () => {
-      if (!window.speechSynthesis || !selectedVoice) {
-        setTimeout(speakWhenReady, 100);
-        return;
+    const speakText = () => {
+      if (typeof window === 'undefined' || !window.speechSynthesis) return;
+
+      try {
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+
+        // Create utterance
+        const utterance = new SpeechSynthesisUtterance(text.replace(/_/g, " "));
+        utteranceRef.current = utterance;
+
+        // Select voice
+        const voice = selectVoice();
+        if (voice) {
+          utterance.voice = voice;
+        }
+
+        // Set properties
+        utterance.rate = 0.9;
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+
+        // Set callbacks
+        utterance.onend = () => {
+          console.log("Speech ended successfully");
+          utteranceRef.current = null;
+          onComplete?.();
+        };
+
+        utterance.onerror = (e) => {
+          console.warn("Speech synthesis error:", e);
+          utteranceRef.current = null;
+          
+          // Retry on error for mobile browsers
+          if (attemptCountRef.current < maxAttempts) {
+            attemptCountRef.current++;
+            setTimeout(speakText, 250);
+          } else {
+            // After max attempts, just call onComplete
+            onComplete?.();
+          }
+        };
+
+        // Workaround for some mobile browsers
+        setTimeout(() => {
+          window.speechSynthesis.speak(utterance);
+        }, 100);
+      } catch (err) {
+        console.error("Speech synthesis exception:", err);
+        onComplete?.();
       }
-
-      const utterance = new SpeechSynthesisUtterance(text.replace(/_/g, " "));
-      utterance.voice = selectedVoice;
-      utterance.rate = 0.9;
-
-      utterance.onend = () => onComplete?.();
-      utterance.onerror = (e) => console.warn("Speech error:", e);
-
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utterance);
     };
 
-    speakWhenReady();
-  }, [text, selectedVoice, onComplete]);
+    // Start speaking with a small delay to help with mobile browsers
+    const timer = setTimeout(speakText, 200);
+    return () => {
+      clearTimeout(timer);
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [text, isReady, onComplete]);
 
   return null;
 };
