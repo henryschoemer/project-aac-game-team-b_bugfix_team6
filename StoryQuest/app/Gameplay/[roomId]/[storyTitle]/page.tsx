@@ -62,7 +62,9 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
-    const soundUrl = '/sounds/aac_audios.mp3';
+  const soundUrl = '/sounds/aac_audios.mp3';
+  const [numberOfPhrasesForLevel, setNumberOfPhrasesForLevel] = useState<number | null>(null);
+
   const [play] = useSound(soundUrl, {
     sprite: {
         basket: [0, 650],
@@ -142,6 +144,32 @@ useEffect(() => {
     setPhrase(storyToUse.sections[0].phrase);
     setIsMounted(true);
   }, [storyTitle, stories]);
+
+
+  useEffect(() => {
+    const fetchGameSettings = async () => {
+      if (!roomId) return;
+      try {
+        const gameDocRef = doc(db, "game", roomId);
+        const gameDocSnap = await getDoc(gameDocRef);
+  
+        if (gameDocSnap.exists()) {
+          const data = gameDocSnap.data();
+          if (data.numberOfPhrasesForLevel) {
+            setNumberOfPhrasesForLevel(data.numberOfPhrasesForLevel);
+            console.log("Number of phrases:", data.numberOfPhrasesForLevel);
+          }
+        } else {
+          console.warn("No such game room in Firestore!");
+        }
+      } catch (error) {
+        console.error("Error fetching game settings:", error);
+      }
+    };
+  
+    fetchGameSettings();
+  }, [roomId]);
+  
 
 
   //Assigning player #'s
@@ -257,100 +285,90 @@ useEffect(() => {
   };
 
   const handleWordSelect = async (word: string) => {
-     //setUserInput(word);
-     if (!currentStory) return;
-
-   const currentWords = currentStory.sections[currentSectionIndex].words;
-
-   if (!currentWords[word]) {
-     alert(`Word "${word}" not found in current section!`);
-     return;
-   }
-     const selectedWordData = currentStory?.sections[currentSectionIndex]?.words[word];
-     /*setCurrentImage({
-       src: `/images/${selectedWordData?.image || null}`, //making the path based on the word button cliked (they are inside my-game/public/images )
-       alt: word,
-       x: selectedWordData?.x || 0,
-       y: selectedWordData?.y || 0,
-     });*/
-
-     if (!selectedWordData) return;
-
-     const newImage= {
-       src: `/images/${selectedWordData?.image || null}`,
-       alt: word,
-       x: selectedWordData.x || 0,
-       y: selectedWordData.y || 0,
-     }
-
-     const newPhrase = phrase.replace("___", word);
-    
-     
-     //This is where game state gets updated in firestore
-     const gameRef = doc(db, "games", roomId);
-     const docSnap = await getDoc(gameRef);
-
-     if (docSnap.exists()) {
+    if (!currentStory) return;
+  
+    const currentWords = currentStory.sections[currentSectionIndex].words;
+  
+    if (!currentWords[word]) {
+      alert(`Word "${word}" not found in current section!`);
+      return;
+    }
+  
+    const selectedWordData = currentWords[word];
+    if (!selectedWordData) return;
+  
+    const newImage = {
+      src: `/images/${selectedWordData.image || null}`,
+      alt: word,
+      x: selectedWordData.x || 0,
+      y: selectedWordData.y || 0,
+    };
+  
+    const newPhrase = phrase.replace("___", word);
+  
+    // 🔒 Check against max allowed phrases
+    const maxPhrases = numberOfPhrases || currentStory.sections.length;
+    const actualPhraseCount = completedPhrases.filter((p) => p && p !== "The End!").length;
+  
+    if (actualPhraseCount >= maxPhrases) {
+      // Already finished, don’t allow more
+      setPhrase("The End!");
+      setStoryCompleted(true);
+      return;
+    }
+  
+    // Firestore update
+    const gameRef = doc(db, "games", roomId);
+    const docSnap = await getDoc(gameRef);
+  
+    if (docSnap.exists()) {
       const data = docSnap.data();
       const maxPlayers = data.maxPlayers || 4;
       const nextTurn = currentTurn === maxPlayers ? 1 : currentTurn + 1;
+  
+      const willBeFinal = actualPhraseCount + 1 >= maxPhrases;
       const isLastSection = currentSectionIndex >= currentStory.sections.length - 1;
-
-      //if game already exists just update game document, else create new game document
+  
       const gameDataToSave = {
-        completedPhrases: [...completedPhrases, newPhrase],
+        completedPhrases: [...completedPhrases, newPhrase, ...(willBeFinal ? ["The End!"] : [])],
         completedImages: [...completedImages, newImage],
         currentSectionIndex: isLastSection ? currentSectionIndex : currentSectionIndex + 1,
-        currentPhrase: isLastSection
-          ? "The End!"
-          : currentStory.sections[currentSectionIndex + 1].phrase,
+        currentPhrase: willBeFinal ? "The End!" : currentStory.sections[currentSectionIndex + 1].phrase,
         lastWordSelected: {
           word,
           timestamp: new Date(),
         },
         currentTurn: nextTurn,
         lastUpdated: new Date(),
-        gameStatus: isLastSection ? "completed" : "in_progress",
+        gameStatus: willBeFinal ? "completed" : "in_progress",
       };
-
-      if (docSnap.exists()) {
-        await updateDoc(gameRef, gameDataToSave);
-      } else {
-        await setDoc(gameRef, gameDataToSave);
+  
+      await updateDoc(gameRef, gameDataToSave);
+  
+      if (willBeFinal) {
+        setStoryCompleted(true);
       }
-     }
-
-     setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
-     setCompletedImages([...completedImages, newImage]); //store completed image
-     setShowSparkles((prev) => [...prev, true]); // Trigger sparkle effect for the new image.
-     //setCurrentTurn(prev => (prev === 1 ? 2 : 1));
-
-     if (currentSectionIndex < currentStory.sections.length - 1) {
-       setCurrentSectionIndex(currentSectionIndex + 1);
-       setPhrase(currentStory.sections[currentSectionIndex + 1].phrase);
-     } else {
-       setPhrase("The End!");
-     }
-   };
-
-    // Delay completion page overlay by 3 seconds
-    /*useEffect(() => {
-        let timeoutId: NodeJS.Timeout;
-
-        if (storyCompleted) {
-            // 3 sec delay
-            timeoutId = setTimeout(() => {
-                setShowOverlay(true); // Update show completion page overlay
-            }, 3000);
-        }
-
-        // Cleanup the timeout if the component unmounts
-        return () => {
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
-        };
-    }, [storyCompleted]);*/
+    }
+  
+    // Local updates
+    setCompletedPhrases((prev) => [...prev, newPhrase, ...(actualPhraseCount + 1 >= maxPhrases ? ["The End!"] : [])]);
+    setCompletedImages((prev) => [...prev, newImage]);
+    setShowSparkles((prev) => [...prev, true]);
+  
+    if (actualPhraseCount + 1 >= maxPhrases) {
+      setPhrase("The End!");
+      return;
+    }
+  
+    if (currentSectionIndex < currentStory.sections.length - 1) {
+      setCurrentSectionIndex((prev) => prev + 1);
+      setPhrase(currentStory.sections[currentSectionIndex + 1].phrase);
+    } else {
+      setPhrase("The End!");
+    }
+  };
+  
+  
 
     const handleAddImage = () => {
     if (userInput.trim() !== "" && currentImage && currentStory) {

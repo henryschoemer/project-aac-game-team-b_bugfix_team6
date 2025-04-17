@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from 'next/link';
 import { ExitButton } from "../HomePage/HomePageButtons";
 import { db } from "../../firebaseControls/firebaseConfig"; // Import Firestore
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc,setDoc,doc } from "firebase/firestore";
 import { QRCode } from "react-qrcode-logo";
 import "./CreateRoomButtonStyles.css";
 import useSound from "use-sound";
@@ -26,6 +26,7 @@ export default function CreateRoomPage() {
 
     const router = useRouter();
 
+
     const handleStoryClick = (story: string) => {
         setSelectedStory(story);
         setCurrentStep(2);
@@ -45,29 +46,47 @@ export default function CreateRoomPage() {
     };
 
     const handleCreateRoom = async () => {
-        buttonHandler('select',"Start Adventure!", speak);
-        setLoading(true);
-        try {
-            // Add room data to Firestore
-            const docRef = await addDoc(collection(db, "rooms"), {
-                story: selectedStory,
-                numPlayers: numPlayers,
-                difficulty: difficultyLevel,
-            });
-
-            //setRoomId(docRef.id); // Store room ID
-            console.log("Room Created with ID:", docRef.id);
-            setRoomId(docRef.id);
-            buttonHandler('create', "Room Created", speak);
-            alert(`Room Created! Room ID: ${docRef.id}`);
-            router.push(`/CreateRoom/qrcode?roomId=${docRef.id}&storyTitle=${encodeURIComponent(selectedStory ?? "")}`);
-        } catch (error) {
-            console.error("Error creating room:", error);
-            alert("Failed to create room.");
-        } finally {
-            setLoading(false);
+        if (!selectedStory) {
+          alert('Please select a story.');
+          return;
         }
-    };
+    
+        try {
+          const roomRef = await addDoc(collection(db, 'rooms'), {
+            story: selectedStory,
+            numPlayers: numPlayers,
+            difficulty: difficultyLevel,
+            createdAt: new Date(),
+          });
+    
+          const roomId = roomRef.id;
+          const numberOfPhrasesForLevel = difficultyLevel === 'easy' ? 4 : difficultyLevel === 'medium' ? 8 : difficultyLevel === 'hard' ? 12 : 4;
+    
+          // Create the 'games' document here with roomId as the document ID
+          await setDoc(doc(db, 'games', roomId), {
+            storyTitle: selectedStory,
+            difficulty: difficultyLevel,
+            numberOfPhrases: numberOfPhrasesForLevel,
+            maxPlayers: numPlayers,
+            players: [], // Array to store player IDs
+            currentTurn: 1,
+            gameStatus: 'waiting_for_players',
+            createdAt: new Date(),
+            currentSectionIndexInGame: 0,
+            completedPhrases: [],
+            completedImages: [],
+            currentSectionIndex: 0,
+            currentPhrase: '', // Will be set when the game starts
+            useOrderedSections: true,
+            lastUpdated: new Date(),
+          });
+    
+          router.push(`/CreateRoom/qrcode?roomId=${roomRef.id}&storyTitle=${encodeURIComponent(selectedStory ?? "")}`);
+        } catch (error) {
+          console.error('Error creating room:', error);
+          alert('Failed to create room.');
+        }
+      };
 
     const goBack = (text:string) => {
         if (currentStep > 1) {
@@ -214,7 +233,7 @@ export default function CreateRoomPage() {
                 {/* Step 3: Difficulty Selection */}
                 {currentStep === 3 && (
                     <div className="step-container">
-                        <h2>Pick game difficulty</h2>
+                        <h2>Pick Game Difficulty</h2>
                         <div className="big-button-container">
                             <button
                                 className="big-button difficulty-button easy"
