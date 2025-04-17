@@ -554,7 +554,7 @@ useEffect(() => {
           {completedPhrases.map((completedPhrase, index) => (
           <span 
             key={index} 
-            className="text-3xl font-['Short_Stack'] text-amber-900 bg-white/70 px-3 py-1 rounded-lg whitespace-nowrap"
+            className="text-3xl font-short-stack text-amber-900 bg-white/70 px-3 py-1 rounded-lg whitespace-nowrap"
           >
           {completedPhrase}
           </span>
@@ -564,7 +564,7 @@ useEffect(() => {
 
         {/* Current phrase with magical effects */}
         <div className="relative">
-          <span className="text-5xl font-bold font-['Patrick_Hand'] text-amber-900 animate-pulse">
+          <span className="text-5xl font-bold font-patrick-hand text-amber-900 animate-pulse">
             {phrase}
             <span className="ml-1 inline-block w-2 h-10 bg-amber-600 animate-blink"></span>
           </span>
