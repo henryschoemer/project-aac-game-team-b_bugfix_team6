@@ -149,7 +149,7 @@ export default function JoinRoomPage() {
                 <div className="mt-6 mx-auto max-w-[300px] bg-white p-4 rounded-xl shadow-md border-2 border-teal-300">
                     <h2 className="text-lg font-semibold mb-2 text-gray-950">How to join with QR code:</h2>
                     <Image 
-                        src="/diagrams/QR Code Join Room.png" 
+                        src="/diagrams/QR Code Join Room2.png" 
                         alt="How to join with QR code: 1) Find code 2) Scan code 3) Play together"
                         width={600}
                         height={400}
