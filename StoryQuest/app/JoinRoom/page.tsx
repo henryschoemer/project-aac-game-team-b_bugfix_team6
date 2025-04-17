@@ -187,6 +187,5 @@ export default function JoinRoomPage() {
                     </p>
                 </div>
             </div>
-        </div>
     );
 }
