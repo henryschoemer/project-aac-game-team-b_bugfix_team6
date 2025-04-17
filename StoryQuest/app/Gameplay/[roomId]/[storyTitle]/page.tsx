@@ -549,15 +549,17 @@ useEffect(() => {
 
         <div className="max-w-6xl mx-auto">
           {/* Completed story phrases */}
-          <div className="flex flex-wrap gap-3 mb-3">
+          <div className="mb-3 max-h-[80px] overflow-y-auto"></div>
+          <div className="flex flex-col gap-1">
           {completedPhrases.map((completedPhrase, index) => (
           <span 
             key={index} 
-            className="text-3xl font-['Short_Stack'] text-amber-900 bg-white/70 px-3 py-1 rounded-lg"
+            className="text-3xl font-['Short_Stack'] text-amber-900 bg-white/70 px-3 py-1 rounded-lg whitespace-nowrap"
           >
           {completedPhrase}
           </span>
         ))}
+      </div>
       </div>
 
         {/* Current phrase with magical effects */}
@@ -695,6 +697,5 @@ return (
               </div>
           )}
       </div>
-    </div>
   );
 }
