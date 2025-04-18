@@ -16,15 +16,15 @@ import { motion } from "framer-motion";
 }) => {
    return (
      <div 
-      className="p-4 border border-gray-300 rounded-lg shadow-md transform transition duration-500 hover:scale-105"
+      className="p-2 border border-gray-300 rounded-lg shadow-md transform transition duration-500 hover:scale-105"
       style={{ backgroundColor }}
       >
-       <h3 className="text-lg font-bold mb-2 text-center text-white">AAC Keyboard</h3>
+       <h3 className="text-xl font-bold mb-2 text-center text-white">AAC Keyboard</h3>
        <div className="grid grid-cols-2 gap-2">
          {symbols.map((symbol) => (
            <motion.button
              key={symbol.word}
-             className="p-2 text-white rounded flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+             className="p-1 text-white rounded flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
              style={{ backgroundColor: buttonColor }}
              onClick={() => onSelect(symbol.word)}
              whileHover={{ scale: 1.1 }}
@@ -32,8 +32,8 @@ import { motion } from "framer-motion";
              aria-label={`Select ${symbol.word}`}
              tabIndex={0}
            >
-             <img src={symbol.image} alt={symbol.word} className="w-24 h-24 mb-1" />
-             <span>{symbol.word}</span>
+             <img src={symbol.image} alt={symbol.word} className="w-16 h-16 mb-1" />
+             <span className="text-sm md:text-base">{symbol.word}</span>
            </motion.button>
          ))}
        </div>

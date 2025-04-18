@@ -21,6 +21,8 @@ jest.mock('use-sound', () => ({
 }));
 beforeAll(() => {
   Object.defineProperty(global.navigator, 'mediaDevices', {
+    configurable: true,
+    enumerable: false,
     writable: true,
     value: {
       getUserMedia: jest.fn().mockResolvedValue({}),

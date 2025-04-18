@@ -146,19 +146,19 @@ export default function JoinRoomPage() {
                     <h1 className="title-text">Scan Room QR Code</h1>
                 </div>
 
-                <div className="flex flex-col md:flex-row justify-center items-start gap-6 mt-6">
-                    {/* QR Instruction Image */}
-                    <div className="bg-white p-4 rounded-xl shadow-md border-2 border-teal-300 w-full md:w-[300px]">
-                        <h2 className="text-lg font-semibold mb-2 text-gray-950">How to join with QR code:</h2>
-                        <Image
-                            src="/diagrams/QR Code Join Room.png"
-                            alt="How to join with QR code: 1) Find code 2) Scan code 3) Play together"
-                            width={600}
-                            height={400}
-                            className="rounded-lg w-full h-auto"
-                            priority
-                        />
-                    </div>
+
+                <div className="mt-6 mx-auto max-w-[300px] bg-white p-4 rounded-xl shadow-md border-2 border-teal-300">
+                    <h2 className="text-lg font-semibold mb-2 text-gray-950">How to join with QR code:</h2>
+                    <Image 
+                        src="/diagrams/QR Code Join Room2.png" 
+                        alt="How to join with QR code: 1) Find code 2) Scan code 3) Play together"
+                        width={600}
+                        height={400}
+                        className="rounded-lg w-full h-auto"
+                        priority
+                    />
+                </div>
+
 
                     {/* Camera Component */}
                     <div className="flex flex-col items-center justify-center bg-white p-4 rounded-xl shadow-md border-2 border-teal-300 w-full md:w-[500px]">
@@ -187,6 +187,5 @@ export default function JoinRoomPage() {
                     </p>
                 </div>
             </div>
-        </div>
     );
 }

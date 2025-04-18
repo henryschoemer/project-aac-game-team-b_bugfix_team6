@@ -451,7 +451,7 @@ useEffect(() => {
     <div className="flex w-screen h-screen">
 
       {/* Left Panel: AAC Tablet */}
-       <div className="w-1/3 bg-[hsl(45,93%,83%)] p-8 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e]" >
+       <div className="w-[38%] bg-[hsl(45,93%,83%)] p-4 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e]" >
          <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
             {/* Story Selection */}
             <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white bg-[#8ae2d5] p-2 rounded-lg">
@@ -530,7 +530,7 @@ useEffect(() => {
 
         {/* Right Panel: Game Scene */}
       <div
-        className="w-2/3 relative bg-cover bg-center flex justify-center items-center pb-20"
+        className="w-[62%] relative bg-cover bg-center flex justify-center items-center pb-20"
         style={{
           backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
           backgroundSize: "cover",
@@ -540,7 +540,7 @@ useEffect(() => {
       >
         {/* Completed Phrases (positioned with the text) */}
         {/* Storybook Text Display */}
-        <div className="absolute bottom-0 left-0 w-full min-h-[180px] bg-[url('/images/parchment-texture.png')] bg-cover p-6 border-t-8 border-amber-800 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
+        <div className="absolute bottom-0 left-0 w-full min-h-[140px] bg-[url('/images/parchment-texture.png')] bg-cover p-6 border-t-8 border-amber-800 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
           {/* Decorative scroll ends */}
           <div className="absolute -top-6 left-4 right-4 flex justify-between pointer-events-none">
             <span className="text-5xl text-amber-800">✧</span>
@@ -549,20 +549,22 @@ useEffect(() => {
 
         <div className="max-w-6xl mx-auto">
           {/* Completed story phrases */}
-          <div className="flex flex-wrap gap-3 mb-3">
+          <div className="mb-3 max-h-[80px] overflow-y-auto"></div>
+          <div className="flex flex-col gap-1">
           {completedPhrases.map((completedPhrase, index) => (
           <span 
             key={index} 
-            className="text-3xl font-['Short_Stack'] text-amber-900 bg-white/70 px-3 py-1 rounded-lg"
+            className="text-3xl font-short-stack text-amber-900 bg-white/70 px-3 py-1 rounded-lg whitespace-nowrap"
           >
           {completedPhrase}
           </span>
         ))}
       </div>
+      </div>
 
         {/* Current phrase with magical effects */}
         <div className="relative">
-          <span className="text-5xl font-bold font-['Patrick_Hand'] text-amber-900 animate-pulse">
+          <span className="text-4xl font-bold font-patrick-hand text-amber-900 animate-pulse">
             {phrase}
             <span className="ml-1 inline-block w-2 h-10 bg-amber-600 animate-blink"></span>
           </span>
@@ -599,7 +601,7 @@ if (effect === 'spin') {
 } else if (effect === 'fade') {
   effectComponent = (
     <FadeEffect>
-      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </FadeEffect>
   );
 } else if (effect === 'sideToSide') {
@@ -618,13 +620,13 @@ if (effect === 'spin') {
 } else if (effect === 'scaleUp') {
   effectComponent = (
     <ScaleUpEffect>
-      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </ScaleUpEffect>
   );
 } else if (effect === 'bounce') {
   effectComponent = (
     <BounceEffect>
-      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </BounceEffect>
   );
 
@@ -642,7 +644,7 @@ if (effect === 'spin') {
     );
 } else {
   effectComponent = (
-    <motion.img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
+    <motion.img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
   );
 }
 
@@ -695,6 +697,5 @@ return (
               </div>
           )}
       </div>
-    </div>
   );
 }
