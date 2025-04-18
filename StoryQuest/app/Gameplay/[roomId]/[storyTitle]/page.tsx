@@ -39,13 +39,14 @@ const getImageAnimation = () => ({
   transition: { duration: 0.8, ease: "easeOut" }, // Smooth animation with a standard easing.
 });
 
+//This saves the player info such as their avatar, number, and playerId
 async function savePlayerProfile(
   roomId: string,
   playerId: string,
   avatar: string,
   playerNumber: number
 ) {
-  console.log("🔸 savePlayerProfile:", { roomId, playerId, avatar, playerNumber });
+  console.log("savePlayerProfile:", { roomId, playerId, avatar, playerNumber });
   const playerRef = doc(db, "games", roomId, "players", playerId);
   try {
     await setDoc(playerRef, {
@@ -53,9 +54,8 @@ async function savePlayerProfile(
       playerNumber,
       joinedAt: serverTimestamp(),
     });
-    console.log("✅ successfully wrote player doc:", playerRef.path);
   } catch (e) {
-    console.error("❌ failed to write player doc:", e);
+    console.error("Failed to write player doc:", e);
     throw e;
   }
 }
@@ -102,6 +102,7 @@ const gameFinished = lastCompleted === "The End!";
 useEffect(() => {
   if (!roomId) return;
 
+  //Creates a new sub-collection "players" in game collection and stores player info
   const playersCol = collection(db, "games", roomId, "players");
   const unsubscribePlayers = onSnapshot(playersCol, (snap) => {
     const avatars: Record<number,string> = {};
@@ -175,7 +176,6 @@ useEffect(() => {
      const myPlayerNumber = snapshot.size + 1;
      setPlayerNumber(myPlayerNumber);
 
-    console.log("🔹 handleConfirmAvatar: about to save profile for", myId);
     try {
       await savePlayerProfile(roomId, myId, selectedAvatar, myPlayerNumber);
   
@@ -410,23 +410,23 @@ useEffect(() => {
             {playerNumber && (
               <div className="flex flex-col items-center justify-center mb-6 space-y-4">
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                  {Array.from({ length: maxPlayers }, (_, i) => i + 1).map((num) => {
-                    // Get the avatar for this player number. Use a default if none exists.
-                    const avatarToShow = playerAvatars[num] || availableAvatars[num - 1] || "👤";
-
-                    return (
-                      <div key={num} className="flex flex-col items-center">
-                        <span
-                          className={`text-5xl p-2 rounded-full ${
-                            currentTurn === num ? "border-4 border-green-500" : "border-2 border-gray-400"
-                          }`}
-                        >
-                          {avatarToShow}
-                        </span>
-                        <span className="text-xl font-bold">{`Player ${num}`}</span>
-                      </div>
-                    );
-                  })}
+                  {Object.entries(playerAvatars)
+                  // sort by numeric player slot
+                  .sort(([a], [b]) => Number(a) - Number(b))
+                  .map(([num, avatar]) => (
+                    <div key={num} className="flex flex-col items-center">
+                      <span
+                        className={`text-5xl p-2 rounded-full ${
+                          currentTurn === Number(num)
+                            ? "border-4 border-green-500"
+                            : "border-2 border-gray-400"
+                        }`}
+                      >
+                        {avatar}
+                      </span>
+                      <span className="text-xl font-bold">{`Player ${num}`}</span>
+                    </div>
+                  ))}
                 </div>
                 <div className="mt-4 text-center">
                   {playerNumber === currentTurn ? (
