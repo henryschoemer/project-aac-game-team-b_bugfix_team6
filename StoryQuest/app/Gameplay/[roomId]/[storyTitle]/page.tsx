@@ -62,21 +62,6 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
-    const soundUrl = '/sounds/aac_audios.mp3';
-  const [play] = useSound(soundUrl, {
-    sprite: {
-        basket: [0, 650],
-        bear: [2400, 450],
-        bee: [4400, 280],
-        bird: [6330, 420],
-        boy: [8390, 390],
-        butterfly: [10400, 700],
-        ladybug: [12800, 700],
-        lanterns: [15100, 600],
-        mouse: [17300, 550],
-        squirrel: [19400, 650],
-        }
-    });
 
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
@@ -87,6 +72,10 @@ console.log("Params:", params); // Debugging
 const roomId = params.roomId as string;
 const storyTitleURL = params.storyTitle as string | undefined;
 const storyTitle = storyTitleURL ? decodeURIComponent(storyTitleURL) : null;
+const completedLength = completedPhrases.length;
+const lastCompleted = completedPhrases[completedLength - 1];
+const secondToLastCompleted = completedPhrases[completedLength - 2];
+const gameFinished = lastCompleted === "The End!";
 
 //This is the snapshot used to retrieve game state in firestore
 useEffect(() => {
@@ -123,14 +112,13 @@ useEffect(() => {
 
       const lastWord = gameData.lastWordSelected?.word;
       if (lastWord && lastWord !== lastPlayedWord) {
-        play({ id: lastWord });
         setLastPlayedWord(lastWord);
       }
     }
   });
 
   return () => unsubscribe();
-}, [roomId, play, lastPlayedWord]);
+}, [roomId, lastPlayedWord]);
 
   useEffect(() => {
     if (!storyTitle || stories.length === 0) return;
@@ -453,29 +441,7 @@ useEffect(() => {
       {/* Left Panel: AAC Tablet */}
        <div className="w-[38%] bg-[hsl(45,93%,83%)] p-4 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e]" >
          <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
-            {/* Story Selection */}
-            <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white bg-[#8ae2d5] p-2 rounded-lg">
-              Select Story:
-            </label>
-            <select
-              id="story-select"
-              value={currentStory?.title || ""}
-              onChange={(e) => {
-                const selectedStory = stories.find((s) => s.title === e.target.value);
-                if (selectedStory) {
-                  handleStoryChange(selectedStory);
-                }
-              }}
-              className="bg-[#8ae2d5] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              {stories.map((story) => (
-                <option key={story.title} value={story.title}>
-                  {story.title}
-                </option>
-              ))}
 
-            </select>
-            
             {/* Displays player turns on AAC panel*/}
             {playerNumber && (
               <div className="flex flex-col items-center justify-center mb-6 space-y-4">
@@ -548,19 +514,24 @@ useEffect(() => {
         </div>
 
         <div className="max-w-6xl mx-auto">
-          {/* Completed story phrases */}
-          <div className="mb-3 max-h-[80px] overflow-y-auto"></div>
           <div className="flex flex-col gap-1">
-          {completedPhrases.map((completedPhrase, index) => (
-          <span 
-            key={index} 
-            className="text-3xl font-short-stack text-amber-900 bg-white/70 px-3 py-1 rounded-lg whitespace-nowrap"
-          >
-          {completedPhrase}
-          </span>
-        ))}
-      </div>
-      </div>
+            {phrase !== "The End!" ? (
+                <>
+                  {completedPhrases.length > 0 && (
+                      <span className="text-3xl font-short-stack text-amber-700 italic bg-white/50 px-3 py-1 rounded-lg whitespace-nowrap">
+                        {completedPhrases[completedPhrases.length - 1]}
+                      </span>
+                  )}
+                </>
+            ) : (
+                completedPhrases.map((completedPhrase, index) => (
+                    <span key={index} className="text-2xl font-short-stack text-amber-900 bg-white/80 px-3 py-1 rounded-lg whitespace-nowrap">
+                      {completedPhrase}
+                    </span>
+                ))
+            )}
+          </div>
+        </div>
 
         {/* Current phrase with magical effects */}
         <div className="relative">
