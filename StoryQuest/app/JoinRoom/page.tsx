@@ -181,13 +181,13 @@ export default function JoinRoomPage() {
           marginBottom: "24px"
         }}>How to join with QR code:</h2>
         
-        <div style={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "flex-start",
-          gap: "16px"
-        }}>
-          {[1, 2, 3, 4].map((step) => (
+            <div style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "flex-start",
+                gap: "16px"
+                }}>
+                {[1, 2, 3, 4].map((step) => (
             <div key={step} style={{
               display: "flex",
               flexDirection: "column",
