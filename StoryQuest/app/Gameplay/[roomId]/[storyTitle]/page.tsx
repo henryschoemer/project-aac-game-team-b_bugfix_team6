@@ -62,21 +62,6 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
-    const soundUrl = '/sounds/aac_audios.mp3';
-  const [play] = useSound(soundUrl, {
-    sprite: {
-        basket: [0, 650],
-        bear: [2400, 450],
-        bee: [4400, 280],
-        bird: [6330, 420],
-        boy: [8390, 390],
-        butterfly: [10400, 700],
-        ladybug: [12800, 700],
-        lanterns: [15100, 600],
-        mouse: [17300, 550],
-        squirrel: [19400, 650],
-        }
-    });
 
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
@@ -127,14 +112,13 @@ useEffect(() => {
 
       const lastWord = gameData.lastWordSelected?.word;
       if (lastWord && lastWord !== lastPlayedWord) {
-        play({ id: lastWord });
         setLastPlayedWord(lastWord);
       }
     }
   });
 
   return () => unsubscribe();
-}, [roomId, play, lastPlayedWord]);
+}, [roomId, lastPlayedWord]);
 
   useEffect(() => {
     if (!storyTitle || stories.length === 0) return;
@@ -457,29 +441,7 @@ useEffect(() => {
       {/* Left Panel: AAC Tablet */}
        <div className="w-[38%] bg-[hsl(45,93%,83%)] p-4 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e]" >
          <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
-            {/* Story Selection */}
-            <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white bg-[#8ae2d5] p-2 rounded-lg">
-              Select Story:
-            </label>
-            <select
-              id="story-select"
-              value={currentStory?.title || ""}
-              onChange={(e) => {
-                const selectedStory = stories.find((s) => s.title === e.target.value);
-                if (selectedStory) {
-                  handleStoryChange(selectedStory);
-                }
-              }}
-              className="bg-[#8ae2d5] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              {stories.map((story) => (
-                <option key={story.title} value={story.title}>
-                  {story.title}
-                </option>
-              ))}
 
-            </select>
-            
             {/* Displays player turns on AAC panel*/}
             {playerNumber && (
               <div className="flex flex-col items-center justify-center mb-6 space-y-4">
@@ -543,6 +505,7 @@ useEffect(() => {
         }}
       >
         {/* Completed Phrases (positioned with the text) */}
+        {/* Storybook Text Display */}
         <div className="absolute bottom-0 left-0 w-full min-h-[140px] bg-[url('/images/parchment-texture.png')] bg-cover p-6 border-t-8 border-amber-800 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
           {/* Decorative scroll ends */}
           <div className="absolute -top-6 left-4 right-4 flex justify-between pointer-events-none">
