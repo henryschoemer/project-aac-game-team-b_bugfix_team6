@@ -19,64 +19,55 @@ function QRCodeContent() {
     const joinRoomUrl = `https://project-aac-game-team-b--storyquest-fcdc2.us-central1.hosted.app/Gameplay/${roomId}/${storyTitle}`;
     //const joinRoomUrl = `/Gameplay/${roomId}/${storyTitle}`;
 
-    return (
-        <div className="page-container h-screen w-screen overflow-hidden bg-cover bg-no-repeat"
-        style={{
-            backgroundImage: "url('../../HomePage-Images/Background.jpg')",
-            backgroundSize: "cover",
-        }}>
-            <div className="qr-code-container h-full w-full flex flex-col items-center justify-center p-4">
-                <h1 className="title-text text-3xl md:text-4xl font-bold text-white mb-6">Scan to Join Room</h1>
-                
-                <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-teal-300 max-w-4xl w-full mb-8">
-                        <h2>How to join with QR code:</h2>
-                        
-                            <div style={{
-                                display: "flex",
-                                justifyContent: "space-around",
-                                alignItems: "flex-start",
-                                gap: "16px"
-                                }}>
-                                {[1, 2, 3, 4].map((step) => (
-                            <div key={step} style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              alignItems: "center",
-                              width: "160px"
-                            }}>
-                              <Image 
-                                src={`/diagrams/QR${step}.png`}
-                                alt={`Step ${step}`}
-                                width={140}
-                                height={140}
-                                style={{
-                                  borderRadius: "8px",
-                                  width: "140px",
-                                  height: "auto"
-                                }}
-                                priority
-                              />
-                              <p style={{
-                                marginTop: "12px",
-                                fontSize: "1rem",
-                                color: "#4B5563", // gray-600
-                                textAlign: "center"
-                              }}>
-                                {step === 1 && "1. Find code"}
-                                {step === 2 && "2. Scan code"}
-                                {step === 3 && "3. Play together"}
-                                {step === 4 && "4. Enjoy"}
-                              </p>
+
+   return (
+        <div 
+            className="h-screen w-screen overflow-hidden bg-cover bg-center flex items-center justify-center p-4"
+            style={{ backgroundImage: "url('../../HomePage-Images/Background.jpg')" }}
+        >
+            {/* Single Semi-Transparent Container */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-6 w-full max-w-4xl mx-auto">
+                {/* Title */}
+                <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
+                    Scan to Join Room
+                </h1>
+
+                {/* Steps */}
+                <div className="mb-8">
+                    <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">
+                        How to join with QR code:
+                    </h2>
+                    <div className="flex flex-wrap justify-center gap-4">
+                        {[1, 2, 3, 4].map((step) => (
+                            <div key={step} className="flex flex-col items-center">
+                                <Image 
+                                    src={`/diagrams/QR${step}.png`}
+                                    alt={`Step ${step}`}
+                                    width={120}
+                                    height={120}
+                                    className="rounded-lg w-[120px] h-auto"
+                                    priority
+                                />
+                                <p className="mt-2 text-sm text-gray-600 text-center">
+                                    {step === 1 && "1. Find code"}
+                                    {step === 2 && "2. Scan code"}
+                                    {step === 3 && "3. Play together"}
+                                    {step === 4 && "4. Enjoy"}
+                                </p>
                             </div>
-                          ))}
-                        </div>
-                      </div>
-
-
-                <div className="qr-box">
-                    <QRCode value={joinRoomUrl} size={256} ecLevel="H" />
+                        ))}
+                    </div>
                 </div>
-                <p className="qr-instruction">Share this QR code with friends to join the game!</p>
+
+                {/* QR Code */}
+                <div className="flex flex-col items-center">
+                    <div className="p-3 bg-white rounded-lg shadow-inner mb-3">
+                        <QRCode value={joinRoomUrl} size={180} ecLevel="H" />
+                    </div>
+                    <p className="text-gray-700 text-center">
+                        Share this QR code with friends to join the game!
+                    </p>
+                </div>
             </div>
         </div>
     );
