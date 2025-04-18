@@ -87,6 +87,10 @@ console.log("Params:", params); // Debugging
 const roomId = params.roomId as string;
 const storyTitleURL = params.storyTitle as string | undefined;
 const storyTitle = storyTitleURL ? decodeURIComponent(storyTitleURL) : null;
+const completedLength = completedPhrases.length;
+const lastCompleted = completedPhrases[completedLength - 1];
+const secondToLastCompleted = completedPhrases[completedLength - 2];
+const gameFinished = lastCompleted === "The End!";
 
 //This is the snapshot used to retrieve game state in firestore
 useEffect(() => {
@@ -539,7 +543,6 @@ useEffect(() => {
         }}
       >
         {/* Completed Phrases (positioned with the text) */}
-        {/* Storybook Text Display */}
         <div className="absolute bottom-0 left-0 w-full min-h-[140px] bg-[url('/images/parchment-texture.png')] bg-cover p-6 border-t-8 border-amber-800 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
           {/* Decorative scroll ends */}
           <div className="absolute -top-6 left-4 right-4 flex justify-between pointer-events-none">
@@ -548,19 +551,24 @@ useEffect(() => {
         </div>
 
         <div className="max-w-6xl mx-auto">
-          {/* Completed story phrases */}
-          <div className="mb-3 max-h-[80px] overflow-y-auto"></div>
           <div className="flex flex-col gap-1">
-          {completedPhrases.map((completedPhrase, index) => (
-          <span 
-            key={index} 
-            className="text-3xl font-short-stack text-amber-900 bg-white/70 px-3 py-1 rounded-lg whitespace-nowrap"
-          >
-          {completedPhrase}
-          </span>
-        ))}
-      </div>
-      </div>
+            {phrase !== "The End!" ? (
+                <>
+                  {completedPhrases.length > 0 && (
+                      <span className="text-3xl font-short-stack text-amber-700 italic bg-white/50 px-3 py-1 rounded-lg whitespace-nowrap">
+                        {completedPhrases[completedPhrases.length - 1]}
+                      </span>
+                  )}
+                </>
+            ) : (
+                completedPhrases.map((completedPhrase, index) => (
+                    <span key={index} className="text-2xl font-short-stack text-amber-900 bg-white/80 px-3 py-1 rounded-lg whitespace-nowrap">
+                      {completedPhrase}
+                    </span>
+                ))
+            )}
+          </div>
+        </div>
 
         {/* Current phrase with magical effects */}
         <div className="relative">
