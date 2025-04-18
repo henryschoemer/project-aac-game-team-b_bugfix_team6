@@ -1,3 +1,4 @@
+//project-aac-game-team-b/StoryQuest/app/CreateRoom/qrcode/page.tsx
 "use client";
 
 import { useSearchParams } from "next/navigation";
@@ -19,28 +20,16 @@ function QRCodeContent() {
     //const joinRoomUrl = `/Gameplay/${roomId}/${storyTitle}`;
 
     return (
-        <div className="page-container"
+        <div className="page-container h-screen w-screen overflow-hidden bg-cover bg-no-repeat"
         style={{
             backgroundImage: "url('../../HomePage-Images/Background.jpg')",
             backgroundSize: "cover",
         }}>
-            <div className="qr-code-container">
-                <h1 className="title-text">Scan to Join Room</h1>
+            <div className="qr-code-container h-full w-full flex flex-col items-center justify-center p-4">
+                <h1 className="title-text text-3xl md:text-4xl font-bold text-white mb-6">Scan to Join Room</h1>
                 
-                <div style={{
-                        backgroundColor: "white",
-                        padding: "24px",
-                        borderRadius: "16px",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                        border: "2px solid #4FD1C5" // teal-300
-                      }}>
-                        <h2 style={{
-                          fontSize: "1.5rem",
-                          fontWeight: "600",
-                          color: "#111827", // gray-950
-                          textAlign: "center",
-                          marginBottom: "24px"
-                        }}>How to join with QR code:</h2>
+                <div className="bg-white p-6 rounded-xl shadow-lg border-2 border-teal-300 max-w-4xl w-full mb-8">
+                        <h2>How to join with QR code:</h2>
                         
                             <div style={{
                                 display: "flex",
