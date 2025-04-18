@@ -129,63 +129,152 @@ export default function JoinRoomPage() {
         }
     };
 
+
     return (
-        <div className="page-container"
-            style={{
-                backgroundImage: "url('/HomePage-Images/Background.jpg')",
-                backgroundSize: "cover",
+  <div className="page-container" style={{
+    backgroundImage: "url('/HomePage-Images/Background.jpg')",
+    backgroundSize: "cover",
+    minHeight: "100vh",
+    padding: "20px"
+  }}>
+    <div className="content-container" style={{
+      maxWidth: "1024px", // Standard iPad landscape width
+      margin: "0 auto",
+      display: "flex",
+      flexDirection: "column",
+      gap: "24px"
+    }}>
+      {/* Header Section */}
+      <div className="title-container" style={{ 
+        display: "flex", 
+        justifyContent: "space-between", 
+        alignItems: "center",
+        padding: "0 20px"
+      }}>
+        <div style={{ transform: "scale(0.9)" }}>
+          <Link href="/">
+            <ExitButton />
+          </Link>
+        </div>
+        <h1 className="title-text" style={{
+          fontSize: "2rem",
+          fontWeight: "bold",
+          color: "black",
+          textAlign: "center",
+          flex: 1
+        }}>Scan Room QR Code</h1>
+      </div>
+
+      {/* QR Instructions Section */}
+      <div style={{
+        backgroundColor: "white",
+        padding: "24px",
+        borderRadius: "16px",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        border: "2px solid #4FD1C5" // teal-300
+      }}>
+        <h2 style={{
+          fontSize: "1.5rem",
+          fontWeight: "600",
+          color: "#111827", // gray-950
+          textAlign: "center",
+          marginBottom: "24px"
+        }}>How to join with QR code:</h2>
+        
+        <div style={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "flex-start",
+          gap: "16px"
+        }}>
+          {[1, 2, 3, 4].map((step) => (
+            <div key={step} style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "160px"
             }}>
-
-            <div className="content-container">
-                <div className="title-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div style={{ transform: "scale(0.7)", marginRight: "-10px" }}>
-                        <Link href="/">
-                            <ExitButton />
-                        </Link>
-                    </div>
-                    <h1 className="title-text">Scan Room QR Code</h1>
-                </div>
-
-
-                <div className="mt-6 mx-auto max-w-[300px] bg-white p-4 rounded-xl shadow-md border-2 border-teal-300">
-                    <h2 className="text-lg font-semibold mb-2 text-gray-950">How to join with QR code:</h2>
-                    <Image 
-                        src="/diagrams/QR Code Join Room2.png" 
-                        alt="How to join with QR code: 1) Find code 2) Scan code 3) Play together"
-                        width={600}
-                        height={400}
-                        className="rounded-lg w-full h-auto"
-                        priority
-                    />
-                </div>
-
-
-                    {/* Camera Component */}
-                    <div className="flex flex-col items-center justify-center bg-white p-4 rounded-xl shadow-md border-2 border-teal-300 w-full md:w-[500px]">
-                        <h2 className="text-lg font-semibold mb-4 text-gray-950">Scan Below</h2>
-                        <div className="w-[480px] h-[360px]">
-                            <Camera setHotspotImage={handleCapturedImage} />
-                        </div>
-                    </div>
-                </div>
-
-                {errorMessage && (
-                    <p className="error-message" style={{ color: "red", margin: "12px 0", textAlign: "center" }}>
-                        {errorMessage}
-                    </p>
-                )}
-
-                {isProcessing && (
-                    <p style={{ color: "white", margin: "12px 0", textAlign: "center" }}>
-                        Processing QR code...
-                    </p>
-                )}
-
-                <div style={{ textAlign: "center", margin: "16px 0" }}>
-                    <p style={{ color: "white" }}>
-                        Position QR code within frame and hold steady
-                    </p>
-                </div>
+              <Image 
+                src={`/diagrams/QR${step}.png`}
+                alt={`Step ${step}`}
+                width={140}
+                height={140}
+                style={{
+                  borderRadius: "8px",
+                  width: "140px",
+                  height: "auto"
+                }}
+                priority
+              />
+              <p style={{
+                marginTop: "12px",
+                fontSize: "1rem",
+                color: "#4B5563", // gray-600
+                textAlign: "center"
+              }}>
+                {step === 1 && "1. Find code"}
+                {step === 2 && "2. Scan code"}
+                {step === 3 && "3. Play together"}
+                {step === 4 && "4. Enjoy"}
+              </p>
             </div>
-    );
+          ))}
+        </div>
+      </div>
+
+      {/* Camera Section */}
+      <div style={{
+        backgroundColor: "white",
+        padding: "24px",
+        borderRadius: "16px",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        border: "2px solid #4FD1C5",
+        width: "100%",
+        maxWidth: "800px",
+        margin: "0 auto",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+      }}>
+        <h2 style={{
+          fontSize: "1.5rem",
+          fontWeight: "600",
+          color: "#111827",
+          marginBottom: "20px"
+        }}>Scan Below</h2>
+        
+        <div style={{
+          width: "640px",
+          height: "480px",
+          position: "relative"
+        }}>
+          <Camera setHotspotImage={handleCapturedImage} />
+        </div>
+      </div>
+
+      {/* Status Messages */}
+      {errorMessage && (
+        <p style={{ 
+          color: "red", 
+          margin: "12px 0", 
+          textAlign: "center",
+          fontSize: "1.1rem"
+        }}>
+          {errorMessage}
+        </p>
+      )}
+
+      {isProcessing && (
+        <p style={{ 
+          color: "white", 
+          margin: "12px 0", 
+          textAlign: "center",
+          fontSize: "1.1rem"
+        }}>
+          Processing QR code...
+        </p>
+      )}
+    </div>
+  </div>
+);
 }
