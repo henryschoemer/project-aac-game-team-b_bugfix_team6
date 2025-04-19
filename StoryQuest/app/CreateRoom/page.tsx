@@ -191,15 +191,17 @@ export default function CreateRoomPage() {
         </div>
       )}
 
-      {/* Step 3: Difficulty */}
+     {/* Step 3: Difficulty */}
       {currentStep === 3 && (
-        <div className="w-full max-w-4xl flex-grow flex flex-col">
-          <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Pick Game Difficulty</h2>
+        <div className="w-full flex-grow flex flex-col items-center">
+          <h2 className="text-2xl font-semibold text-gray-700 text-center mb-3">Pick Game Difficulty</h2>
           
-          <div className="grid grid-cols-1 gap-4 px-4 mb-4">
+          {/* Fixed-width buttons container */}
+          <div className="flex flex-col gap-1 w-[300px] mb-1">
             <button
-              className={`rounded-xl shadow-md border-2 p-4 text-xl font-medium
-                        transition-all ${difficultyLevel === "Easy" ? 
+              className={`bg-[#e7f5e9] border-[#81c784] rounded-xl shadow-md border-2 p-4 h-[110px] w-full
+                        transition-all flex flex-col justify-center items-center 
+                        ${difficultyLevel === "Easy" ? 
                           'bg-teal-100 border-teal-400' : 
                           'bg-white border-gray-200 hover:border-teal-300'}`}
               onClick={() => handleDifficultyClick("Easy")}
@@ -209,17 +211,18 @@ export default function CreateRoomPage() {
               }}
               onMouseLeave={() => setTooltip(null)}
             >
-              Easy
+              <span className="text-xl font-medium text-gray-700">Easy</span>
               {tooltip === "Easy mode: 4 sentences" && (
-                <span className="block text-sm font-normal mt-1 text-gray-600">
-                  Easy mode: 4 sentences
+                <span className="text-sm font-normal text-gray-600 mt-1">
+                  4 sentences
                 </span>
               )}
             </button>
 
             <button
-              className={`rounded-xl shadow-md border-2 p-4 text-xl font-medium
-                        transition-all ${difficultyLevel === "Medium" ? 
+              className={`bg-[#fff3e0] border-[#ffb74d] rounded-xl shadow-md border-2 p-4 h-[110px] w-full
+                        transition-all flex flex-col justify-center items-center
+                        ${difficultyLevel === "Medium" ? 
                           'bg-teal-100 border-teal-400' : 
                           'bg-white border-gray-200 hover:border-teal-300'}`}
               onClick={() => handleDifficultyClick("Medium")}
@@ -229,17 +232,18 @@ export default function CreateRoomPage() {
               }}
               onMouseLeave={() => setTooltip(null)}
             >
-              Medium
+              <span className="text-xl font-medium text-gray-700">Medium</span>
               {tooltip === "Medium mode: 8 sentences" && (
-                <span className="block text-sm font-normal mt-1 text-gray-600">
-                  Medium mode: 8 sentences
+                <span className="text-sm font-normal text-gray-600 mt-1">
+                  8 sentences
                 </span>
               )}
             </button>
 
             <button
-              className={`rounded-xl shadow-md border-2 p-4 text-xl font-medium
-                        transition-all ${difficultyLevel === "Hard" ? 
+              className={`bg-[#ffebee] border-[#ef9a9a] rounded-xl shadow-md border-2 p-4 h-[110px] w-full
+                        transition-all flex flex-col justify-center items-center
+                        ${difficultyLevel === "Hard" ? 
                           'bg-teal-100 border-teal-400' : 
                           'bg-white border-gray-200 hover:border-teal-300'}`}
               onClick={() => handleDifficultyClick("Hard")}
@@ -249,17 +253,18 @@ export default function CreateRoomPage() {
               }}
               onMouseLeave={() => setTooltip(null)}
             >
-              Hard
+              <span className="text-xl font-medium text-gray-700">Hard</span>
               {tooltip === "Hard mode: 12 sentences" && (
-                <span className="block text-sm font-normal mt-1 text-gray-600">
-                  Hard mode: 12 sentences
+                <span className="text-sm font-normal text-gray-600 mt-1">
+                  12 sentences
                 </span>
               )}
             </button>
           </div>
           
+          {/* Compact Back Button */}
           <button
-            className="mt-4 text-gray-600 hover:text-gray-800 font-medium"
+            className="back-step-button"
             onClick={() => goBack("Go Back")}
             onMouseEnter={() => handleOnMouseEnter("Go Back")}
           >
@@ -267,6 +272,7 @@ export default function CreateRoomPage() {
           </button>
         </div>
       )}
+
 
       {/* Step 4: Review */}
       {currentStep === 4 && (
