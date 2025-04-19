@@ -24,7 +24,7 @@ function QRCodeContent() {
 
    return (
         <div 
-            className="h-screen w-screen overflow-hidden bg-cover bg-center flex items-center justify-center p-4"
+            className="h-[100dvh] w-[100dvw] overflow-hidden bg-cover bg-center flex flex-col items-center justify-between p-4"
             style={{ backgroundImage: "url('../../HomePage-Images/Background.jpg')" }}
         >
             {/* Single Semi-Transparent Container */}
