@@ -85,16 +85,14 @@ export default function CreateRoomPage() {
 
     return (
   <div className="h-screen w-screen overflow-hidden bg-cover bg-center flex items-center justify-center" 
-       style={{ backgroundImage: "url('/HomePage-Images/Background.jpg')" }}>
-
-        
+       style={{ backgroundImage: "url('/HomePage-Images/Background.jpg')" }}>  
     
     {/* Main content container */}
     <div className="relative h-[90vh] w-[90vw] bg-white/80 backdrop-blur-sm flex flex-col items-center p-6 overflow-hidden shadow-xl rounded-2xl">
       
       {/* Home Button (conditionally shown) */}
       {(currentStep === 1 || currentStep === 4) && (
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 left-1">
           <Link href="/">
             <button className="scale-50 p-2 rounded-full bg-white/90 shadow-md hover:bg-gray-100 transition-colors">
               <ExitButton/>
@@ -274,12 +272,13 @@ export default function CreateRoomPage() {
       )}
 
 
-      {/* Step 4: Review */}
+     {/* Step 4: Review */}
       {currentStep === 4 && (
-        <div className="w-full max-w-4xl flex-grow flex flex-col">
-          <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Ready to Play!</h2>
+        <div className="w-full flex-grow flex flex-col items-center">
+          <h2 className="text-2xl font-semibold text-gray-700 text-center mb-3">Ready to Play!</h2>
           
-          <div className="bg-white rounded-xl shadow-inner p-6 mb-6">
+          {/* Summary box - matches Step 2/3 button styling */}
+          <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 p-4 w-[300px] mb-4">
             <div className="mb-3">
               <span className="font-semibold text-gray-700">Story: </span>
               <span className="text-gray-600">{selectedStory}</span>
@@ -294,17 +293,20 @@ export default function CreateRoomPage() {
             </div>
           </div>
           
-          <div className="flex flex-col gap-3">
+          {/* Action buttons - matches your Step 2/3 container */}
+          <div className="flex flex-col gap-1 w-[300px]">
             <button 
-              className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-4 px-6 rounded-xl text-xl
-                        flex items-center justify-center gap-2 transition-colors"
+              className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-xl
+                        flex items-center justify-center gap-2 transition-colors
+                        active:scale-95" /* Added active scale to match other buttons */
               onClick={handleCreateRoom}
               onMouseEnter={() => handleOnMouseEnter("Start Adventure!")}
             >
               🎮 Start Adventure!
             </button>
             <button
-              className="mt-4 text-gray-600 hover:text-gray-800 font-medium bg-gray-200 hover:bg-gray-300 py-2 rounded-lg"
+              className="text-gray-600 hover:text-gray-800 font-medium hover:bg-gray-100 
+                        py-2 rounded-lg transition-colors mt-1" /* Matches back-button style */
               onClick={() => goBack("Change Something")}
               onMouseEnter={() => handleOnMouseEnter("Change Something")}
             >
@@ -314,7 +316,7 @@ export default function CreateRoomPage() {
         </div>
       )}
 
-     
+
     </div>
   </div>
 );
