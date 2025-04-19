@@ -13,7 +13,7 @@ import CompletionPage from "../../../CompletionPage/page";
 import TextToSpeechTextOnly2 from "@/Components/TextToSpeechTextOnly2";
 import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
-import { doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, serverTimestamp, collection } from "firebase/firestore"; // to update the firestore database with game data
+import { doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, serverTimestamp, collection, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -158,35 +158,58 @@ useEffect(() => {
 
   //Assigning player #'s
   const handleConfirmAvatar = async () => {
-    if (!selectedAvatar) {
-      alert("Pick an avatar first!");
-      return;
-    }
-    setAvatarModalOpen(false);
-  
-    const gameRef = doc(db, "games", roomId);
-    const roomRef = doc(db, "rooms", roomId);
-    const roomSnap = await getDoc(roomRef);
-    const roomNumPlayers = roomSnap.exists() ? roomSnap.data().numPlayers : 4;
+    if (!selectedAvatar) return alert("Pick one!");
     const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
     sessionStorage.setItem("player-uid", myId);
 
-    const playersCol = collection(db, "games", roomId, "players");
-     const snapshot = await getDocs(playersCol);
-     const myPlayerNumber = snapshot.size + 1;
-     setPlayerNumber(myPlayerNumber);
+    await runTransaction(db, async tx => {
+      const gameRef = doc(db, "games", roomId);
+      const roomRef = doc(db, "rooms", roomId);
+      const [gameSnap, roomSnap] = await Promise.all([tx.get(gameRef), tx.get(roomRef)]);
+      const roomData = roomSnap.exists() ? roomSnap.data() : {};
+      const roomNumPlayers = roomData.numPlayers || 4;
 
-    try {
-      await savePlayerProfile(roomId, myId, selectedAvatar, myPlayerNumber);
-  
-      // now enable TTS/UI
-      speechSynthesis.getVoices();
-      setTtsReady(true);
-  
-    } catch (err) {
-      console.error(err);
-      alert("Could not join the game.");
-    }
+      if (!gameSnap.exists()) {
+        // first join: create game doc
+        tx.set(gameRef, {
+          player1Id: myId,
+          currentTurn: 1,
+          maxPlayers: roomNumPlayers,
+          currentSectionIndex: 0,
+          currentPhrase: currentStory!.sections[0].phrase,
+          completedPhrases: [],
+          completedImages: [],
+          gameStatus: "in_progress",
+          lastUpdated: serverTimestamp()
+        });
+        setPlayerNumber(1);
+      } else {
+        const data = gameSnap.data();
+        // assign next free slot
+        if (!data.player2Id && roomNumPlayers > 1) {
+          tx.update(gameRef, { player2Id: myId });
+          setPlayerNumber(2);
+        } else if (!data.player3Id && roomNumPlayers > 2) {
+          tx.update(gameRef, { player3Id: myId });
+          setPlayerNumber(3);
+        } else if (!data.player4Id && roomNumPlayers > 3) {
+          tx.update(gameRef, { player4Id: myId });
+          setPlayerNumber(4);
+        } else {
+          throw new Error("Room is full");
+        }
+      }
+    });
+
+    // save avatar to sub-collection
+    const playersCol = collection(db, "games", roomId, "players");
+    const snapshot = await getDocs(playersCol);
+    const myNum = snapshot.size + 1;
+    await savePlayerProfile(roomId, myId, selectedAvatar, myNum);
+
+    setAvatarModalOpen(false);
+    speechSynthesis.getVoices();
+    setTtsReady(true);
   };
 
   /*useEffect(() => {
@@ -274,12 +297,7 @@ useEffect(() => {
         lastUpdated: new Date(),
         gameStatus: isLastSection ? "completed" : "in_progress",
       };
-
-      if (docSnap.exists()) {
-        await updateDoc(gameRef, gameDataToSave);
-      } else {
-        await setDoc(gameRef, gameDataToSave);
-      }
+      await setDoc(gameRef, gameDataToSave, { merge: true });
      }
 
      setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
