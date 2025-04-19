@@ -1,4 +1,6 @@
 //project-aac-game-team-b/StoryQuest/app/CreateRoom/qrcode/page.tsx
+//this one should be good but everyhting is a little small tbh
+
 "use client";
 
 import { useSearchParams } from "next/navigation";
@@ -26,15 +28,15 @@ function QRCodeContent() {
             style={{ backgroundImage: "url('../../HomePage-Images/Background.jpg')" }}
         >
             {/* Single Semi-Transparent Container */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-6 w-full max-w-4xl mx-auto">
+            <div className="scale-75 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-6 w-full max-w-4xl mx-auto">
                 {/* Title */}
-                <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
+                <h1 className="text-3xl font-bold text-gray-800 text-center">
                     Scan to Join Room
                 </h1>
 
                 {/* Steps */}
-                <div className="mb-8">
-                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-6 w-full max-w-4xl mx-auto">
+                <div className="">
+                  <div className="scale-75 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-1 w-full max-w-4xl mx-auto">
                     <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">
                         How to join with QR code:
                     </h2>
@@ -62,8 +64,8 @@ function QRCodeContent() {
                 </div>
 
                 {/* QR Code */}
-                <div className="flex flex-col items-center">
-                    <div className="p-3 bg-white rounded-lg shadow-inner mb-3 border-2 border-teal-300">
+                <div className=" flex flex-col items-center">
+                    <div className="scale-115 p-3 bg-white rounded-lg shadow-inner mb-3 border-2 border-teal-300 ">
                         <QRCode value={joinRoomUrl} size={180} ecLevel="H" />
                     </div>
                     <p className="text-gray-700 text-center">
