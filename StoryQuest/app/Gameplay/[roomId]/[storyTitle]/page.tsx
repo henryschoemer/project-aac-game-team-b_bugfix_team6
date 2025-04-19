@@ -83,6 +83,7 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
+  const [showBlockAACButtonOverlay, setShowBlockAACButtonOverlay] = useState(false); // Is shown at "The end!" phrase
 
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
@@ -212,6 +213,12 @@ useEffect(() => {
     setTtsReady(true);
   };
 
+  useEffect(() => {
+    const isEnd       = phrase === "The End!";
+    const notYourTurn = playerNumber !== null && currentTurn !== null && playerNumber !== currentTurn;
+    setShowBlockAACButtonOverlay(isEnd || notYourTurn);
+  }, [phrase, playerNumber, currentTurn]);
+
   /*useEffect(() => {
     setIsMounted(true);
     if (stories.length > 0) {
@@ -312,7 +319,7 @@ useEffect(() => {
        setPhrase("The End!");
      }
    };
-
+  
     // Delay completion page overlay by 3 seconds
     /*useEffect(() => {
         let timeoutId: NodeJS.Timeout;
@@ -365,7 +372,6 @@ useEffect(() => {
 
   const handleAACSelect = (word: string) => {
     if (playerNumber !== currentTurn) {
-      alert("Waiting for other player");
       return;
     }
     console.log("AAC Button Clicked:", word);
@@ -421,8 +427,8 @@ useEffect(() => {
     <div className="flex w-screen h-screen">
 
       {/* Left Panel: AAC Tablet */}
-       <div className="w-[38%] bg-[hsl(45,93%,83%)] p-4 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e]" >
-         <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
+      <div className={`aac-blocking-container ${showBlockAACButtonOverlay ? 'blocked' : ''}`}>
+             <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
 
             {/* Displays player turns on AAC panel*/}
             {playerNumber && (
