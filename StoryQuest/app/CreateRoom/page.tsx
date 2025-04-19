@@ -308,12 +308,21 @@ export default function CreateRoomPage() {
                 <p className="text-sm font-medium text-gray-700">{numPlayers} Players</p>
               </div>
 
-              {/* Difficulty */}
+              {/* Difficulty Box */}
               <div className={`rounded-xl shadow-md border-2 p-3 flex-1 text-center
-                ${difficultyLevel === "Easy" ? 'bg-green-100 border-teal-400' :
+                ${difficultyLevel === "Easy" ? 'bg-green-100 border-green-400' :
                   difficultyLevel === "Medium" ? 'bg-orange-100 border-orange-400' :
                   'bg-red-100 border-red-400'}`}>
-                <p className="text-sm font-medium text-gray-700">{difficultyLevel}</p>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-gray-700">
+                    {difficultyLevel}:
+                  </span>
+                  <span className="text-sm font-normal text-gray-600">
+                    {difficultyLevel === "Easy" ? "4 sentences" :
+                    difficultyLevel === "Medium" ? "8 sentences" : 
+                    "12 sentences"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -328,13 +337,13 @@ export default function CreateRoomPage() {
             >
               🎮 Start Adventure!
             </button>
-            <button
-              className="text-gray-600 hover:text-gray-800 font-medium hover:bg-gray-100 
-                        py-2 rounded-lg transition-colors mt-1"
-              onClick={() => goBack("Change Something")}
-            >
-              ← Change Something
-            </button>
+           <button
+            className="back-step-button"
+            onClick={() => goBack("Go Back")}
+            onMouseEnter={() => handleOnMouseEnter("Go Back")}
+          >
+            ← Go Back
+          </button>
           </div>
         </div>
       )}
