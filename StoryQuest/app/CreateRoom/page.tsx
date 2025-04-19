@@ -197,11 +197,11 @@ export default function CreateRoomPage() {
           {/* Fixed-width buttons container */}
           <div className="flex flex-col gap-1 w-[300px] mb-1">
             <button
-              className={`bg-[#e7f5e9] border-[#81c784] rounded-xl shadow-md border-2 p-4 h-[110px] w-full
-                        transition-all flex flex-col justify-center items-center 
-                        ${difficultyLevel === "Easy" ? 
-                          'bg-teal-100 border-teal-400' : 
-                          'bg-white border-gray-200 hover:border-teal-300'}`}
+              className={`bg-green-100 border-green-400 rounded-xl shadow-md border-2 p-4 h-[110px] w-full
++             transition-all flex flex-col justify-center items-center 
++             ${difficultyLevel === "Easy" ? 
++               'bg-green-100 border-green-400' : 
++               'bg-white border-gray-200 hover:border-green-400'}`}
               onClick={() => handleDifficultyClick("Easy")}
               onMouseEnter={() => {
                 setTooltip("Easy mode: 4 sentences");
@@ -211,18 +211,18 @@ export default function CreateRoomPage() {
             >
               <span className="text-xl font-medium text-gray-700">Easy</span>
               {tooltip === "Easy mode: 4 sentences" && (
-                <span className="text-sm font-normal text-gray-600 mt-1">
+                <span className="text-sm font-normal text-gray-600 mt-1 bg-green-400 rounded-lg">
                   4 sentences
                 </span>
               )}
             </button>
 
             <button
-              className={`bg-[#fff3e0] border-[#ffb74d] rounded-xl shadow-md border-2 p-4 h-[110px] w-full
-                        transition-all flex flex-col justify-center items-center
-                        ${difficultyLevel === "Medium" ? 
-                          'bg-teal-100 border-teal-400' : 
-                          'bg-white border-gray-200 hover:border-teal-300'}`}
+              className={`bg-orange-100 border-orange-400 rounded-xl shadow-md border-2 p-4 h-[110px] w-full
++             transition-all flex flex-col justify-center items-center
++             ${difficultyLevel === "Medium" ? 
++               'bg-orange-100 border-orange-400' : 
++               'bg-white border-gray-200 hover:border-orange-400'}`}
               onClick={() => handleDifficultyClick("Medium")}
               onMouseEnter={() => {
                 setTooltip("Medium mode: 8 sentences");
@@ -232,18 +232,18 @@ export default function CreateRoomPage() {
             >
               <span className="text-xl font-medium text-gray-700">Medium</span>
               {tooltip === "Medium mode: 8 sentences" && (
-                <span className="text-sm font-normal text-gray-600 mt-1">
+                <span className="text-sm font-normal text-gray-600 mt-1 bg-orange-400 rounded-lg">
                   8 sentences
                 </span>
               )}
             </button>
 
             <button
-              className={`bg-[#ffebee] border-[#ef9a9a] rounded-xl shadow-md border-2 p-4 h-[110px] w-full
-                        transition-all flex flex-col justify-center items-center
-                        ${difficultyLevel === "Hard" ? 
-                          'bg-teal-100 border-teal-400' : 
-                          'bg-white border-gray-200 hover:border-teal-300'}`}
+              className={`bg-red-100 border-red-400 rounded-xl shadow-md border-2 p-4 h-[110px] w-full
++             transition-all flex flex-col justify-center items-center
++             ${difficultyLevel === "Hard" ? 
++               'bg-red-100 border-red-400' : 
++               'bg-white border-gray-200 hover:border-red-400'}`}
               onClick={() => handleDifficultyClick("Hard")}
               onMouseEnter={() => {
                 setTooltip("Hard mode: 12 sentences");
@@ -253,7 +253,7 @@ export default function CreateRoomPage() {
             >
               <span className="text-xl font-medium text-gray-700">Hard</span>
               {tooltip === "Hard mode: 12 sentences" && (
-                <span className="text-sm font-normal text-gray-600 mt-1">
+                <span className="text-sm font-normal text-gray-600 mt-1 bg-red-400 rounded-lg">
                   12 sentences
                 </span>
               )}
@@ -277,38 +277,61 @@ export default function CreateRoomPage() {
         <div className="w-full flex-grow flex flex-col items-center">
           <h2 className="text-2xl font-semibold text-gray-700 text-center mb-3">Ready to Play!</h2>
           
-          {/* Summary box - matches Step 2/3 button styling */}
-          <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 p-4 w-[300px] mb-4">
-            <div className="mb-3">
-              <span className="font-semibold text-gray-700">Story: </span>
-              <span className="text-gray-600">{selectedStory}</span>
+          {/* Visual Summary - Fixed height container */}
+          <div className="flex flex-col items-center w-[300px] mb-4 max-h-[300px] overflow-hidden">
+            {/* Story Preview */}
+            <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 w-full mb-3 overflow-hidden">
+              <img
+                src={
+                  selectedStory === "The Garden Adventure" ? "/images/garden-background.webp" :
+                  selectedStory === "Walk in the Forest" ? "/images/forest-background.jpg" :
+                  selectedStory === "Under the sea" ? "/images/ocean-background.png" :
+                  "/images/space-background.svg"
+                }
+                alt="selectedStory"
+                className="w-full h-24 object-cover"
+              />
+              <div className="p-3">
+                <p className="font-medium text-gray-800">{selectedStory}</p>
+              </div>
             </div>
-            <div className="mb-3">
-              <span className="font-semibold text-gray-700">Players: </span>
-              <span className="text-gray-600">{numPlayers}</span>
-            </div>
-            <div>
-              <span className="font-semibold text-gray-700">Level: </span>
-              <span className="text-gray-600">{difficultyLevel}</span>
+
+            {/* Players & Difficulty */}
+            <div className="flex gap-3 w-full">
+              {/* Players */}
+              <div className="bg-white rounded-xl shadow-md border-2 border-gray-200 p-3 flex-1 text-center">
+                <div className="flex justify-center gap-1 mb-1">
+                  {[...Array(numPlayers)].map((_, i) => (
+                    <span key={i} className="text-xl">😊</span>
+                  ))}
+                </div>
+                <p className="text-sm font-medium text-gray-700">{numPlayers} Players</p>
+              </div>
+
+              {/* Difficulty */}
+              <div className={`rounded-xl shadow-md border-2 p-3 flex-1 text-center
+                ${difficultyLevel === "Easy" ? 'bg-green-100 border-teal-400' :
+                  difficultyLevel === "Medium" ? 'bg-orange-100 border-orange-400' :
+                  'bg-red-100 border-red-400'}`}>
+                <p className="text-sm font-medium text-gray-700">{difficultyLevel}</p>
+              </div>
             </div>
           </div>
-          
-          {/* Action buttons - matches your Step 2/3 container */}
+
+          {/* Action Buttons */}
           <div className="flex flex-col gap-1 w-[300px]">
             <button 
               className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 rounded-xl
                         flex items-center justify-center gap-2 transition-colors
-                        active:scale-95" /* Added active scale to match other buttons */
+                        active:scale-95"
               onClick={handleCreateRoom}
-              onMouseEnter={() => handleOnMouseEnter("Start Adventure!")}
             >
               🎮 Start Adventure!
             </button>
             <button
               className="text-gray-600 hover:text-gray-800 font-medium hover:bg-gray-100 
-                        py-2 rounded-lg transition-colors mt-1" /* Matches back-button style */
+                        py-2 rounded-lg transition-colors mt-1"
               onClick={() => goBack("Change Something")}
-              onMouseEnter={() => handleOnMouseEnter("Change Something")}
             >
               ← Change Something
             </button>
