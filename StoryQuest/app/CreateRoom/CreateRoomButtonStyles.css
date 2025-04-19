@@ -225,10 +225,10 @@
     font-size: 1rem;
     color: #666;
   }
-  
-  .back-step-button:hover {
-    background-color: #e0e0e0;
-  }
+
+.back-step-button:hover {
+  background-color: #e0e0e0;
+}
   
   /* Summary styles */
   .summary-container {

@@ -84,12 +84,25 @@ export default function CreateRoomPage() {
     
 
     return (
-  <div className="h-screen w-screen overflow-hidden bg-cover bg-center" 
+  <div className="h-screen w-screen overflow-hidden bg-cover bg-center flex items-center justify-center" 
        style={{ backgroundImage: "url('/HomePage-Images/Background.jpg')" }}>
+
+        
     
     {/* Main content container */}
-    <div className="h-full w-full bg-white/80 backdrop-blur-sm flex flex-col items-center p-4 overflow-hidden">
+    <div className="relative h-[90vh] w-[90vw] bg-white/80 backdrop-blur-sm flex flex-col items-center p-6 overflow-hidden shadow-xl rounded-2xl">
       
+      {/* Home Button (conditionally shown) */}
+      {(currentStep === 1 || currentStep === 4) && (
+        <div className="absolute top-4 left-4">
+          <Link href="/">
+            <button className="scale-50 p-2 rounded-full bg-white/90 shadow-md hover:bg-gray-100 transition-colors">
+              <ExitButton/>
+            </button>
+          </Link>
+        </div>
+      )}
+
       {/* Header */}
       <div className="w-full max-w-4xl text-center mt-4 mb-2">
         <h1 className="text-3xl font-bold text-gray-800">Let's Create a Game!</h1>
@@ -104,6 +117,8 @@ export default function CreateRoomPage() {
           </div>
         ))}
       </div>
+
+       
 
       {/* Step 1: Story Selection */}
       {currentStep === 1 && (
@@ -137,17 +152,19 @@ export default function CreateRoomPage() {
         </div>
       )}
 
-      {/* Step 2: Player Count */}
+     {/* Step 2: Player Count */}
       {currentStep === 2 && (
-        <div className="w-full max-w-4xl flex-grow flex flex-col">
-          <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">How Many Friends Are Playing?</h2>
+        <div className="w-full flex-grow flex flex-col items-center">
+          <h2 className="text-2xl font-semibold text-gray-700 text-center mb-3">How Many Friends Are Playing?</h2>
           
-          <div className="grid grid-cols-1 gap-4 px-4 mb-4">
+          {/* Fixed-width buttons container */}
+          <div className="flex flex-col gap-1 w-[300px] mb-1"> {/* Fixed width */}
             {[2, 3, 4].map((num) => (
               <button
                 key={num}
                 className="bg-white rounded-xl shadow-md border-2 border-gray-200 p-4
-                          hover:border-teal-300 active:scale-95 transition-all"
+                          hover:border-teal-300 active:scale-95 transition-all
+                          h-[110px] w-full" /* Fixed height, full width of container */
                 onClick={() => handlePlayerClick(num)}
                 onMouseEnter={() => handleOnMouseEnter(num + " Players")}
               >
@@ -163,8 +180,9 @@ export default function CreateRoomPage() {
             ))}
           </div>
           
+          {/* Compact Back Button */}
           <button
-            className="mt-4 text-gray-600 hover:text-gray-800 font-medium"
+            className="back-step-button"
             onClick={() => goBack("Go Back")}
             onMouseEnter={() => handleOnMouseEnter("Go Back")}
           >
@@ -290,14 +308,7 @@ export default function CreateRoomPage() {
         </div>
       )}
 
-      {/* Home Button (conditionally shown) */}
-      {(currentStep === 1 || currentStep === 4) && (
-        <div className="absolute top-4 right-4">
-          <Link href="/">
-            <ExitButton />
-          </Link>
-        </div>
-      )}
+     
     </div>
   </div>
 );
