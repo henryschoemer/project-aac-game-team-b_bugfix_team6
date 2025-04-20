@@ -426,9 +426,9 @@ useEffect(() => {
 
   return (
 <div className="flex w-screen h-screen min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900">
+  
   {/* Left Panel: */}
-  <div className="w-[40%] min-w-[410px] max-w-[500px] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">
-    {/* Player turns display - made more compact */}
+  <div className="w-[40%] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">    {/* Player turns display */}
     {playerNumber && (
       <div className="flex flex-col items-center justify-center mb-2 w-full">
         <div className="grid grid-cols-4 gap-2 w-full">
@@ -439,11 +439,13 @@ useEffect(() => {
                 <span className={`text-3xl p-1 rounded-full ${currentTurn === num ? "border-4 border-green-500" : "border-2 border-gray-400"}`}>
                   {avatarToShow}
                 </span>
-                <span className="text-sm font-bold">P{num}</span>
+                <span className="text-sm font-bold">P{num}
+                </span>
               </div>
             );
           })}
         </div>
+
         <div className="mt-2 text-center w-full">
           {playerNumber === currentTurn ? (
             <p className="text-xl font-extrabold text-green-600 animate-pulse">YOUR TURN!</p>
@@ -453,7 +455,6 @@ useEffect(() => {
             </p>
           )}
         </div>
-
       </div>
     )}
     <AACKeyboard
@@ -524,7 +525,6 @@ useEffect(() => {
         </div>
       </div>
     </div>
-
 
 
 
@@ -609,69 +609,6 @@ useEffect(() => {
                   })
                 }
               />
-
-      {/* Current phrase TTS button */}
-      <TextToSpeechAACButtons text={phrase}/>
-    </div>
-
-    {/* Right Panel: Game Scene (60% width) */}
-    <div
-      className="flex-1 relative bg-cover bg-center"
-      style={{
-        backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center center",
-        backgroundRepeat: "no-repeat",
-        minWidth: "614px"
-      }}
-    >
-      {/* Animated Images */}
-      <AnimatePresence>
-        {completedImages.map((image, index) => {
-          const imageData = currentStory?.sections.flatMap(section => Object.values(section.words)).find(data => `/images/${data.image}` === image.src);
-          const effect = imageData?.effect || 'none';
-
-          let effectComponent = null;
-          if (effect === 'spin') {
-            effectComponent = <SpinEffect><img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} /></SpinEffect>;
-          } else if (effect === 'pulse') {
-            effectComponent = <PulseEffect><img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} /></PulseEffect>;
-          } 
-          // [Keep all other effect conditions the same but with w-32 h-32]
-          else {
-            effectComponent = <motion.img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />;
-          }
-
-          return (
-            <div key={index} className="absolute" style={{left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`}}>
-              {showSparkles[index] ? (
-                <SparkleEffect onComplete={() => setShowSparkles(prev => {
-                  const newState = [...prev];
-                  newState[index] = false;
-                  return newState;
-                })} />
-              ) : (effectComponent)}
-            </div>
-          );
-        })}
-      </AnimatePresence>
-
-      {/* Story text area - compact */}
-      <div className="absolute bottom-0 left-0 w-full min-h-[100px] bg-[url('/images/parchment-texture.png')] bg-cover p-3 border-t-4 border-amber-800 shadow-[0_-5px_15px_rgba(0,0,0,0.3)]">
-        <div className="absolute -top-4 left-2 right-2 flex justify-between pointer-events-none">
-          <span className="text-3xl text-amber-800">✧</span>
-          <span className="text-3xl text-amber-800">✧</span>
-        </div>
-
-        <div className="max-w-full">
-          <div className="flex flex-col gap-1">
-            {phrase !== "The End!" ? (
-              completedPhrases.length > 0 && (
-                <span className="text-xl font-short-stack text-amber-700 italic bg-white/50 px-2 py-0.5 rounded whitespace-nowrap">
-                  {completedPhrases[completedPhrases.length - 1]}
-                </span>
-              )
-
             ) : (
               effectComponent
             )}
