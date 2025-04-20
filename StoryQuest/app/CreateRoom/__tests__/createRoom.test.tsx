@@ -132,7 +132,7 @@ describe("CreateRoomPage", () => {
         expect(screen.getByText(/hard/i)).toBeInTheDocument();
         
         // Check the Change Something button is present
-        expect(screen.getByText("Change Something")).toBeInTheDocument();
+       expect(screen.getByText((text) => text.includes("Go Back"))).toBeInTheDocument();
     });
 
     test("can change selections from review screen", () => {
@@ -144,15 +144,16 @@ describe("CreateRoomPage", () => {
         fireEvent.click(screen.getByText("Easy")); // Easy difficulty
         
         // Go back from review screen
-        fireEvent.click(screen.getByText("Change Something"));
+        fireEvent.click(screen.getByText(/go back/i));
         
         // Should be at difficulty selection
-        expect(screen.getByText("Pick game difficulty")).toBeInTheDocument();
+        expect(screen.getByText("Pick Game Difficulty")).toBeInTheDocument();
         
         // Change to a different difficulty
         fireEvent.click(screen.getByText("Medium")); // Medium
         
-        // Check that summary has been updated
-        expect(screen.getByText("Level: Medium")).toBeInTheDocument();
+        // Check that summary has been updated - now checking for the actual structure
+        expect(screen.getByText("Medium:")).toBeInTheDocument();
+        expect(screen.getByText("8 sentences")).toBeInTheDocument();
     });
 });
