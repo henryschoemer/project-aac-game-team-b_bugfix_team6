@@ -539,6 +539,7 @@ useEffect(() => {
         }
         backgroundColor={currentStory?.colorTheme.backgroundColor}
         buttonColor={currentStory?.colorTheme.buttonColor}
+        blockButtons={gameFinished} // Last phrase "The End!"
       />
 
 
