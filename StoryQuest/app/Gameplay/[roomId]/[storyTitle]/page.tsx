@@ -426,7 +426,7 @@ useEffect(() => {
 
   return (
 <div className="flex w-screen h-screen min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900">
-  {/* Left Panel: AAC Tablet (40% width) */}
+  {/* Left Panel: */}
   <div className="w-[40%] min-w-[410px] max-w-[500px] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">
     {/* Player turns display - made more compact */}
     {playerNumber && (
