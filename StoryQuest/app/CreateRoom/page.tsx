@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from 'next/link';
 import { ExitButton } from "../HomePage/HomePageButtons";
 import { db } from "../../firebaseControls/firebaseConfig"; // Import Firestore
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc,setDoc,doc } from "firebase/firestore";
 import { QRCode } from "react-qrcode-logo";
 import "./CreateRoomButtonStyles.css";
 import useSound from "use-sound";
@@ -27,6 +27,7 @@ export default function CreateRoomPage() {
 
     const router = useRouter();
 
+
     const handleStoryClick = (story: string) => {
         setSelectedStory(story);
         setCurrentStep(2);
@@ -46,29 +47,47 @@ export default function CreateRoomPage() {
     };
 
     const handleCreateRoom = async () => {
-        buttonHandler('select',"Start Adventure!", speak);
-        setLoading(true);
-        try {
-            // Add room data to Firestore
-            const docRef = await addDoc(collection(db, "rooms"), {
-                story: selectedStory,
-                numPlayers: numPlayers,
-                difficulty: difficultyLevel,
-            });
-
-            //setRoomId(docRef.id); // Store room ID
-            console.log("Room Created with ID:", docRef.id);
-            setRoomId(docRef.id);
-            buttonHandler('create', "Room Created", speak);
-            alert(`Room Created! Room ID: ${docRef.id}`);
-            router.push(`/CreateRoom/qrcode?roomId=${docRef.id}&storyTitle=${encodeURIComponent(selectedStory ?? "")}`);
-        } catch (error) {
-            console.error("Error creating room:", error);
-            alert("Failed to create room.");
-        } finally {
-            setLoading(false);
+        if (!selectedStory) {
+          alert('Please select a story.');
+          return;
         }
-    };
+    
+        try {
+          const roomRef = await addDoc(collection(db, 'rooms'), {
+            story: selectedStory,
+            numPlayers: numPlayers,
+            difficulty: difficultyLevel,
+            createdAt: new Date(),
+          });
+    
+          const roomId = roomRef.id;
+          const numberOfPhrasesForGame = difficultyLevel === 'easy' ? 4 : difficultyLevel === 'medium' ? 8 : difficultyLevel === 'hard' ? 12 : 4;
+    
+          // Create the 'games' document here with roomId as the document ID
+          await setDoc(doc(db, 'games', roomId), {
+            storyTitle: selectedStory,
+            difficulty: difficultyLevel,
+            numberOfPhrases: numberOfPhrasesForGame,
+            maxPlayers: numPlayers,
+            players: [], // Array to store player IDs
+            currentTurn: 1,
+            gameStatus: 'waiting_for_players',
+            createdAt: new Date(),
+            currentSectionIndexInGame: 0,
+            completedPhrases: [],
+            completedImages: [],
+            currentSectionIndex: 0,
+            currentPhrase: '', // Will be set when the game starts
+            useOrderedSections: true,
+            lastUpdated: new Date(),
+          });
+    
+          router.push(`/CreateRoom/qrcode?roomId=${roomRef.id}&storyTitle=${encodeURIComponent(selectedStory ?? "")}`);
+        } catch (error) {
+          console.error('Error creating room:', error);
+          alert('Failed to create room.');
+        }
+      };
 
     const goBack = (text:string) => {
         if (currentStep > 1) {
@@ -177,8 +196,71 @@ export default function CreateRoomPage() {
               </button>
             ))}
           </div>
-          
-          {/* Compact Back Button */}
+         
+         
+                {/* Step 3: Difficulty Selection */}
+                {currentStep === 3 && (
+                    <div className="step-container">
+                        <h2>Pick Game Difficulty</h2>
+                        <div className="big-button-container">
+                            <button
+                                className="big-button difficulty-button easy"
+                                onClick={() => {
+                                    handleDifficultyClick("easy");
+                                }}
+                                onMouseEnter={() => {
+                                    setTooltip("Easy mode: 4 sentences")
+                                    handleOnMouseEnter("Easy mode: 4 sentences")
+                                }}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Easy mode: 4 sentences")}
+                            >
+                                <span>Easy</span>
+                                {tooltip === "Easy mode: 4 sentences" && <span className="tooltip">{tooltip}</span>}
+                            </button>
+
+                            <button
+                                className="big-button difficulty-button medium"
+                                onClick={() => {
+                                    handleDifficultyClick("medium");
+                                }}
+                                onMouseEnter={() => {
+                                    setTooltip("Medium mode: 8 sentences")
+                                    handleOnMouseEnter("Medium mode: 8 sentences")
+                                }}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Medium mode: 8 sentences")}
+                            >
+                                <span>Medium</span>
+                                {tooltip === "Medium mode: 8 sentences" && <span className="tooltip">{tooltip}</span>}
+                            </button>
+                            <button
+                                className="big-button difficulty-button hard"
+                                onClick={() => {
+                                    handleDifficultyClick("hard");
+                                }}
+                                onMouseEnter={() => {
+                                    setTooltip("Hard mode: 12 sentences")
+                                    handleOnMouseEnter("Hard mode: 12 sentences")
+                                }}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Hard mode: 12 sentences")}
+                            >
+                                <span>Hard</span>
+                                {tooltip === "Hard mode: 12 sentences" && <span className="tooltip">{tooltip}</span>}
+                            </button>
+                        </div>
+                        <button className="back-step-button" onClick={() => {
+                            goBack("Go Back");
+                        }}
+                                onMouseEnter={()=> handleOnMouseEnter("Go Back")}
+                        >
+                            Go Back
+                        </button>
+                    </div>
+                )}
+        
+         {/* Compact Back Button */}
           <button
             className="back-step-button"
             onClick={() => goBack("Go Back")}
@@ -188,89 +270,6 @@ export default function CreateRoomPage() {
           </button>
         </div>
       )}
-
-     {/* Step 3: Difficulty */}
-      {currentStep === 3 && (
-        <div className="w-full flex-grow flex flex-col items-center">
-          <h2 className="text-2xl font-semibold text-gray-700 text-center mb-3">Pick Game Difficulty</h2>
-          
-          {/* Fixed-width buttons container */}
-          <div className="flex flex-col gap-1 w-[300px] mb-1">
-            <button
-              className={`bg-green-100 border-green-400 rounded-xl shadow-md border-2 p-4 h-[110px] w-full
-+             transition-all flex flex-col justify-center items-center 
-+             ${difficultyLevel === "Easy" ? 
-+               'bg-green-100 border-green-400' : 
-+               'bg-white border-gray-200 hover:border-green-400'}`}
-              onClick={() => handleDifficultyClick("Easy")}
-              onMouseEnter={() => {
-                setTooltip("Easy mode: 4 sentences");
-                handleOnMouseEnter("Easy mode: 4 sentences");
-              }}
-              onMouseLeave={() => setTooltip(null)}
-            >
-              <span className="text-xl font-medium text-gray-700">Easy</span>
-              {tooltip === "Easy mode: 4 sentences" && (
-                <span className="text-sm font-normal text-gray-600 mt-1 bg-green-400 rounded-lg">
-                  4 sentences
-                </span>
-              )}
-            </button>
-
-            <button
-              className={`bg-orange-100 border-orange-400 rounded-xl shadow-md border-2 p-4 h-[110px] w-full
-+             transition-all flex flex-col justify-center items-center
-+             ${difficultyLevel === "Medium" ? 
-+               'bg-orange-100 border-orange-400' : 
-+               'bg-white border-gray-200 hover:border-orange-400'}`}
-              onClick={() => handleDifficultyClick("Medium")}
-              onMouseEnter={() => {
-                setTooltip("Medium mode: 8 sentences");
-                handleOnMouseEnter("Medium mode: 8 sentences");
-              }}
-              onMouseLeave={() => setTooltip(null)}
-            >
-              <span className="text-xl font-medium text-gray-700">Medium</span>
-              {tooltip === "Medium mode: 8 sentences" && (
-                <span className="text-sm font-normal text-gray-600 mt-1 bg-orange-400 rounded-lg">
-                  8 sentences
-                </span>
-              )}
-            </button>
-
-            <button
-              className={`bg-red-100 border-red-400 rounded-xl shadow-md border-2 p-4 h-[110px] w-full
-+             transition-all flex flex-col justify-center items-center
-+             ${difficultyLevel === "Hard" ? 
-+               'bg-red-100 border-red-400' : 
-+               'bg-white border-gray-200 hover:border-red-400'}`}
-              onClick={() => handleDifficultyClick("Hard")}
-              onMouseEnter={() => {
-                setTooltip("Hard mode: 12 sentences");
-                handleOnMouseEnter("Hard mode: 12 sentences");
-              }}
-              onMouseLeave={() => setTooltip(null)}
-            >
-              <span className="text-xl font-medium text-gray-700">Hard</span>
-              {tooltip === "Hard mode: 12 sentences" && (
-                <span className="text-sm font-normal text-gray-600 mt-1 bg-red-400 rounded-lg">
-                  12 sentences
-                </span>
-              )}
-            </button>
-          </div>
-          
-          {/* Compact Back Button */}
-          <button
-            className="back-step-button"
-            onClick={() => goBack("Go Back")}
-            onMouseEnter={() => handleOnMouseEnter("Go Back")}
-          >
-            ← Go Back
-          </button>
-        </div>
-      )}
-
 
      {/* Step 4: Review */}
       {currentStep === 4 && (
@@ -295,6 +294,7 @@ export default function CreateRoomPage() {
                 <p className="font-medium text-gray-800">{selectedStory}</p>
               </div>
             </div>
+
 
             {/* Players & Difficulty */}
             <div className="flex gap-3 w-full">
