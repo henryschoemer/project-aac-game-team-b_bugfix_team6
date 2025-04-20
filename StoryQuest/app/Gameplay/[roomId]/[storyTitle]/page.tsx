@@ -13,7 +13,7 @@ import CompletionPage from "../../../CompletionPage/page";
 import TextToSpeechTextOnly2 from "@/Components/TextToSpeechTextOnly2";
 import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
-import { doc, getDoc, setDoc, updateDoc, onSnapshot, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
+import { doc, getDoc, updateDoc, onSnapshot, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -39,6 +39,13 @@ const getImageAnimation = () => ({
   transition: { duration: 0.8, ease: "easeOut" }, // Smooth animation with a standard easing.
 });
 
+const getNumPhrases = (difficulty: 'easy' | 'medium' | 'hard') => {
+  if (difficulty === "easy") return 4;
+  if (difficulty === "medium") return 8;
+  if (difficulty === "hard") return 12;
+  return 8; // default
+};
+
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const { playSound } = useAACSounds(); // aac mp3 sound hook
@@ -62,9 +69,10 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
+  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy'); // State for difficulty
+  const numberOfPhrasesForGame = getNumPhrases(difficulty); // Derive from difficulty
+  const trimmedSections = currentStory?.sections.slice(0, numberOfPhrasesForGame) || [];
   const soundUrl = '/sounds/aac_audios.mp3';
-  const [numberOfPhrasesForLevel, setNumberOfPhrasesForLevel] = useState<number | null>(null);
-
   const [play] = useSound(soundUrl, {
     sprite: {
         basket: [0, 650],
@@ -90,6 +98,7 @@ const roomId = params.roomId as string;
 const storyTitleURL = params.storyTitle as string | undefined;
 const storyTitle = storyTitleURL ? decodeURIComponent(storyTitleURL) : null;
 
+
 //This is the snapshot used to retrieve game state in firestore
 useEffect(() => {
   if (!roomId) return;
@@ -100,14 +109,15 @@ useEffect(() => {
     if (snapshot.exists()) {
       const gameData = snapshot.data();
       console.log("Firestore data received:", gameData);
-  
+
       setMaxPlayers(gameData.maxPlayers || 4);
-      setCurrentSectionIndex(gameData.currentSectionIndex);
-      setPhrase(gameData.currentPhrase);
+      setCurrentSectionIndex(gameData.currentSectionIndex || 0);
+      setPhrase(gameData.currentPhrase || "");
       setCompletedPhrases(gameData.completedPhrases || []);
       setCompletedImages(gameData.completedImages || []);
       setCurrentTurn(gameData.currentTurn || 1);
       setStoryCompleted(gameData.gameStatus === "completed");
+      setDifficulty(gameData.difficulty || 'easy'); // Load difficulty from DB
 
       //Sets avatars in array to match with player numbers
       setPlayerAvatars({
@@ -128,54 +138,41 @@ useEffect(() => {
         play({ id: lastWord });
         setLastPlayedWord(lastWord);
       }
+
+      if (gameData.storyTitle && !currentStory) {
+        const selectedStory = stories.find((s) => s.title === gameData.storyTitle);
+        setCurrentStory(selectedStory || stories[0]);
+        setPhrase(selectedStory?.sections[gameData.currentSectionIndex || 0]?.phrase || "");
+        setCurrentSectionIndex(gameData.currentSectionIndex || 0);
+      } else if (currentStory && gameData.currentSectionIndex !== currentSectionIndex) {
+        setCurrentSectionIndex(gameData.currentSectionIndex || 0);
+        setPhrase(currentStory.sections[gameData.currentSectionIndex || 0]?.phrase || "");
+      }
     }
   });
 
   return () => unsubscribe();
-}, [roomId, play, lastPlayedWord]);
+}, [roomId, play, lastPlayedWord, currentStory]); // Added currentStory to dependency array
 
-  useEffect(() => {
-    if (!storyTitle || stories.length === 0) return;
-  
-    const selectedStory = stories.find((s) => s.title === storyTitle);
-    const storyToUse = selectedStory || stories[0];
-  
-    setCurrentStory(storyToUse);
-    setPhrase(storyToUse.sections[0].phrase);
-    setIsMounted(true);
-  }, [storyTitle, stories]);
+useEffect(() => {
+  if (!storyTitle || stories.length === 0) return;
 
+  const selectedStory = stories.find((s) => s.title === storyTitle);
+  const storyToUse = selectedStory || stories[0];
 
-  useEffect(() => {
-    const fetchGameSettings = async () => {
-      if (!roomId) return;
-      try {
-        const gameDocRef = doc(db, "game", roomId);
-        const gameDocSnap = await getDoc(gameDocRef);
-  
-        if (gameDocSnap.exists()) {
-          const data = gameDocSnap.data();
-          if (data.numberOfPhrasesForLevel) {
-            setNumberOfPhrasesForLevel(data.numberOfPhrasesForLevel);
-            console.log("Number of phrases:", data.numberOfPhrasesForLevel);
-          }
-        } else {
-          console.warn("No such game room in Firestore!");
-        }
-      } catch (error) {
-        console.error("Error fetching game settings:", error);
-      }
-    };
-  
-    fetchGameSettings();
-  }, [roomId]);
-  
+  const numPhrases = getNumPhrases(difficulty);
+  const initialSections = storyToUse.sections.slice(0, numPhrases);
+
+  setCurrentStory({ ...storyToUse, sections: initialSections });
+  setPhrase(initialSections[0]?.phrase || ""); // Start with the first phrase of the limited sections
+  setIsMounted(true);
+}, [storyTitle, stories, difficulty]);
 
 
   //Assigning player #'s
   useEffect(() => {
     if (!roomId || !currentStory) return;
-  
+
     const assignPlayer = async () => {
       const gameRef = doc(db, "games", roomId);
       // Also retrieve the room doc to access numPlayers if needed
@@ -186,14 +183,14 @@ useEffect(() => {
         const roomData = roomSnap.data();
         roomNumPlayers = roomData.numPlayers;
       }
-  
+
       const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
       sessionStorage.setItem("player-uid", myId);
-  
+
       try {
         await runTransaction(db, async (transaction) => {
           const gameDoc = await transaction.get(gameRef);
-  
+
           // If the game doc doesn't exist, create it.
           if (!gameDoc.exists()) {
             transaction.set(gameRef, {
@@ -207,14 +204,16 @@ useEffect(() => {
               currentPhrase: currentStory.sections[0].phrase,
               lastUpdated: new Date(),
               gameStatus: "in_progress",
+              difficulty: difficulty, // Initialize difficulty in DB
+              numberOfPhrases: numberOfPhrasesForGame, // Initialize number of phrases
             });
             setPlayerNumber(1);
             return;
           }
-  
+
           // check what player slot is available in the transaction
           const data = gameDoc.data();
-  
+
           if (data.player1Id === myId) {
             setPlayerNumber(1);
             return;
@@ -228,7 +227,7 @@ useEffect(() => {
             setPlayerNumber(4);
             return;
           }
-  
+
           // Assign the next free slot, using maxPlayers (or roomNumPlayers)
           if (!data.player1Id) {
             transaction.update(gameRef, { player1Id: myId, player1Avatar: selectedAvatar });
@@ -251,17 +250,10 @@ useEffect(() => {
         alert("Failed to join the room. Please try again.");
       }
     };
-  
-    assignPlayer();
-  }, [roomId, currentStory]);
 
-  /*useEffect(() => {
-    setIsMounted(true);
-    if (stories.length > 0) {
-      setCurrentStory(stories[0]);
-      setPhrase(stories[0].sections[0].phrase);
-    }
-  }, []);*/
+    assignPlayer();
+  }, [roomId, currentStory, difficulty, numberOfPhrasesForGame]); 
+
 
   const handleStart = () => {
     // If no avatar is selected yet, open the modal.
@@ -273,7 +265,7 @@ useEffect(() => {
     }
   };
 
-  const handleStoryChange = (story: Story) => {
+  const handleStoryChange = async (story: Story, phraseLimit: number) => {
     setCurrentStory(story);
     setPhrase(story.sections[0].phrase);
     setCurrentSectionIndex(0);
@@ -281,133 +273,93 @@ useEffect(() => {
     setCompletedPhrases([]);
     setCompletedImages([]);
     setCurrentImage(null);
-    setShowSparkles([]); // Reset sparkle effects when changing stories
+    setShowSparkles([]);
+    if (roomId) {
+      const gameRef = doc(db, "games", roomId);
+      await updateDoc(gameRef, { currentSectionIndex: 0, currentPhrase: story.sections[0].phrase, completedPhrases: [], completedImages: [], gameStatus: "in_progress" });
+    }
   };
+
 
   const handleWordSelect = async (word: string) => {
     if (!currentStory) return;
-  
-    const currentWords = currentStory.sections[currentSectionIndex].words;
-  
-    if (!currentWords[word]) {
-      alert(`Word "${word}" not found in current section!`);
-      return;
-    }
-  
-    const selectedWordData = currentWords[word];
+
+  // Access words from the trimmed sections
+  const currentSections = trimmedSections;
+  if (!currentSections || currentSectionIndex >= trimmedSections.length) {
+    return;
+  }
+
+  const currentWords = currentSections[currentSectionIndex].words;
+
+  if (!currentWords[word]) {
+    alert(`Word "${word}" not found in current section!`);
+    return;
+  }
+    const selectedWordData = currentSections[currentSectionIndex]?.words[word];
+
     if (!selectedWordData) return;
-  
-    const newImage = {
-      src: `/images/${selectedWordData.image || null}`,
+
+    const newImage= {
+      src: `/images/${selectedWordData?.image || null}`,
       alt: word,
       x: selectedWordData.x || 0,
       y: selectedWordData.y || 0,
-    };
-  
-    const newPhrase = phrase.replace("___", word);
-  
-    // 🔒 Check against max allowed phrases
-    const maxPhrases = numberOfPhrases || currentStory.sections.length;
-    const actualPhraseCount = completedPhrases.filter((p) => p && p !== "The End!").length;
-  
-    if (actualPhraseCount >= maxPhrases) {
-      // Already finished, don’t allow more
-      setPhrase("The End!");
-      setStoryCompleted(true);
-      return;
     }
-  
-    // Firestore update
+
+    const newPhrase = phrase.replace("___", word);
+
     const gameRef = doc(db, "games", roomId);
     const docSnap = await getDoc(gameRef);
-  
+
     if (docSnap.exists()) {
-      const data = docSnap.data();
-      const maxPlayers = data.maxPlayers || 4;
-      const nextTurn = currentTurn === maxPlayers ? 1 : currentTurn + 1;
-  
-      const willBeFinal = actualPhraseCount + 1 >= maxPhrases;
-      const isLastSection = currentSectionIndex >= currentStory.sections.length - 1;
-  
-      const gameDataToSave = {
-        completedPhrases: [...completedPhrases, newPhrase, ...(willBeFinal ? ["The End!"] : [])],
-        completedImages: [...completedImages, newImage],
-        currentSectionIndex: isLastSection ? currentSectionIndex : currentSectionIndex + 1,
-        currentPhrase: willBeFinal ? "The End!" : currentStory.sections[currentSectionIndex + 1].phrase,
-        lastWordSelected: {
-          word,
-          timestamp: new Date(),
-        },
-        currentTurn: nextTurn,
-        lastUpdated: new Date(),
-        gameStatus: willBeFinal ? "completed" : "in_progress",
-      };
-  
-      await updateDoc(gameRef, gameDataToSave);
-  
-      if (willBeFinal) {
-        setStoryCompleted(true);
-      }
+     const data = docSnap.data();
+     const maxPlayers = data.maxPlayers || 4;
+     const nextTurn = currentTurn === maxPlayers ? 1 : currentTurn + 1;
+     const nextSectionIndex = currentSectionIndex + 1;
+     const isLastSection = nextSectionIndex >= numberOfPhrasesForGame; // Still use numberOfPhrasesForGame for the final check
+     const nextPhrase = isLastSection
+       ? "The End!"
+       : trimmedSections[nextSectionIndex]?.phrase || "The End!"; // Access phrase from trimmedSections
+
+     const gameDataToSave = {
+       completedPhrases: [...completedPhrases, newPhrase],
+       completedImages: [...completedImages, newImage],
+       currentSectionIndex: isLastSection ? currentSectionIndex : nextSectionIndex,
+       currentPhrase: nextPhrase,
+       lastWordSelected: {
+         word,
+         timestamp: new Date(),
+       },
+       currentTurn: nextTurn,
+       lastUpdated: new Date(),
+       gameStatus: isLastSection ? "completed" : "in_progress",
+       numberOfPhrases: numberOfPhrasesForGame, // Ensure this is saved
+     };
+
+     await updateDoc(gameRef, gameDataToSave);
     }
-  
-    // Local updates
-    setCompletedPhrases((prev) => [...prev, newPhrase, ...(actualPhraseCount + 1 >= maxPhrases ? ["The End!"] : [])]);
-    setCompletedImages((prev) => [...prev, newImage]);
+
+    setCompletedPhrases([...completedPhrases, newPhrase]);setCompletedImages([...completedImages, newImage]);
     setShowSparkles((prev) => [...prev, true]);
-  
-    if (actualPhraseCount + 1 >= maxPhrases) {
-      setPhrase("The End!");
-      return;
-    }
-  
-    if (currentSectionIndex < currentStory.sections.length - 1) {
-      setCurrentSectionIndex((prev) => prev + 1);
-      setPhrase(currentStory.sections[currentSectionIndex + 1].phrase);
+
+    if (!isLastSection) {
+      setCurrentSectionIndex(nextSectionIndex);
+      // Set the next phrase from the trimmed sections
+      setPhrase(trimmedSections[nextSectionIndex]?.phrase || "");
     } else {
       setPhrase("The End!");
-    }
-  };
-  
-  
-
-    const handleAddImage = () => {
-    if (userInput.trim() !== "" && currentImage && currentStory) {
-      const newPhrase = phrase.replace("___", userInput);
-
-      setCompletedPhrases([...completedPhrases, newPhrase]);
-      setCompletedImages([...completedImages, currentImage]);
-
-      if (currentSectionIndex < currentStory.sections.length - 1) {
-        setCurrentSectionIndex(currentSectionIndex + 1);
-        setPhrase(currentStory.sections[currentSectionIndex + 1].phrase);
-        setUserInput("");
-        setAddedImage(null);
-        setImages([]);
-        setCurrentImage(null);
-      } else {
-        setPhrase("The End!");
-        setUserInput("");
-        setAddedImage(null);
-        setImages([]);
-        setCurrentImage(null);
-      }
-    } else {
-      alert("Please select a word from the AAC tablet."); //at the end of the story still asks to select word. need to change that
+      setStoryCompleted(true);
     }
   };
 
-  if (!isMounted || !currentStory) return null;
-  const playIndividualIconSounds = (word: string) => {
-      playSound(word);
-  };
-
-  const handleAACSelect = (word: string) => {
+    const handleAACSelect = (word: string) => {
     if (playerNumber !== currentTurn) {
       alert("Waiting for other player");
       return;
     }
     console.log("AAC Button Clicked:", word);
-    playIndividualIconSounds(word);
+    playSound(word);
     handleWordSelect(word);
   };
 
@@ -444,9 +396,8 @@ useEffect(() => {
                     alert("Please select an avatar.");
                   }
                 }}
-                className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded"
-              >
-                ✅
+                className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">
+
               </button>
             </div>
           </div>
@@ -469,31 +420,10 @@ useEffect(() => {
     <div className="flex w-screen h-screen">
 
       {/* Left Panel: AAC Tablet */}
-       <div className="w-1/3 bg-[hsl(45,93%,83%)] p-8 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e]" >
+       <div className="w-[38%] bg-[hsl(45,93%,83%)] p-4 flex flex-col justify-center items-center rounded-lg shadow-lg border-[10px] border-[#e09f3e]" >
          <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
-            {/* Story Selection */}
-            <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white bg-[#8ae2d5] p-2 rounded-lg">
-              Select Story:
-            </label>
-            <select
-              id="story-select"
-              value={currentStory?.title || ""}
-              onChange={(e) => {
-                const selectedStory = stories.find((s) => s.title === e.target.value);
-                if (selectedStory) {
-                  handleStoryChange(selectedStory);
-                }
-              }}
-              className="bg-[#8ae2d5] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              {stories.map((story) => (
-                <option key={story.title} value={story.title}>
-                  {story.title}
-                </option>
-              ))}
 
-            </select>
-            
+
             {/* Displays player turns on AAC panel*/}
             {playerNumber && (
               <div className="flex flex-col items-center justify-center mb-6 space-y-4">
@@ -529,8 +459,8 @@ useEffect(() => {
             )}
            <AACKeyboard
            onSelect={handleAACSelect}
-           symbols={currentStory?.sections[currentSectionIndex]
-           ? Object.entries(currentStory.sections[currentSectionIndex].words).map(
+           symbols={trimmedSections[currentSectionIndex] // Use trimmedSections here
+           ? Object.entries(trimmedSections[currentSectionIndex].words).map(
            ([word, data]) => ({
            word: word,
            image: `/images/${data.image}`,
@@ -548,7 +478,7 @@ useEffect(() => {
 
         {/* Right Panel: Game Scene */}
       <div
-        className="w-2/3 relative bg-cover bg-center flex justify-center items-center pb-20"
+        className="w-[70%] relative bg-cover bg-center flex justify-center items-center pb-20"
         style={{
           backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
           backgroundSize: "cover",
@@ -558,7 +488,7 @@ useEffect(() => {
       >
         {/* Completed Phrases (positioned with the text) */}
         {/* Storybook Text Display */}
-        <div className="absolute bottom-0 left-0 w-full min-h-[180px] bg-[url('/images/parchment-texture.png')] bg-cover p-6 border-t-8 border-amber-800 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
+        <div className="absolute bottom-0 left-0 w-full min-h-[140px] bg-[url('/images/parchment-texture.png')] bg-cover p-6 border-t-8 border-amber-800 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
           {/* Decorative scroll ends */}
           <div className="absolute -top-6 left-4 right-4 flex justify-between pointer-events-none">
             <span className="text-5xl text-amber-800">✧</span>
@@ -567,24 +497,26 @@ useEffect(() => {
 
         <div className="max-w-6xl mx-auto">
           {/* Completed story phrases */}
-          <div className="flex flex-wrap gap-3 mb-3">
+          <div className="mb-3 max-h-[80px] overflow-y-auto"></div>
+          <div className="flex flex-col gap-1">
           {completedPhrases.map((completedPhrase, index) => (
-          <span 
-            key={index} 
-            className="text-3xl font-['Short_Stack'] text-amber-900 bg-white/70 px-3 py-1 rounded-lg"
+          <span
+            key={index}
+            className="text-3xl font-short-stack text-amber-900 bg-white/70 px-3 py-1 rounded-lg whitespace-nowrap"
           >
           {completedPhrase}
           </span>
         ))}
       </div>
+      </div>
 
         {/* Current phrase with magical effects */}
         <div className="relative">
-          <span className="text-5xl font-bold font-['Patrick_Hand'] text-amber-900 animate-pulse">
+          <span className="text-4xl font-bold font-patrick-hand text-amber-900 animate-pulse">
             {phrase}
             <span className="ml-1 inline-block w-2 h-10 bg-amber-600 animate-blink"></span>
           </span>
-          
+
           {/* Floating fairydust particles */}
           <div className="absolute -top-8 left-0 right-0 flex justify-between px-10">
             <span className="text-3xl opacity-70 animate-float">✨</span>
@@ -598,74 +530,74 @@ useEffect(() => {
         {/* Animated Images with Sparkles: Shows selected images with a sparkle effect. */}
         <AnimatePresence>
       {completedImages.map((image, index) => {
-        const imageData = currentStory?.sections.flatMap(section => Object.values(section.words)).find(data => `/images/${data.image}` === image.src);
+        const imageData = trimmedSections.flatMap(section => Object.values(section.words)).find(data => `/images/${data.image}` === image.src); // Use trimmedSections
         const effect = imageData?.effect || 'none'; // Get the effect, default to 'none'
 
         let effectComponent = null;
-if (effect === 'spin') {
+  if (effect === 'spin') {
   effectComponent = (
-    <SpinEffect>
+    <SpinEffect key={`spin-${index}`}>
       <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </SpinEffect>
   );
 } else if (effect === 'pulse') {
   effectComponent = (
-    <PulseEffect>
+    <PulseEffect key={`pulse-${index}`}>
       <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </PulseEffect>
   );
 } else if (effect === 'fade') {
   effectComponent = (
-    <FadeEffect>
-      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
+    <FadeEffect key={`fade-${index}`}>
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </FadeEffect>
   );
 } else if (effect === 'sideToSide') {
   effectComponent = (
-    <SideToSideEffect>
+    <SideToSideEffect key={`sidetoside-${index}`}>
       <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </SideToSideEffect>
   );
 } else if (effect === 'upAndDown') {
     effectComponent = (
-      <UpAndDownEffect>
+      <UpAndDownEffect key={`updown-${index}`}>
         <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
       </UpAndDownEffect>
     );
 
 } else if (effect === 'scaleUp') {
   effectComponent = (
-    <ScaleUpEffect>
-      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
+    <ScaleUpEffect key={`scaleup-${index}`}>
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </ScaleUpEffect>
   );
 } else if (effect === 'bounce') {
   effectComponent = (
-    <BounceEffect>
-      <img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
+    <BounceEffect key={`bounce-${index}`}>
+      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </BounceEffect>
   );
 
 }else if (effect === 'SlideAcrossEffect') {
   effectComponent = (
-    <SlideAcrossEffect>
+    <SlideAcrossEffect key={`slideacross-${index}`}>
         <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
     </SlideAcrossEffect>
   );
 }else if (effect === 'flip'){
     effectComponent = (
-        <FlipEffect>
+        <FlipEffect key={`flip-${index}`}>
             <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
         </FlipEffect>
     );
 } else {
   effectComponent = (
-    <motion.img src={image.src} alt={image.alt} className="w-64 h-64" {...getImageAnimation()} />
+    <motion.img key={`normal-${index}`} src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
   );
 }
 
 return (
-  <div key={index} className="absolute" style={{left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`,}}>
+  <div key={`image-container-${index}`} className="absolute" style={{left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`,}}>
             {showSparkles[index] ? (
               <SparkleEffect
                 onComplete={() =>
@@ -700,7 +632,9 @@ return (
                       onComplete={() => {
                         console.log("Gameplay: Story is completed!");
                         setStoryCompleted(true);
-                        //setShowOverlay(true); // Show the CompletionPage immediately after speech finishes
+                        setTimeout(() => {
+                          setShowOverlay(true);
+                        }, 3000); // Show the CompletionPage after a delay
                       }}
                   />
               </div>
@@ -713,6 +647,5 @@ return (
               </div>
           )}
       </div>
-    </div>
   );
 }

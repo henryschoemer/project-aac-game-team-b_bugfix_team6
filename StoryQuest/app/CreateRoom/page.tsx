@@ -60,13 +60,13 @@ export default function CreateRoomPage() {
           });
     
           const roomId = roomRef.id;
-          const numberOfPhrasesForLevel = difficultyLevel === 'easy' ? 4 : difficultyLevel === 'medium' ? 8 : difficultyLevel === 'hard' ? 12 : 4;
+          const numberOfPhrasesForGame = difficultyLevel === 'easy' ? 4 : difficultyLevel === 'medium' ? 8 : difficultyLevel === 'hard' ? 12 : 4;
     
           // Create the 'games' document here with roomId as the document ID
           await setDoc(doc(db, 'games', roomId), {
             storyTitle: selectedStory,
             difficulty: difficultyLevel,
-            numberOfPhrases: numberOfPhrasesForLevel,
+            numberOfPhrases: numberOfPhrasesForGame,
             maxPlayers: numPlayers,
             players: [], // Array to store player IDs
             currentTurn: 1,
@@ -238,7 +238,7 @@ export default function CreateRoomPage() {
                             <button
                                 className="big-button difficulty-button easy"
                                 onClick={() => {
-                                    handleDifficultyClick("Easy");
+                                    handleDifficultyClick("easy");
                                 }}
                                 onMouseEnter={() => {
                                     setTooltip("Easy mode: 4 sentences")
@@ -254,7 +254,7 @@ export default function CreateRoomPage() {
                             <button
                                 className="big-button difficulty-button medium"
                                 onClick={() => {
-                                    handleDifficultyClick("Medium");
+                                    handleDifficultyClick("medium");
                                 }}
                                 onMouseEnter={() => {
                                     setTooltip("Medium mode: 8 sentences")
@@ -269,7 +269,7 @@ export default function CreateRoomPage() {
                             <button
                                 className="big-button difficulty-button hard"
                                 onClick={() => {
-                                    handleDifficultyClick("Hard");
+                                    handleDifficultyClick("hard");
                                 }}
                                 onMouseEnter={() => {
                                     setTooltip("Hard mode: 12 sentences")
