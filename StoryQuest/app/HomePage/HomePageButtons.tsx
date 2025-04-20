@@ -40,7 +40,7 @@ export const JoinButton: React.FC = () => {
     const {speak} = useTextToSpeech(); // useTextToSpeech hook
     const {buttonHandler} = useButtonFeedback();
     const handleClick = () => {
-        buttonHandler('pop', "Join Room, Please scan a room QR code", speak);
+        buttonHandler('pop', "Please follow the pictures on the screen, and scan the QR code using the camera", speak);
     };
     return (
         <div className="button-with-attached-circle">
@@ -78,11 +78,11 @@ interface ExitButtonProps {
         }
     };
 
-    const handleOnMouseEnter = (text: string) => {
-        if (!isSpeaking) {
-            speak(text);
-        }
-    };
+    // const handleOnMouseEnter = (text: string) => {
+    //     if (!isSpeaking) {
+    //         speak(text);
+    //     }
+    // };
 
     return (
         <button
