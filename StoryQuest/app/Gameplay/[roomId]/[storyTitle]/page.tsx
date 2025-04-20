@@ -13,7 +13,7 @@ import CompletionPage from "../../../CompletionPage/page";
 import TextToSpeechTextOnly2 from "@/Components/TextToSpeechTextOnly2";
 import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
-import { doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, serverTimestamp, collection, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
+import { doc, getDoc, setDoc, updateDoc, onSnapshot, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -39,27 +39,6 @@ const getImageAnimation = () => ({
   transition: { duration: 0.8, ease: "easeOut" }, // Smooth animation with a standard easing.
 });
 
-//This saves the player info such as their avatar, number, and playerId
-async function savePlayerProfile(
-  roomId: string,
-  playerId: string,
-  avatar: string,
-  playerNumber: number
-) {
-  console.log("savePlayerProfile:", { roomId, playerId, avatar, playerNumber });
-  const playerRef = doc(db, "games", roomId, "players", playerId);
-  try {
-    await setDoc(playerRef, {
-      avatar,
-      playerNumber,
-      joinedAt: serverTimestamp(),
-    });
-  } catch (e) {
-    console.error("Failed to write player doc:", e);
-    throw e;
-  }
-}
-
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const { playSound } = useAACSounds(); // aac mp3 sound hook
@@ -83,7 +62,6 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
-  const [showBlockAACButtonOverlay, setShowBlockAACButtonOverlay] = useState(false); // Is shown at "The end!" phrase
 
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
@@ -103,17 +81,6 @@ const gameFinished = lastCompleted === "The End!";
 useEffect(() => {
   if (!roomId) return;
 
-  //Creates a new sub-collection "players" in game collection and stores player info
-  const playersCol = collection(db, "games", roomId, "players");
-  const unsubscribePlayers = onSnapshot(playersCol, (snap) => {
-    const avatars: Record<number,string> = {};
-      snap.docs.forEach(d => {
-        const data = d.data() as { avatar: string; playerNumber: number };
-        avatars[data.playerNumber] = data.avatar;
-    });
-    setPlayerAvatars(avatars);
-  });
-
   const gameRef = doc(db, "games", roomId);
 
   const unsubscribe = onSnapshot(gameRef, (snapshot) => {
@@ -128,6 +95,14 @@ useEffect(() => {
       setCompletedImages(gameData.completedImages || []);
       setCurrentTurn(gameData.currentTurn || 1);
       setStoryCompleted(gameData.gameStatus === "completed");
+
+      //Sets avatars in array to match with player numbers
+      setPlayerAvatars({
+        1: gameData.player1Avatar,
+        2: gameData.player2Avatar,
+        3: gameData.player3Avatar,
+        4: gameData.player4Avatar,
+      });
 
       if (gameData.gameStatus === "completed" && gameData.ttsDone) {
         setTimeout(() => {
@@ -156,68 +131,96 @@ useEffect(() => {
     setIsMounted(true);
   }, [storyTitle, stories]);
 
-
-  //Assigning player #'s
-  const handleConfirmAvatar = async () => {
-    if (!selectedAvatar) return alert("Pick one!");
-    const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
-    sessionStorage.setItem("player-uid", myId);
-
-    await runTransaction(db, async tx => {
-      const gameRef = doc(db, "games", roomId);
-      const roomRef = doc(db, "rooms", roomId);
-      const [gameSnap, roomSnap] = await Promise.all([tx.get(gameRef), tx.get(roomRef)]);
-      const roomData = roomSnap.exists() ? roomSnap.data() : {};
-      const roomNumPlayers = roomData.numPlayers || 4;
-
-      if (!gameSnap.exists()) {
-        // first join: create game doc
-        tx.set(gameRef, {
-          player1Id: myId,
-          currentTurn: 1,
-          maxPlayers: roomNumPlayers,
-          currentSectionIndex: 0,
-          currentPhrase: currentStory!.sections[0].phrase,
-          completedPhrases: [],
-          completedImages: [],
-          gameStatus: "in_progress",
-          lastUpdated: serverTimestamp()
-        });
-        setPlayerNumber(1);
-      } else {
-        const data = gameSnap.data();
-        // assign next free slot
-        if (!data.player2Id && roomNumPlayers > 1) {
-          tx.update(gameRef, { player2Id: myId });
-          setPlayerNumber(2);
-        } else if (!data.player3Id && roomNumPlayers > 2) {
-          tx.update(gameRef, { player3Id: myId });
-          setPlayerNumber(3);
-        } else if (!data.player4Id && roomNumPlayers > 3) {
-          tx.update(gameRef, { player4Id: myId });
-          setPlayerNumber(4);
-        } else {
-          throw new Error("Room is full");
-        }
-      }
-    });
-
-    // save avatar to sub-collection
-    const playersCol = collection(db, "games", roomId, "players");
-    const snapshot = await getDocs(playersCol);
-    const myNum = snapshot.size + 1;
-    await savePlayerProfile(roomId, myId, selectedAvatar, myNum);
-
-    setAvatarModalOpen(false);
-    speechSynthesis.getVoices();
-    setTtsReady(true);
+    //Ipad dimensions
+    const containerStyle = {
+    width: '1024px',   // Fixed iPad landscape width
+    height: '768px',   // Fixed iPad landscape height
+    overflow: 'hidden' // Prevent any scrolling
   };
 
+
+  //Assigning player #'s
   useEffect(() => {
-    const isEnd       = phrase === "The End!";
-    const notYourTurn = playerNumber !== null && currentTurn !== null && playerNumber !== currentTurn;
-    setShowBlockAACButtonOverlay(isEnd || notYourTurn);
-  }, [phrase, playerNumber, currentTurn]);
+    if (!roomId || !currentStory) return;
+  
+    const assignPlayer = async () => {
+      const gameRef = doc(db, "games", roomId);
+      // Also retrieve the room doc to access numPlayers if needed
+      const roomRef = doc(db, "rooms", roomId);
+      const roomSnap = await getDoc(roomRef);
+      let roomNumPlayers = 4; // default
+      if (roomSnap.exists()) {
+        const roomData = roomSnap.data();
+        roomNumPlayers = roomData.numPlayers;
+      }
+  
+      const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
+      sessionStorage.setItem("player-uid", myId);
+  
+      try {
+        await runTransaction(db, async (transaction) => {
+          const gameDoc = await transaction.get(gameRef);
+  
+          // If the game doc doesn't exist, create it.
+          if (!gameDoc.exists()) {
+            transaction.set(gameRef, {
+              player1Id: myId,
+              player1Avatar: selectedAvatar,
+              currentTurn: 1,
+              maxPlayers: roomNumPlayers, // using value from room document
+              completedPhrases: [],
+              completedImages: [],
+              currentSectionIndex: 0,
+              currentPhrase: currentStory.sections[0].phrase,
+              lastUpdated: new Date(),
+              gameStatus: "in_progress",
+            });
+            setPlayerNumber(1);
+            return;
+          }
+  
+          // check what player slot is available in the transaction
+          const data = gameDoc.data();
+  
+          if (data.player1Id === myId) {
+            setPlayerNumber(1);
+            return;
+          } else if (data.player2Id === myId) {
+            setPlayerNumber(2);
+            return;
+          } else if (data.player3Id === myId) {
+            setPlayerNumber(3);
+            return;
+          } else if (data.player4Id === myId) {
+            setPlayerNumber(4);
+            return;
+          }
+  
+          // Assign the next free slot, using maxPlayers (or roomNumPlayers)
+          if (!data.player1Id) {
+            transaction.update(gameRef, { player1Id: myId, player1Avatar: selectedAvatar });
+            setPlayerNumber(1);
+          } else if (!data.player2Id && (data.maxPlayers || roomNumPlayers) > 1) {
+            transaction.update(gameRef, { player2Id: myId, player2Avatar: selectedAvatar });
+            setPlayerNumber(2);
+          } else if (!data.player3Id && (data.maxPlayers || roomNumPlayers) > 2) {
+            transaction.update(gameRef, { player3Id: myId, player3Avatar: selectedAvatar });
+            setPlayerNumber(3);
+          } else if (!data.player4Id && (data.maxPlayers || roomNumPlayers) > 3) {
+            transaction.update(gameRef, { player4Id: myId, player4Avatar: selectedAvatar });
+            setPlayerNumber(4);
+          } else {
+            throw new Error("Room is full!");
+          }
+        });
+      } catch (error) {
+        console.error("Player assignment transaction failed: ", error);
+        alert("Failed to join the room. Please try again.");
+      }
+    };
+  
+    assignPlayer();
+  }, [roomId, currentStory]);
 
   /*useEffect(() => {
     setIsMounted(true);
@@ -304,7 +307,12 @@ useEffect(() => {
         lastUpdated: new Date(),
         gameStatus: isLastSection ? "completed" : "in_progress",
       };
-      await setDoc(gameRef, gameDataToSave, { merge: true });
+
+      if (docSnap.exists()) {
+        await updateDoc(gameRef, gameDataToSave);
+      } else {
+        await setDoc(gameRef, gameDataToSave);
+      }
      }
 
      setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
@@ -319,7 +327,7 @@ useEffect(() => {
        setPhrase("The End!");
      }
    };
-  
+
     // Delay completion page overlay by 3 seconds
     /*useEffect(() => {
         let timeoutId: NodeJS.Timeout;
@@ -372,6 +380,7 @@ useEffect(() => {
 
   const handleAACSelect = (word: string) => {
     if (playerNumber !== currentTurn) {
+      alert("Waiting for other player");
       return;
     }
     console.log("AAC Button Clicked:", word);
@@ -381,280 +390,202 @@ useEffect(() => {
 
   if (!ttsReady) {
     return (
-      <>
-        {/* Render the Avatar Selection Modal if it should be open */}
-        {/*Gives player window to choose an avatar*/}
-        {avatarModalOpen ? (
+      <div className="flex items-center justify-center w-full h-full bg-yellow-100" style={containerStyle}>
+        {/* Avatar modal - now centered in iPad viewport */}
+        {avatarModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-8 rounded-lg max-w-xs mx-auto">
-              <h2 className="text-2xl font-bold mb-4 text-center text-black">Choose Your Avatar</h2>
-              <div className="grid grid-cols-2 gap-4">
-                {availableAvatars.map(a => (
+            <div className="bg-white p-6 rounded-lg max-w-xs mx-auto">
+              <h2 className="text-xl font-bold mb-3 text-center text-black">Choose Your Avatar</h2>
+              <div className="grid grid-cols-3 gap-3">
+                {availableAvatars.map((avatar) => (
                   <button
-                    key={a}
-                    onClick={() => setSelectedAvatar(a)}
-                    className={`text-4xl p-2 rounded-full border-4 ${
-                      selectedAvatar === a ? "border-green-500" : "border-transparent"
+                    key={avatar}
+                    onClick={() => setSelectedAvatar(avatar)}
+                    className={`text-3xl p-1 rounded-full border-4 ${
+                      selectedAvatar === avatar ? "border-green-500" : "border-transparent"
                     }`}
                   >
-                    {a}
+                    {avatar}
                   </button>
                 ))}
               </div>
               <button
-                onClick={handleConfirmAvatar}
-                className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded"
+                onClick={() => {
+                  if (selectedAvatar) {
+                    setAvatarModalOpen(false);
+                    speechSynthesis.getVoices();
+                    setTtsReady(true);
+                  }
+                }}
+                className="mt-3 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded text-xl"
               >
-                ✅
+                ✅ Start Game
               </button>
             </div>
           </div>
-        ) : (
-          <div className="flex items-center justify-center h-screen bg-yellow-100">
-            <button
-              onClick={() => setAvatarModalOpen(true)}
-              className="w-[80%] h-[30vh] text-5xl bg-orange-500 text-white font-extrabold rounded-2xl shadow-2xl hover:bg-orange-600 transition animate-pulse"
-            >
-              🎮 START GAME
-            </button>
-          </div>
         )}
-          </>
-          );
-        }
+
+        <button
+          onClick={handleStart}
+          className="w-[60%] h-[25%] text-4xl bg-orange-500 text-white font-extrabold rounded-2xl shadow-xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center animate-pulse"
+        >
+          🎮 START GAME
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex w-screen h-screen">
+  <div className="flex w-[1024px] h-[768px] overflow-hidden">
 
-      {/* Left Panel: AAC Tablet */}
-      <div className={`aac-blocking-container ${showBlockAACButtonOverlay ? 'blocked' : ''}`}>
-             <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
-
-            {/* Displays player turns on AAC panel*/}
-            {playerNumber && (
-              <div className="flex flex-col items-center justify-center mb-6 space-y-4">
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                  {Object.entries(playerAvatars)
-                  // sort by numeric player slot
-                  .sort(([a], [b]) => Number(a) - Number(b))
-                  .map(([num, avatar]) => (
-                    <div key={num} className="flex flex-col items-center">
-                      <span
-                        className={`text-5xl p-2 rounded-full ${
-                          currentTurn === Number(num)
-                            ? "border-4 border-green-500"
-                            : "border-2 border-gray-400"
-                        }`}
-                      >
-                        {avatar}
-                      </span>
-                      <span className="text-xl font-bold">{`Player ${num}`}</span>
-                    </div>
-                  ))}
+    {/* Left Panel: AAC Tablet (40% width) */}
+    <div className="w-[40%] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">
+      {/* Player turns display - made more compact */}
+      {playerNumber && (
+        <div className="flex flex-col items-center justify-center mb-2 w-full">
+          <div className="grid grid-cols-4 gap-2 w-full">
+            {Array.from({ length: maxPlayers }, (_, i) => i + 1).map((num) => {
+              const avatarToShow = playerAvatars[num] || availableAvatars[num - 1] || "👤";
+              return (
+                <div key={num} className="flex flex-col items-center">
+                  <span className={`text-3xl p-1 rounded-full ${currentTurn === num ? "border-4 border-green-500" : "border-2 border-gray-400"}`}>
+                    {avatarToShow}
+                  </span>
+                  <span className="text-sm font-bold">P{num}</span>
                 </div>
-                <div className="mt-4 text-center">
-                  {playerNumber === currentTurn ? (
-                    <p className="text-4xl font-extrabold text-green-600 animate-pulse">✅ YOUR TURN!</p>
-                  ) : (
-                    <p className="text-3xl text-gray-600">
-                      ⏳ Waiting for <span className="font-bold">Player {currentTurn}</span>...
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-           <AACKeyboard
-           onSelect={handleAACSelect}
-           symbols={currentStory?.sections[currentSectionIndex]
-           ? Object.entries(currentStory.sections[currentSectionIndex].words).map(
-           ([word, data]) => ({
-           word: word,
-           image: `/images/${data.image}`,
-           displayText: word
-         }))
-         : []
-       }
-       backgroundColor={currentStory?.colorTheme.backgroundColor}
-       buttonColor={currentStory?.colorTheme.buttonColor}
-         />
-        </h2>
-           <TextToSpeechAACButtons text={phrase} />
-      </div>
-
-
-        {/* Right Panel: Game Scene */}
-      <div
-        className="w-[62%] relative bg-cover bg-center flex justify-center items-center pb-20"
-        style={{
-          backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        {/* Completed Phrases (positioned with the text) */}
-        {/* Storybook Text Display */}
-        <div className="absolute bottom-0 left-0 w-full min-h-[140px] bg-[url('/images/parchment-texture.png')] bg-cover p-6 border-t-8 border-amber-800 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
-          {/* Decorative scroll ends */}
-          <div className="absolute -top-6 left-4 right-4 flex justify-between pointer-events-none">
-            <span className="text-5xl text-amber-800">✧</span>
-            <span className="text-5xl text-amber-800">✧</span>
-        </div>
-
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col gap-1">
-            {phrase !== "The End!" ? (
-                <>
-                  {completedPhrases.length > 0 && (
-                      <span className="text-3xl font-short-stack text-amber-700 italic bg-white/50 px-3 py-1 rounded-lg whitespace-nowrap">
-                        {completedPhrases[completedPhrases.length - 1]}
-                      </span>
-                  )}
-                </>
+              );
+            })}
+          </div>
+          <div className="mt-2 text-center w-full">
+            {playerNumber === currentTurn ? (
+              <p className="text-xl font-extrabold text-green-600 animate-pulse">YOUR TURN!</p>
             ) : (
-                completedPhrases.map((completedPhrase, index) => (
-                    <span key={index} className="text-2xl font-short-stack text-amber-900 bg-white/80 px-3 py-1 rounded-lg whitespace-nowrap">
-                      {completedPhrase}
-                    </span>
-                ))
+              <p className="text-lg text-gray-600">
+                ⏳ Player {currentTurn}
+              </p>
             )}
           </div>
         </div>
+      )}
 
-        {/* Current phrase with magical effects */}
-        <div className="relative">
-          <span className="text-4xl font-bold font-patrick-hand text-amber-900 animate-pulse">
-            {phrase}
-            <span className="ml-1 inline-block w-2 h-10 bg-amber-600 animate-blink"></span>
-          </span>
-          
-          {/* Floating fairydust particles */}
-          <div className="absolute -top-8 left-0 right-0 flex justify-between px-10">
-            <span className="text-3xl opacity-70 animate-float">✨</span>
-            <span className="text-2xl opacity-60 animate-float delay-100">❋</span>
-            <span className="text-3xl opacity-80 animate-float delay-200">✧</span>
-          </div>
-        </div>
-      </div>
+      {/* AAC Keyboard - scaled down */}
+      <AACKeyboard
+        onSelect={handleAACSelect}
+        symbols={currentStory?.sections[currentSectionIndex]
+          ? Object.entries(currentStory.sections[currentSectionIndex].words).map(
+            ([word, data]) => ({
+              word: word,
+              image: `/images/${data.image}`,
+              displayText: word
+            }))
+          : []
+        }
+        backgroundColor={currentStory?.colorTheme.backgroundColor}
+        buttonColor={currentStory?.colorTheme.buttonColor}
+      />
+
+      {/* Current phrase TTS button */}
+      <TextToSpeechAACButtons text={phrase}/>
     </div>
 
-        {/* Animated Images with Sparkles: Shows selected images with a sparkle effect. */}
-        <AnimatePresence>
-      {completedImages.map((image, index) => {
-        const imageData = currentStory?.sections.flatMap(section => Object.values(section.words)).find(data => `/images/${data.image}` === image.src);
-        const effect = imageData?.effect || 'none'; // Get the effect, default to 'none'
+    {/* Right Panel: Game Scene (60% width) */}
+    <div
+      className="w-[60%] relative bg-cover bg-center"
+      style={{
+        backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      {/* Animated Images */}
+      <AnimatePresence>
+        {completedImages.map((image, index) => {
+          const imageData = currentStory?.sections.flatMap(section => Object.values(section.words)).find(data => `/images/${data.image}` === image.src);
+          const effect = imageData?.effect || 'none';
 
-        let effectComponent = null;
-if (effect === 'spin') {
-  effectComponent = (
-    <SpinEffect>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </SpinEffect>
-  );
-} else if (effect === 'pulse') {
-  effectComponent = (
-    <PulseEffect>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </PulseEffect>
-  );
-} else if (effect === 'fade') {
-  effectComponent = (
-    <FadeEffect>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </FadeEffect>
-  );
-} else if (effect === 'sideToSide') {
-  effectComponent = (
-    <SideToSideEffect>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </SideToSideEffect>
-  );
-} else if (effect === 'upAndDown') {
-    effectComponent = (
-      <UpAndDownEffect>
-        <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-      </UpAndDownEffect>
-    );
+          let effectComponent = null;
+          if (effect === 'spin') {
+            effectComponent = <SpinEffect><img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} /></SpinEffect>;
+          } else if (effect === 'pulse') {
+            effectComponent = <PulseEffect><img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} /></PulseEffect>;
+          } 
+          // [Keep all other effect conditions the same but with w-32 h-32]
+          else {
+            effectComponent = <motion.img src={image.src} alt={image.alt} className="w-32 h-32" {...getImageAnimation()} />;
+          }
 
-} else if (effect === 'scaleUp') {
-  effectComponent = (
-    <ScaleUpEffect>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </ScaleUpEffect>
-  );
-} else if (effect === 'bounce') {
-  effectComponent = (
-    <BounceEffect>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </BounceEffect>
-  );
+          return (
+            <div key={index} className="absolute" style={{left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`}}>
+              {showSparkles[index] ? (
+                <SparkleEffect onComplete={() => setShowSparkles(prev => {
+                  const newState = [...prev];
+                  newState[index] = false;
+                  return newState;
+                })} />
+              ) : (effectComponent)}
+            </div>
+          );
+        })}
+      </AnimatePresence>
 
-}else if (effect === 'SlideAcrossEffect') {
-  effectComponent = (
-    <SlideAcrossEffect>
-        <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </SlideAcrossEffect>
-  );
-}else if (effect === 'flip'){
-    effectComponent = (
-        <FlipEffect>
-            <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-        </FlipEffect>
-    );
-} else {
-  effectComponent = (
-    <motion.img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-  );
-}
+      {/* Story text area - compact */}
+      <div className="absolute bottom-0 left-0 w-full min-h-[100px] bg-[url('/images/parchment-texture.png')] bg-cover p-3 border-t-4 border-amber-800 shadow-[0_-5px_15px_rgba(0,0,0,0.3)]">
+        <div className="absolute -top-4 left-2 right-2 flex justify-between pointer-events-none">
+          <span className="text-3xl text-amber-800">✧</span>
+          <span className="text-3xl text-amber-800">✧</span>
+        </div>
 
-return (
-  <div key={index} className="absolute" style={{left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`,}}>
-            {showSparkles[index] ? (
-              <SparkleEffect
-                onComplete={() =>
-                  setShowSparkles((prev) => {
-                    const newState = [...prev];
-                    newState[index] = false;
-                    return newState;
-                  })
-                }
-              />
+        <div className="max-w-full">
+          <div className="flex flex-col gap-1">
+            {phrase !== "The End!" ? (
+              completedPhrases.length > 0 && (
+                <span className="text-xl font-short-stack text-amber-700 italic bg-white/50 px-2 py-0.5 rounded whitespace-nowrap">
+                  {completedPhrases[completedPhrases.length - 1]}
+                </span>
+              )
             ) : (
-              effectComponent // Render the effect component or the plain image
+              completedPhrases.map((completedPhrase, index) => (
+                <span key={index} className="text-lg font-short-stack text-amber-900 bg-white/80 px-2 py-0.5 rounded whitespace-nowrap">
+                  {completedPhrase}
+                </span>
+              ))
             )}
           </div>
-        );
-      })}
-    </AnimatePresence>
 
-          {/* Calls AutomaticTextToSpeech, which speech texts the current fill in the blank phrase*/}
-          {phrase && (
-            <TextToSpeechTextOnly2 key={phrase} text={phrase} />
-)}
-
-          {/* Text to speech completed story*/}
-          {phrase === "The End!" && (
-              <div>
-                  {/*Call completedstory button and pass completedphrase map*/}
-                  <CompletedStory2
-                      index={completedPhrases.length - 1}
-                      completedPhrases={completedPhrases}
-                      roomId={roomId}
-                      onComplete={() => {
-                        console.log("Gameplay: Story is completed!");
-                        setStoryCompleted(true);
-                        //setShowOverlay(true); // Show the CompletionPage immediately after speech finishes
-                      }}
-                  />
-              </div>
-          )}
-
-          {/*Completion page overlay that pops up*/}
-          {showOverlay && (
-              <div className="overlay">
-                  <CompletionPage/>
-              </div>
-          )}
+          <div className="relative mt-1">
+            <span className="text-2xl font-bold font-patrick-hand text-amber-900 animate-pulse">
+              {phrase}
+              <span className="ml-1 inline-block w-1.5 h-6 bg-amber-600 animate-blink"></span>
+            </span>
+            
+            <div className="absolute -top-5 left-0 right-0 flex justify-between px-6">
+              <span className="text-xl opacity-70 animate-float">✨</span>
+              <span className="text-lg opacity-60 animate-float delay-100">❋</span>
+              <span className="text-xl opacity-80 animate-float delay-200">✧</span>
+            </div>
+          </div>
+        </div>
       </div>
-  );
+
+      {/* TTS Components */}
+      {phrase && <TextToSpeechTextOnly2 key={phrase} text={phrase} />}
+      
+      {phrase === "The End!" && (
+        <CompletedStory2
+          index={completedPhrases.length - 1}
+          completedPhrases={completedPhrases}
+          roomId={roomId}
+          onComplete={() => setStoryCompleted(true)}
+        />
+      )}
+
+      {showOverlay && (
+        <div className="fixed inset-0 z-50">
+          <CompletionPage/>
+        </div>
+      )}
+    </div>
+  </div>
+);
 }

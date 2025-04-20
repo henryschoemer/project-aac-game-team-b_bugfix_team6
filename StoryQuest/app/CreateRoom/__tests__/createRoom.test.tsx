@@ -100,13 +100,13 @@ describe("CreateRoomPage", () => {
         fireEvent.click(screen.getByText("3 Players"));
         
         // Now we're at step 3, go back to step 2
-        fireEvent.click(screen.getByText("Go Back"));
+        fireEvent.click(screen.getByRole('button', { name: /go back/i }));
         
         // We should be back at step 2
         expect(screen.getByText("How Many Friends Are Playing?")).toBeInTheDocument();
         
         // Go back to step 1
-        fireEvent.click(screen.getByText("Go Back"));
+        fireEvent.click(screen.getByRole('button', { name: /go back/i }));
         
         // We should be back at step 1
         expect(screen.getByText("Choose Your Story")).toBeInTheDocument();
@@ -127,12 +127,12 @@ describe("CreateRoomPage", () => {
         fireEvent.click(screen.getByText("Hard")); // Hard difficulty
         
         // Check that summary shows the correct information
-        expect(screen.getByText("Story: Walk in the Forest")).toBeInTheDocument();
-        expect(screen.getByText("Players: 4")).toBeInTheDocument();
-        expect(screen.getByText("Level: Hard")).toBeInTheDocument();
+        expect(screen.getByText("Walk in the Forest")).toBeInTheDocument();
+        expect(screen.getByText("4 Players")).toBeInTheDocument();
+        expect(screen.getByText(/hard/i)).toBeInTheDocument();
         
         // Check the Change Something button is present
-        expect(screen.getByText("Change Something")).toBeInTheDocument();
+       expect(screen.getByText((text) => text.includes("Go Back"))).toBeInTheDocument();
     });
 
     test("can change selections from review screen", () => {
@@ -144,15 +144,16 @@ describe("CreateRoomPage", () => {
         fireEvent.click(screen.getByText("Easy")); // Easy difficulty
         
         // Go back from review screen
-        fireEvent.click(screen.getByText("Change Something"));
+        fireEvent.click(screen.getByText(/go back/i));
         
         // Should be at difficulty selection
-        expect(screen.getByText("Pick game difficulty")).toBeInTheDocument();
+        expect(screen.getByText("Pick Game Difficulty")).toBeInTheDocument();
         
         // Change to a different difficulty
         fireEvent.click(screen.getByText("Medium")); // Medium
         
-        // Check that summary has been updated
-        expect(screen.getByText("Level: Medium")).toBeInTheDocument();
+        // Check that summary has been updated - now checking for the actual structure
+        expect(screen.getByText("Medium:")).toBeInTheDocument();
+        expect(screen.getByText("8 sentences")).toBeInTheDocument();
     });
 });

@@ -61,25 +61,33 @@ export const JoinButton: React.FC = () => {
     );
 };
 
-/*Back Button - Used on Create Room Page and join room page */
-export const ExitButton: React.FC = () => {
-    const {speak} = useTextToSpeech(); // useTextToSpeech hook
+interface ExitButtonProps {
+  asLink?: boolean;
+  href?: string;
+  className?: string;
+}
+
+/*Back Button - Used on Create Room Page and join room page */export const ExitButton: React.FC<ExitButtonProps> = ({ asLink = false, href, className = '' }) => {
+    const { speak } = useTextToSpeech();
     const { buttonHandler, isSpeaking } = useButtonFeedback();
-    const handleClick = (text:string) => {
+    
+    const handleClick = (text: string) => {
         buttonHandler('back', text, speak);
+        if (asLink && href) {
+            window.location.href = href; // Programmatic navigation
+        }
     };
 
     const handleOnMouseEnter = (text: string) => {
-        if(!isSpeaking) // to avoid button audio cutoff
+        if (!isSpeaking) {
             speak(text);
-    }
+        }
+    };
 
     return (
         <button
-            className="button back-button"
-            onClick={() => {
-                handleClick("Exit");
-            }}
+            className={`button back-button ${className}`}
+            onClick={() => handleClick("Exit")}
             onMouseEnter={() => handleOnMouseEnter("Exit")}
         >
             <div className="svg-icon">
