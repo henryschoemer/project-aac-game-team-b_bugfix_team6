@@ -376,11 +376,11 @@ useEffect(() => {
 
   if (!ttsReady) {
     return (
-      <div className="flex items-center justify-center w-full h-full bg-yellow-100" style={containerStyle}>
+      <div className="flex items-center justify-center w-full h-full min-w-screen overflow-hidden bg-yellow-100" style={containerStyle}>
         {/* Avatar modal - now centered in iPad viewport */}
         {avatarModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-lg max-w-xs mx-auto">
+            <div className="bg-white p-6 rounded-lg w-[90vw] max-w-md mx-auto">
               <h2 className="text-xl font-bold mb-3 text-center text-black">Choose Your Avatar</h2>
               <div className="grid grid-cols-3 gap-3">
                 {availableAvatars.map((avatar) => (
@@ -415,7 +415,7 @@ useEffect(() => {
 
         <button
           onClick={handleStart}
-          className="w-[60%] h-[25%] text-4xl bg-orange-500 text-white font-extrabold rounded-2xl shadow-xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center animate-pulse"
+          className="w-[80%] max-w-[400px] h-[25%] text-4xl bg-orange-500 text-white font-extrabold rounded-2xl shadow-xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center animate-pulse"
         >
           🎮 START GAME
         </button>
@@ -425,10 +425,11 @@ useEffect(() => {
 
   return (
 
-  <div className="flex w-[1024px] h-[768px] overflow-hidden">
+  <div className="flex w-screen h-screen min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900">
+
 
     {/* Left Panel: AAC Tablet (40% width) */}
-    <div className="w-[40%] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">
+    <div className="w-[40%] min-w-[410px] max-w-[500px] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">
       {/* Player turns display - made more compact */}
       {playerNumber && (
         <div className="flex flex-col items-center justify-center mb-2 w-full">
@@ -629,12 +630,13 @@ return (
 
     {/* Right Panel: Game Scene (60% width) */}
     <div
-      className="w-[60%] relative bg-cover bg-center"
+      className="flex-1 relative bg-cover bg-center"
       style={{
         backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
         backgroundSize: "cover",
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
+        minWidth: "614px"
       }}
     >
       {/* Animated Images */}
