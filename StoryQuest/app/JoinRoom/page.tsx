@@ -31,7 +31,7 @@ interface QRScanFailedPopupProps {
             </svg>
           </button>
           
-          <h3 className="text-xl font-bold text-center mb-4">Need help scanning?</h3>
+          <h3 className="text-xl text-gray-700 font-bold text-center mb-4">Need help scanning?</h3>
           
           <div className="flex justify-center mb-4">
             <Image 
@@ -45,10 +45,7 @@ interface QRScanFailedPopupProps {
           
           <div className="text-center space-y-4">
             <p className="text-gray-700">
-              Make sure the QR code is well-lit and centered in the camera view.
-            </p>
-            <p className="text-gray-700">
-              Hold your device steady and give it a moment to focus.
+              Please follow the picture and hold the camera in veiw of the QR Code
             </p>
             <button
               onClick={onClose}
