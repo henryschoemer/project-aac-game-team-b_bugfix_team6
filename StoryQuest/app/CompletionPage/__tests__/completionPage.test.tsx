@@ -89,7 +89,7 @@ describe("Home Component", () => {
         fireEvent.click(screen.getByText("The Garden Adventure"));
 
         // Click "Go Back"
-        fireEvent.click(screen.getByText("Go Back"));
+        fireEvent.click(screen.getByRole('button', { name: /go back/i }));
 
         // Check if the story selection step is displayed again
         await waitFor(() => {
