@@ -88,7 +88,7 @@ interface ExitButtonProps {
         <button
             className={`button back-button ${className}`}
             onClick={() => handleClick("Exit")}
-            onMouseEnter={() => handleOnMouseEnter("Exit")}
+            //onMouseEnter={() => handleOnMouseEnter("Exit")}
         >
             <div className="svg-icon">
                 <Image
