@@ -22,6 +22,8 @@ export default {
       },
       fontFamily: {
         mono: ["'Anonymous Pro'", "monospace"],
+        'short-stack': ['"Short Stack"', 'cursive'],
+        'patrick-hand': ['"Patrick Hand"', 'cursive'],
       },
       colors: {
         background: "var(--background)",

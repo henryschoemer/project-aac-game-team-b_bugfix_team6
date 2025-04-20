@@ -21,6 +21,8 @@ jest.mock('use-sound', () => ({
 }));
 beforeAll(() => {
   Object.defineProperty(global.navigator, 'mediaDevices', {
+    configurable: true,
+    enumerable: false,
     writable: true,
     value: {
       getUserMedia: jest.fn().mockResolvedValue({}),
@@ -33,6 +35,6 @@ describe('JoinRoomPage', () => {
     render(<JoinRoomPage />);
 
     // Example check: Ensure the main title is in the document
-    expect(screen.getByText(/Scan Room QR Code/i)).toBeInTheDocument();
+    expect(screen.getByText("Scan Below")).toBeInTheDocument();
   });
 });
