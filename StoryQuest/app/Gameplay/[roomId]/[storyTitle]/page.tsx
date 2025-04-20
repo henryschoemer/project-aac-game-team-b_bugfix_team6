@@ -390,11 +390,11 @@ useEffect(() => {
 
   if (!ttsReady) {
     return (
-      <div className="flex items-center justify-center w-full h-full bg-yellow-100" style={containerStyle}>
+      <div className="flex items-center justify-center w-full h-full min-w-screen overflow-hidden bg-yellow-100" style={containerStyle}>
         {/* Avatar modal - now centered in iPad viewport */}
         {avatarModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-lg max-w-xs mx-auto">
+            <div className="bg-white p-6 rounded-lg w-[90vw] max-w-md mx-auto">
               <h2 className="text-xl font-bold mb-3 text-center text-black">Choose Your Avatar</h2>
               <div className="grid grid-cols-3 gap-3">
                 {availableAvatars.map((avatar) => (
@@ -427,7 +427,7 @@ useEffect(() => {
 
         <button
           onClick={handleStart}
-          className="w-[60%] h-[25%] text-4xl bg-orange-500 text-white font-extrabold rounded-2xl shadow-xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center animate-pulse"
+          className="w-[80%] max-w-[400px] h-[25%] text-4xl bg-orange-500 text-white font-extrabold rounded-2xl shadow-xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center animate-pulse"
         >
           🎮 START GAME
         </button>
