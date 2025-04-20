@@ -206,7 +206,7 @@ export default function JoinRoomPage() {
                 setFailedAttempts(newFailedAttempts);
                 
                 // Show popup after 3 failed attempts
-                if (newFailedAttempts >= 3) {
+                if (newFailedAttempts >= 5) {
                     setShowFailedPopup(true);
                 }
             }
@@ -260,8 +260,8 @@ export default function JoinRoomPage() {
                                         priority
                                     />
                                     <p className="mt-2 text-sm text-gray-600 text-center">
-                                        {step === 1 && "1. Find code"}
-                                        {step === 2 && "2. Scan code"}
+                                        {step === 1 && "1. Find the picture"}
+                                        {step === 2 && "2. Scan the picture"}
                                         {step === 3 && "3. Play together"}
                                         {step === 4 && "4. Enjoy"}
                                     </p>
