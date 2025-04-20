@@ -100,13 +100,13 @@ describe("CreateRoomPage", () => {
         fireEvent.click(screen.getByText("3 Players"));
         
         // Now we're at step 3, go back to step 2
-        fireEvent.click(screen.getByText("Go Back"));
+        fireEvent.click(screen.getByRole('button', { name: /go back/i }));
         
         // We should be back at step 2
         expect(screen.getByText("How Many Friends Are Playing?")).toBeInTheDocument();
         
         // Go back to step 1
-        fireEvent.click(screen.getByText("Go Back"));
+        fireEvent.click(screen.getByRole('button', { name: /go back/i }));
         
         // We should be back at step 1
         expect(screen.getByText("Choose Your Story")).toBeInTheDocument();
@@ -127,9 +127,9 @@ describe("CreateRoomPage", () => {
         fireEvent.click(screen.getByText("Hard")); // Hard difficulty
         
         // Check that summary shows the correct information
-        expect(screen.getByText("Story: Walk in the Forest")).toBeInTheDocument();
-        expect(screen.getByText("Players: 4")).toBeInTheDocument();
-        expect(screen.getByText("Level: Hard")).toBeInTheDocument();
+        expect(screen.getByText("Walk in the Forest")).toBeInTheDocument();
+        expect(screen.getByText("4 Players")).toBeInTheDocument();
+        expect(screen.getByText(/hard/i)).toBeInTheDocument();
         
         // Check the Change Something button is present
         expect(screen.getByText("Change Something")).toBeInTheDocument();

@@ -13,7 +13,7 @@ import CompletionPage from "../../../CompletionPage/page";
 import TextToSpeechTextOnly2 from "@/Components/TextToSpeechTextOnly2";
 import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
-import { doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, serverTimestamp, collection, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
+import { doc, getDoc, setDoc, updateDoc, onSnapshot, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -39,27 +39,6 @@ const getImageAnimation = () => ({
   transition: { duration: 0.8, ease: "easeOut" }, // Smooth animation with a standard easing.
 });
 
-//This saves the player info such as their avatar, number, and playerId
-async function savePlayerProfile(
-  roomId: string,
-  playerId: string,
-  avatar: string,
-  playerNumber: number
-) {
-  console.log("savePlayerProfile:", { roomId, playerId, avatar, playerNumber });
-  const playerRef = doc(db, "games", roomId, "players", playerId);
-  try {
-    await setDoc(playerRef, {
-      avatar,
-      playerNumber,
-      joinedAt: serverTimestamp(),
-    });
-  } catch (e) {
-    console.error("Failed to write player doc:", e);
-    throw e;
-  }
-}
-
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const { playSound } = useAACSounds(); // aac mp3 sound hook
@@ -83,7 +62,6 @@ export default function Home() {
   const [showSparkles, setShowSparkles] = useState<boolean[]>([]);
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
-  const [showBlockAACButtonOverlay, setShowBlockAACButtonOverlay] = useState(false); // Is shown at "The end!" phrase
 
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
@@ -103,17 +81,6 @@ const gameFinished = lastCompleted === "The End!";
 useEffect(() => {
   if (!roomId) return;
 
-  //Creates a new sub-collection "players" in game collection and stores player info
-  const playersCol = collection(db, "games", roomId, "players");
-  const unsubscribePlayers = onSnapshot(playersCol, (snap) => {
-    const avatars: Record<number,string> = {};
-      snap.docs.forEach(d => {
-        const data = d.data() as { avatar: string; playerNumber: number };
-        avatars[data.playerNumber] = data.avatar;
-    });
-    setPlayerAvatars(avatars);
-  });
-
   const gameRef = doc(db, "games", roomId);
 
   const unsubscribe = onSnapshot(gameRef, (snapshot) => {
@@ -128,6 +95,14 @@ useEffect(() => {
       setCompletedImages(gameData.completedImages || []);
       setCurrentTurn(gameData.currentTurn || 1);
       setStoryCompleted(gameData.gameStatus === "completed");
+
+      //Sets avatars in array to match with player numbers
+      setPlayerAvatars({
+        1: gameData.player1Avatar,
+        2: gameData.player2Avatar,
+        3: gameData.player3Avatar,
+        4: gameData.player4Avatar,
+      });
 
       if (gameData.gameStatus === "completed" && gameData.ttsDone) {
         setTimeout(() => {
@@ -165,66 +140,87 @@ useEffect(() => {
 
 
   //Assigning player #'s
-  const handleConfirmAvatar = async () => {
-    if (!selectedAvatar) return alert("Pick one!");
-    const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
-    sessionStorage.setItem("player-uid", myId);
-
-    await runTransaction(db, async tx => {
-      const gameRef = doc(db, "games", roomId);
-      const roomRef = doc(db, "rooms", roomId);
-      const [gameSnap, roomSnap] = await Promise.all([tx.get(gameRef), tx.get(roomRef)]);
-      const roomData = roomSnap.exists() ? roomSnap.data() : {};
-      const roomNumPlayers = roomData.numPlayers || 4;
-
-      if (!gameSnap.exists()) {
-        // first join: create game doc
-        tx.set(gameRef, {
-          player1Id: myId,
-          currentTurn: 1,
-          maxPlayers: roomNumPlayers,
-          currentSectionIndex: 0,
-          currentPhrase: currentStory!.sections[0].phrase,
-          completedPhrases: [],
-          completedImages: [],
-          gameStatus: "in_progress",
-          lastUpdated: serverTimestamp()
-        });
-        setPlayerNumber(1);
-      } else {
-        const data = gameSnap.data();
-        // assign next free slot
-        if (!data.player2Id && roomNumPlayers > 1) {
-          tx.update(gameRef, { player2Id: myId });
-          setPlayerNumber(2);
-        } else if (!data.player3Id && roomNumPlayers > 2) {
-          tx.update(gameRef, { player3Id: myId });
-          setPlayerNumber(3);
-        } else if (!data.player4Id && roomNumPlayers > 3) {
-          tx.update(gameRef, { player4Id: myId });
-          setPlayerNumber(4);
-        } else {
-          throw new Error("Room is full");
-        }
-      }
-    });
-
-    // save avatar to sub-collection
-    const playersCol = collection(db, "games", roomId, "players");
-    const snapshot = await getDocs(playersCol);
-    const myNum = snapshot.size + 1;
-    await savePlayerProfile(roomId, myId, selectedAvatar, myNum);
-
-    setAvatarModalOpen(false);
-    speechSynthesis.getVoices();
-    setTtsReady(true);
-  };
-
   useEffect(() => {
-    const isEnd       = phrase === "The End!";
-    const notYourTurn = playerNumber !== null && currentTurn !== null && playerNumber !== currentTurn;
-    setShowBlockAACButtonOverlay(isEnd || notYourTurn);
-  }, [phrase, playerNumber, currentTurn]);
+    if (!roomId || !currentStory) return;
+  
+    const assignPlayer = async () => {
+      const gameRef = doc(db, "games", roomId);
+      // Also retrieve the room doc to access numPlayers if needed
+      const roomRef = doc(db, "rooms", roomId);
+      const roomSnap = await getDoc(roomRef);
+      let roomNumPlayers = 4; // default
+      if (roomSnap.exists()) {
+        const roomData = roomSnap.data();
+        roomNumPlayers = roomData.numPlayers;
+      }
+  
+      const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
+      sessionStorage.setItem("player-uid", myId);
+  
+      try {
+        await runTransaction(db, async (transaction) => {
+          const gameDoc = await transaction.get(gameRef);
+  
+          // If the game doc doesn't exist, create it.
+          if (!gameDoc.exists()) {
+            transaction.set(gameRef, {
+              player1Id: myId,
+              player1Avatar: selectedAvatar,
+              currentTurn: 1,
+              maxPlayers: roomNumPlayers, // using value from room document
+              completedPhrases: [],
+              completedImages: [],
+              currentSectionIndex: 0,
+              currentPhrase: currentStory.sections[0].phrase,
+              lastUpdated: new Date(),
+              gameStatus: "in_progress",
+            });
+            setPlayerNumber(1);
+            return;
+          }
+  
+          // check what player slot is available in the transaction
+          const data = gameDoc.data();
+  
+          if (data.player1Id === myId) {
+            setPlayerNumber(1);
+            return;
+          } else if (data.player2Id === myId) {
+            setPlayerNumber(2);
+            return;
+          } else if (data.player3Id === myId) {
+            setPlayerNumber(3);
+            return;
+          } else if (data.player4Id === myId) {
+            setPlayerNumber(4);
+            return;
+          }
+  
+          // Assign the next free slot, using maxPlayers (or roomNumPlayers)
+          if (!data.player1Id) {
+            transaction.update(gameRef, { player1Id: myId, player1Avatar: selectedAvatar });
+            setPlayerNumber(1);
+          } else if (!data.player2Id && (data.maxPlayers || roomNumPlayers) > 1) {
+            transaction.update(gameRef, { player2Id: myId, player2Avatar: selectedAvatar });
+            setPlayerNumber(2);
+          } else if (!data.player3Id && (data.maxPlayers || roomNumPlayers) > 2) {
+            transaction.update(gameRef, { player3Id: myId, player3Avatar: selectedAvatar });
+            setPlayerNumber(3);
+          } else if (!data.player4Id && (data.maxPlayers || roomNumPlayers) > 3) {
+            transaction.update(gameRef, { player4Id: myId, player4Avatar: selectedAvatar });
+            setPlayerNumber(4);
+          } else {
+            throw new Error("Room is full!");
+          }
+        });
+      } catch (error) {
+        console.error("Player assignment transaction failed: ", error);
+        alert("Failed to join the room. Please try again.");
+      }
+    };
+  
+    assignPlayer();
+  }, [roomId, currentStory]);
 
   /*useEffect(() => {
     setIsMounted(true);
@@ -311,7 +307,12 @@ useEffect(() => {
         lastUpdated: new Date(),
         gameStatus: isLastSection ? "completed" : "in_progress",
       };
-      await setDoc(gameRef, gameDataToSave, { merge: true });
+
+      if (docSnap.exists()) {
+        await updateDoc(gameRef, gameDataToSave);
+      } else {
+        await setDoc(gameRef, gameDataToSave);
+      }
      }
 
      setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
@@ -326,7 +327,7 @@ useEffect(() => {
        setPhrase("The End!");
      }
    };
-  
+
     // Delay completion page overlay by 3 seconds
     /*useEffect(() => {
         let timeoutId: NodeJS.Timeout;
@@ -379,6 +380,7 @@ useEffect(() => {
 
   const handleAACSelect = (word: string) => {
     if (playerNumber !== currentTurn) {
+      alert("Waiting for other player");
       return;
     }
     console.log("AAC Button Clicked:", word);
@@ -401,74 +403,55 @@ useEffect(() => {
                     onClick={() => setSelectedAvatar(avatar)}
                     className={`text-3xl p-1 rounded-full border-4 ${
                       selectedAvatar === avatar ? "border-green-500" : "border-transparent"
-
                     }`}
                   >
-                    {a}
+                    {avatar}
                   </button>
                 ))}
               </div>
               <button
-
-                onClick={handleConfirmAvatar}
-                className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded"
+                onClick={() => {
+                  if (selectedAvatar) {
+                    setAvatarModalOpen(false);
+                    speechSynthesis.getVoices();
+                    setTtsReady(true);
+                  }
+                }}
+                className="mt-3 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-1 px-4 rounded text-xl"
               >
                 ✅ Start Game
               </button>
             </div>
           </div>
-        ) : (
-          <div className="flex items-center justify-center h-screen bg-yellow-100">
-            <button
-              onClick={() => setAvatarModalOpen(true)}
-              className="w-[80%] h-[30vh] text-5xl bg-orange-500 text-white font-extrabold rounded-2xl shadow-2xl hover:bg-orange-600 transition animate-pulse"
-            >
-              🎮 START GAME
-            </button>
-          </div>
         )}
-          </>
-          );
-        }
+
+        <button
+          onClick={handleStart}
+          className="w-[60%] h-[25%] text-4xl bg-orange-500 text-white font-extrabold rounded-2xl shadow-xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center animate-pulse"
+        >
+          🎮 START GAME
+        </button>
+      </div>
+    );
+  }
 
   return (
   <div className="flex w-[1024px] h-[768px] overflow-hidden">
-    {/* Left Panel: AAC Tablet */}
-    <div className={`w-[40%] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e] ${showBlockAACButtonOverlay ? 'blocked' : ''}`}>
-      <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
-        {/* Player turns display - merged version */}
-        {playerNumber && (
-          <div className="flex flex-col items-center justify-center mb-2 space-y-2">
-            <div className="grid grid-cols-4 gap-2 w-full">
-              {Object.entries(playerAvatars)
-                .sort(([a], [b]) => Number(a) - Number(b))
-                .map(([num, avatar]) => (
-                  <div key={num} className="flex flex-col items-center">
-                    <span
-                      className={`text-3xl p-1 rounded-full ${
-                        currentTurn === Number(num)
-                          ? "border-4 border-green-500"
-                          : "border-2 border-gray-400"
-                      }`}
-                    >
-                      {avatar}
-                    </span>
-                    <span className="text-sm font-bold">Player {num}</span>
-                  </div>
-                ))}
-            </div>
-            <div className="mt-2 text-center">
-              {playerNumber === currentTurn ? (
-                <p className="text-xl font-extrabold text-green-600 animate-pulse">✅ YOUR TURN!</p>
-              ) : (
-                <p className="text-lg text-gray-600">
-                  ⏳ Waiting for <span className="font-bold">Player {currentTurn}</span>
-                </p>
-              )}
-            </div>
-          </div>
-        )}
 
+    {/* Left Panel: AAC Tablet (40% width) */}
+    <div className="w-[40%] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">
+      {/* Player turns display - made more compact */}
+      {playerNumber && (
+        <div className="flex flex-col items-center justify-center mb-2 w-full">
+          <div className="grid grid-cols-4 gap-2 w-full">
+            {Array.from({ length: maxPlayers }, (_, i) => i + 1).map((num) => {
+              const avatarToShow = playerAvatars[num] || availableAvatars[num - 1] || "👤";
+              return (
+                <div key={num} className="flex flex-col items-center">
+                  <span className={`text-3xl p-1 rounded-full ${currentTurn === num ? "border-4 border-green-500" : "border-2 border-gray-400"}`}>
+                    {avatarToShow}
+                  </span>
+                  <span className="text-sm font-bold">P{num}</span>
                 </div>
               );
             })}
