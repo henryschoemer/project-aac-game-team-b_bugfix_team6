@@ -13,7 +13,7 @@ import CompletionPage from "../../../CompletionPage/page";
 import TextToSpeechTextOnly2 from "@/Components/TextToSpeechTextOnly2";
 import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
-import { doc, getDoc, updateDoc, onSnapshot, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
+import { doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, serverTimestamp, collection, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -29,7 +29,7 @@ const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const availableAvatars = ["🐯", "🐻", "🐘", "🐵", "🐬", "🦋"];
+const availableAvatars = ["🐯", "🐻", "🦄", "🐰", "🐬", "🦋"];
 
 // getImageAnimation: Returns a reusable animation configuration for images.
 const getImageAnimation = () => ({
@@ -45,6 +45,27 @@ const getNumPhrases = (difficulty: 'easy' | 'medium' | 'hard') => {
   if (difficulty === "hard") return 12;
   return 8; // default
 };
+
+//This saves the player info such as their avatar, number, and playerId
+async function savePlayerProfile (
+  roomId: string,
+  playerId: string,
+  avatar: string,
+  playerNumber: number
+) {
+  console.log("savePlayerProfile:", { roomId, playerId, avatar, playerNumber });
+  const playerRef = doc(db, "games", roomId, "players", playerId);
+  try {
+    await setDoc(playerRef, {
+      avatar,
+      playerNumber,
+      joinedAt: serverTimestamp(),
+    });
+  } catch (e) {
+    console.error("Failed to write player doc:", e);
+    throw e;
+  }
+}
 
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
@@ -73,6 +94,7 @@ export default function Home() {
   const numberOfPhrasesForGame = getNumPhrases(difficulty); // Derive from difficulty
   const trimmedSections = currentStory?.sections.slice(0, numberOfPhrasesForGame) || [];
   const [blockOverlay, setBlockOverlay] = useState<boolean>(false);
+  const [showInitialPlayOverlay, setShowInitialPlayOverlay] = useState(true);
 
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
@@ -93,6 +115,17 @@ const gameFinished = lastCompleted === "The End!";
 useEffect(() => {
   if (!roomId) return;
 
+  //Creates a new sub-collection "players" in game collection and stores player info
+  const playersCol = collection(db, "games", roomId, "players");
+  const unsubscribePlayers = onSnapshot(playersCol, (snap) => {
+    const avatars: Record<number,string> = {};
+      snap.docs.forEach(d => {
+        const data = d.data() as { avatar: string; playerNumber: number };
+        avatars[data.playerNumber] = data.avatar;
+    });
+    setPlayerAvatars(avatars);
+  });
+
   const gameRef = doc(db, "games", roomId);
 
   const unsubscribe = onSnapshot(gameRef, (snapshot) => {
@@ -100,22 +133,19 @@ useEffect(() => {
       const gameData = snapshot.data();
       console.log("Firestore data received:", gameData);
 
+      const dbPhrase = gameData.currentPhrase ?? "";
+      if (dbPhrase.trim() !== "") {
+        setPhrase(dbPhrase);
+      }
+
       setMaxPlayers(gameData.maxPlayers || 4);
       setCurrentSectionIndex(gameData.currentSectionIndex || 0);
-      setPhrase(gameData.currentPhrase || "");
+      //setPhrase(gameData.currentPhrase || "");
       setCompletedPhrases(gameData.completedPhrases || []);
       setCompletedImages(gameData.completedImages || []);
       setCurrentTurn(gameData.currentTurn || 1);
       setStoryCompleted(gameData.gameStatus === "completed");
       setDifficulty(gameData.difficulty || 'easy'); // Load difficulty from DB
-
-      //Sets avatars in array to match with player numbers
-      setPlayerAvatars({
-        1: gameData.player1Avatar,
-        2: gameData.player2Avatar,
-        3: gameData.player3Avatar,
-        4: gameData.player4Avatar,
-      });
 
       if (gameData.gameStatus === "completed" && gameData.ttsDone) {
         setTimeout(() => {
@@ -150,13 +180,10 @@ useEffect(() => {
   const selectedStory = stories.find((s) => s.title === storyTitle);
   const storyToUse = selectedStory || stories[0];
 
-  const numPhrases = getNumPhrases(difficulty);
-  const initialSections = storyToUse.sections.slice(0, numPhrases);
-
-  setCurrentStory({ ...storyToUse, sections: initialSections });
-  setPhrase(initialSections[0]?.phrase || ""); // Start with the first phrase of the limited sections
+  setCurrentStory(storyToUse);
+  setPhrase(storyToUse.sections[0].phrase);
   setIsMounted(true);
-}, [storyTitle, stories, difficulty]);
+}, [storyTitle, stories]);
 
     //Ipad dimensions
     const containerStyle = {
@@ -167,100 +194,94 @@ useEffect(() => {
 
 
   //Assigning player #'s
-  useEffect(() => {
-    if (!roomId || !currentStory) return;
+  const handleConfirmAvatar = async () => {
+    if (!selectedAvatar) return alert("Pick one!");
+    const myId = crypto.randomUUID();
+    sessionStorage.setItem("player-uid", myId);
 
-    const assignPlayer = async () => {
+    await runTransaction(db, async tx => {
       const gameRef = doc(db, "games", roomId);
-      // Also retrieve the room doc to access numPlayers if needed
       const roomRef = doc(db, "rooms", roomId);
-      const roomSnap = await getDoc(roomRef);
-      let roomNumPlayers = 4; // default
-      if (roomSnap.exists()) {
-        const roomData = roomSnap.data();
-        roomNumPlayers = roomData.numPlayers;
-      }
+      const [gameSnap, roomSnap] = await Promise.all([tx.get(gameRef), tx.get(roomRef)]);
+      const roomData = roomSnap.exists() ? roomSnap.data() : {};
+      const roomNumPlayers = roomData.numPlayers || 4;
 
-      const myId = sessionStorage.getItem("player-uid") || crypto.randomUUID();
-      sessionStorage.setItem("player-uid", myId);
-
-      try {
-        await runTransaction(db, async (transaction) => {
-          const gameDoc = await transaction.get(gameRef);
-
-          // If the game doc doesn't exist, create it.
-          if (!gameDoc.exists()) {
-            transaction.set(gameRef, {
-              player1Id: myId,
-              player1Avatar: selectedAvatar,
-              currentTurn: 1,
-              maxPlayers: roomNumPlayers, // using value from room document
-              completedPhrases: [],
-              completedImages: [],
-              currentSectionIndex: 0,
-              currentPhrase: currentStory.sections[0].phrase,
-              lastUpdated: new Date(),
-              gameStatus: "in_progress",
-              difficulty: difficulty, // Initialize difficulty in DB
-              numberOfPhrases: numberOfPhrasesForGame, // Initialize number of phrases
-            });
-            setPlayerNumber(1);
-            return;
-          }
-
-          // check what player slot is available in the transaction
-          const data = gameDoc.data();
-
-          if (data.player1Id === myId) {
-            setPlayerNumber(1);
-            return;
-          } else if (data.player2Id === myId) {
-            setPlayerNumber(2);
-            return;
-          } else if (data.player3Id === myId) {
-            setPlayerNumber(3);
-            return;
-          } else if (data.player4Id === myId) {
-            setPlayerNumber(4);
-            return;
-          }
-
-          // Assign the next free slot, using maxPlayers (or roomNumPlayers)
-          if (!data.player1Id) {
-            transaction.update(gameRef, { player1Id: myId, player1Avatar: selectedAvatar });
-            setPlayerNumber(1);
-          } else if (!data.player2Id && (data.maxPlayers || roomNumPlayers) > 1) {
-            transaction.update(gameRef, { player2Id: myId, player2Avatar: selectedAvatar });
-            setPlayerNumber(2);
-          } else if (!data.player3Id && (data.maxPlayers || roomNumPlayers) > 2) {
-            transaction.update(gameRef, { player3Id: myId, player3Avatar: selectedAvatar });
-            setPlayerNumber(3);
-          } else if (!data.player4Id && (data.maxPlayers || roomNumPlayers) > 3) {
-            transaction.update(gameRef, { player4Id: myId, player4Avatar: selectedAvatar });
-            setPlayerNumber(4);
-          } else {
-            throw new Error("Room is full!");
-          }
+      if (!gameSnap.exists()) {
+        // first join: create game doc
+        tx.set(gameRef, {
+          player1Id: myId,
+          currentTurn: 1,
+          maxPlayers: roomNumPlayers,
+          currentSectionIndex: 0,
+          currentPhrase: currentStory!.sections[0].phrase,
+          completedPhrases: [],
+          completedImages: [],
+          gameStatus: "in_progress",
+          difficulty: difficulty, // Initialize difficulty in DB
+          numberOfPhrases: numberOfPhrasesForGame, // Initialize number of phrases
+          lastUpdated: serverTimestamp()
         });
-      } catch (error) {
-        console.error("Player assignment transaction failed: ", error);
-        alert("Failed to join the room. Please try again.");
+        setPlayerNumber(1);
+        return;
+      } 
+
+        const data = gameSnap.data();
+
+        // assign next free slot
+        if (!data.player1Id) {
+          tx.update(gameRef, { player1Id: myId });
+          setPlayerNumber(1);
+          return;
+        }
+        // ——— then slot 2 ———
+        if (!data.player2Id && roomNumPlayers > 1) {
+          tx.update(gameRef, { player2Id: myId });
+          setPlayerNumber(2);
+          return;
+        }
+        // ——— then slot 3 ———
+        if (!data.player3Id && roomNumPlayers > 2) {
+          tx.update(gameRef, { player3Id: myId });
+          setPlayerNumber(3);
+          return;
+        }
+        // ——— then slot 4 ———
+        if (!data.player4Id && roomNumPlayers > 3) {
+          tx.update(gameRef, { player4Id: myId });
+          setPlayerNumber(4);
+          return;
+        }
+        
+        throw new Error("Room is full");
       }
-    };
+    );
 
-    assignPlayer();
-  }, [roomId, currentStory, difficulty, numberOfPhrasesForGame]); 
+    // save avatar to sub-collection
+    const playersCol = collection(db, "games", roomId, "players");
+    const snapshot = await getDocs(playersCol);
+    const myNum = snapshot.size + 1;
+    await savePlayerProfile(roomId, myId, selectedAvatar, myNum);
 
-
-  const handleStart = () => {
-    // If no avatar is selected yet, open the modal.
-    if (!selectedAvatar) {
-      setAvatarModalOpen(true);
-    } else {
-      speechSynthesis.getVoices(); // Prime voice loading
-      setTtsReady(true);
-    }
+    setAvatarModalOpen(false);
+    speechSynthesis.getVoices();
+    setTtsReady(true);
   };
+
+  useEffect(() => {
+    const isEnd = phrase === "The End!";
+    const notYourTurn = playerNumber !== null && currentTurn !== null && playerNumber !== currentTurn;
+    setBlockOverlay(isEnd || notYourTurn);
+  }, [phrase, playerNumber, currentTurn]);
+
+  const speakCurrentPhrase = useCallback(() => {
+    const u = new SpeechSynthesisUtterance(phrase);
+    u.addEventListener("end", () => {
+      // once it finishes, remove the overlay
+      setShowInitialPlayOverlay(false);
+    });
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }, [phrase]);
 
   const handleStoryChange = async (story: Story, phraseLimit: number) => {
     setCurrentStory(story);
@@ -319,6 +340,7 @@ useEffect(() => {
        ? "The End!"
        : trimmedSections[nextSectionIndex]?.phrase || "The End!"; // Access phrase from trimmedSections
 
+    //if game already exists just update game document, else create new game document
      const gameDataToSave = {
        completedPhrases: [...completedPhrases, newPhrase],
        completedImages: [...completedImages, newImage],
@@ -333,8 +355,8 @@ useEffect(() => {
        gameStatus: isLastSection ? "completed" : "in_progress",
        numberOfPhrases: numberOfPhrasesForGame, // Ensure this is saved
      };
-
-     await updateDoc(gameRef, gameDataToSave);
+     await setDoc(gameRef, gameDataToSave, { merge: true });
+     // await updateDoc(gameRef, gameDataToSave);
      if (!isLastSection) {
       setCurrentSectionIndex(nextSectionIndex);
       // Set the next phrase from the trimmed sections
@@ -346,14 +368,14 @@ useEffect(() => {
     
     }
 
-    setCompletedPhrases([...completedPhrases, newPhrase]);setCompletedImages([...completedImages, newImage]);
+    setCompletedPhrases([...completedPhrases, newPhrase]);
+    setCompletedImages([...completedImages, newImage]);
     setShowSparkles((prev) => [...prev, true]);
 
   }
 
     const handleAACSelect = (word: string) => {
     if (playerNumber !== currentTurn) {
-      alert("Waiting for other player");
       return;
     }
     console.log("AAC Button Clicked:", word);
@@ -370,54 +392,66 @@ useEffect(() => {
 
   if (!ttsReady) {
     return (
+      <>
       <div className="flex items-center justify-center w-full h-full min-w-screen overflow-hidden bg-yellow-100" style={containerStyle}>
         {/* Avatar modal - now centered in iPad viewport */}
-        {avatarModalOpen && (
+        {avatarModalOpen ? (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white p-6 rounded-lg w-[90vw] max-w-md mx-auto">
               <h2 className="text-xl font-bold mb-3 text-center text-black">Choose Your Avatar</h2>
               <div className="grid grid-cols-3 gap-3">
-                {availableAvatars.map((avatar) => (
-                  <button
-                    key={avatar}
-                    onClick={() => setSelectedAvatar(avatar)}
-                    className={`text-3xl p-1 rounded-full border-4 ${
-                      selectedAvatar === avatar ? "border-green-500" : "border-transparent"
-                    }`}
-                  >
-                    {avatar}
-                  </button>
-                ))}
+                {availableAvatars.map(a => (
+                    <button
+                      key={a}
+                      onClick={() => setSelectedAvatar(a)}
+                      className={`text-4xl p-2 rounded-full border-4 ${
+                        selectedAvatar === a ? "border-green-500" : "border-transparent"
+                      }`}
+                    >
+                      {a}
+                    </button>
+                  ))}
               </div>
               <button
-                onClick={() => {
-                  if (selectedAvatar) {
-                    setAvatarModalOpen(false);
-                    speechSynthesis.getVoices();
-                    setTtsReady(true);
-                  }
-                }}
-
-                className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">
-
-                ✅ Start Game
-
+                onClick={handleConfirmAvatar}
+                className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded"
+              >
+                ✅
               </button>
             </div>
           </div>
-        )}
-
-        <button
-          onClick={handleStart}
-          className="w-[80%] max-w-[400px] h-[25%] text-4xl bg-orange-500 text-white font-extrabold rounded-2xl shadow-xl hover:bg-orange-600 transition-all duration-300 flex items-center justify-center animate-pulse"
-        >
-          🎮 START GAME
+        ) : (
+          <div className="flex items-center justify-center h-screen bg-yellow-100">
+            <button
+              onClick={() => setAvatarModalOpen(true)}
+              className="w-[80%] h-[30vh] text-5xl bg-orange-500 text-white font-extrabold rounded-2xl shadow-2xl hover:bg-orange-600 transition animate-pulse"
+            >
+              🎮 START GAME
         </button>
       </div>
+        )}
+      </div>
+      </>
     );
   }
 
   return (
+    <>
+    {showInitialPlayOverlay && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+        style={{ backdropFilter: "blur(4px)" }}
+      >
+        <button
+          onClick={speakCurrentPhrase}
+          className="text-9xl p-8 bg-white rounded-full shadow-xl animate-pulse"
+          aria-label="Press to start reading"
+        >
+          ▶️
+        </button>
+      </div>
+    )}
+
 <div className="flex w-screen h-screen min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900">
   
   {/* Left Panel: */}
@@ -426,47 +460,60 @@ useEffect(() => {
     {playerNumber && (
       <div className="flex flex-col items-center justify-center mb-2 w-full">
         <div className="grid grid-cols-4 gap-2 w-full">
-          {Array.from({ length: maxPlayers }, (_, i) => i + 1).map((num) => {
-            const avatarToShow = playerAvatars[num] || availableAvatars[num - 1] || "👤";
-            return (
-              <div key={num} className="flex flex-col items-center">
-                <span className={`text-3xl p-1 rounded-full ${currentTurn === num ? "border-4 border-green-500" : "border-2 border-gray-400"}`}>
-                  {avatarToShow}
-                </span>
-                <span className="text-sm font-bold">P{num}
-                </span>
-              </div>
-            );
-          })}
+          {Object.entries(playerAvatars)
+                    .sort(([a], [b]) => Number(a) - Number(b))
+                    .map(([num, avatar]) => {
+                      const slot = Number(num);
+                      const isActive = slot === currentTurn;
+                      return (
+                        <div key={num} className="flex flex-col items-center">
+                          <span
+                            className={`
+                              ${isActive ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 scale-150 animate-pulse glow" 
+                                        : "text-5xl p-2 border-2 border-gray-400"}
+                              rounded-full 
+                            `}
+                            style={{ transition: "transform 0.3s ease-in-out" }}
+                          >
+                            {avatar}
+                          </span>
+                        </div>
+                      );
+                  })}
         </div>
       
           <div className="mt-2 text-center w-full">
             {playerNumber === currentTurn ? (
-              <p className="text-xl font-extrabold text-green-600 animate-pulse">YOUR TURN!</p>
+              <p className="text-2xl font-extrabold text-green-600 animate-pulse">YOUR TURN!</p>
             ) : (
-              <p className="text-lg text-gray-600">
-                ⏳ Player {currentTurn}
+              <p className="text-2xl text-gray-600">
+                ⏳ Waiting for{" "}
+                <span className="font-bold text-5xl inline-block">
+                  {playerAvatars[currentTurn]}
+                </span>
+                ...
               </p>
             )}
           </div>
         </div>
     )}
-
-    <AACKeyboard
-      onSelect={handleAACSelect}
-      symbols={trimmedSections[currentSectionIndex] // Use trimmedSections here
-        ? Object.entries(trimmedSections[currentSectionIndex].words).map(
-          ([word, data]) => ({
-            word: word,
-            image: `/images/${data.image}`,
-            displayText: word
-          }))
-        : []
-      }
-      backgroundColor={currentStory?.colorTheme.backgroundColor}
-      buttonColor={currentStory?.colorTheme.buttonColor}
-      blockButtons={blockOverlay} // Last phrase "The End!"
-    />
+    <div className={`aac-blocking-container ${blockOverlay ? "blocked" : ""}`}>
+      <AACKeyboard
+        onSelect={handleAACSelect}
+        symbols={trimmedSections[currentSectionIndex] // Use trimmedSections here
+          ? Object.entries(trimmedSections[currentSectionIndex].words).map(
+            ([word, data]) => ({
+              word: word,
+              image: `/images/${data.image}`,
+              displayText: word
+            }))
+          : []
+        }
+        backgroundColor={currentStory?.colorTheme.backgroundColor}
+        buttonColor={currentStory?.colorTheme.buttonColor}
+        blockButtons={blockOverlay} // Last phrase "The End!"
+      />
+    </div>
 
     <TextToSpeechAACButtons text={phrase} />
   </div>
@@ -634,18 +681,26 @@ useEffect(() => {
           onComplete={() => {
             console.log("Gameplay: Story is completed!");
             setStoryCompleted(true);
-            setTimeout(() => {
+            /*setTimeout(() => {
               setShowOverlay(true);
-            }, 3000); // Show the CompletionPage after a delay
+            }, 3000); Show the CompletionPage after a delay*/
           }}
         />
       </div>
     )}
 
+    {showOverlay && (
+      <div className="overlay">
+        <CompletionPage/>
+      </div>
+    )}
+
+
+  </div>
   </div>
 
   {/* TTS Components */}
-  {phrase && <TextToSpeechTextOnly2 key={phrase} text={phrase} />}
+  {/*{phrase && <TextToSpeechTextOnly2 key={phrase} text={phrase} />}
 
   {phrase === "The End!" && (
     <CompletedStory2
@@ -660,6 +715,7 @@ useEffect(() => {
     <div className="fixed inset-0 z-50">
       <CompletionPage/>
     </div>
-  )}
-</div>
-  )}
+  )}*/}
+</>
+);
+}
