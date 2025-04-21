@@ -51,11 +51,6 @@ export default function CompletionPage() {
         buttonHandler('back', text, speak);
     };
 
-    const handleOnMouseEnter =(text:string)=>{
-        if(!isSpeaking) // to avoid button click audio cutoff
-            speak(text);
-    }
-
     const handlePlayAgain = (text:string) => {
         buttonHandler('select', text, speak);
     };
@@ -120,7 +115,6 @@ export default function CompletionPage() {
                                         handlePlayAgain('play again');
                                         setShowStoryOptions(true)
                                     }}
-                                    onMouseEnter={() => speak("Play Again")}
                                 >
                                     <div className="svg-icon">
                                     <Image
@@ -170,7 +164,6 @@ export default function CompletionPage() {
                                         onClick={() => {
                                             handleStoryClick("The Garden Adventure");
                                         }}
-                                        onMouseEnter={() => handleOnMouseEnter("The Garden Adventure")}
                                     >
                                         <img
                                             src="/images/garden-background.webp"
@@ -185,7 +178,6 @@ export default function CompletionPage() {
                                         onClick={() => {
                                             handleStoryClick("Walk in the Forest");
                                         }}
-                                        onMouseEnter={() => handleOnMouseEnter("Walk in the Forest")}
                                     >
                                         <img
                                             src="/images/Forest-background.png"
@@ -200,7 +192,6 @@ export default function CompletionPage() {
                                         onClick={() => {
                                             handleStoryClick("Space Adventure");
                                         }}
-                                        onMouseEnter={() => handleOnMouseEnter("Space Adventure")}
                                     >
                                         <img
                                             src="/images/space-background.svg"
@@ -225,7 +216,6 @@ export default function CompletionPage() {
                                         }}
                                         onMouseEnter={() => {
                                             setTooltip("Easy mode: 3 sentences")
-                                            handleOnMouseEnter("Easy mode: 3 sentences")
                                         }}
                                         onMouseLeave={() => setTooltip(null)}
                                         onTouchStart={() => setTooltip("Easy mode: 3 sentences")}
@@ -241,7 +231,6 @@ export default function CompletionPage() {
                                         }}
                                         onMouseEnter={() => {
                                             setTooltip("Medium mode: 5 sentences")
-                                            handleOnMouseEnter("Medium mode: 5 sentences")
                                         }}
                                         onMouseLeave={() => setTooltip(null)}
                                         onTouchStart={() => setTooltip("Medium mode: 5 sentences")}
@@ -256,7 +245,6 @@ export default function CompletionPage() {
                                         }}
                                         onMouseEnter={() => {
                                             setTooltip("Hard mode: 10 sentences")
-                                            handleOnMouseEnter("Hard mode: 10 sentences")
                                         }}
                                         onMouseLeave={() => setTooltip(null)}
                                         onTouchStart={() => setTooltip("Hard mode: 10 sentences")}
@@ -268,7 +256,6 @@ export default function CompletionPage() {
                                 <button className="back-step-button" onClick={() => {
                                     goBack("Go Back");
                                 }}
-                                        onMouseEnter={()=> handleOnMouseEnter("Go Back")}
                                 >
                                     Go Back
                                 </button>
@@ -294,7 +281,6 @@ export default function CompletionPage() {
                                         <button className="big-button create-room-button" onClick={() => {
                                             handleSetNewStory();
                                         }}
-                                                onMouseEnter={()=> handleOnMouseEnter("Start Adventure!")}
                                         >
                                             <span className="create-emoji">🎮</span>
                                             <span>Start Adventure!</span>
@@ -302,7 +288,6 @@ export default function CompletionPage() {
                                         <button className="back-step-button" onClick={() => {
                                             goBack("Change Something");
                                         }}
-                                                onMouseEnter={()=> handleOnMouseEnter("Change Something")}
                                         >
                                             Change Something
                                         </button>
