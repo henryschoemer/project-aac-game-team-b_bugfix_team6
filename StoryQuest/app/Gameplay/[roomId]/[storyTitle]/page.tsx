@@ -446,6 +446,52 @@ useEffect(() => {
           })}
         </div>
 
+
+  <div className="flex w-screen h-screen min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900">
+    {/* Left Panel: AAC Tablet (40% width) */}
+    <div className="w-[40%] min-w-[410px] max-w-[500px] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">
+      {/* Player turns display - made more compact */}
+      {playerNumber && (
+        <div className="flex flex-col items-center justify-center mb-2 w-full">
+          <div className="grid grid-cols-4 gap-2 w-full">
+            {Array.from({ length: maxPlayers }, (_, i) => i + 1).map((num) => {
+              const avatarToShow = playerAvatars[num] || availableAvatars[num - 1] || "👤";
+              return (
+                <div key={num} className="flex flex-col items-center">
+                  <span className={`text-3xl p-1 rounded-full ${currentTurn === num ? "border-4 border-green-500" : "border-2 border-gray-400"}`}>
+                    {avatarToShow}
+                  </span>
+                  <span className="text-sm font-bold">P{num}</span>
+                </div>
+              );
+            })}
+          </div>
+          <div className="mt-2 text-center w-full">
+            {playerNumber === currentTurn ? (
+              <p className="text-xl font-extrabold text-green-600 animate-pulse">YOUR TURN!</p>
+            ) : (
+              <p className="text-lg text-gray-600">
+                ⏳ Player {currentTurn}
+              </p>
+            )}
+
+           <AACKeyboard
+           onSelect={handleAACSelect}
+           symbols={trimmedSections[currentSectionIndex] // Use trimmedSections here
+           ? Object.entries(trimmedSections[currentSectionIndex].words).map(
+           ([word, data]) => ({
+           word: word,
+           image: `/images/${data.image}`,
+           displayText: word
+         }))
+         : []
+       }
+       backgroundColor={currentStory?.colorTheme.backgroundColor}
+       buttonColor={currentStory?.colorTheme.buttonColor}
+         />
+        </h2>
+           <TextToSpeechAACButtons text={phrase} />
+
         <div className="mt-2 text-center w-full">
           {playerNumber === currentTurn ? (
             <p className="text-xl font-extrabold text-green-600 animate-pulse">YOUR TURN!</p>
@@ -454,7 +500,7 @@ useEffect(() => {
               ⏳ Player {currentTurn}
             </p>
           )}
-        </div>
+          </div>
       </div>
     )}
     <AACKeyboard
