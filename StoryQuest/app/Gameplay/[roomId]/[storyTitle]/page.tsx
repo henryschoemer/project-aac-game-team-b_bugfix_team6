@@ -424,14 +424,7 @@ useEffect(() => {
   }
 
   return (
-
   <div className="flex w-screen h-screen min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900">
-<<<<<<< HEAD
-=======
-
-
-    {/* Left Panel: AAC Tablet (40% width) */}
->>>>>>> ffe47a2c2e6be6e8600d970804438c63283ad44e
     <div className="w-[40%] min-w-[410px] max-w-[500px] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">
       {/* Player turns display - made more compact */}
       {playerNumber && (
@@ -552,67 +545,67 @@ useEffect(() => {
         const effect = imageData?.effect || 'none'; // Get the effect, default to 'none'
 
         let effectComponent = null;
-  if (effect === 'spin') {
-  effectComponent = (
-    <SpinEffect key={`spin-${index}`}>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </SpinEffect>
-  );
-} else if (effect === 'pulse') {
-  effectComponent = (
-    <PulseEffect key={`pulse-${index}`}>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </PulseEffect>
-  );
-} else if (effect === 'fade') {
-  effectComponent = (
-    <FadeEffect key={`fade-${index}`}>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </FadeEffect>
-  );
-} else if (effect === 'sideToSide') {
-  effectComponent = (
-    <SideToSideEffect key={`sidetoside-${index}`}>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </SideToSideEffect>
-  );
-} else if (effect === 'upAndDown') {
-    effectComponent = (
-      <UpAndDownEffect key={`updown-${index}`}>
-        <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-      </UpAndDownEffect>
-    );
-
-} else if (effect === 'scaleUp') {
-  effectComponent = (
-    <ScaleUpEffect key={`scaleup-${index}`}>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </ScaleUpEffect>
-  );
-} else if (effect === 'bounce') {
-  effectComponent = (
-    <BounceEffect key={`bounce-${index}`}>
-      <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </BounceEffect>
-  );
-
-}else if (effect === 'SlideAcrossEffect') {
-  effectComponent = (
-    <SlideAcrossEffect key={`slideacross-${index}`}>
-        <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-    </SlideAcrossEffect>
-  );
-}else if (effect === 'flip'){
-    effectComponent = (
-        <FlipEffect key={`flip-${index}`}>
+        if (effect === 'spin') {
+        effectComponent = (
+          <SpinEffect key={`spin-${index}`}>
             <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-        </FlipEffect>
-    );
-} else {
-  effectComponent = (
-    <motion.img key={`normal-${index}`} src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
-  );
-}
+          </SpinEffect>
+        );
+      } else if (effect === 'pulse') {
+        effectComponent = (
+          <PulseEffect key={`pulse-${index}`}>
+            <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+          </PulseEffect>
+        );
+      } else if (effect === 'fade') {
+        effectComponent = (
+          <FadeEffect key={`fade-${index}`}>
+            <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+          </FadeEffect>
+        );
+      } else if (effect === 'sideToSide') {
+        effectComponent = (
+          <SideToSideEffect key={`sidetoside-${index}`}>
+            <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+          </SideToSideEffect>
+        );
+      } else if (effect === 'upAndDown') {
+          effectComponent = (
+            <UpAndDownEffect key={`updown-${index}`}>
+              <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+            </UpAndDownEffect>
+          );
+
+      } else if (effect === 'scaleUp') {
+        effectComponent = (
+          <ScaleUpEffect key={`scaleup-${index}`}>
+            <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+          </ScaleUpEffect>
+        );
+      } else if (effect === 'bounce') {
+        effectComponent = (
+          <BounceEffect key={`bounce-${index}`}>
+            <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+          </BounceEffect>
+        );
+
+      }else if (effect === 'SlideAcrossEffect') {
+        effectComponent = (
+          <SlideAcrossEffect key={`slideacross-${index}`}>
+              <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+          </SlideAcrossEffect>
+        );
+      }else if (effect === 'flip'){
+          effectComponent = (
+              <FlipEffect key={`flip-${index}`}>
+                  <img src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+              </FlipEffect>
+          );
+      } else {
+        effectComponent = (
+          <motion.img key={`normal-${index}`} src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
+        );
+      }
 
 return (
   <div key={`image-container-${index}`} className="absolute" style={{left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`,}}>
