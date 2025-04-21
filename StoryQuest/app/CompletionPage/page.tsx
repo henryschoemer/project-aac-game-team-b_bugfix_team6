@@ -9,6 +9,7 @@ import Link from "next/link";
 import {ExitButton} from "@/HomePage/HomePageButtons";
 import useTextToSpeech from "@/Components/useTextToSpeech";
 import useButtonFeedback from "@/Components/useButtonClickSounds";
+import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
 
 export default function CompletionPage() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -19,7 +20,7 @@ export default function CompletionPage() {
     const completedStorySound = "/sounds/story-completed.mp3";
     const [playCompletedStorySound] = useSound(completedStorySound);
     const [tooltip, setTooltip] = useState<string | null>(null);
-    const {speak} = useTextToSpeech(); // useTextToSpeech hook
+    const {speak} = useQuickTextToSpeech(); // useTextToSpeech hook
     const { buttonHandler, isSpeaking } = useButtonFeedback();
 
     // Show story options

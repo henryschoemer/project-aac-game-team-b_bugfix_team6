@@ -21,75 +21,21 @@ class MockSpeechSynthesisUtterance {
 
 beforeEach(() => {
     voicesMock = [
-        // Android (Google voices)
         {
             name: "Google UK English Male",
             lang: "en-GB",
-            voiceURI: "google-uk",
+            voiceURI: "voice1",
             localService: true,
-            default: false
-        },
-        {
-            name: "Google US English",
-            lang: "en-US",
-            voiceURI: "google-us",
-            localService: true,
-            default: false
-        },
-        // Windows (Microsoft voices)
-        {
-            name: "Microsoft David",
-            lang: "en-US",
-            voiceURI: "ms-david",
-            localService: true,
-            default: false
-        },
-        {
-            name: "Microsoft Zira",
-            lang: "en-US",
-            voiceURI: "ms-zira",
-            localService: true,
-            default: false
-        },
-        // macOS (Apple voices)
+            default: true
+        } as SpeechSynthesisVoice,
         {
             name: "Daniel",
             lang: "en-GB",
-            voiceURI: "mac-daniel",
+            voiceURI: "voice2",
             localService: true,
             default: false
-        },
-        {
-            name: "Alex",
-            lang: "en-US",
-            voiceURI: "mac-alex",
-            localService: true,
-            default: false
-        },
-        // Fallback English voices
-        {
-            name: "",
-            lang: "en-US",
-            voiceURI: "fallback-us",
-            localService: true,
-            default: false
-        },
-        {
-            name: "",
-            lang: "en-GB",
-            voiceURI: "fallback-gb",
-            localService: true,
-            default: false
-        },
-        // Ultimate fallback
-        {
-            name: "",
-            lang: "",
-            voiceURI: "ultimate-fallback",
-            localService: true,
-            default: true
-        }
-    ] as SpeechSynthesisVoice[];
+        } as SpeechSynthesisVoice
+    ];
 
     // Global mocks
     (window as any).speechSynthesis = {

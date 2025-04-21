@@ -1,13 +1,16 @@
 'use client';
-
 import React, {useState} from 'react';
 import "./MusicSliderStyling.css";
 import Image from "next/image";
+import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
+import useButtonFeedback from "@/Components/useButtonClickSounds";
 
 export const HomePageBackgroundMusic: React.FC = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [showControls, setShowControls] = useState(false); // Switch from music note to "play/stop and slider" display
     const [volume, setVolume] = useState(50); // volume range
+    const {speak} = useQuickTextToSpeech(); // useTextToSpeech hook
+    const { buttonHandler, isSpeaking } = useButtonFeedback();
 
     const handlePlayMusic = () => {
         const audio = document.getElementById("HomePageBackgroundMusic") as HTMLAudioElement;
@@ -38,11 +41,18 @@ export const HomePageBackgroundMusic: React.FC = () => {
         }
     };
 
+    const handleClick = (text:string) => {
+        buttonHandler('none', text, speak);
+    };
+
     return (
         <div>
             {!showControls && (
                 <div>
-                    <button onClick={() => setShowControls(true)}>
+                    <button onClick={() => {
+                        setShowControls(true)
+                        handleClick("Music")
+                    }}>
                         <Image
                             src="/music-note.svg"
                             alt="Music icon"
