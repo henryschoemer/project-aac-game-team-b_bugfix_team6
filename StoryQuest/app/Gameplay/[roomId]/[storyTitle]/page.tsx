@@ -29,7 +29,7 @@ const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const availableAvatars = ["🐯", "🐻", "🐘", "🐵", "🐬", "🦋"];
+const availableAvatars = ["🐯", "🐻", "🦄", "🐰", "🐬", "🦋"];
 
 // getImageAnimation: Returns a reusable animation configuration for images.
 const getImageAnimation = () => ({
@@ -133,9 +133,14 @@ useEffect(() => {
       const gameData = snapshot.data();
       console.log("Firestore data received:", gameData);
 
+      const dbPhrase = gameData.currentPhrase ?? "";
+      if (dbPhrase.trim() !== "") {
+        setPhrase(dbPhrase);
+      }
+
       setMaxPlayers(gameData.maxPlayers || 4);
       setCurrentSectionIndex(gameData.currentSectionIndex || 0);
-      setPhrase(gameData.currentPhrase || "");
+      //setPhrase(gameData.currentPhrase || "");
       setCompletedPhrases(gameData.completedPhrases || []);
       setCompletedImages(gameData.completedImages || []);
       setCurrentTurn(gameData.currentTurn || 1);
@@ -479,9 +484,9 @@ useEffect(() => {
       
           <div className="mt-2 text-center w-full">
             {playerNumber === currentTurn ? (
-              <p className="text-xl font-extrabold text-green-600 animate-pulse">YOUR TURN!</p>
+              <p className="text-2xl font-extrabold text-green-600 animate-pulse">YOUR TURN!</p>
             ) : (
-              <p className="text-lg text-gray-600">
+              <p className="text-2xl text-gray-600">
                 ⏳ Waiting for{" "}
                 <span className="font-bold text-5xl inline-block">
                   {playerAvatars[currentTurn]}
@@ -676,13 +681,20 @@ useEffect(() => {
           onComplete={() => {
             console.log("Gameplay: Story is completed!");
             setStoryCompleted(true);
-            setTimeout(() => {
+            /*setTimeout(() => {
               setShowOverlay(true);
-            }, 3000); // Show the CompletionPage after a delay
+            }, 3000); Show the CompletionPage after a delay*/
           }}
         />
       </div>
     )}
+
+    {showOverlay && (
+      <div className="overlay">
+        <CompletionPage/>
+      </div>
+    )}
+
 
   </div>
   </div>
