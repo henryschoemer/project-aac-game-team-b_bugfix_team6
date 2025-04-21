@@ -72,7 +72,7 @@ export default function Home() {
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy'); // State for difficulty
   const numberOfPhrasesForGame = getNumPhrases(difficulty); // Derive from difficulty
   const trimmedSections = currentStory?.sections.slice(0, numberOfPhrasesForGame) || [];
-  
+  const [blockOverlay, setBlockOverlay] = useState<boolean>(false);
 
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
@@ -361,6 +361,13 @@ useEffect(() => {
     handleWordSelect(word);
   };
 
+  useEffect(() => {
+    if (phrase === "The End!") {
+      setBlockOverlay(true);
+      console.log("AAC Tablet Blocked");
+    }
+  }, [phrase]);
+
   if (!ttsReady) {
     return (
       <div className="flex items-center justify-center w-full h-full min-w-screen overflow-hidden bg-yellow-100" style={containerStyle}>
@@ -458,7 +465,7 @@ useEffect(() => {
       }
       backgroundColor={currentStory?.colorTheme.backgroundColor}
       buttonColor={currentStory?.colorTheme.buttonColor}
-      blockButtons={gameFinished} // Last phrase "The End!"
+      blockButtons={blockOverlay} // Last phrase "The End!"
     />
 
     <TextToSpeechAACButtons text={phrase} />
