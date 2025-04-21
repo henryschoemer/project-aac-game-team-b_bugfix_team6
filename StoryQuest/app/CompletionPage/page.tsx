@@ -9,6 +9,7 @@ import Link from "next/link";
 import {ExitButton} from "@/HomePage/HomePageButtons";
 import useTextToSpeech from "@/Components/useTextToSpeech";
 import useButtonFeedback from "@/Components/useButtonClickSounds";
+import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
 
 export default function CompletionPage() {
     const [currentStep, setCurrentStep] = useState(1);

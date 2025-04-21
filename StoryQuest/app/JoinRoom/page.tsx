@@ -232,6 +232,14 @@ export default function JoinRoomPage() {
         setFailedAttempts(0); // Reset failed attempts when closing popup
     };
 
+    const {speak} = useQuickTextToSpeech(); // useTextToSpeech hook
+    const { buttonHandler, isSpeaking } = useButtonFeedback();
+
+    const handleClick = (text:string) => {
+        buttonHandler('none', text, speak);
+        console.log("click");
+    };
+
     return (
         <div className="h-screen w-screen fixed inset-0 overflow-hidden bg-cover bg-center"
             style={{ backgroundImage: "url('/HomePage-Images/Background.jpg')" }}>
@@ -245,7 +253,7 @@ export default function JoinRoomPage() {
                     </Link>
 
                     {/* QR Instructions Section */}
-                    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-4 shrink-0 pt-12" >
+                    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-4 shrink-0 pt-12" onClick={()=> handleClick("How to join with QR code:, 1. Find the picture, 2. Scan the picture, 3. Play together, 4. Enjoy")}>
                         <h2 className="text-xl font-semibold text-gray-900 text-center mb-4">
                             How to join with QR code:
                         </h2>
@@ -274,7 +282,7 @@ export default function JoinRoomPage() {
 
                     {/* Camera Section - Now with constrained height */}
                     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-1 w-full flex-1 min-h-0 flex flex-col">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-3 text-center">
+                        <h2 className="text-xl font-semibold text-gray-900 mb-3 text-center" onClick={()=>handleClick("Scan Below")}>
                             Scan Below
                         </h2>
                         

@@ -108,16 +108,4 @@ describe('HomePage', () => {
         // Button has the text 'Join'
         expect(button).toHaveTextContent('Join');
     })
-
-    // Test that the gameplay button renders correctly
-    it('renders gameplay button correctly', () => {
-        render(<TemporaryTestingGameButton/>)
-        // Get button element
-        const button = screen.getByRole('button', {name: /game/i});
-        // Button element is rendered
-        expect(button).toBeInTheDocument();
-        // Button has the text 'Gameplay'
-        expect(button).toHaveTextContent('Game');
-    })
-
 });

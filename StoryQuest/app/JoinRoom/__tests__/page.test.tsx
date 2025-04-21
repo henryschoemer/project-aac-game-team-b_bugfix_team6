@@ -14,11 +14,6 @@ jest.mock('jsqr', () => ({
   default: jest.fn(() => ({ data: 'mocked QR result' })),
 }));
 
-// Mock useSound
-jest.mock('use-sound', () => ({
-  __esModule: true,
-  default: jest.fn(() => [jest.fn()]),
-}));
 beforeAll(() => {
   Object.defineProperty(global.navigator, 'mediaDevices', {
     configurable: true,
