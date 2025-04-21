@@ -1,6 +1,6 @@
 import AnimatedTitle from './HomePage/AnimatedTitle';
 //import {CompletionTestButton, CreateButton, JoinButton, TemporaryTestingGameButton} from "./HomePage/HomePageButtons";
-import { CreateButton, JoinButton, TemporaryTestingGameButton} from "./HomePage/HomePageButtons";
+import { CreateButton, JoinButton} from "./HomePage/HomePageButtons";
 import Link from 'next/link';
 import "./HomePage/HomePageStyles.css";
 import {HomePageBackgroundMusic} from "./HomePage/HomePageBackgroundMusic";
@@ -51,7 +51,7 @@ export default function Home() {
                 <div className="music-slider-container">
                     <HomePageBackgroundMusic/>
                 </div>
-                <h1 className="copyright-text">Copyright © 2025 StoryQuest</h1>
+                <h1 className="copyright-text" >Copyright © 2025 StoryQuest</h1>
             </footer>
         </div>
         </div>

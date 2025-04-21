@@ -11,6 +11,8 @@ import useSound from "use-sound";
 import Camera from "../Components/Camera";
 import jsQR from "jsqr";
 import Image from "next/image";
+import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
+import useButtonFeedback from "@/Components/useButtonClickSounds";
 
 // Define props interface for the popup component
 interface QRScanFailedPopupProps {
@@ -243,7 +245,7 @@ export default function JoinRoomPage() {
                     </Link>
 
                     {/* QR Instructions Section */}
-                    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-4 shrink-0 pt-12">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-4 shrink-0 pt-12" >
                         <h2 className="text-xl font-semibold text-gray-900 text-center mb-4">
                             How to join with QR code:
                         </h2>

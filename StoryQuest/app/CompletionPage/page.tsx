@@ -19,7 +19,7 @@ export default function CompletionPage() {
     const completedStorySound = "/sounds/story-completed.mp3";
     const [playCompletedStorySound] = useSound(completedStorySound);
     const [tooltip, setTooltip] = useState<string | null>(null);
-    const {speak} = useTextToSpeech(); // useTextToSpeech hook
+    const {speak} = useQuickTextToSpeech(); // useTextToSpeech hook
     const { buttonHandler, isSpeaking } = useButtonFeedback();
 
     // Show story options
