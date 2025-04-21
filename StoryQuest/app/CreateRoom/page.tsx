@@ -95,10 +95,6 @@ export default function CreateRoomPage() {
         buttonHandler('back', text, speak);
     };
 
-    const handleOnMouseEnter =(text:string)=>{
-        if(!isSpeaking) // to avoid button click audio cutoff
-            speak(text);
-    }
 
     return (
         <div className="page-container"
@@ -136,7 +132,6 @@ export default function CreateRoomPage() {
                                 onClick={() => {
                                     handleStoryClick("The Garden Adventure");
                                 }}
-                                onMouseEnter={() => handleOnMouseEnter("The Garden Adventure")}
                             >
                                 <img
                                     src="/images/garden-background.webp"
@@ -152,7 +147,6 @@ export default function CreateRoomPage() {
                                 onClick={() => {
                                     handleStoryClick("Walk in the Forest");
                                 }}
-                                onMouseEnter={() => handleOnMouseEnter("Walk in the Forest")}
                             >
                                 <img
                                     src="/images/forest-background.jpg"
@@ -168,7 +162,6 @@ export default function CreateRoomPage() {
                                 onClick={() => {
                                     handleStoryClick("Under the sea");
                                 }}
-                                onMouseEnter={() => handleOnMouseEnter("Under the sea")}
                             >
                                 <img
                                     src="/images/ocean-background.png"
@@ -183,7 +176,6 @@ export default function CreateRoomPage() {
                                 onClick={() => {
                                     handleStoryClick("Space Adventure");
                                 }}
-                                onMouseEnter={() => handleOnMouseEnter("Space Adventure")}
                             >
                                 <img
                                     src="/images/space-background.svg"
@@ -208,7 +200,6 @@ export default function CreateRoomPage() {
                                     onClick={() => {
                                         handlePlayerClick(num);
                                     }}
-                                    onMouseEnter={()=> handleOnMouseEnter(num+" Players")}
                                 >
                                     <div className="player-icons">
                                         {[...Array(num)].map((_, index) => (
@@ -221,8 +212,7 @@ export default function CreateRoomPage() {
                         </div>
                         <button className="back-step-button" onClick={() => {
                             goBack("Go Back");
-                        }}
-                                onMouseEnter={()=> handleOnMouseEnter("Go Back")
+                        }
                                 }
                         >
                             Go Back
@@ -242,7 +232,6 @@ export default function CreateRoomPage() {
                                 }}
                                 onMouseEnter={() => {
                                     setTooltip("Easy mode: 4 sentences")
-                                    handleOnMouseEnter("Easy mode: 4 sentences")
                                 }}
                                 onMouseLeave={() => setTooltip(null)}
                                 onTouchStart={() => setTooltip("Easy mode: 4 sentences")}
@@ -258,7 +247,6 @@ export default function CreateRoomPage() {
                                 }}
                                 onMouseEnter={() => {
                                     setTooltip("Medium mode: 8 sentences")
-                                    handleOnMouseEnter("Medium mode: 8 sentences")
                                 }}
                                 onMouseLeave={() => setTooltip(null)}
                                 onTouchStart={() => setTooltip("Medium mode: 8 sentences")}
@@ -273,7 +261,6 @@ export default function CreateRoomPage() {
                                 }}
                                 onMouseEnter={() => {
                                     setTooltip("Hard mode: 12 sentences")
-                                    handleOnMouseEnter("Hard mode: 12 sentences")
                                 }}
                                 onMouseLeave={() => setTooltip(null)}
                                 onTouchStart={() => setTooltip("Hard mode: 12 sentences")}
@@ -285,7 +272,6 @@ export default function CreateRoomPage() {
                         <button className="back-step-button" onClick={() => {
                             goBack("Go Back");
                         }}
-                                onMouseEnter={()=> handleOnMouseEnter("Go Back")}
                         >
                             Go Back
                         </button>
@@ -311,7 +297,6 @@ export default function CreateRoomPage() {
                             <button className="big-button create-room-button" onClick={() => {
                                 handleCreateRoom();
                             }}
-                                   onMouseEnter={()=> handleOnMouseEnter("Start Adventure!")}
                             >
                                 <span className="create-emoji">🎮</span>
                                 <span>Start Adventure!</span>
@@ -319,7 +304,6 @@ export default function CreateRoomPage() {
                             <button className="back-step-button" onClick={() => {
                                 goBack("Change Something");
                             }}
-                                    onMouseEnter={()=> handleOnMouseEnter("Change Something")}
                             >
                                 Change Something
                             </button>

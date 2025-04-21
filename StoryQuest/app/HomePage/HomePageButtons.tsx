@@ -78,17 +78,10 @@ interface ExitButtonProps {
         }
     };
 
-    // const handleOnMouseEnter = (text: string) => {
-    //     if (!isSpeaking) {
-    //         speak(text);
-    //     }
-    // };
-
     return (
         <button
             className={`button back-button ${className}`}
             onClick={() => handleClick("Exit")}
-            //onMouseEnter={() => handleOnMouseEnter("Exit")}
         >
             <div className="svg-icon">
                 <Image
