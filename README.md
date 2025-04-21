@@ -15,8 +15,21 @@ We will develop a game, called "Storyquest: Teamwork Prevails", that aims to max
 Augmentative and Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to encourage communication among players.
 
 ## Hosted Link
-This is the current active link, we are planning to change it soon to make it more user friendly: 
+These are the active domains you can visit:
+User Friendly Domain:
+Storyquest.world
+or 
+The original Firebase Domain:
 https://project-aac-game-team-b--storyquest-fcdc2.us-central1.hosted.app
+
+## How to run locally
+**Be sure to have your Firebase configured after doing these steps, otherwise some features may not work as intended**
+**Also keep in mind that this app was intended for Tablets so debugging certain things on a laptop would not help**
+1. First you have to make sure that you have Node installed on your computer. You can check this by navigating to a terminal, typing "npm -v" or "node -v" to find out which version you have. If you don't have it downloaded
+head over to https://nodejs.org/ to follow the instructions on downloading or updating.
+2. After making sure you have node installed, open up a terminal and naviaget over to where you want to keep project, for example on your Desktop or if you have a special folder for your IDE's projects. Once there type in git clone <repo-url>, where the <repo-url> would be the url of the GitHub Repo. You can find it under a green button called "<>Code", click it and copy the url for HTTPS. Hit enter and you should now have a repo cloned onto your local machien.
+3. When in the Projects Root Folder, navigate over to a folder called "StoryQuest". That is the App root folder. After you have cd'ed into it, be sure to run npm install so our dependencies are installed too from our package.json.
+4. To run the project locally, type in "npm run dev". Your local host 3000 port should now have it live.
 
 ## Keywords
  - AAC - Augmentative and Alternative Communication

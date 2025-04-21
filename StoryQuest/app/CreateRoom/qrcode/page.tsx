@@ -8,6 +8,8 @@ import { QRCode } from "react-qrcode-logo";
 import { Suspense } from "react";
 import "../CreateRoomButtonStyles.css";
 import Image from 'next/image';
+import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
+import useButtonFeedback from "@/Components/useButtonClickSounds";
 
 function QRCodeContent() {
     const searchParams = useSearchParams();
@@ -22,7 +24,16 @@ function QRCodeContent() {
     //const joinRoomUrl = `/Gameplay/${roomId}/${storyTitle}`;
 
 
-   return (
+    const {speak} = useQuickTextToSpeech(); // useTextToSpeech hook
+    const { buttonHandler, isSpeaking } = useButtonFeedback();
+
+    const handleClick = (text:string) => {
+        buttonHandler('none', text, speak);
+        console.log("click");
+    };
+
+
+    return (
         <div 
             className="h-[100dvh] w-[100dvw] overflow-hidden bg-cover bg-center flex flex-col items-center justify-between p-4"
             style={{ backgroundImage: "url('../../HomePage-Images/Background.jpg')" }}
@@ -30,13 +41,13 @@ function QRCodeContent() {
             {/* Single Semi-Transparent Container */}
             <div className="scale-90 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-6 w-full max-w-4xl mx-auto">
                 {/* Title */}
-                <h1 className="text-3xl font-bold text-gray-800 text-center">
+                <h1 className="text-3xl font-bold text-gray-800 text-center" onClick={()=>handleClick("Scan to Join Room")}>
                     Scan to Join Room
                 </h1>
 
                 {/* Steps */}
                 <div className="">
-                  <div className="scale-90 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-1 w-full max-w-4xl mx-auto">
+                  <div className="scale-90 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-1 w-full max-w-4xl mx-auto" onClick={()=> handleClick("How to join with QR code:, 1. Find the picture, 2. Scan the picture, 3. Play together, 4. Enjoy")}>
                     <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">
                         How to join with QR code:
                     </h2>
@@ -68,7 +79,7 @@ function QRCodeContent() {
                     <div className="scale-115 p-3 bg-white rounded-lg shadow-inner mb-3 border-2 border-teal-300 ">
                         <QRCode value={joinRoomUrl} size={180} ecLevel="H" />
                     </div>
-                    <p className="text-gray-700 text-center mb-2">
+                    <p className="text-gray-700 text-center mb-2" onClick={()=>handleClick("Share this QR code with friends to join the game!")}>
                         Share this QR code with friends to join the game!
                     </p>
                 </div>

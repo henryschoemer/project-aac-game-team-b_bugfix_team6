@@ -1,7 +1,10 @@
 'use client';
 
 import React, {useEffect, useRef, useState} from 'react';
-import './AnimatedTitleStyles.css'; // Import the styles
+import './AnimatedTitleStyles.css';
+import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
+import useButtonFeedback from "@/Components/useButtonClickSounds";
+
 
 const AnimatedTitle: React.FC = () => {
     const divRef = useRef<HTMLDivElement | null>(null); // reference of div that contains title
@@ -11,6 +14,13 @@ const AnimatedTitle: React.FC = () => {
 
     // Characters of the title "StoryQuest"
     const title = ['S', 't', 'o', 'r', 'y', 'Q', 'u', 'e', 's', 't'];
+
+    const {speak} = useQuickTextToSpeech();
+    const {buttonHandler} = useButtonFeedback();
+
+    const handleClick = () => {
+        buttonHandler('none', "StoryQuest", speak);
+    };
 
     // Delay times in ms
     const initialDelay= 500;
@@ -54,6 +64,7 @@ const AnimatedTitle: React.FC = () => {
             className={`animated-title ${isLoaded ? 'loaded' : ''} ${isWaving ? 'wave' : ''} ${isStopping ? 'stopping' : ''}`}
             data-testid="animated-title"
             aria-label="StoryQuest"
+            onClick={handleClick}
         >
             {title.map((char, index) => (
                 <span key={index} aria-hidden="true">

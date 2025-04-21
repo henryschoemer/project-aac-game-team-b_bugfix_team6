@@ -1,10 +1,10 @@
+"use client";
 import useSound from "use-sound";
 import {useState} from "react";
 
 // Hook for interface button clicks and text to speech
 // Uses mp3 for the click sound
 // Allows for text to speech on passed text
-// Hook for interface button clicks and text to speech
 const useButtonFeedback = () => {
     const [isSpeaking, setIsSpeaking] = useState(false);
     // button sounds
@@ -14,16 +14,15 @@ const useButtonFeedback = () => {
     const [playPop] = useSound('/sounds/pop-click.mp3');
     const [playGameplay] = useSound('/sounds/gameplay-start.mp3');
 
-    // button handler with improved timing
+    // button handler
     const buttonHandler = (
-        soundType: 'create' | 'select' | 'back' | 'pop'| 'gameplay', // Button mp3 sounds
+        soundType: 'none' |'create' | 'select' | 'back' | 'pop'| 'gameplay', // Button mp3 sounds
         text: string, // passed text
         speakFn: (text: string) => void // speak hook that was passed
     ) => {
-        // Flag to track speaking state
-        setIsSpeaking(true);
         
         const soundMap = {
+            none: () => {}, // no click sound
             create: playCreate,
             select: playSelect,
             back: playBack,
@@ -33,20 +32,32 @@ const useButtonFeedback = () => {
         
         // Play the button sound
         soundMap[soundType]();
-        
-        // Give more time for the sound to finish before starting speech
-        // This is crucial for Android devices that often can't handle overlapping audio contexts
-        setTimeout(() => {
-            speakFn(text); // Speak the button text
-            
-            // Estimate when speech will finish - add more time for mobile devices
-            const minDuration = 500; // minimum duration in ms
-            const estimatedDuration = Math.max(minDuration, text.length * 120);
-            
+
+        if (text) {
+            setIsSpeaking(true);
+
+            // Add a small delay to ensure sound effect plays before speech
             setTimeout(() => {
-                setIsSpeaking(false);
-            }, estimatedDuration);
-        }, 350); // Longer delay before speech starts
+                try {
+                    speakFn(text);
+
+                    // Estimate speech duration more accurately
+                    const minDuration = 1000; // Increased minimum duration
+                    const charsPerSecond = 10; // Average speaking rate
+                    const estimatedDuration = Math.max(
+                        minDuration,
+                        (text.length / charsPerSecond) * 1000
+                    );
+
+                    setTimeout(() => {
+                        setIsSpeaking(false);
+                    }, estimatedDuration);
+                } catch (error) {
+                    console.error("Speech synthesis error:", error);
+                    setIsSpeaking(false);
+                }
+            }, 200); // Increased delay for more reliability
+        }
     };
 
     return { buttonHandler, isSpeaking };

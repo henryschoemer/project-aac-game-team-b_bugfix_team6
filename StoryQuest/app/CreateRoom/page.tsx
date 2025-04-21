@@ -8,9 +8,8 @@ import { db } from "../../firebaseControls/firebaseConfig"; // Import Firestore
 import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 import { QRCode } from "react-qrcode-logo";
 import "./CreateRoomButtonStyles.css";
-import useSound from "use-sound";
-import useTextToSpeech from "@/Components/useTextToSpeech";
 import useButtonFeedback from "@/Components/useButtonClickSounds";
+import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
 
 export default function CreateRoomPage() {
     // Story Option Selection
@@ -21,7 +20,7 @@ export default function CreateRoomPage() {
     const [loading, setLoading] = useState(false);
     const [roomId, setRoomId] = useState<string | null>(null);
     const [tooltip, setTooltip] = useState<string | null>(null);
-    const {speak} = useTextToSpeech(); // useTextToSpeech hook
+    const {speak} = useQuickTextToSpeech(); // useTextToSpeech hook
     const { buttonHandler, isSpeaking } = useButtonFeedback();
 
     const router = useRouter();
@@ -94,7 +93,9 @@ export default function CreateRoomPage() {
         }
         buttonHandler('back', text, speak);
     };
-
+    const handleClick = (text:string) => {
+        buttonHandler('none', text, speak);
+    };
 
     return (
         <div className="page-container"
@@ -107,7 +108,7 @@ export default function CreateRoomPage() {
             {/*<AutomaticTextToSpeech speechText="Please select story options" />*/}
             <div className="content-container">
                 <div className="title-container">
-                    <h1 className="title-text">Let's Create a Game!</h1>
+                    <h1 className="title-text" onClick={()=>handleClick("Lets Create a Game!")}>Let's Create a Game!</h1>
                 </div>
 
                 {/* Progress Indicators - Visual cues for children */}
@@ -125,7 +126,7 @@ export default function CreateRoomPage() {
                 {/* Step 1: Story Selection */}
                 {currentStep === 1 && (
                     <div className="step-container">
-                        <h2>Choose Your Story</h2>
+                        <h2 onClick={() => handleClick("Choose Your Story")}>Choose Your Story</h2>
                         <div className="big-button-container">
                             <button
                                 className="big-button story-button"
@@ -191,7 +192,7 @@ export default function CreateRoomPage() {
                 {/* Step 2: Player Count Selection */}
                 {currentStep === 2 && (
                     <div className="step-container">
-                        <h2>How Many Friends Are Playing?</h2>
+                        <h2 onClick={() => handleClick("How Many Friends Are Playing?")}>How Many Friends Are Playing?</h2>
                         <div className="big-button-container">
                             {[2, 3, 4].map((num) => (
                                 <button
@@ -223,7 +224,7 @@ export default function CreateRoomPage() {
                 {/* Step 3: Difficulty Selection */}
                 {currentStep === 3 && (
                     <div className="step-container">
-                        <h2>Pick game difficulty</h2>
+                        <h2 onClick={() => handleClick("Pick game difficulty")}>Pick game difficulty</h2>
                         <div className="big-button-container">
                             <button
                                 className="big-button difficulty-button easy"
@@ -281,15 +282,15 @@ export default function CreateRoomPage() {
                 {/* Step 4: Review and Create */}
                 {currentStep === 4 && (
                     <div className="step-container">
-                        <h2>Ready to Play!</h2>
+                        <h2 onClick={()=>handleClick("Ready to Play!")}>Ready to Play!</h2>
                         <div className="summary-container">
-                            <div className="summary-item">
+                            <div className="summary-item" onClick={()=>handleClick("Story:" + selectedStory)}>
                                 <p>Story: {selectedStory}</p>
                             </div>
-                            <div className="summary-item">
+                            <div className="summary-item" onClick={()=>handleClick("Players:" + numPlayers)}>
                                 <p>Players: {numPlayers}</p>
                             </div>
-                            <div className="summary-item">
+                            <div className="summary-item" onClick={()=>handleClick("Level:" + difficultyLevel)}>
                                 <p>Level: {difficultyLevel}</p>
                             </div>
                         </div>

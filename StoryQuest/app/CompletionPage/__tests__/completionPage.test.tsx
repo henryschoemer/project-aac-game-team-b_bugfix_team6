@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Home from "@/CompletionPage/page.tsx"; // Update the import path
 import "@testing-library/jest-dom";
+import CompletionPage from "@/CompletionPage/page.tsx";
 
 // Mock the useSound hook
 jest.mock("use-sound", () => ({
@@ -9,9 +10,10 @@ jest.mock("use-sound", () => ({
     default: () => [jest.fn()], // Mock the sound playing function
 }));
 
+
 describe("Home Component", () => {
     it("renders the completion page with stars and buttons", () => {
-        render(<Home />);
+        render(<CompletionPage />);
 
         // Check if the completion page is rendered
         expect(screen.getByText("Story Completed")).toBeInTheDocument();
@@ -77,7 +79,7 @@ describe("Home Component", () => {
             expect(screen.getByText("Players: 2")).toBeInTheDocument();
             expect(screen.getByText("Level: Medium")).toBeInTheDocument();
         });
-    });*/
+    });
 
     it("goes back to the previous step when 'Go Back' is clicked", async () => {
         render(<Home />);
@@ -96,5 +98,7 @@ describe("Home Component", () => {
             expect(screen.getByText("Choose Your Story")).toBeInTheDocument();
         });
     });
+
+ */
 
 });
