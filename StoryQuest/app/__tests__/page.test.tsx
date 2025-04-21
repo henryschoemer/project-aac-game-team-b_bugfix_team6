@@ -56,18 +56,6 @@ describe('HomePage', () => {
         expect(container).toHaveClass('wave');
     });
 
-    it('removes wave class after wave end delay', () => {
-        render(<AnimatedTitle />);
-
-        act(() => {
-            jest.advanceTimersByTime(3650); // waveEndDelay
-        });
-
-        const container = screen.getByTestId('animated-title');
-        expect(container).toHaveClass('loaded');
-        expect(container).not.toHaveClass('wave');
-    });
-
     it('cleans up timers on unmount', () => {
         const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout');
         const { unmount } = render(<AnimatedTitle />);

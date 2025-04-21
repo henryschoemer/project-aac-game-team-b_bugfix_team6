@@ -107,3 +107,29 @@
         transform: translateY(-20px);
     }
 }
+
+/*stopping animation*/
+.animated-title.stopping > span {
+    animation: wave-stop 1s ease-out forwards;
+    animation-delay: calc(var(--char-index) * 0.05s);
+}
+
+@keyframes wave-stop {
+    0% {
+        transform: translateY(0);
+        animation-timing-function: ease-out;
+    }
+    30% {
+        transform: translateY(-10px);
+        animation-timing-function: ease-in;
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.animated-title.wave > span {
+    animation: wave 2s ease-in-out;
+    animation-iteration-count: infinite;
+}
+
