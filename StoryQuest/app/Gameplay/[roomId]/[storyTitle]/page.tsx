@@ -364,7 +364,7 @@ useEffect(() => {
   useEffect(() => {
     if (phrase === "The End!") {
       setBlockOverlay(true);
-      console.log("true");
+      console.log("AAC Tablet Blocked");
     }
   }, [phrase]);
 
