@@ -6,19 +6,36 @@ import { motion } from "framer-motion";
    symbols: { word: string; image: string }[];
    backgroundColor?: string;
    buttonColor?: string;
+   blockButtons?: boolean;
  }
 
  const AACKeyboard: React.FC<AACKeyboardProps> = ({ 
   onSelect, 
   symbols, 
   backgroundColor = "#b4fcdc", 
-  buttonColor = "#63d2cb"
+  buttonColor = "#63d2cb",
+  blockButtons = false
 }) => {
+     // Style for the blocking overlay
+     const blockAACButtonOverlayStyle: React.CSSProperties = {
+         position: 'absolute',
+         top: 0,
+         left: 0,
+         width: '100%',
+         height: '100%',
+         zIndex: 10,
+         backgroundColor: 'rgba(0, 0, 0, 0.4)',
+         cursor: 'not-allowed',
+     };
    return (
      <div 
       className="p-2 border border-gray-300 rounded-lg shadow-md transform transition duration-500 hover:scale-105"
       style={{ backgroundColor }}
       >
+      {/* Block overlay */}
+      {blockButtons && (
+          <div style={blockAACButtonOverlayStyle}></div>
+      )}
        <h3 className="text-xl font-bold mb-2 text-center text-white">AAC Keyboard</h3>
        <div className="grid grid-cols-2 gap-2">
          {symbols.map((symbol) => (
