@@ -254,22 +254,22 @@ export default function JoinRoomPage() {
 
                     {/* QR Instructions Section */}
                     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-4 shrink-0 pt-12" onClick={()=> handleClick("How to join with QR code:, 1. Find the picture, 2. Scan the picture, 3. Play together, 4. Enjoy")}>
-                        <h2 className="text-xl font-semibold text-gray-900 text-center mb-4">
+                        <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
                             How to join with QR code:
                         </h2>
                         
-                        <div className="grid grid-cols-4 gap-3 justify-center">
+                        <div className="flex justify-center gap-1">
                             {[1, 2, 3, 4].map((step) => (
-                                <div key={step} className="flex flex-col items-center">
+                                <div key={step} className="items-center">
                                     <Image 
                                         src={`/diagrams/QR${step}.png`}
                                         alt={`Step ${step}`}
                                         width={100}
                                         height={100}
-                                        className="rounded-lg w-[100px] h-auto"
+                                        className="rounded-lg"
                                         priority
                                     />
-                                    <p className="mt-2 text-sm text-gray-600 text-center">
+                                    <p className="text-md text-gray-600 text-center">
                                         {step === 1 && "1. Find the picture"}
                                         {step === 2 && "2. Scan the picture"}
                                         {step === 3 && "3. Play together"}
