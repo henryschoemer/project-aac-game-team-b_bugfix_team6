@@ -126,7 +126,7 @@ const stories: Story[] = [
     words: {
       treasure: { image: "treasure.svg", x: 70, y: 95, effect: 'fade' },
       basket: { image: "basket.svg", x: 70, y: 95, effect: 'scaleUp' },
-      squirrel: { image: "squirrel.svg", x: 70, y: 95, effect: 'pulse' },
+      squirrel: { image: "Squirrel.svg", x: 70, y: 95, effect: 'pulse' },
       boy: { image: "boy.svg", x: 70, y: 95, effect: 'scaleUp' , width: 250, height: 280},
       star: { image: "star.svg", x: 70, y: 95, effect: 'fade' },
       balloon: { image: "balloon.svg", x: 70, y: 95, effect: 'scaleUp' }
@@ -269,7 +269,7 @@ sections: [
   {
     phrase: "It was fun to see the ___ playing.",
     words: {
-      squirrel: { "image": "squirrel.svg", "x": 20, "y": 90, "effect": "scaleUp" },
+      squirrel: { "image": "Squirrel.svg", "x": 20, "y": 90, "effect": "scaleUp" },
       mouse: { "image": "mouse.svg", "x": 22, "y": 90, "effect": "fade" },
       boy: { "image": "boy.svg", "x": 25, "y": 90, "effect": "pulse" },
       robot: { "image": "robot.svg", "x": 20, "y": 90, "effect": "flip" },
@@ -295,7 +295,7 @@ sections: [
     words: {
       rainbow: { "image": "rainbow.svg", "x": 70, "y": 50, "effect": "scaleUp" },
       mouse: { "image": "mouse.svg", "x": 70, "y": 50, "effect": "fade" },
-      squirrel: { "image": "squirrel.svg", "x": 70, "y": 50, "effect": "pulse" },
+      squirrel: { "image": "Squirrel.svg", "x": 70, "y": 50, "effect": "pulse" },
       robot: { "image": "robot.svg", "x": 70, "y": 50, "effect": "flip" },
       bear: { "image": "bear.svg", "x": 70, "y": 50, "effect": "upAndDown" },
       bee: { "image": "bee.svg", "x": 70, "y": 50, "effect": "sideToSide" }
@@ -307,7 +307,7 @@ sections: [
     words: {
       sun: { "image": "sun.svg", "x": 30, "y": 0, "effect": "scaleUp" },
       mouse: { "image": "mouse.svg", "x": 22, "y": 80, "effect": "fade" },
-      squirrel: { "image": "squirrel.svg", "x": 25, "y": 45, "effect": "pulse" },
+      squirrel: { "image": "Squirrel.svg", "x": 25, "y": 45, "effect": "pulse" },
       robot: { "image": "robot.svg", "x": 20, "y": 40, "effect": "flip" },
       monkey: { "image": "monkey.svg", "x": 60, "y": 60, "effect": "upAndDown" },
       knight: { "image": "knight.svg", "x": 60, "y": 85, "effect": "pulse" }
@@ -318,7 +318,7 @@ sections: [
     phrase: "On top of the trees was a ___.",
     words: {
       monkey: { "image": "monkey.svg", "x": 80, "y": 5, "effect": "scaleUp" },
-      squirrel: { "image": "squirrel.svg", "x": 80, "y": 5, "effect": "fade" },
+      squirrel: { "image": "Squirrel.svg", "x": 80, "y": 5, "effect": "fade" },
       treasure: { "image": "treasure.svg", "x": 80, "y": 5, "effect": "pulse" },
       robot: { "image": "robot.svg", "x": 80, "y": 5, "effect": "flip" },
       bike: { "image": "bike.svg", "x": 80, "y": 5, "effect": "flip" },
@@ -430,8 +430,8 @@ sections: [
           stones: { image: "stones.svg", x: 90, y: 60, effect: 'none' },
           feathers: { image: "feathers.svg", x: 90, y: 60, effect: 'spin' },
           book: { image: "book.svg", x: 90, y: 60, effect: 'pulse' },
-          letters: { image: "letters.svg", x: 90, y: 60, effect: 'pulse' },
-          eggs: { image: "eggs.svg", x: 90, y: 60, effect: 'fade' }
+          planet: { image: "planet.svg", x: 90, y: 60, effect: 'pulse' },
+          UFO: { image: "ufo.svg", x: 90, y: 60, effect: 'fade' }
         },
       },
 
@@ -517,8 +517,8 @@ words: {
   redfish: { image: "redfish.svg", x: 80, y: 40, effect: 'sideToSide' },
   orangefish: { image: "orangefish.svg", x: 80, y: 40, effect: 'sideToSide' },
   diver: { image: "diver.svg", x: 80, y: 40, effect: 'flip' },
-  seaHorse: { image: "seaHorse.svg", x: 80, y: 40, effect: 'fade' },
-  pinkFish: { image: "pinkFish.svg", x: 80, y: 40, effect: 'pulse' }
+  seaHorse: { image: "seahorse.svg", x: 80, y: 40, effect: 'fade' },
+  pinkFish: { image: "pinkfish.svg", x: 80, y: 40, effect: 'pulse' }
 },
 },
 {
@@ -539,8 +539,8 @@ words: {
   redfish: { image: "redfish.svg", x: 10, y: 30, effect: 'sideToSide' },
   orangefish: { image: "orangefish.svg", x: 10, y: 30, effect: 'bounce' },
   diver: { image: "diver.svg", x: 10, y: 30, effect: 'flip' },
-  seaHorse: { image: "seaHorse.svg", x: 10, y: 30, effect: 'fade' },
-  pinkFish: { image: "pinkFish.svg", x: 10, y: 30, effect: 'pulse' }
+  seaHorse: { image: "seahorse.svg", x: 10, y: 30, effect: 'fade' },
+  pinkFish: { image: "pinkfish.svg", x: 10, y: 30, effect: 'pulse' }
 }
 },
 
@@ -552,7 +552,7 @@ words: {
   jellyfish: { image: "jellyfish.svg", x: 40, y: 99, effect: 'sideToSide' },
   orangefish: { image: "orangefish.svg", x: 40, y: 99, effect: 'bounce' },
   diver: { image: "diver.svg", x: 40, y: 99, effect: 'flip' },
-  seaHorse: { image: "seaHorse.svg", x: 40, y: 99, effect: 'fade' },
+  seaHorse: { image: "seahorse.svg", x: 40, y: 99, effect: 'fade' },
   seashell: { image: "seashell.svg", x: 40, y: 99, effect: 'pulse' }
 }
 },
@@ -564,7 +564,7 @@ words: {
     jellyfish: { image: "jellyfish.svg", x: 30, y: 5, effect: 'sideToSide' },
     shark: { image: "shark.svg", x: 30, y: 5, effect: 'bounce' },
     diver: { image: "diver.svg", x: 30, y: 5, effect: 'flip' },
-    seaHorse: { image: "seaHorse.svg", x: 30, y: 5, effect: 'fade' },
+    seaHorse: { image: "seahorse.svg", x: 30, y: 5, effect: 'fade' },
     seashell: { image: "seashell.svg", x: 30, y: 5, effect: 'pulse' }
   }
   },
@@ -577,7 +577,7 @@ words: {
       jellyfish: { image: "jellyfish.svg", x: 70, y: 50, effect: 'sideToSide' },
       orangefish: { image: "orangefish.svg", x: 70, y: 50, effect: 'bounce' },
       diver: { image: "diver.svg", x: 70, y: 50, effect: 'flip' },
-      seaHorse: { image: "seaHorse.svg", x: 70, y: 50, effect: 'fade' },
+      seaHorse: { image: "seahorse.svg", x: 70, y: 50, effect: 'fade' },
       seashell: { image: "seashell.svg", x: 70, y: 50, effect: 'pulse' }
     }
     },
@@ -590,7 +590,7 @@ words: {
         jellyfish: { image: "jellyfish.svg", x: 80, y: 0, effect: 'sideToSide' },
         orangefish: { image: "orangefish.svg", x: 80, y: 0, effect: 'bounce' },
         diver: { image: "diver.svg", x: 80, y: 0, effect: 'flip' },
-        seaHorse: { image: "seaHorse.svg", x: 80, y: 0, effect: 'fade' },
+        seaHorse: { image: "seahorse.svg", x: 80, y: 0, effect: 'fade' },
         shark: { image: "shark.svg", x: 80, y: 0, effect: 'pulse' }
       }
       },
@@ -601,8 +601,8 @@ words: {
   bluefish: { image: "bluefish.svg", x: 10, y: 20, effect: 'pulse' },
   shark: { image: "shark.svg", x: 10, y: 20, effect: 'sideToSide' },
   orangefish: { image: "orangefish.svg", x: 10, y: 20, effect: 'bounce' },
-  diver: { image: "scubadiver.svg", x: 10, y: 20, effect: 'flip' },
-  seaHorse: { image: "seaHorse.svg", x: 10, y: 20, effect: 'fade' },
+  diver: { image: "diver.svg", x: 10, y: 20, effect: 'flip' },
+  seaHorse: { image: "seahorse.svg", x: 10, y: 20, effect: 'fade' },
   whale: { image: "whale.svg", x: 10, y: 20, effect: 'pulse' }
 }
 },
@@ -614,8 +614,8 @@ words: {
   shark: { image: "shark.svg", x: 30, y: 30, effect: 'upAndDown' },
   orangefish: { image: "orangefish.svg", x: 30, y: 30, effect: 'upAndDown' },
   mermaid: { image: "mermaid.svg", x: 30, y: 30, effect: 'upAndDown' },
-  seaHorse: { image: "seaHorse.svg", x: 30, y: 30, effect: 'upAndDown' },
-  pinkfish: { image: "pinkFish.svg", x: 30, y: 30, effect: 'upAndDown' }
+  seaHorse: { image: "seahorse.svg", x: 30, y: 30, effect: 'upAndDown' },
+  pinkfish: { image: "pinkfish.svg", x: 30, y: 30, effect: 'upAndDown' }
 }
 },
 
@@ -634,7 +634,7 @@ words: {
   {
   phrase: " We wondered, why the ___ was under the sea.",
   words: {
-    squirrel: { image: "squirrel.svg", x: 10, y: 50, effect: 'fade' },
+    squirrel: { image: "Squirrel.svg", x: 10, y: 50, effect: 'fade' },
     treasure: { image: "treasure.svg", x: 10, y: 50, effect: 'pulse' },
     flag: { image: "flag.svg", x: 10, y: 50, effect: 'scaleUp' },
     rock: { image: "rock.svg", x: 10, y: 50, effect: 'flip' },
@@ -649,7 +649,7 @@ words: {
       coral: { image: "coral.svg", x: 70, y: 90, effect: 'sideToSide' },
       seastar: { image: "seastar.svg", x: 70, y: 90, effect: 'bounce' },
       diver: { image: "diver.svg", x: 70, y: 90, effect: 'flip' },
-      seaHorse: { image: "seaHorse.svg", x: 70, y: 90, effect: 'fade' },
+      seaHorse: { image: "seahorse.svg", x: 70, y: 90, effect: 'fade' },
       seashell: { image: "seashell.svg", x: 70, y: 90, effect: 'pulse' }
     }
     },
