@@ -9,24 +9,26 @@ import React from 'react';
 
 export default function Home() {
     return (
-        <div className="page-container"
+        <div className="fixed inset-0 flex flex-col items-center justify-center bg-cover bg-center overflow-hidden"
              style={{
                  backgroundImage: "url('HomePage-Images/Background.jpg')",
-                 backgroundSize: "cover",
              }}>
-            <div className="page-content-container">
 
+            {/*Main Content Div*/}    
+            <div className="flex flex-col items-center justify-start w-full h-full pt-[60px] relative">
+                
                 {/*Title with animation*/}
-            <div className="title-container">
+            <div className="flex justify-center items-center py-[50px]">
                 <AnimatedTitle/>
             </div>
 
-            <div className="button-container">
+            {/*Buttons Div*/}
+            <div className="flex flex-col md:flex-row justify-center items-center">
 
                 {/*CreateButton navigates to create room page*/}
-                <div className="button-padding">
-                    <div className="button-box">
-                        <Link href="/CreateRoom">
+                <div className="py-[10px]">
+                    <div className="border-[5px] border-white rounded-[45px] inline-block m-[10px] shadow-lg">
+                        <Link href="/CreateRoom" className='block'>
                             <CreateButton/>
                         </Link>
                     </div>
@@ -35,14 +37,13 @@ export default function Home() {
 
                 {/*JoinButton navigates to join room page*/}
 
-                <div className="button-padding">
-                    <div className="button-box">
-                        <Link href="/JoinRoom">
+                <div className="py-[10px]">
+                    <div className="border-[5px] border-white rounded-[45px] inline-block m-[10px] shadow-lg">
+                        <Link href="/JoinRoom" className='block'>
                             <JoinButton/>
                         </Link>
                     </div>
                 </div>
-
             </div>
 
             {/*Copyright text*/}
