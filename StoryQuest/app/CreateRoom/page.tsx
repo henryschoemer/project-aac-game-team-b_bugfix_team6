@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from 'next/link';
 import { ExitButton } from "../HomePage/HomePageButtons";
 import { db } from "../../firebaseControls/firebaseConfig";
 import { collection, addDoc, setDoc, doc } from "firebase/firestore";

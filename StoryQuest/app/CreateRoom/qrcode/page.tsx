@@ -1,5 +1,4 @@
 //project-aac-game-team-b/StoryQuest/app/CreateRoom/qrcode/page.tsx
-//this one should be good but everyhting is a little small tbh
 
 "use client";
 
@@ -29,29 +28,28 @@ function QRCodeContent() {
 
     const handleClick = (text:string) => {
         buttonHandler('none', text, speak);
-        console.log("click");
     };
 
 
     return (
         <div 
-            className="h-[100dvh] w-[100dvw] overflow-hidden bg-cover bg-center flex flex-col items-center justify-between p-4"
+            className="h-screen w-screen overflow-hidden bg-cover bg-center flex items-center justify-center p-2"
             style={{ backgroundImage: "url('../../HomePage-Images/Background.jpg')" }}
         >
             {/* Single Semi-Transparent Container */}
-            <div className="scale-90 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-6 w-full max-w-4xl mx-auto">
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-4 border-teal-300 p-2 w-full max-w-6xl h-[85vh] flex flex-col overflow-hidden">
                 {/* Title */}
-                <h1 className="text-3xl font-bold text-gray-800 text-center" onClick={()=>handleClick("Scan to Join Room")}>
+                <h1 className="text-2xl font-bold text-gray-800 text-center" onClick={()=>handleClick("Scan to Join Room")}>
                     Scan to Join Room
                 </h1>
 
                 {/* Steps */}
-                <div className="">
-                  <div className="scale-90 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-1 w-full max-w-4xl mx-auto" onClick={()=> handleClick("How to join with QR code:, 1. Find the picture, 2. Scan the picture, 3. Play together, 4. Enjoy")}>
-                    <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">
+                <div className="scale-75">
+                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-teal-300 p-1" onClick={()=> handleClick("How to join with QR code:, 1. Find the picture, 2. Scan the picture, 3. Play together, 4. Enjoy")}>
+                    <h2 className="text-md font-semibold text-gray-700 text-center">
                         How to join with QR code:
                     </h2>
-                    <div className="scale-105 flex flex-wrap justify-center gap-4">
+                    <div className="flex justify-center gap-1">
                         {[1, 2, 3, 4].map((step) => (
                             <div key={step} className="flex flex-col items-center">
                                 <Image 
@@ -59,10 +57,10 @@ function QRCodeContent() {
                                     alt={`Step ${step}`}
                                     width={120}
                                     height={120}
-                                    className="rounded-lg w-[120px] h-auto"
+                                    className="rounded-lg"
                                     priority
                                 />
-                                <p className="mt-2 text-sm text-gray-600 text-center">
+                                <p className="mt-1 text-md text-gray-600 text-center">
                                     {step === 1 && "1. Find code"}
                                     {step === 2 && "2. Scan code"}
                                     {step === 3 && "3. Play together"}
@@ -75,11 +73,16 @@ function QRCodeContent() {
                 </div>
 
                 {/* QR Code */}
-                <div className="mt-8 scale-125 flex flex-col items-center">
-                    <div className="scale-115 p-3 bg-white rounded-lg shadow-inner mb-3 border-2 border-teal-300 ">
-                        <QRCode value={joinRoomUrl} size={180} ecLevel="H" />
+                <div className="flex-1 flex flex-col items-center justify-center">
+                    <div className="mb-3 scale-110 p-2 bg-white rounded-xl shadow-inner border-4 border-teal-300">
+                        <QRCode 
+                        value={joinRoomUrl} 
+                        size={220} 
+                        ecLevel="H" 
+                        eyeRadius={5}
+                        />
                     </div>
-                    <p className="text-gray-700 text-center mb-2" onClick={()=>handleClick("Share this QR code with friends to join the game!")}>
+                    <p className="text-xl text-gray-700 text-center px-4" onClick={()=>handleClick("Share this QR code with friends to join the game!")}>
                         Share this QR code with friends to join the game!
                     </p>
                 </div>
