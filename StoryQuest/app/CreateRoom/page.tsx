@@ -158,7 +158,6 @@ export default function CreateRoomPage() {
                                     className="bg-white rounded-xl shadow-md border-2 border-gray-200 overflow-hidden
                                                 hover:border-teal-300 active:scale-95 transition-all flex flex-col h-full"
                                     onClick={() => handleStoryClick(story.title)}
-                                    onMouseEnter={() => handleOnMouseEnter(story.title)}
                                 >
                                     <img
                                         src={story.img}
@@ -189,7 +188,6 @@ export default function CreateRoomPage() {
                                                 hover:border-teal-300 active:scale-95 transition-all
                                                 h-[110px] w-full"
                                     onClick={() => handlePlayerClick(num)}
-                                    onMouseEnter={() => handleOnMouseEnter(num + " Players")}
                                 >
                                     <div className="flex justify-center gap-2 mb-2">
                                         {[...Array(num)].map((_, index) => (
@@ -206,7 +204,6 @@ export default function CreateRoomPage() {
                         <button
                             className="back-step-button"
                             onClick={() => goBack("Go Back")}
-                            onMouseEnter={() => handleOnMouseEnter("Go Back")}
                         >
                             ← Go Back
                         </button>
@@ -291,7 +288,6 @@ export default function CreateRoomPage() {
                         <button
                             className="back-step-button"
                             onClick={() => goBack("Go Back")}
-                            onMouseEnter={() => handleOnMouseEnter("Go Back")}
                         >
                             ← Go Back
                         </button>
@@ -368,7 +364,6 @@ export default function CreateRoomPage() {
                             <button
                                 className="back-step-button"
                                 onClick={() => goBack("Change Something")}
-                                onMouseEnter={() => handleOnMouseEnter("Change Something")}
                             >
                                 ← Change Something
                             </button>
