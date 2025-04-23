@@ -13,18 +13,16 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
   const scanIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startCamera = async () => {
-    // Stop any existing stream
     if (stream) {
       stream.getTracks().forEach(track => track.stop());
     }
 
     try {
-      // First try to access the back camera with more optimal settings
       try {
         const constraints = {
           video: { 
             facingMode: "environment",
-            width: { ideal: 640 }, // Lower resolution for better performance
+            width: { ideal: 640 },
             height: { ideal: 480 }
           }
         };
@@ -36,13 +34,11 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         if (videoRef.current) {
           videoRef.current.srcObject = newStream;
           await videoRef.current.play();
-          // Start continuous scanning after camera is ready
           setTimeout(() => startContinuousScan(), 1000);
         }
         
         setCameraError(null);
       } catch (err) {
-        // If back camera fails, fall back to front camera
         console.log("Back camera not available, trying front camera");
         const frontStream = await navigator.mediaDevices.getUserMedia({
           video: { 
@@ -57,7 +53,6 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         if (videoRef.current) {
           videoRef.current.srcObject = frontStream;
           await videoRef.current.play();
-          // Start continuous scanning after camera is ready
           setTimeout(() => startContinuousScan(), 1000);
         }
         
@@ -69,29 +64,21 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
     }
   };
 
-  // Enhanced image preprocessing to improve QR detection
   const preprocessImageData = (imageData: ImageData): ImageData => {
     const data = imageData.data;
     
-    // Adjust contrast and brightness
-    const contrastFactor = 1.5; // Increase contrast
-    const brightnessFactor = 10; // Slightly increase brightness
+    const contrastFactor = 1.5;
+    const brightnessFactor = 10;
     
     for (let i = 0; i < data.length; i += 4) {
-      // Calculate grayscale value (simple average)
       const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
       
-      // Apply contrast and brightness adjustment
       let adjusted = contrastFactor * (avg - 128) + 128 + brightnessFactor;
-      
-      // Ensure values stay within 0-255 range
       adjusted = Math.max(0, Math.min(255, adjusted));
       
-      // Set all RGB channels to the same value (grayscale)
-      data[i] = adjusted;     // R
-      data[i + 1] = adjusted; // G
-      data[i + 2] = adjusted; // B
-      // Alpha channel (i + 3) remains unchanged
+      data[i] = adjusted;
+      data[i + 1] = adjusted;
+      data[i + 2] = adjusted;
     }
     
     return imageData;
@@ -105,37 +92,31 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
 
-    // Set canvas dimensions to match video
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     
-    // Draw the current video frame to the canvas
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     
-    // Get the image data for processing
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     
-    // Apply preprocessing to enhance QR code detection
     const processedImageData = preprocessImageData(imageData);
     ctx.putImageData(processedImageData, 0, 0);
 
     try {
-      // Attempt to decode the QR code
       const code = window.jsQR(
         processedImageData.data,
         processedImageData.width,
         processedImageData.height,
         {
-          inversionAttempts: "attemptBoth" // Try both normal and inverted colors
+          inversionAttempts: "attemptBoth"
         }
       );
 
       if (code) {
-        // If QR code is found, stop scanning and process it
         stopContinuousScan();
         const imageData = canvas.toDataURL("image/png");
         setHotspotImage(imageData);
-        // Visual feedback that QR was detected
+        
         ctx.beginPath();
         ctx.lineWidth = 5;
         ctx.strokeStyle = "#00FF00";
@@ -155,7 +136,6 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
     if (isScanning) return;
     
     setIsScanning(true);
-    // Scan every 300ms
     scanIntervalRef.current = setInterval(captureAndScanFrame, 300);
   };
 
@@ -167,7 +147,6 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
     setIsScanning(false);
   };
 
-  // Manual capture button functionality
   const captureImage = () => {
     if (!videoRef.current || !canvasRef.current) return;
 
@@ -182,9 +161,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
     setHotspotImage(imageData);
   };
 
-  // Start camera automatically when component mounts
   useEffect(() => {
-    // Check if jsQR is available or needs to be loaded
     if (typeof window !== 'undefined' && !window.jsQR) {
       const script = document.createElement('script');
       script.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js';
@@ -195,7 +172,6 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
       startCamera();
     }
     
-    // Clean up function to stop camera when component unmounts
     return () => {
       stopContinuousScan();
       if (stream) {
@@ -205,12 +181,12 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="relative w-full">
+    <div className="flex flex-col md:flex-row h-full w-full gap-2">
+
+      <div className="relative w-full md:w-[70%] h-full min-h-[250px] bg-black rounded-lg overflow-hidden">
         <video 
           ref={videoRef} 
-          width="100%" 
-          className="rounded-lg mb-4" 
+          className="w-full h-full object-contain"
           playsInline 
           autoPlay
           muted
@@ -219,33 +195,35 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
           <div className="w-64 h-64 border-2 border-green-500 rounded-lg opacity-70">
             {isScanning && (
-              <div className="absolute inset-0 border-2 border-yellow-500 animate-pulse rounded-lg"></div>
-            )}
+                <div className="absolute inset-0 border-2 border-yellow-500 animate-pulse rounded-lg"></div>
+              )}
           </div>
         </div>
       </div>
-      <canvas ref={canvasRef} style={{ display: "none" }} />
-      
-      {cameraError && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center">
-          {cameraError}
-          <button 
-            onClick={startCamera}
-            className="ml-4 bg-red-600 text-white px-2 py-1 rounded text-sm"
-          >
-            Retry
-          </button>
-        </div>
-      )}
-      
-      <div className="flex justify-center w-full">
+
+      {/* Right Controls - takes remaining space */}
+      <div className="w-full md:w-[25%] flex flex-col justify-center items-center gap-4 p-1">
+        <canvas ref={canvasRef} style={{ display: "none" }} />
+        
         <button
           onClick={captureImage}
-          className="bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-700 text-lg w-1/2 max-w-sm ml-2"
+          className="bg-green-600 text-white font-bold py-1 px-3 rounded-lg shadow-md hover:bg-green-700 text-xl w-full max-w-[200px]"
           disabled={!stream}
         >
           Capture
         </button>
+        
+        {cameraError && (
+          <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-center">
+            {cameraError}
+            <button 
+              onClick={startCamera}
+              className="mt-2 bg-red-600 text-white px-2 py-1 rounded text-sm w-full"
+            >
+              Retry
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -253,7 +231,6 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
 
 export default Camera;
 
-// Add jsQR type definition
 declare global {
   interface Window {
     jsQR: (
