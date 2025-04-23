@@ -42,26 +42,26 @@ const stories: Story[] = [
         mouse: { image: "mouse.svg", x: 30, y: 90, effect: 'flip', width: 80, height: 80 },
         ladybug: { image: "ladybug.svg", x: 30, y: 90, effect: 'sideToSide' },
         bird: { image: "bird.svg", x: 30, y: 90, effect: 'upAndDown' },
-        squirrel: { image: "Squirrel.svg", x: 30, y: 70, effect: 'fade' },
+        squirrel: { image: "squirrel.svg", x: 30, y: 70, effect: 'fade' },
         boy: { image: "boy.svg", x: 30, y: 90, effect: 'fade', width: 250, height: 280 },
         bear: { image: "bear.svg", x: 30, y: 70, effect: 'fade' }
       },
     },
 
     {
-      phrase: "And playing in the left was the ___.",
+      phrase: "And playing on the left was the ___.",
       words: {
         mouse: { image: "mouse.svg", x: 20, y: 90, effect: 'flip', width: 80, height: 80 },
         ladybug: { image: "ladybug.svg", x: 20, y: 90, effect: 'sideToSide' },
         bird: { image: "bird.svg", x: 20, y: 90, effect: 'upAndDown' },
-        squirrel: { image: "Squirrel.svg", x: 20, y: 70, effect: 'fade' },
+        squirrel: { image: "squirrel.svg", x: 20, y: 70, effect: 'fade' },
         boy: { image: "boy.svg", x: 20, y: 90, effect: 'fade', width: 250, height: 280 },
         bear: { image: "bear.svg", x: 20, y: 70, effect: 'fade' }
       },
     },
 
     {
-      phrase: "And near the flowers, we see a ___.",  
+      phrase: "And near the flowers, we can see a ___.",
       words: {
         bee: { image: "bee.svg", x: 55, y: 50, effect: 'pulse' },
         butterfly: { image: "butterfly.svg",x: 55, y: 45, effect: 'sideToSide' },
@@ -126,7 +126,7 @@ const stories: Story[] = [
     words: {
       treasure: { image: "treasure.svg", x: 70, y: 95, effect: 'fade' },
       basket: { image: "basket.svg", x: 70, y: 95, effect: 'scaleUp' },
-      squirrel: { image: "Squirrel.svg", x: 70, y: 95, effect: 'pulse' },
+      squirrel: { image: "squirrel.svg", x: 70, y: 95, effect: 'pulse' },
       boy: { image: "boy.svg", x: 70, y: 95, effect: 'scaleUp' , width: 250, height: 280},
       star: { image: "star.svg", x: 70, y: 95, effect: 'fade' },
       balloon: { image: "balloon.svg", x: 70, y: 95, effect: 'scaleUp' }
@@ -158,7 +158,7 @@ const stories: Story[] = [
   },
 
   {
-    phrase: "We said bye to the___ on the left.",
+    phrase: "We said bye to the ___ on the left.",
     words: {
       robot: { image: "robot.svg", x: 0, y: 70, effect: 'fade' },
       boy: { image: "boy.svg", x: 0, y: 70, effect: 'scaleUp' , width: 250, height: 280 },
@@ -196,7 +196,7 @@ colorTheme: {
 },
 sections: [
   {
-    phrase: "In the forest, I look in the sky and see a ___.",
+    phrase: "In the forest, I look in the sky and see a(n) ___.",
     words: {
       bird: { image: "bird.svg", x: 40, y: 5, effect: 'fade' },
       airplane: { image: "airplane.svg", x: 40, y: 5, effect: 'pulse' },
@@ -207,19 +207,19 @@ sections: [
     },
   },
   {
-    phrase: "In the path there is a ___.",  // New sentence
+    phrase: "On the path there is a ___.",  // New sentence
     words: {
       bear: { image: "bear.svg", x: 40, y: 60, effect: 'pulse' },
       basket: { image: "basket.svg", x: 40, y: 60, effect: 'none' },
       monkey: { image: "monkey.svg", x: 40, y: 60, effect: 'none' },
-      squirrel: { image: "Squirrel.svg", x: 40, y: 60, effect: 'none' },
+      squirrel: { image: "squirrel.svg", x: 40, y: 60, effect: 'none' },
       bird: { image: "bird.svg", x: 40, y: 60, effect: 'none' },
       ladybug: { image: "ladybug.svg", x: 40, y: 60, effect: 'none' }
     },
   },
 
   {
-    phrase: "On our left we can see ___.",  // New sentence
+    phrase: "On our left we can see a ___.",  // New sentence
     words: {
       treasure: { image: "treasure.svg", x: 10, y: 70, effect: 'pulse' },
       basket: { image: "basket.svg", x: 10, y: 70, effect: 'none' },
@@ -236,7 +236,7 @@ sections: [
       robot: { image: "robot.svg", x: 90, y: 80, effect: 'pulse' },
       knight: { image: "knight.svg", x: 90, y: 80, effect: 'none' , width: 250, height: 280 },
       butterfly: { image: "butterfly.svg", x: 90, y: 70, effect: 'none' },
-      squirrel: { image: "Squirrel.svg", x: 90, y: 80, effect: 'none' },
+      squirrel: { image: "squirrel.svg", x: 90, y: 80, effect: 'none' },
       boy: { image: "boy.svg", x: 90, y: 80, effect: 'none', width: 250, height: 280  },
       ladybug: { image: "ladybug.svg", x: 90, y: 80, effect: 'none' }
     },
@@ -269,7 +269,7 @@ sections: [
   {
     phrase: "It was fun to see the ___ playing.",
     words: {
-      squirrel: { "image": "Squirrel.svg", "x": 20, "y": 90, "effect": "scaleUp" },
+      squirrel: { "image": "squirrel.svg", "x": 20, "y": 90, "effect": "scaleUp" },
       mouse: { "image": "mouse.svg", "x": 22, "y": 90, "effect": "fade" },
       boy: { "image": "boy.svg", "x": 25, "y": 90, "effect": "pulse" },
       robot: { "image": "robot.svg", "x": 20, "y": 90, "effect": "flip" },
@@ -295,7 +295,7 @@ sections: [
     words: {
       rainbow: { "image": "rainbow.svg", "x": 70, "y": 50, "effect": "scaleUp" },
       mouse: { "image": "mouse.svg", "x": 70, "y": 50, "effect": "fade" },
-      squirrel: { "image": "Squirrel.svg", "x": 70, "y": 50, "effect": "pulse" },
+      squirrel: { "image": "squirrel.svg", "x": 70, "y": 50, "effect": "pulse" },
       robot: { "image": "robot.svg", "x": 70, "y": 50, "effect": "flip" },
       bear: { "image": "bear.svg", "x": 70, "y": 50, "effect": "upAndDown" },
       bee: { "image": "bee.svg", "x": 70, "y": 50, "effect": "sideToSide" }
@@ -307,7 +307,7 @@ sections: [
     words: {
       sun: { "image": "sun.svg", "x": 30, "y": 0, "effect": "scaleUp" },
       mouse: { "image": "mouse.svg", "x": 22, "y": 80, "effect": "fade" },
-      squirrel: { "image": "Squirrel.svg", "x": 25, "y": 45, "effect": "pulse" },
+      squirrel: { "image": "squirrel.svg", "x": 25, "y": 45, "effect": "pulse" },
       robot: { "image": "robot.svg", "x": 20, "y": 40, "effect": "flip" },
       monkey: { "image": "monkey.svg", "x": 60, "y": 60, "effect": "upAndDown" },
       knight: { "image": "knight.svg", "x": 60, "y": 85, "effect": "pulse" }
@@ -318,7 +318,7 @@ sections: [
     phrase: "On top of the trees was a ___.",
     words: {
       monkey: { "image": "monkey.svg", "x": 80, "y": 5, "effect": "scaleUp" },
-      squirrel: { "image": "Squirrel.svg", "x": 80, "y": 5, "effect": "fade" },
+      squirrel: { "image": "squirrel.svg", "x": 80, "y": 5, "effect": "fade" },
       treasure: { "image": "treasure.svg", "x": 80, "y": 5, "effect": "pulse" },
       robot: { "image": "robot.svg", "x": 80, "y": 5, "effect": "flip" },
       bike: { "image": "bike.svg", "x": 80, "y": 5, "effect": "flip" },
@@ -330,7 +330,7 @@ sections: [
     phrase: "The ___ was bouncing in the bush.", 
     words: {
       boy: {image: "boy.svg", x: 80, y: 60, effect: 'scaleUp'},
-      squirrel: {image: "Squirrel.svg", x: 65, y: 60, effect: 'upAndDown'},
+      squirrel: {image: "squirrel.svg", x: 65, y: 60, effect: 'upAndDown'},
       mouse: {image: "mouse.svg", x: 65, y: 60, effect: 'upAndDown'},
       monkey: {image: "monkey.svg", x: 65, y: 60, effect: 'upAndDown'},
       ladybug: {image: "ladybug.svg", x: 65, y: 60, effect: 'upAndDown'},
@@ -350,7 +350,7 @@ sections: [
     },
     sections: [
       {
-        phrase: "We are travelling thru space and saw a ___.",
+        phrase: "We are travelling through space and saw a(n) ___.",
         words: {
           planet: { image: "planet.svg", x: 80, y: 5, effect: 'spin' },
           comet: { image: "comet.svg", x: 80, y: 5, effect: 'sideToSide' },
@@ -361,7 +361,7 @@ sections: [
         },
       },
       {
-        phrase: "On the moon, we discovered a ___.",
+        phrase: "On the moon, we discovered a(n) ___.",
         words: {
           flag: { image: "flag.svg", x: 20, y: 20, effect: 'pulse' },
           rock: { image: "rock.svg", x: 20, y: 20, effect: 'scaleUp' },
@@ -399,7 +399,7 @@ sections: [
 
 
       {
-        phrase: "Suddenly, something flew by us. It was a ___.",
+        phrase: "Suddenly, something flew by us. It was a(n) ___.",
         words: {
           UFO: { image: "ufo.svg", x: 50, y: 50, effect: 'scaleUp' },
           book: { image: "book.svg", x: 50, y: 50, effect: 'fade' },
@@ -411,7 +411,7 @@ sections: [
       },
 
       {
-        phrase: "Under the moon, we sppoted a ___.",
+        phrase: "Under the moon, we spotted a(n) ___.",
         words: {
           spaceDog: { image: "spacedog.svg", x: 15, y: 80, effect: 'bounce' },
           astronaut: { image: "astronaut.svg", x: 15, y: 80, effect: 'none' },
@@ -424,7 +424,7 @@ sections: [
 
 
       {
-        phrase: "The space is a place full of ___.",
+        phrase: "Space is a place full of ___(s).",
         words: {
           star: { image: "star.svg", x: 90, y: 60, effect: 'bounce' },
           stones: { image: "stones.svg", x: 90, y: 60, effect: 'none' },
@@ -436,7 +436,7 @@ sections: [
       },
 
       {
-        phrase: "Hiding on the right we sppoted a ___.",
+        phrase: "Hiding on the right we spotted a(n) ___.",
         words: {
           UFO: { image: "ufo.svg", x: 90, y: 90, effect: 'scaleUp' },
           spaceDog: { image: "spaceDog.svg", x: 90, y: 90, effect: 'fade' },
@@ -461,7 +461,7 @@ sections: [
 
 
       {
-        phrase: "We also said hi to a ___.",
+        phrase: "We also said hi to a(n) ___.",
         words: {
           alien: { image: "alien.svg", x: 5, y: 90, effect: 'pulse' },
           robot: { image: "robot.svg", x: 5, y: 90, effect: 'sideToSide' },
@@ -473,7 +473,7 @@ sections: [
       },
 
       {
-        phrase: "We asked direction to a ___.",
+        phrase: "We asked for directions from a(n) ___.",
         words: {
           alien: { image: "alien.svg", x: 60, y: 90, effect: 'pulse' },
           robot: { image: "robot.svg", x: 60, y: 90, effect: 'sideToSide' },
@@ -533,7 +533,7 @@ words: {
 },
 },
 {
-phrase: "On our left we see ___.",
+phrase: "On our left we see a ___.",
 words: {
   bluefish: { image: "bluefish.svg", x: 10, y: 30, effect: 'spin' },
   redfish: { image: "redfish.svg", x: 10, y: 30, effect: 'sideToSide' },
@@ -546,7 +546,7 @@ words: {
 
 
 {
-phrase: "At the bottom of the ocean we discovered ___.",
+phrase: "At the bottom of the ocean we discovered a ___.",
 words: {
   seastar: { image: "seastar.svg", x: 40, y: 99, effect: 'scaleUp' },
   jellyfish: { image: "jellyfish.svg", x: 40, y: 99, effect: 'sideToSide' },
@@ -558,7 +558,7 @@ words: {
 },
 
 {
-  phrase: "We also spotted a  ___.",
+  phrase: "We also spotted a ___.",
   words: {
     mermaid: { image: "mermaid.svg", x: 30, y: 5, effect: 'spin' },
     jellyfish: { image: "jellyfish.svg", x: 30, y: 5, effect: 'sideToSide' },
@@ -584,7 +584,7 @@ words: {
 
 
     {
-      phrase: " Near the surface there is a___.",
+      phrase: " Near the surface there is a ___.",
       words: {
         whale: { image: "whale.svg", x: 80, y: 0, effect: 'scaleUp' },
         jellyfish: { image: "jellyfish.svg", x: 80, y: 0, effect: 'sideToSide' },
@@ -632,9 +632,9 @@ words: {
   },
 
   {
-  phrase: " We wondered, why the ___ was under the sea.",
+  phrase: " We wondered why the ___ was under the sea.",
   words: {
-    squirrel: { image: "Squirrel.svg", x: 10, y: 50, effect: 'fade' },
+    squirrel: { image: "squirrel.svg", x: 10, y: 50, effect: 'fade' },
     treasure: { image: "treasure.svg", x: 10, y: 50, effect: 'pulse' },
     flag: { image: "flag.svg", x: 10, y: 50, effect: 'scaleUp' },
     rock: { image: "rock.svg", x: 10, y: 50, effect: 'flip' },

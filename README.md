@@ -27,18 +27,20 @@ https://project-aac-game-team-b--storyquest-fcdc2.us-central1.hosted.app
 **Also keep in mind that this app was intended for Tablets so debugging certain things on a laptop would not help**
 1. First you have to make sure that you have Node installed on your computer. You can check this by navigating to a terminal, typing "npm -v" or "node -v" to find out which version you have. If you don't have it downloaded
 head over to https://nodejs.org/ to follow the instructions on downloading or updating.
-2. After making sure you have node installed, open up a terminal and naviaget over to where you want to keep project, for example on your Desktop or if you have a special folder for your IDE's projects. Once there type in git clone <repo-url>, where the <repo-url> would be the url of the GitHub Repo. You can find it under a green button called "<>Code", click it and copy the url for HTTPS. Hit enter and you should now have a repo cloned onto your local machien.
+2. After making sure you have node installed, open up a terminal and navigate over to where you want to keep project, for example on your Desktop or if you have a special folder for your IDE's projects. Once there type in git clone <repo-url>, where the <repo-url> would be the url of the GitHub Repo. You can find it under a green button called "Code", click it and copy the url for HTTPS. Hit enter and you should now have a repo cloned onto your local machine.
 3. When in the Projects Root Folder, navigate over to a folder called "StoryQuest". That is the App root folder. After you have cd'ed into it, be sure to run npm install so our dependencies are installed too from our package.json.
 4. To run the project locally, type in "npm run dev". Your local host 3000 port should now have it live.
 
 ## Keywords
  - AAC - Augmentative and Alternative Communication
- - Cloze Phrase - Phrases or sentences with words missing that are intended to be filled in by the reader. Cloze phrases are used to assess reading comprehension and to help students learn to predict word meanings. 
+ - Cloze Phrase - A common technique leveraged in speech therapy. Phrases or sentences with words missing that are intended to be filled in by the reader/listener. Cloze phrases are used to assess reading comprehension and to help students learn to predict word meanings. 
 
 
 ## Project Abstract
 
-This project is a web-based, tablet-friendly "cloze phrase(*)" style story game designed for children to learn how to collaborate, with special considerations regarding players who use Augmentative and Alternative Communication (ACC). In order to promote social inclusion and empathy, the game relies on teammates all communicating and working as a team in order to get the phrase complete. This is done so AAC users don't feel ostracized and are actively needed in the group. An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. The interface dynamically indicates when a child is selecting their answer. 
+This project is a web-based, tablet-friendly "cloze phrase" style story game designed for children to learn how to collaborate, with special considerations regarding players who use Augmentative and Alternative Communication (ACC). 
+In order to promote social inclusion and empathy, the game relies on teammates all communicating and working as a team in order to get the phrase complete. This is done so AAC users don't feel ostracized and are actively needed in the group. 
+An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. The interface dynamically indicates when a child is selecting their answer. 
 
 
 ## High Level Requirement
@@ -74,11 +76,11 @@ The website will be built with the Next.js Framework primarily for the front-end
 
 ## Background
 
-Many current tools on the market are geared towards engaging AAC users, such as the AAC Language Lab1 or AssistiveWare2. 
+Many current tools on the market are geared towards engaging AAC users, such as the AAC Language Lab or AssistiveWare. 
 The AAC Language Lab has web-based games based on stages of learning, and requires a subscription model to use.
 There is a gap in the market for learning games based in collaboration between AAC users and non-AAC users.
 StoryQuest aims to create a collaborative environment for AAC and non-AAC users to engage in play.
-In a study by Schwartz et al.,3 the 31 preschool children with significant developmental disabilities who learned to use Picture Exchange Communication Systems to communicate with adults after 11 months, also learned to communicate with peers without disabilities after an additional 3 months of intervention in integrated, play-based activities.
+In a study by Schwartz et al., the 31 preschool children with significant developmental disabilities who learned to use Picture Exchange Communication Systems to communicate with adults after 11 months, also learned to communicate with peers without disabilities after an additional 3 months of intervention in integrated, play-based activities.
 Social interactions for development remains important at the grade-school level.
 
 ## Required Resources
@@ -155,6 +157,4 @@ Social interactions for development remains important at the grade-school level.
 </table>
 
 [//]: # ( readme: collaborators -end )
-
-(*)cloze phrase - a common technique leveraged in speech therapy. Phrases with a word or words intentionally left out, for the purpose of encouraging the listener to fill in the blank. Cloze phrases are used to help children learn language, and can also be used for assessment.
 
