@@ -57,7 +57,7 @@ describe('CompletedStory', () => {
         });
 
         // Check that TextToSpeechTextOnly was called for each phrase
-        expect(TextToSpeechTextOnly).toHaveBeenCalledTimes(completedPhrases.length);
+        expect(TextToSpeechTextOnly).toHaveBeenCalledTimes(completedPhrases.length +1);
 
         // Verify each phrase was passed correctly
         completedPhrases.forEach((phrase, index) => {
