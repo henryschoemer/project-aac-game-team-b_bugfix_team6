@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useRef, useState, useEffect } from "react";
 
 interface CameraProps {
@@ -12,40 +10,41 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [isScanning, setIsScanning] = useState(false);
+  const scanIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startCamera = async () => {
-    // Stop any existing stream
     if (stream) {
       stream.getTracks().forEach(track => track.stop());
     }
 
     try {
-      // First try to access the back camera
       try {
-        const newStream = await navigator.mediaDevices.getUserMedia({
+        const constraints = {
           video: { 
             facingMode: "environment",
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
+            width: { ideal: 640 },
+            height: { ideal: 480 }
           }
-        });
+        };
+        
+        const newStream = await navigator.mediaDevices.getUserMedia(constraints);
         
         setStream(newStream);
         
         if (videoRef.current) {
           videoRef.current.srcObject = newStream;
           await videoRef.current.play();
+          setTimeout(() => startContinuousScan(), 1000);
         }
         
         setCameraError(null);
       } catch (err) {
-        // If back camera fails, fall back to front camera
         console.log("Back camera not available, trying front camera");
         const frontStream = await navigator.mediaDevices.getUserMedia({
           video: { 
             facingMode: "user",
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
+            width: { ideal: 640 },
+            height: { ideal: 480 }
           }
         });
         
@@ -54,6 +53,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         if (videoRef.current) {
           videoRef.current.srcObject = frontStream;
           await videoRef.current.play();
+          setTimeout(() => startContinuousScan(), 1000);
         }
         
         setCameraError(null);
@@ -64,17 +64,88 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
     }
   };
 
-  // Start camera automatically when component mounts
-  useEffect(() => {
-    startCamera();
+  const preprocessImageData = (imageData: ImageData): ImageData => {
+    const data = imageData.data;
     
-    // Clean up function to stop camera when component unmounts
-    return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+    const contrastFactor = 1.5;
+    const brightnessFactor = 10;
+    
+    for (let i = 0; i < data.length; i += 4) {
+      const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      
+      let adjusted = contrastFactor * (avg - 128) + 128 + brightnessFactor;
+      adjusted = Math.max(0, Math.min(255, adjusted));
+      
+      data[i] = adjusted;
+      data[i + 1] = adjusted;
+      data[i + 2] = adjusted;
+    }
+    
+    return imageData;
+  };
+
+  const captureAndScanFrame = () => {
+    if (!videoRef.current || !canvasRef.current || !window.jsQR) return;
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (!ctx) return;
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    
+    const processedImageData = preprocessImageData(imageData);
+    ctx.putImageData(processedImageData, 0, 0);
+
+    try {
+      const code = window.jsQR(
+        processedImageData.data,
+        processedImageData.width,
+        processedImageData.height,
+        {
+          inversionAttempts: "attemptBoth"
+        }
+      );
+
+      if (code) {
+        stopContinuousScan();
+        const imageData = canvas.toDataURL("image/png");
+        setHotspotImage(imageData);
+        
+        ctx.beginPath();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#00FF00";
+        ctx.moveTo(code.location.topLeftCorner.x, code.location.topLeftCorner.y);
+        ctx.lineTo(code.location.topRightCorner.x, code.location.topRightCorner.y);
+        ctx.lineTo(code.location.bottomRightCorner.x, code.location.bottomRightCorner.y);
+        ctx.lineTo(code.location.bottomLeftCorner.x, code.location.bottomLeftCorner.y);
+        ctx.lineTo(code.location.topLeftCorner.x, code.location.topLeftCorner.y);
+        ctx.stroke();
       }
-    };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    } catch (error) {
+      console.log("Error scanning QR code:", error);
+    }
+  };
+
+  const startContinuousScan = () => {
+    if (isScanning) return;
+    
+    setIsScanning(true);
+    scanIntervalRef.current = setInterval(captureAndScanFrame, 300);
+  };
+
+  const stopContinuousScan = () => {
+    if (scanIntervalRef.current) {
+      clearInterval(scanIntervalRef.current);
+      scanIntervalRef.current = null;
+    }
+    setIsScanning(false);
+  };
 
   const captureImage = () => {
     if (!videoRef.current || !canvasRef.current) return;
@@ -89,6 +160,25 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
     const imageData = canvasRef.current.toDataURL("image/png");
     setHotspotImage(imageData);
   };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !window.jsQR) {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js';
+      script.async = true;
+      script.onload = startCamera;
+      document.body.appendChild(script);
+    } else {
+      startCamera();
+    }
+    
+    return () => {
+      stopContinuousScan();
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full gap-2">
@@ -140,3 +230,24 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
 };
 
 export default Camera;
+
+declare global {
+  interface Window {
+    jsQR: (
+      data: Uint8ClampedArray,
+      width: number,
+      height: number,
+      options?: {
+        inversionAttempts: "dontInvert" | "onlyInvert" | "attemptBoth";
+      }
+    ) => {
+      data: string;
+      location: {
+        topLeftCorner: { x: number; y: number };
+        topRightCorner: { x: number; y: number };
+        bottomRightCorner: { x: number; y: number };
+        bottomLeftCorner: { x: number; y: number };
+      };
+    } | null;
+  }
+}
