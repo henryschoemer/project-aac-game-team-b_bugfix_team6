@@ -33,11 +33,11 @@ function QRCodeContent() {
 
     return (
         <div 
-            className="h-screen w-screen overflow-hidden bg-cover bg-center flex items-center justify-center p-2"
+            className="h-screen w-screen overflow-hidden bg-cover bg-center flex items-center justify-center p-4"
             style={{ backgroundImage: "url('../../HomePage-Images/Background.jpg')" }}
         >
             {/* Single Semi-Transparent Container */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-4 border-teal-300 p-2 w-full max-w-6xl h-[85vh] flex flex-col overflow-hidden">
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-4 border-teal-300 p-1 w-full max-w-6xl h-[85vh] overflow-hidden">
                 {/* Title */}
                 <h1 className="text-2xl font-bold text-gray-800 text-center" onClick={()=>handleClick("Scan to Join Room")}>
                     Scan to Join Room
@@ -51,7 +51,7 @@ function QRCodeContent() {
                     </h2>
                     <div className="flex justify-center gap-1">
                         {[1, 2, 3, 4].map((step) => (
-                            <div key={step} className="flex flex-col items-center">
+                            <div key={step} className="items-center">
                                 <Image 
                                     src={`/diagrams/QR${step}.png`}
                                     alt={`Step ${step}`}
@@ -60,7 +60,7 @@ function QRCodeContent() {
                                     className="rounded-lg"
                                     priority
                                 />
-                                <p className="mt-1 text-md text-gray-600 text-center">
+                                <p className="text-md text-gray-600 text-center">
                                     {step === 1 && "1. Find code"}
                                     {step === 2 && "2. Scan code"}
                                     {step === 3 && "3. Play together"}
@@ -73,8 +73,8 @@ function QRCodeContent() {
                 </div>
 
                 {/* QR Code */}
-                <div className="flex-1 flex flex-col items-center justify-center">
-                    <div className="mb-3 scale-110 p-2 bg-white rounded-xl shadow-inner border-4 border-teal-300">
+                <div className="flex flex-col items-center justify-center">
+                    <div className=" mt-5 scale-125 p-2 bg-white rounded-xl shadow-inner border-4 border-teal-300">
                         <QRCode 
                         value={joinRoomUrl} 
                         size={220} 
@@ -82,10 +82,10 @@ function QRCodeContent() {
                         eyeRadius={5}
                         />
                     </div>
-                    <p className="text-xl text-gray-700 text-center px-4" onClick={()=>handleClick("Share this QR code with friends to join the game!")}>
-                        Share this QR code with friends to join the game!
-                    </p>
                 </div>
+                <p className="text-xl text-gray-700 text-center m-10" onClick={()=>handleClick("Share this QR code with friends to join the game!")}>
+                    Share this QR code with friends to join the game!
+                </p>
             </div>
         </div>
     );

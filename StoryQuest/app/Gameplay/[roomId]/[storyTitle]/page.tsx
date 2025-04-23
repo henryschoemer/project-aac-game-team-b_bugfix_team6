@@ -452,10 +452,10 @@ useEffect(() => {
       </div>
     )}
 
-<div className="flex w-screen h-screen min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900">
+<div className="flex w-full h-full min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900" style={containerStyle}>
   
   {/* Left Panel: */}
-  <div className="w-[40%] bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">   
+  <div className="w-[40%] h-full bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">   
     {/* Player turns display */}
     {playerNumber && (
       <div className="flex flex-col items-center justify-center mb-2 w-full">
@@ -470,7 +470,7 @@ useEffect(() => {
                           <span
                             className={`
                               ${isActive ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 scale-150 animate-pulse glow" 
-                                        : "text-5xl p-2 border-2 border-gray-400"}
+                                        : "text-4xl p-1 border-2 border-gray-400"}
                               rounded-full 
                             `}
                             style={{ transition: "transform 0.3s ease-in-out" }}
@@ -497,7 +497,7 @@ useEffect(() => {
           </div>
         </div>
     )}
-    <div className={`aac-blocking-container ${blockOverlay ? "blocked" : ""}`}>
+    <div className={`aac-blocking-container ${blockOverlay ? "blocked" : ""}`} style={{height: '60%'}}>
       <AACKeyboard
         onSelect={handleAACSelect}
         symbols={trimmedSections[currentSectionIndex] // Use trimmedSections here
@@ -520,7 +520,7 @@ useEffect(() => {
 
   {/* Right Panel: Game Scene */}
   <div
-    className="w-[70%] relative bg-cover bg-center flex justify-center items-center pb-20"
+    className="w-[60%] h-full relative bg-cover bg-center flex justify-center items-center"
     style={{
       backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
       backgroundSize: "cover",
@@ -530,14 +530,14 @@ useEffect(() => {
   >
     {/* Completed Phrases (positioned with the text) */}
     {/* Storybook Text Display */}
-    <div className="absolute bottom-0 left-0 w-full min-h-[140px] bg-[url('/images/parchment-texture.png')] bg-cover p-6 border-t-8 border-amber-800 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
+    <div className="absolute bottom-0 left-0 right-0 min-h-[120px] bg-[url('/images/parchment-texture.png')] bg-cover p-4 border-t-8 border-amber-800 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
       {/* Decorative scroll ends */}
       <div className="absolute -top-6 left-4 right-4 flex justify-between pointer-events-none">
         <span className="text-5xl text-amber-800">✧</span>
         <span className="text-5xl text-amber-800">✧</span>
       </div>
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-full mx-auto">
         {/* Completed story phrases */}
         <div className="flex flex-col gap-1">
         {phrase !== "The End!" ? (
@@ -562,7 +562,7 @@ useEffect(() => {
       <div className="relative">
         <span className="text-4xl font-bold font-patrick-hand text-amber-900 animate-pulse">
           {phrase}
-          <span className="ml-1 inline-block w-2 h-10 bg-amber-600 animate-blink"></span>
+          <span className="ml-1 inline-block w-2 h- bg-amber-600 animate-blink"></span>
         </span>
 
         {/* Floating fairydust particles */}
