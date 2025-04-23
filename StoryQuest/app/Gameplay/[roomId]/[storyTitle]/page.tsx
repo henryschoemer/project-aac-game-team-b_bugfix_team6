@@ -6,11 +6,11 @@ import { useParams } from "next/navigation";//To retrieve story based on room se
 import AACKeyboard from "../../../Components/AACKeyboard";
 import useSound from 'use-sound';
 import TextToSpeechAACButtons from "../../../Components/TextToSpeechAACButtons";
-import CompletedStory2 from "@/Components/CompletedStory2";
+import CompletedStory from "@/Components/CompletedStory";
 import {motion, AnimatePresence} from "framer-motion";
-import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect, SlideAcrossEffect} from "../../../Components/animationUtils";
+import {SpinEffect,PulseEffect,FadeEffect,SideToSideEffect, UpAndDownEffect,ScaleUpEffect,BounceEffect,FlipEffect, SlideAcrossEffect} from "../../../Components/AnimationUtils";
 import CompletionPage from "../../../CompletionPage/page";
-import TextToSpeechTextOnly2 from "@/Components/TextToSpeechTextOnly2";
+import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, serverTimestamp, collection, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
@@ -659,14 +659,14 @@ useEffect(() => {
 
     {/* Calls AutomaticTextToSpeech, which speech texts the current fill in the blank phrase*/}
     {phrase && (
-      <TextToSpeechTextOnly2 key={phrase} text={phrase} />
+      <TextToSpeechTextOnly key={phrase} text={phrase} />
     )}
 
     {/* Text to speech completed story*/}
     {phrase === "The End!" && (
       <div>
         {/*Call completedstory button and pass completedphrase map*/}
-        <CompletedStory2
+        <CompletedStory
           index={completedPhrases.length - 1}
           completedPhrases={completedPhrases}
           roomId={roomId}
@@ -692,10 +692,10 @@ useEffect(() => {
   </div>
 
   {/* TTS Components */}
-  {/*{phrase && <TextToSpeechTextOnly2 key={phrase} text={phrase} />}
+  {/*{phrase && <TextToSpeechTextOnly key={phrase} text={phrase} />}
 
   {phrase === "The End!" && (
-    <CompletedStory2
+    <CompletedStory
       index={completedPhrases.length - 1}
       completedPhrases={completedPhrases}
       roomId={roomId}

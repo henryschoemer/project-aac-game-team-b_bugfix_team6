@@ -6,7 +6,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebaseControls/firebaseConfig";
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { ExitButton } from "../HomePage/HomePageButtons";
-import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useSound from "use-sound";
 import Camera from "../Components/Camera";
 import jsQR from "jsqr";
@@ -242,7 +241,7 @@ export default function JoinRoomPage() {
 
     return (
         <div className="h-screen w-screen fixed inset-0 overflow-hidden bg-cover bg-center"
-            style={{ backgroundImage: "url('/HomePage-Images/Background.jpg')" }}>
+            style={{ backgroundImage: "url('/HomePage-Images/home-background.jpg')" }}>
             
             <div className="h-full w-full p-4 flex justify-center items-center overflow-y-auto">
                 <div className="max-w-[1024px] w-full flex flex-col gap-4 h-full max-h-full relative">
