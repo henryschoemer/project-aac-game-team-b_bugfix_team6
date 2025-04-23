@@ -11,6 +11,7 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [cameraError, setCameraError] = useState<string | null>(null);
+  const [isScanning, setIsScanning] = useState(false);
 
   const startCamera = async () => {
     // Stop any existing stream
@@ -102,7 +103,11 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
         />
         {/* QR code alignment guide */}
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
-          <div className="w-64 h-64 border-2 border-green-500 rounded-lg opacity-70"></div>
+          <div className="w-64 h-64 border-2 border-green-500 rounded-lg opacity-70">
+            {isScanning && (
+                <div className="absolute inset-0 border-2 border-yellow-500 animate-pulse rounded-lg"></div>
+              )}
+          </div>
         </div>
       </div>
 
