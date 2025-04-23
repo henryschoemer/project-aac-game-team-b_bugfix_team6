@@ -393,7 +393,7 @@ useEffect(() => {
   if (!ttsReady) {
     return (
       <>
-      <div className="flex items-center justify-center w-full h-full min-w-screen overflow-hidden bg-yellow-100" style={containerStyle}>
+      <div className="flex items-center justify-center w-full h-full min-w-screen overflow-hidden bg-yellow-100" style={{ width: '100vw', height: '100vh' }}>
         {/* Avatar modal - now centered in iPad viewport */}
         {avatarModalOpen ? (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -452,7 +452,7 @@ useEffect(() => {
       </div>
     )}
 
-<div className="flex w-full h-full min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900" style={containerStyle}>
+<div className="flex w-full h-full min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900" style={{ width: '100vw', height: '100vh' }}>
   
   {/* Left Panel: */}
   <div className="w-[40%] h-full bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">   
