@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 ---
-## Features
+# Features
 
 ### **1. AAC Keyboard**  
 **Functional**  
