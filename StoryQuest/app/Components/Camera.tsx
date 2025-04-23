@@ -90,12 +90,12 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="relative w-full">
+    <div className="flex flex-col md:flex-row h-full w-full gap-2">
+
+      <div className="relative w-full md:w-[70%] h-full min-h-[250px] bg-black rounded-lg overflow-hidden">
         <video 
           ref={videoRef} 
-          width="100%" 
-          className="rounded-lg mb-4" 
+          className="w-full h-full object-contain"
           playsInline 
           autoPlay
           muted
@@ -105,28 +105,30 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
           <div className="w-64 h-64 border-2 border-green-500 rounded-lg opacity-70"></div>
         </div>
       </div>
-      <canvas ref={canvasRef} style={{ display: "none" }} />
-      
-      {cameraError && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center">
-          {cameraError}
-          <button 
-            onClick={startCamera}
-            className="ml-4 bg-red-600 text-white px-2 py-1 rounded text-sm"
-          >
-            Retry
-          </button>
-        </div>
-      )}
-      
-      <div className="flex justify-center w-full">
+
+      {/* Right Controls - takes remaining space */}
+      <div className="w-full md:w-[25%] flex flex-col justify-center items-center gap-4 p-1">
+        <canvas ref={canvasRef} style={{ display: "none" }} />
+        
         <button
           onClick={captureImage}
-          className="bg-green-600 text-white font-bold py-6 px-8 rounded-lg shadow-md hover:bg-green-700 text-2xl w-3/4 max-w-sm"
+          className="bg-green-600 text-white font-bold py-1 px-3 rounded-lg shadow-md hover:bg-green-700 text-xl w-full max-w-[200px]"
           disabled={!stream}
         >
           Capture
         </button>
+        
+        {cameraError && (
+          <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-center">
+            {cameraError}
+            <button 
+              onClick={startCamera}
+              className="mt-2 bg-red-600 text-white px-2 py-1 rounded text-sm w-full"
+            >
+              Retry
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
