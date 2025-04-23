@@ -6,7 +6,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebaseControls/firebaseConfig";
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { ExitButton } from "../HomePage/HomePageButtons";
-import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useSound from "use-sound";
 import Camera from "../Components/Camera";
 import jsQR from "jsqr";
@@ -240,17 +239,17 @@ export default function JoinRoomPage() {
         console.log("click");
     };
 
-return (
-    <div className="h-screen w-screen fixed inset-0 overflow-hidden bg-cover bg-center"
-        style={{ backgroundImage: "url('/HomePage-Images/Background.jpg')" }}>
-        
-        <div className="h-full w-full p-4 flex justify-center items-center overflow-y-auto">
-            <div className="max-w-[1024px] w-full flex flex-col gap-4 h-full max-h-full relative">
-                
-                {/* Exit Button - Top Left */}
-                <Link href="/" className="absolute top-4 left-4 z-10 scale-50">
-                    <ExitButton />
-                </Link>
+    return (
+        <div className="h-screen w-screen fixed inset-0 overflow-hidden bg-cover bg-center"
+            style={{ backgroundImage: "url('/images/home-background.jpg')" }}>
+            
+            <div className="h-full w-full p-4 flex justify-center items-center overflow-y-auto">
+                <div className="max-w-[1024px] w-full flex flex-col gap-4 h-full max-h-full relative">
+                    
+                    {/* Exit Button - Top Left */}
+                    <Link href="/" className="absolute top-4 left-4 z-10 scale-50">
+                        <ExitButton />
+                    </Link>
 
                 {/* QR Instructions Section */}
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-4 shrink-0 pt-12" onClick={()=> handleClick("How to join with QR code:, 1. Find the picture, 2. Scan the picture, 3. Play together, 4. Enjoy")}>
