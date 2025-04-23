@@ -10,12 +10,10 @@ sidebar_position: 3
 
 **UI and Styling**
 - Tailwind CSS - Utility first framework for styling.
-- ShadCN/UI - Prebuilt UI to speed up the development process
 - FramerMotion - Smooth animations for a better user experience.
 
 **Accessibility and AAC Features**
 - ARASAAC (AAC Symbols) - Open source symbol set for AAC communication.
-- CoughDrop API - AAC specific API for more advanced communication tools.
 
 ## Backend (Server and Data Handling)
 **Backend Services**
