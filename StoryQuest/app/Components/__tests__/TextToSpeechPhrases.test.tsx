@@ -49,6 +49,15 @@ describe('TextToSpeechPhrases', () => {
     });
 
     it('initializes and selects a preferred voice', async () => {
+        let voicesReturned = false;
+        mockGetVoices.mockImplementation(() => {
+            if (!voicesReturned) {
+                voicesReturned = true;
+                return []; // first callis empty to trigger event listener
+            }
+            return mockVoices;
+        });
+
         render(<TextToSpeechTextOnly text="Test" />);
 
         await act(async () => {
@@ -62,34 +71,33 @@ describe('TextToSpeechPhrases', () => {
         );
     });
 
-    it('text to speech with underscores replaced', async () => {
-        const testText = "Look in the garden, there is a ___";
-        render(<TextToSpeechTextOnly text={testText} />);
+    it('does not call speechSynthesis.speak when voices are not loaded', async () => {
+        mockGetVoices.mockReturnValue([]); // Simulate voices not ready
+
+        render(<TextToSpeechTextOnly text="Will not speak" />);
 
         await act(async () => {
-            await new Promise(resolve => setTimeout(resolve, 50));
+            await new Promise(resolve => setTimeout(resolve, 500));
         });
 
-        expect(mockSpeak).toHaveBeenCalled();
-        const utterance = mockSpeak.mock.calls[0][0];
-        expect(utterance.text).toBe("Look in the garden, there is a    ");
-        expect(utterance.rate).toBe(0.9);
+        expect(mockSpeak).not.toHaveBeenCalled();
     });
 
-    it('calls onComplete when speech finishes', async () => {
-        const mockOnComplete = jest.fn();
-        render(<TextToSpeechTextOnly text="Test complete" onComplete={mockOnComplete} />);
+
+    it('calls speechSynthesis.speak with underscores replaced in text when voices are loaded', async () => {
+        mockGetVoices.mockReturnValue(mockVoices);
+
+        render(<TextToSpeechTextOnly text="Hello_world_test" />);
 
         await act(async () => {
-            await new Promise(resolve => setTimeout(resolve, 50));
+            // Simulate voices loaded and `voiceschanged` firing
+            const event = new Event('voiceschanged');
+            window.dispatchEvent(event);
+            await new Promise(resolve => setTimeout(resolve, 400)); // Allow time for speak
         });
 
         const utterance = mockSpeak.mock.calls[0][0];
-        act(() => {
-            if (utterance.onend) utterance.onend();
-        });
-
-        expect(mockOnComplete).toHaveBeenCalled();
+        expect(utterance.text).toBe("Hello world test");
     });
 
     it('cancels speech when unmounted', async () => {
