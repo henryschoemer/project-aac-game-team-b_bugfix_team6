@@ -138,7 +138,7 @@ export default function JoinRoomPage() {
                 setErrorMessage("Error processing QR code. Please try again.");
                 
                 // Show popup after 3 failed attempts
-                if (newFailedAttempts >= 3) {
+                if (newFailedAttempts >= 8) {
                     setShowFailedPopup(true);
                 }
             }
@@ -241,7 +241,7 @@ export default function JoinRoomPage() {
 
     return (
         <div className="h-screen w-screen fixed inset-0 overflow-hidden bg-cover bg-center"
-            style={{ backgroundImage: "url('/HomePage-Images/home-background.jpg')" }}>
+            style={{ backgroundImage: "url('/images/home-background.jpg')" }}>
             
             <div className="h-full w-full p-4 flex justify-center items-center overflow-y-auto">
                 <div className="max-w-[1024px] w-full flex flex-col gap-4 h-full max-h-full relative">
@@ -251,65 +251,65 @@ export default function JoinRoomPage() {
                         <ExitButton />
                     </Link>
 
-                    {/* QR Instructions Section */}
-                    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-4 shrink-0 pt-12" onClick={()=> handleClick("How to join with QR code:, 1. Find the picture, 2. Scan the picture, 3. Play together, 4. Enjoy")}>
-                        <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
-                            How to join with QR code:
-                        </h2>
-                        
-                        <div className="flex justify-center gap-1">
-                            {[1, 2, 3, 4].map((step) => (
-                                <div key={step} className="items-center">
-                                    <Image 
-                                        src={`/diagrams/QR${step}.png`}
-                                        alt={`Step ${step}`}
-                                        width={100}
-                                        height={100}
-                                        className="rounded-lg"
-                                        priority
-                                    />
-                                    <p className="text-md text-gray-600 text-center">
-                                        {step === 1 && "1. Find the picture"}
-                                        {step === 2 && "2. Scan the picture"}
-                                        {step === 3 && "3. Play together"}
-                                        {step === 4 && "4. Enjoy"}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Camera Section - Now with constrained height */}
-                    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-1 w-full flex-1 min-h-0 flex flex-col">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-3 text-center" onClick={()=>handleClick("Scan Below")}>
-                            Scan Below
-                        </h2>
-                        
-                        <div className="flex-1 min-h-0 flex items-center justify-center">
-                            <div className="w-full max-w-[500px] h-full max-h-[375px] relative mx-auto">
-                                <Camera setHotspotImage={handleCapturedImage} />
+                {/* QR Instructions Section */}
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-4 shrink-0 pt-12" onClick={()=> handleClick("How to join with QR code:, 1. Find the picture, 2. Scan the picture, 3. Play together, 4. Enjoy")}>
+                    <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
+                        How to join with QR code:
+                    </h2>
+                    
+                    <div className="flex justify-center gap-1">
+                        {[1, 2, 3, 4].map((step) => (
+                            <div key={step} className="items-center">
+                                <Image 
+                                    src={`/diagrams/QR${step}.png`}
+                                    alt={`Step ${step}`}
+                                    width={100}
+                                    height={100}
+                                    className="rounded-lg"
+                                    priority
+                                />
+                                <p className="text-md text-gray-600 text-center">
+                                    {step === 1 && "1. Find the picture"}
+                                    {step === 2 && "2. Scan the picture"}
+                                    {step === 3 && "3. Play together"}
+                                    {step === 4 && "4. Enjoy"}
+                                </p>
                             </div>
-                        </div>
-                    </div>
-
-                    {/* Status Messages */}
-                    <div className="shrink-0 min-h-[40px] flex flex-col justify-center">
-                        {errorMessage && (
-                            <p className="text-red-500 my-1 text-center text-base">
-                                {errorMessage}
-                            </p>
-                        )}
-                        {isProcessing && (
-                            <p className="text-white my-1 text-center text-base">
-                                Processing QR code...
-                            </p>
-                        )}
+                        ))}
                     </div>
                 </div>
+
+                {/* Camera Section - Modified for better responsiveness */}
+               <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-4 w-full flex-1 min-h-[300px] flex flex-col">
+                    <h2 className="text-xl font-semibold text-gray-900 text-center" onClick={()=>handleClick("Scan Below")}>
+                        Scan Below
+                    </h2>
+                    
+                    <div className="flex-1 w-full h-full min-h-[300px]">
+                        <div className="w-full h-full max-w-[900px] mx-auto">
+                        <Camera setHotspotImage={handleCapturedImage} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Status Messages */}
+                <div className="shrink-0 min-h-[40px] flex flex-col justify-center">
+                    {errorMessage && (
+                        <p className="text-red-500 my-1 text-center text-base">
+                            {errorMessage}
+                        </p>
+                    )}
+                    {isProcessing && (
+                        <p className="text-white my-1 text-center text-base">
+                            Processing QR code...
+                        </p>
+                    )}
+                </div>
             </div>
-            
-            {/* Failed QR Scan Popup */}
-            {showFailedPopup && <QRScanFailedPopup onClose={closeFailedPopup} />}
         </div>
-    );
+        
+        {/* Failed QR Scan Popup */}
+        {showFailedPopup && <QRScanFailedPopup onClose={closeFailedPopup} />}
+    </div>
+);
 }

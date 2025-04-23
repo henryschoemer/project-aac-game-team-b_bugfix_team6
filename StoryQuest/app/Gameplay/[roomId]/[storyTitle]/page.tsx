@@ -444,10 +444,10 @@ useEffect(() => {
       </div>
     )}
 
-<div className="flex w-full h-full min-w-[1024px] min-h-[768px] overflow-hidden bg-gray-900" style={{ width: '100vw', height: '100vh' }}>
+<div className="fixed inset-0 flex bg-gray-900 overflow-hidden">
   
   {/* Left Panel: */}
-  <div className="w-[40%] h-full bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e]">   
+  <div className="w-[40%] h-full bg-[hsl(45,93%,83%)] p-3 flex flex-col justify-between items-center rounded-lg shadow-lg border-[8px] border-[#e09f3e] overflow-hidden">   
     {/* Player turns display */}
     {playerNumber && (
       <div className="flex flex-col items-center justify-center mb-2 w-full">
@@ -512,7 +512,7 @@ useEffect(() => {
 
   {/* Right Panel: Game Scene */}
   <div
-    className="w-[60%] h-full relative bg-cover bg-center flex justify-center items-center"
+    className="w-[60%] h-full relative bg-cover bg-center flex justify-center items-center overflow-hidden"
     style={{
       backgroundImage: `url('/images/${currentStory?.backgroundImage}')`,
       backgroundSize: "cover",
@@ -568,12 +568,16 @@ useEffect(() => {
 
 
 
+
+
+
+
+
     {/* Animated Images with Sparkles: Shows selected images with a sparkle effect. */}
     <AnimatePresence>
       {completedImages.map((image, index) => {
         const imageData = trimmedSections.flatMap(section => Object.values(section.words)).find(data => `/images/${data.image}` === image.src); // Use trimmedSections
         const effect = imageData?.effect || 'none'; // Get the effect, default to 'none'
-
         let effectComponent = null;
         if (effect === 'spin') {
           effectComponent = (
@@ -636,6 +640,14 @@ useEffect(() => {
             <motion.img key={`normal-${index}`} src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
           );
         }
+
+
+
+
+
+
+
+
 
         return (
           <div key={`image-container-${index}`} className="absolute" style={{ left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`, }}>
