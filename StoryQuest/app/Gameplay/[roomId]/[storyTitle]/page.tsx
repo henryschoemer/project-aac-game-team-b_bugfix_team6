@@ -385,7 +385,7 @@ useEffect(() => {
   if (!ttsReady) {
     return (
       <>
-      <div className="flex items-center justify-center w-full h-full min-w-screen overflow-hidden bg-yellow-100" style={{ width: '100vw', height: '100vh' }}>
+      <div className="flex items-center justify-center w-full h-full overflow-hidden bg-yellow-100" style={{ width: '100vw', height: '100vh' }}>
         {/* Avatar modal - now centered in iPad viewport */}
         {avatarModalOpen ? (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
