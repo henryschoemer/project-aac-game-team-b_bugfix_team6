@@ -181,52 +181,50 @@ const Camera: React.FC<CameraProps> = ({ setHotspotImage }) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="flex flex-col items-center w-full h-full">
-      <div className="relative w-full h-full flex flex-col">
-        {/* Video container with constrained aspect ratio */}
-        <div className="relative w-full pb-[75%] overflow-hidden">
-          <video 
-            ref={videoRef} 
-            className="absolute top-0 left-0 w-full h-full object-cover rounded-lg" 
-            playsInline 
-            autoPlay
-            muted
-          />
-          {/* QR code alignment guide */}
-          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
-            <div className="w-1/2 h-1/2 max-w-[200px] max-h-[200px] border-2 border-green-500 rounded-lg opacity-70">
-              {isScanning && (
+    <div className="flex flex-col md:flex-row h-full w-full gap-2">
+
+      <div className="relative w-full md:w-[70%] h-full min-h-[250px] bg-black rounded-lg overflow-hidden">
+        <video 
+          ref={videoRef} 
+          className="w-full h-full object-contain"
+          playsInline 
+          autoPlay
+          muted
+        />
+        {/* QR code alignment guide */}
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
+          <div className="w-64 h-64 border-2 border-green-500 rounded-lg opacity-70">
+            {isScanning && (
                 <div className="absolute inset-0 border-2 border-yellow-500 animate-pulse rounded-lg"></div>
               )}
-            </div>
           </div>
         </div>
-        
-        {/* Capture button - always visible */}
-        <div className="mt-2 flex justify-center w-full">
-          <button
-            onClick={captureImage}
-            className="bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-green-700 text-lg w-full max-w-xs"
-            disabled={!stream}
-          >
-            Capture
-          </button>
-        </div>
       </div>
-      
-      <canvas ref={canvasRef} style={{ display: "none" }} />
-      
-      {cameraError && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mt-2 text-center w-full">
-          {cameraError}
-          <button 
-            onClick={startCamera}
-            className="ml-2 bg-red-600 text-white px-2 py-1 rounded text-sm"
-          >
-            Retry
-          </button>
-        </div>
-      )}
+
+      {/* Right Controls - takes remaining space */}
+      <div className="w-full md:w-[25%] flex flex-col justify-center items-center gap-4 p-1">
+        <canvas ref={canvasRef} style={{ display: "none" }} />
+        
+        <button
+          onClick={captureImage}
+          className="bg-green-600 text-white font-bold py-1 px-3 rounded-lg shadow-md hover:bg-green-700 text-xl w-full max-w-[200px]"
+          disabled={!stream}
+        >
+          Capture
+        </button>
+        
+        {cameraError && (
+          <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-center">
+            {cameraError}
+            <button 
+              onClick={startCamera}
+              className="mt-2 bg-red-600 text-white px-2 py-1 rounded text-sm w-full"
+            >
+              Retry
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
