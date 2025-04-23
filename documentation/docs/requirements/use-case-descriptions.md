@@ -15,7 +15,7 @@ sidebar_position: 5
 1. User opens the game on a device
 2. User clicks the "Create a Game Room" button
 3. User selects a story type
-4. User selects a grade level
+4. User selects a difficult level
 5. User selects the number of players
 6. User clicks the "Start" button
 </details>
@@ -44,8 +44,9 @@ Figure 1
 
 <details open="True">
 1. User clicks on the "Join Game" button
-2. User inputs the code displayed on the host's screen into the input box
-3. User inputs the correct code and is brought to a lobby with all the other players who are participating in the game session
+2. User scans QR code displayed on the host's screen, clicking 'Capture'.
+3. User clicks 'Start Game' and chooses an avatar
+3. User is brought to the Gameplay page with all the other players who are participating in the game session
 </details>
 
 ```mermaid
@@ -59,9 +60,9 @@ sequenceDiagram
 
 
     User ->> D: Looks at screen 
-    D ->>+ GR: User decided to join a game and enters token
-    GR ->>+ Database: Fetches token for validation
-    Database -->>- GR: Return Token
+    D ->>+ GR: User decided to join a game and scans QR Code
+    GR ->>+ Database: roomId is extracted from QR code data
+    Database -->>- GR: If room exists, User is redirected to that endpoint
 ```    
 Figure 2
 ## Use Case 3: Accessibility & AAC
@@ -69,28 +70,30 @@ Figure 2
 [Users utilize a built-in AAC keyboard](../requirements/use-case-descriptions.md#users-utilize-a-built-in-aac-keyboard)
 
 <details open="True">
-1. User joins a room.
-2. User is notified that a keyboard layout will be available on their screen during gameplay
-3. User is given a short tutorial on the AAC keyboard.
-4. User click a button to indicate readiness to "Start" the game.
+1. User joins a room. 
+2. User is presented with an AAC keyboard layout on the left of their screen during gameplay. 
+3. During their turn, the user can click AAC buttons. 
+4. When a button is clicked, its label is sent to the device’s speech synthesis engine. 
+5. The button’s label is read aloud using synthesized speech. 
 </details>
 
 ```mermaid
-sequenceDiagram 
+sequenceDiagram
     actor User
     participant D as Device
     participant GR as Game Room Screen
-    participant Database
+    participant TTS as Text-to-Speech Engine
 
+    User ->> D: Opens app and joins a room
+    D ->>+ GR: Notify that user joined room
+    GR -->> User: Display AAC keyboard layout
 
+    Note over User,GR: During gameplay
 
-
-    User ->> D: Looks at screen 
-    D ->>+ GR: User has joined room
-    GR -->>+ User: Notified that AAC keyboard layout will be available 
-    GR ->>+ Database: Fetches tutorial content
-    Database -->>- GR: Return tutorial content
-    GR -->>+ User: Gives short tutorial on AAC keyboard 
+    User ->> GR: Clicks an AAC button
+    GR ->>+ TTS: Send label of clicked AAC button
+    TTS -->>- GR: Synthesized speech audio
+    GR -->> User: Play speech aloud
 ```
 Figure 3
 ## Game Mechanics
@@ -99,35 +102,32 @@ Figure 3
 
 [User Chooses an Answer](../requirements/use-case-descriptions.md#user-chooses-an-answer)
 
-<details open="True">
-1. User is in a game session using their device
-2. User is prompted with a storyline containing a cloze pharse question
-3. User chooses an answer choice
-4. User clicks the "Confirm" button
-5. User is shown their story illustrated
-6. User is prompted with another sentence in the story 
+<details open="true"> 1. User is in a game session using their device. 
+2. User is prompted with a line from the story, both audibly and visually, containing a cloze phrase. 
+3. User selects an answer by clicking a word on the AAC board. 
+4. The chosen word is inserted into the blank in the sentence. 
+5. The completed sentence is read aloud using speech synthesis. 
+6. The story illustration updates to reflect the new sentence. 
+7. The next sentence is automatically shown for the next user. 
 </details>
 
 ```mermaid
-
 sequenceDiagram 
     actor User
     participant D as Device
     participant GR as Game Screen
     participant Database
 
-
-
-
     User ->> D: Looks at screen 
-    D ->>+ GR: User is given a cloze phrase question
-    GR ->>+ Database: Fetches cloze phrase question and answer choices
-    Database -->>- GR: Return cloze phrase question and answer choices
-    GR -->>- D: Returns cloze phrase question
+    D ->>+ GR: User is given a cloze phrase sentence
+    GR ->>+ Database: Fetches cloze phrase question 
+    Database -->>- GR: Return cloze phrase question 
+    GR -->>- D: Displays cloze phrase with blank
 
-    D ->>+ GR: User chooses cloze phrase questions answer 
-    GR -->>+ D: User is shown their answer illustrated in the story and the pharse the user chose is played aloud 
-  
+    User ->> D: Clicks a word on the AAC board
+    D ->> GR: Sends selected word as answer
+    GR ->>+ D: Fills in sentence blank, updates story illustration, plays speech
+    GR -->> D: Prompts next sentence for next user
 
 ```
 Figure 4
@@ -168,30 +168,27 @@ Figure 5
 
 [Users Wants to Change From Easy Mode to Medium Mode](../requirements/use-case-descriptions.md#users-wants-to-change-from-easy-mode-to-medium-mode)
 
-<details open="True">
-1. User is in a easy mode game session using their device
-2. User decides to change to medium mode game session
-3. User clicks on the setting button
-4. User is shown different settings options and clicks change difficulty button 
-5. User changes to medium difficulty 
-6. User is now able to answer a medium difficulty cloze phrase question
+<details open="true"> 
+1. User is in the Create Room flow on their device. 
+2. User decides they want to change from Easy to Medium mode. 
+3. User presses the "Back" button to return to settings. 
+4. User is shown different settings options and clicks "Medium".
+5. User proceeds with room creation and will now answer the number of questions Medium difficulty requires during the game. 
 </details>
 
 ```mermaid
-
 sequenceDiagram 
     actor User
     participant D as Device
-    participant GR as Game Screen
-    participant GS as Settings
+    participant CR as Create Room Screen
 
-
-
-
-    User ->> D: Looks at screen
-    D ->> GR: Clicks on settings icon
-    GR ->> GS: Changes difficulty
-    GS -->> GR: Returns difficulty changes 
+    User ->> D: Navigates Create Room flow
+    D ->> CR: User starts room setup
+    User ->> D: Presses "Back" button
+    D ->> CR: Returns to Create Room screen
+    User ->> CR: Selects "Change Difficulty"
+    CR -->> D: Updates difficulty to Medium
+    D ->> CR: Resumes room creation with Medium difficulty
 
 ```
 Figure 6
