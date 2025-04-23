@@ -139,7 +139,7 @@ export default function JoinRoomPage() {
                 setErrorMessage("Error processing QR code. Please try again.");
                 
                 // Show popup after 3 failed attempts
-                if (newFailedAttempts >= 3) {
+                if (newFailedAttempts >= 8) {
                     setShowFailedPopup(true);
                 }
             }
