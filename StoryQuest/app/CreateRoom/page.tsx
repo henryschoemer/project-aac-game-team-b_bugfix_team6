@@ -105,7 +105,7 @@ export default function CreateRoomPage() {
 
     return (
         <div className="h-screen w-screen overflow-hidden bg-cover bg-center flex items-center justify-center" 
-             style={{ backgroundImage: "url('/HomePage-Images/home-background.jpg')" }}>
+             style={{ backgroundImage: "url('/images/home-background.jpg')" }}>
             
             {/* Main content container */}
             <div className="relative h-[90vh] w-[90vw] bg-white/80 backdrop-blur-sm flex flex-col items-center p-6 overflow-hidden shadow-xl rounded-2xl">
