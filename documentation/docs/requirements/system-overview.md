@@ -22,16 +22,16 @@ for all players.
 
 **Styling & UI Components:**
 - TailwindCSS – Ensures responsive, accessible, and customizable styling.
-- ShadCN/UI – Prebuilt, accessible components to speed up development.
 - Framer Motion – Smooth animations and transitions for enhanced engagement.
 
 ### Backend (Server-Side & Data Handling)
 - **Firebase Firestore (NoSQL Database)** – Stores game data, story progress, and room states in real-time.
-- **Firebase Cloud Function**s – Manages game logic, including answer validation, player interactions, and scorekeeping.
+- **Firebase Cloud Function**s – Manages game logic, including answer validation and player interactions
 
 ### Deployment & Project Management
 - **Hosting:** Firebase Cloud Hosting – Ensures fast and scalable deployment.
-- **Version Control & Documentation:** GitHub & Docusaurus – Tracks project progression, documentation, and CI/CD pipeline management.
+- **Version Control & Documentation:
+- ** GitHub & Docusaurus – Tracks project progression, documentation, and CI/CD pipeline management.
 
 ## Background
 
