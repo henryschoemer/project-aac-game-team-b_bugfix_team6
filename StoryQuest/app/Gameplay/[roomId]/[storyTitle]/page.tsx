@@ -185,14 +185,6 @@ useEffect(() => {
   setIsMounted(true);
 }, [storyTitle, stories]);
 
-    //Ipad dimensions
-    const containerStyle = {
-    width: '1024px',   // Fixed iPad landscape width
-    height: '768px',   // Fixed iPad landscape height
-    overflow: 'hidden' // Prevent any scrolling
-  };
-
-
   //Assigning player #'s
   const handleConfirmAvatar = async () => {
     if (!selectedAvatar) return alert("Pick one!");
