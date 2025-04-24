@@ -1,5 +1,8 @@
+//StoryQuest/app/Components/AACKeyboard.tsx
+
 import React from "react"
 import { motion } from "framer-motion";
+import useAACSounds from "./useAACSounds";
 
  interface AACKeyboardProps {
    onSelect: (word: string) => void; 
@@ -27,6 +30,13 @@ import { motion } from "framer-motion";
          backgroundColor: 'rgba(0, 0, 0, 0.4)',
          cursor: 'not-allowed',
      };
+
+     const { playSound } = useAACSounds();
+
+     const handleButtonClick = (word: string) => {
+       playSound(word);
+       onSelect(word);
+     }
    return (
      <div 
       className="p-2 border border-gray-300 rounded-lg shadow-md transform transition duration-500 hover:scale-105"

@@ -1,3 +1,5 @@
+//StoryQuest/app/Components/TextToSpeechTextOnly.tsx
+
 import React, { useEffect, useState, useRef } from "react";
 
 interface TextToSpeechCompletedStoryProps {

@@ -1,3 +1,5 @@
+//StoryQuest/app/CompletionPage/page.tsx
+
 "use client";
 
 import "./CompletionPageStyling.css";
