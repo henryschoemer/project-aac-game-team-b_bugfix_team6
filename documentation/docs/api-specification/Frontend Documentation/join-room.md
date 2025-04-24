@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# `JoinRoomPage` Component
+# `JoinRoomPage` 
 The `JoinRoomPage` component enables users to join an existing StoryQuest game session by scanning a QR code using their device camera. It provides user-friendly feedback, error handling, and a popup guide when scanning fails repeatedly.
 
 ## Key Features

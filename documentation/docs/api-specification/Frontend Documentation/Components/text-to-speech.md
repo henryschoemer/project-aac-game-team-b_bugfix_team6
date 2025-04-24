@@ -1,9 +1,9 @@
 ---
 sidebar_position: 4
 ---
-# `TextToSpeechTextOnly.tsx` - Text-to-Speech Component
+#  Text-to-Speech Component
 
-This React component uses the browser's `speechSynthesis` API to read a given text aloud. It handles voice selection, retries on errors, and ensures compatibility across browsers, including mobile devices.
+`TextToSpeechTextOnly.tsx`: This React component uses the browser's `speechSynthesis` API to read a given text aloud. It handles voice selection, retries on errors, and ensures compatibility across browsers, including mobile devices.
 
 ## Props
 

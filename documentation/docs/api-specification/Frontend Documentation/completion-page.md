@@ -2,7 +2,7 @@
 sidebar_position: 11
 ---
 
-# `CompletionPage` Component
+# `CompletionPage`
 
 The `CompletionPage` component is displayed after a story is completed in the StoryQuest game. It features a celebratory screen with sound effects, animated icons, and a navigation button to return to the homepage.
 

@@ -5,7 +5,7 @@ sidebar_position: 4
 # Development Environment
 
 ## Documentation:
-Docusaurus
+- Docusaurus
 
 ## Required Software, Languages, Frameworks, Management Systems:
 - Next.js (React and TypeScript)
@@ -21,4 +21,4 @@ Docusaurus
 - GitHub Codespaces
 
 ## Project Management:
-Jira
+- Jira

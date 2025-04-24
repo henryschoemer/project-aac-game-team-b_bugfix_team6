@@ -2,7 +2,7 @@
 sidebar_position: 5
 ---
 
-# `Gameplay` Page Component
+# `Gameplay` Page 
 The `Gameplay` page is the core interactive experience of the StoryQuest app. It enables multiplayer gameplay where players fill in story blanks using an AAC (Augmentative and Alternative Communication) keyboard. Players take turns to complete sentences, select images, and animate story elements while the app updates shared game state in real time using Firebase.
 
 ## Key Features

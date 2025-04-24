@@ -1,9 +1,9 @@
 ---
 sidebar_position: 3
 ---
-# `CompletedStory.tsx` - Completed Story Text-to-Speech Component
+#  Completed Story Text-to-Speech Component
 
-This React component handles the reading of a completed story in a text-to-speech (TTS) format. It reads individual phrases and, once all phrases are read, switches to reading the full story. The component interacts with Firebase to update the game state once the story is fully read.
+`CompletedStory.tsx`: This React component handles the reading of a completed story in a text-to-speech (TTS) format. It reads individual phrases and, once all phrases are read, switches to reading the full story. The component interacts with Firebase to update the game state once the story is fully read.
 
 ## Props
 

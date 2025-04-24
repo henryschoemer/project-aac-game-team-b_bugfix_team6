@@ -2,10 +2,10 @@
 sidebar_position: 5
 ---
 
-# `TextToSpeechAACButtons` Component
+# TextToSpeechAACButtons Component
 
 **Description:**  
-The `TextToSpeechAACButtons` component provides basic text-to-speech functionality using the Web Speech API. It includes accessible Play and Stop buttons, allowing users to listen to the provided text. The component is optimized for AAC (Augmentative and Alternative Communication) scenarios and supports notification via a callback when speech ends.
+`TextToSpeechAACButtons`: This component provides basic text-to-speech functionality using the Web Speech API. It includes accessible Play and Stop buttons, allowing users to listen to the provided text. The component is optimized for AAC (Augmentative and Alternative Communication) scenarios and supports notification via a callback when speech ends.
 
 ## Props
 
