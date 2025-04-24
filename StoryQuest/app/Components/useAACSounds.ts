@@ -1,88 +1,117 @@
-// StoryQuest/app/Components/useAACSounds.ts
-import { useEffect, useState } from 'react';
+//StoryQuest/app/Components/useAACSounds.ts
+
 import useSound from 'use-sound';
 
+//Hook for playing AAC keyboard button sounds, uses mp3 files for each button
 const useAACSounds = () => {
-  const soundBaseUrl = '/aacSounds/';
-  const [isAudioUnlocked, setIsAudioUnlocked] = useState(false);
-  const volumeLevel = 0.5; // use-sound expects 0-1 range
+    const soundBaseUrl = '/aacSounds/';
+    const volumeLevel = 2; // increased mp3 sound volume
 
-  // Dynamic sound loading
-  const soundMap: Record<string, () => void> = {};
-  const soundWords = [
-    'apples', 'airplane', 'alien', 'astronaut', 'balloon', 'basket',
-    'bear', 'bee', 'bird', 'birds', 'book', 'boy', 'butterfly',
-    'car', 'cherries', 'cloud', 'comet', 'cow', 'flag', 'flowers',
-    'helicopter', 'hero', 'ladybug', 'lanterns', 'monkey', 'moon',
-    'mouse', 'oranges', 'planet', 'rainbow', 'robot', 'rock', 'rocket',
-    'shootingStar', 'spaceCat', 'spaceDog', 'spaceDragon', 'squirrel',
-    'star', 'sun', 'treasure', 'UFO', 'witch', 'wizard'
-  ];
+    // sound hooks for MP3 files
+    const [playApples] = useSound(`${soundBaseUrl}apples.mp3`, { volume: volumeLevel });
+    const [playAirplane] = useSound(`${soundBaseUrl}airplane.mp3`, { volume: volumeLevel });
+    const [playAlien] = useSound(`${soundBaseUrl}alien.mp3`, { volume: volumeLevel });
+    const [playAstronaut] = useSound(`${soundBaseUrl}astronaut.mp3`, { volume: volumeLevel });
+    const [playBalloon] = useSound(`${soundBaseUrl}balloon.mp3`, { volume: volumeLevel });
+    const [playBasket] = useSound(`${soundBaseUrl}basket.mp3`, { volume: volumeLevel });
+    const [playBear] = useSound(`${soundBaseUrl}bear.mp3`, { volume: volumeLevel });
+    const [playBee] = useSound(`${soundBaseUrl}bee.mp3`, { volume: volumeLevel });
+    const [playBird] = useSound(`${soundBaseUrl}bird.mp3`, { volume: volumeLevel });
+    const [playBirds] = useSound(`${soundBaseUrl}birds.mp3`, { volume: volumeLevel });
+    const [playBook] = useSound(`${soundBaseUrl}book.mp3`, { volume: volumeLevel });
+    const [playBoy] = useSound(`${soundBaseUrl}boy.mp3`, { volume: volumeLevel });
+    const [playButterfly] = useSound(`${soundBaseUrl}butterfly.mp3`, { volume: volumeLevel });
+    const [playCar] = useSound(`${soundBaseUrl}car.mp3`, { volume: volumeLevel });
+    const [playCherries] = useSound(`${soundBaseUrl}cherries.mp3`, { volume: volumeLevel });
+    const [playCloud] = useSound(`${soundBaseUrl}cloud.mp3`, { volume: volumeLevel });
+    const [playComet] = useSound(`${soundBaseUrl}comet.mp3`, { volume: volumeLevel });
+    const [playCow] = useSound(`${soundBaseUrl}cow.mp3`, { volume: volumeLevel });
+    const [playFlag] = useSound(`${soundBaseUrl}flag.mp3`, { volume: volumeLevel });
+    const [playFlowers] = useSound(`${soundBaseUrl}flowers.mp3`, { volume: volumeLevel });
+    const [playHelicopter] = useSound(`${soundBaseUrl}helicopter.mp3`, { volume: volumeLevel });
+    const [playHero] = useSound(`${soundBaseUrl}hero.mp3`, { volume: volumeLevel });
+    const [playLadybug] = useSound(`${soundBaseUrl}ladybug.mp3`, { volume: volumeLevel });
+    const [playLanterns] = useSound(`${soundBaseUrl}lanterns.mp3`, { volume: volumeLevel });
+    const [playMonkey] = useSound(`${soundBaseUrl}monkey.mp3`, { volume: volumeLevel });
+    const [playMoon] = useSound(`${soundBaseUrl}moon.mp3`, { volume: volumeLevel });
+    const [playMouse] = useSound(`${soundBaseUrl}mouse.mp3`, { volume: volumeLevel });
+    const [playOranges] = useSound(`${soundBaseUrl}oranges.mp3`, { volume: volumeLevel });
+    const [playPlanet] = useSound(`${soundBaseUrl}planet.mp3`, { volume: volumeLevel });
+    const [playRainbow] = useSound(`${soundBaseUrl}rainbow.mp3`, { volume: volumeLevel });
+    const [playRobot] = useSound(`${soundBaseUrl}robot.mp3`, { volume: volumeLevel });
+    const [playRock] = useSound(`${soundBaseUrl}rock.mp3`, { volume: volumeLevel });
+    const [playRocket] = useSound(`${soundBaseUrl}rocket.mp3`, { volume: volumeLevel });
+    const [playShootingStar] = useSound(`${soundBaseUrl}shootingStar.mp3`, { volume: volumeLevel });
+    const [playSpaceCat] = useSound(`${soundBaseUrl}spaceCat.mp3`, { volume: volumeLevel });
+    const [playSpaceDog] = useSound(`${soundBaseUrl}spaceDog.mp3`, { volume: volumeLevel });
+    const [playSpaceDragon] = useSound(`${soundBaseUrl}spaceDragon.mp3`, { volume: volumeLevel });
+    const [playSquirrel] = useSound(`${soundBaseUrl}squirrel.mp3`, { volume: volumeLevel });
+    const [playStar] = useSound(`${soundBaseUrl}star.mp3`, { volume: volumeLevel });
+    const [playSun] = useSound(`${soundBaseUrl}sun.mp3`, { volume: volumeLevel });
+    const [playTreasure] = useSound(`${soundBaseUrl}treasure.mp3`, { volume: volumeLevel });
+    const [playUFO] = useSound(`${soundBaseUrl}UFO.mp3`, { volume: volumeLevel });
+    const [playWitch] = useSound(`${soundBaseUrl}witch.mp3`, { volume: volumeLevel });
+    const [playWizard] = useSound(`${soundBaseUrl}wizard.mp3`, { volume: volumeLevel });
 
-  // Initialize sounds
-  soundWords.forEach(word => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [playFn] = useSound(`${soundBaseUrl}${word}.mp3`, { 
-      volume: volumeLevel,
-      preload: true, // Critical for iOS
-      html5: true // Better for mobile
-    });
-    soundMap[word] = playFn;
-  });
-
-  // iOS audio unlock handler
-  useEffect(() => {
-    const unlockAudio = () => {
-      document.body.removeEventListener('touchstart', unlockAudio);
-      document.body.removeEventListener('click', unlockAudio);
-      setIsAudioUnlocked(true);
-      
-      // Create and play silent audio
-      const silentAudio = new Audio();
-      silentAudio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...';
-      silentAudio.volume = 0;
-      silentAudio.play()
-        .then(() => console.log('Audio context unlocked'))
-        .catch(e => console.error('Audio unlock failed:', e));
+    // play function for each word
+    const soundMap: Record<string, () => void> = {
+        apples: playApples,
+        airplane: playAirplane,
+        alien: playAlien,
+        astronaut: playAstronaut,
+        balloon: playBalloon,
+        basket: playBasket,
+        bear: playBear,
+        bee: playBee,
+        bird: playBird,
+        birds: playBirds,
+        book: playBook,
+        boy: playBoy,
+        butterfly: playButterfly,
+        car: playCar,
+        cherries: playCherries,
+        cloud: playCloud,
+        comet: playComet,
+        cow: playCow,
+        flag: playFlag,
+        flowers: playFlowers,
+        helicopter: playHelicopter,
+        hero: playHero,
+        ladybug: playLadybug,
+        lanterns: playLanterns,
+        monkey: playMonkey,
+        moon: playMoon,
+        mouse: playMouse,
+        oranges: playOranges,
+        planet: playPlanet,
+        rainbow: playRainbow,
+        robot: playRobot,
+        rock: playRock,
+        rocket: playRocket,
+        shootingStar: playShootingStar,
+        spaceCat: playSpaceCat,
+        spaceDog: playSpaceDog,
+        spaceDragon: playSpaceDragon,
+        squirrel: playSquirrel,
+        star: playStar,
+        sun: playSun,
+        treasure: playTreasure,
+        UFO: playUFO,
+        witch: playWitch,
+        wizard: playWizard,
     };
 
-    if (!isAudioUnlocked) {
-      document.body.addEventListener('touchstart', unlockAudio, { once: true });
-      document.body.addEventListener('click', unlockAudio, { once: true });
-    }
+    const playSound = (word: string) => {
+        const playFunction = soundMap[word];
 
-    return () => {
-      document.body.removeEventListener('touchstart', unlockAudio);
-      document.body.removeEventListener('click', unlockAudio);
+        if (playFunction) {
+            playFunction();
+        } else {
+            console.warn(`No sound found for word: ${word}`);
+        }
     };
-  }, [isAudioUnlocked]);
 
-  const playSound = (word: string) => {
-    if (!isAudioUnlocked) {
-      console.warn('Audio not unlocked - triggering unlock now');
-      const silentAudio = new Audio();
-      silentAudio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...';
-      silentAudio.play().catch(e => console.error('Unlock attempt failed:', e));
-      return;
-    }
-
-    const playFunction = soundMap[word];
-    if (playFunction) {
-      try {
-        playFunction();
-      } catch (e) {
-        console.error('useSound playback error:', e);
-        // Fallback to native audio
-        new Audio(`${soundBaseUrl}${word}.mp3`)
-          .play()
-          .catch(e => console.error('Native audio fallback failed:', e));
-      }
-    } else {
-      console.warn(`No sound found for word: ${word}`);
-    }
-  };
-
-  return { playSound };
+    return { playSound };
 };
 
 export default useAACSounds;

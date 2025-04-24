@@ -19,9 +19,6 @@ import useAACSounds from "./useAACSounds";
   buttonColor = "#63d2cb",
   blockButtons = false
 }) => {
-  const { playSound } = useAACSounds();
-
-
      // Style for the blocking overlay
      const blockAACButtonOverlayStyle: React.CSSProperties = {
          position: 'absolute',
@@ -34,13 +31,12 @@ import useAACSounds from "./useAACSounds";
          cursor: 'not-allowed',
      };
 
-     
+     const { playSound } = useAACSounds();
 
-    const handleInteraction = (word: string) => {
-      playSound(word);
-      onSelect(word);
-    }
-
+     const handleButtonClick = (word: string) => {
+       playSound(word);
+       onSelect(word);
+     }
    return (
      <div 
       className="p-2 border border-gray-300 rounded-lg shadow-md transform transition duration-500 hover:scale-105"
@@ -57,22 +53,13 @@ import useAACSounds from "./useAACSounds";
              key={symbol.word}
              className="p-1 text-white rounded flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
              style={{ backgroundColor: buttonColor }}
-             onTouchStart={(e) => {
-              e.preventDefault();
-              handleInteraction(symbol.word);
-              }}
-             onClick={() => handleInteraction(symbol.word)}
+             onClick={() => onSelect(symbol.word)}
              whileHover={{ scale: 1.1 }}
              whileTap={{ scale: 0.9 }}
              aria-label={`Select ${symbol.word}`}
              tabIndex={0}
            >
-             <img 
-             src={symbol.image} 
-             alt={symbol.word} 
-             className="w-16 h-16 mb-1" 
-             onTouchMoveCapture={(e) => e.preventDefault()}/>
-             
+             <img src={symbol.image} alt={symbol.word} className="w-16 h-16 mb-1" />
              <span className="text-sm md:text-base">{symbol.word}</span>
            </motion.button>
          ))}
