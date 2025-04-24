@@ -375,7 +375,7 @@ sections: [
       {
         phrase: "The captain told us to watch out for a floating ___.",
         words: {
-          ballon: { image: "ballon.svg", x: 10, y: 5, effect: 'pulse' },
+          balloon: { image: "balloon.svg", x: 10, y: 5, effect: 'pulse' },
           rock: { image: "rock.svg", x: 10, y: 5, effect: 'scaleUp' },
           cow: { image: "cow.svg", x: 10, y: 5, effect: 'scaleUp' },
           treasure: { image: "treasure.svg", x: 10, y: 5, effect: 'pulse' },
@@ -388,7 +388,7 @@ sections: [
       {
         phrase: "We see a colorful ___.",
         words: {
-          ballon: { image: "ballon.svg", x: 40, y: 25, effect: 'pulse' },
+          balloo: { image: "balloon.svg", x: 40, y: 25, effect: 'pulse' },
           rainbow: { image: "rainbow.svg", x: 40, y: 25, effect: 'scaleUp' },
           comet: { image: "comet.svg", x: 40, y: 20, effect: 'scaleUp' },
           treasure: { image: "treasure.svg", x: 40, y: 25, effect: 'pulse' },
