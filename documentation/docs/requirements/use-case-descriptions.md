@@ -102,7 +102,8 @@ Figure 3
 
 [User Chooses an Answer](../requirements/use-case-descriptions.md#user-chooses-an-answer)
 
-<details open="true"> 1. User is in a game session using their device. 
+<details open="true"> 
+1. User is in a game session using their device. 
 2. User is prompted with a line from the story, both audibly and visually, containing a cloze phrase. 
 3. User selects an answer by clicking a word on the AAC board. 
 4. The chosen word is inserted into the blank in the sentence. 
