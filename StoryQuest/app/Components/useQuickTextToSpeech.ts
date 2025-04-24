@@ -1,3 +1,5 @@
+// StoryQuest/app/Components/useQuickTextToSpeech.ts
+
 import React, {useState, useEffect, useRef} from "react";
 
 // Text to speech phrases hook, used for button or quick sounds

@@ -1,3 +1,5 @@
+// StoryQuest/app/Components/useTextToSpeech.ts
+
 import React, { useState, useEffect, useRef } from "react";
 
 // Improved Text to speech phrases hook
