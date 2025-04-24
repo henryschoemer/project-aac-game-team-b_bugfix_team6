@@ -1,9 +1,7 @@
 ---
 sidebar_position: 1
 ---
-
-**Purpose**
-
+# Design
 The front-end client is built with React and Next.js, while the back-end leverages Firebase for real-time database synchronization, authentication, and 
 accessible experience for AAC users, incorporating symbol-based communication and text-to-speech capabilities. 
 
@@ -165,22 +163,17 @@ This class diagram shows the relationship between different components in the St
 
 
 #### Room Management
-The system has a StartPage, HostPage, and a PlayerPage, all of which handle room
-management and game setup.
-
 This section outlines the core frontend pages involved in the multiplayer room lifecycle, from game setup to lobby management and game start. Each page interacts with Firestore and Firebase Cloud Functions to manage real-time multiplayer sessions.
 
-HomePage
-The HomePage is the landing interface for users when they first open the application. It offers two primary options:
-- joinRoom(): Allows a player to join an existing game session via a QR code or room ID. Validates the room ID and redirects the player to the Gameplay page,
-- createRoom(): Initiates the process of creating a new game room. Redirects the user to the CreateRoom flow for configuration.
+HomePage: The HomePage is the landing interface for users when they first open the application. It offers two primary options:
+- `joinRoom()`: Allows a player to join an existing game session via a QR code or room ID. Validates the room ID and redirects the player to the Gameplay page,
+- `createRoom()`: Initiates the process of creating a new game room. Redirects the user to the CreateRoom flow for configuration.
 
-CreateRoom
-The CreateRoom flow provides game setup tools for the host, allowing them to define the session settings before inviting players.
-- selectStory(): Lets the host choose a story template from a predefined library. This determines the narrative flow of the game.
-- selectDifficulty(): Sets the difficulty level of the game (e.g., "easy", "medium", "hard"), impacting pacing or challenge level.
-- selectNumPlayers(): Specifies the maximum number of players allowed in the game room (up to 4).
-- startGameRoom(): Finalizes the configuration, creates the room document in Firestore, and transitions the host to the gameplay session.
+CreateRoom: The CreateRoom flow provides game setup tools for the host, allowing them to define the session settings before inviting players.
+- `selectStory()`: Lets the host choose a story template from a predefined library. This determines the narrative flow of the game.
+- `selectDifficulty()`: Sets the difficulty level of the game (e.g., "easy", "medium", "hard"), impacting pacing or challenge level.
+- `selectNumPlayers()`: Specifies the maximum number of players allowed in the game room (up to 4).
+- `startGameRoom()`: Finalizes the configuration, creates the room document in Firestore, and transitions the host to the gameplay session.
 
 #### Game Flow Summary
 

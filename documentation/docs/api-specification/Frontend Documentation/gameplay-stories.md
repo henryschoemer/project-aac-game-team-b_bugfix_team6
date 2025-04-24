@@ -2,7 +2,7 @@
 sidebar_position: 6
 ---
 
-# `stories.tsx` Module
+# Stories.tsx Module
 This module defines the stories used in the StoryQuest gameplay experience. Each story is composed of multiple sections, each containing a sentence with a blank and a list of selectable words. Each word is associated with an image, animation effect, and position, used to enhance visual storytelling and AAC interaction.
 
 ## Interfaces

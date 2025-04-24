@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-# `CreateRoomPage` Component
+# `CreateRoomPage`
 The `CreateRoomPage` component is a multi-step interactive UI that allows users to create a new game room. Users can select a story, specify the number of players, choose a difficulty level, and finalize their settings before generating a game room and a corresponding QR code for others to join.
 
 ## Component Structure

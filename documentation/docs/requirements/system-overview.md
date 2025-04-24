@@ -26,12 +26,11 @@ for all players.
 
 ### Backend (Server-Side & Data Handling)
 - **Firebase Firestore (NoSQL Database)** – Stores game data, story progress, and room states in real-time.
-- **Firebase Cloud Function**s – Manages game logic, including answer validation and player interactions
+- **Firebase Cloud Functions** – Manages game logic, including answer validation and player interactions
 
 ### Deployment & Project Management
 - **Hosting:** Firebase Cloud Hosting – Ensures fast and scalable deployment.
-- **Version Control & Documentation:
-- ** GitHub & Docusaurus – Tracks project progression, documentation, and CI/CD pipeline management.
+- **Version Control & Documentation:** GitHub & Docusaurus – Tracks project progression, documentation, and CI/CD pipeline management.
 
 ## Background
 
