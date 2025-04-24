@@ -16,6 +16,8 @@ import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, serverTimestamp, collection, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
+import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
+
 
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
@@ -70,8 +72,10 @@ async function savePlayerProfile (
 }
 
 export default function Home() {
-  const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const { playSound } = useAACSounds(); // aac mp3 sound hook
+  const { speak } = useQuickTextToSpeech();
+
+  const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const [phrase, setPhrase] = useState("");
   const [userInput, setUserInput] = useState("");
   const [addedImage, setAddedImage] = useState<string | null>(null);
@@ -97,6 +101,7 @@ export default function Home() {
   const trimmedSections = currentStory?.sections.slice(0, numberOfPhrasesForGame) || [];
   const [blockOverlay, setBlockOverlay] = useState<boolean>(false);
   const [showInitialPlayOverlay, setShowInitialPlayOverlay] = useState(true);
+
 
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
@@ -368,14 +373,22 @@ useEffect(() => {
 
   }
 
-    const handleAACSelect = (word: string) => {
+ // Handle AAC Button Selection - Fixed to avoid hook calls inside
+  const handleAACSelect = useCallback(async (word: string) => {
     if (playerNumber !== currentTurn) {
       return;
     }
+    
     console.log("AAC Button Clicked:", word);
     playSound(word);
-    handleWordSelect(word);
-  };
+    
+    // Safely call speak if available
+    if (speak) {
+      speak(word);
+    }
+    
+    await handleWordSelect(word);
+  }, [playerNumber, currentTurn, playSound, speak, handleWordSelect]);
 
   useEffect(() => {
     if (phrase === "The End!") {
@@ -510,6 +523,7 @@ useEffect(() => {
     </div>
 
     <TextToSpeechAACButtons text={phrase} />
+    
   </div>
 
   {/* Right Panel: Game Scene */}

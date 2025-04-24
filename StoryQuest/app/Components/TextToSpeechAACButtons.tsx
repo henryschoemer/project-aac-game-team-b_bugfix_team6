@@ -1,147 +1,146 @@
 //StoryQuest/app/Components/TextToSpeechAACButtons.tsx
-
-/*
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface TextToSpeechProps {
     text: string;
-}
-
-const TextToSpeechAACButtons: React.FC<TextToSpeechProps> = ({ text }) => {
-
-    const [isPaused, setIsPaused] = useState(false);
-    const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
-    
-
-    useEffect(() => {
-        const synth = window.speechSynthesis;
-        const u = new SpeechSynthesisUtterance(text);
-
-        setUtterance(u);
-
-        return () => {
-            synth.cancel();
-        };
-    }, [text]);
-
-    const handlePlay = () => {
-        const synth = window.speechSynthesis;
-
-        if (isPaused) {
-            synth.resume();
-        }
-
-        if (utterance) {
-            synth.speak(utterance); 
-        }
-
-        setIsPaused(false);
-    };
-
-    const handlePause = () => {
-        const synth = window.speechSynthesis;
-
-        synth.pause();
-
-        setIsPaused(true);
-    };
-
-    const handleStop = () => {
-        const synth = window.speechSynthesis;
-
-        synth.cancel();
-
-        setIsPaused(false);
-    };
-
-    return (
-        <button onClick={handlePlay} aria-label="Play phrase" className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
-            Click to hear phrase! 🔊
-        </button>
-    );
-};
-
-export default TextToSpeechAACButtons;
-*/
-import React, { useState, useEffect } from "react";
-
-interface TextToSpeechProps {
-    text: string;
-    onSpeechEnd?: () => void; // Callback for when speech ends
+    onSpeechEnd?: () => void;
 }
 
 const TextToSpeechAACButtons: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd }) => {
-    const [isPaused, setIsPaused] = useState(false);
-    const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
+    const [isSupported, setIsSupported] = useState<boolean | null>(null);
+    const [isSpeaking, setIsSpeaking] = useState(false);
+    const synthRef = useRef<typeof window.speechSynthesis | null>(null);
+    const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
     useEffect(() => {
-        const synth = window.speechSynthesis;
-        const u = new SpeechSynthesisUtterance(text);
-
-        const handleEnd = () => {
-            setIsPaused(false);
-            onSpeechEnd?.(); // Notify parent when speech ends
+        // Check support and initialize
+        const checkSupport = () => {
+            if (!('speechSynthesis' in window)) {
+                setIsSupported(false);
+                return false;
+            }
+            
+            synthRef.current = window.speechSynthesis;
+            
+            // iOS requires voices to be loaded first
+            const loadVoices = () => {
+                if (synthRef.current?.getVoices().length) {
+                    setIsSupported(true);
+                } else {
+                    // Some browsers need this event
+                    synthRef.current?.addEventListener('voiceschanged', () => {
+                        setIsSupported(!!synthRef.current?.getVoices().length);
+                    }, { once: true });
+                }
+            };
+            
+            loadVoices();
+            return true;
         };
 
-        const handlePause = () => {
-            setIsPaused(true);
-        };
-
-        u.addEventListener("end", handleEnd);
-        u.addEventListener("pause", handlePause);
-
-        setUtterance(u);
+        const supported = checkSupport();
+        if (!supported) return;
 
         return () => {
-            synth.cancel(); // Cancel any ongoing speech when the component unmounts or text changes
-            u.removeEventListener("end", handleEnd);
-            u.removeEventListener("pause", handlePause);
+            synthRef.current?.cancel();
+            if (utteranceRef.current) {
+                utteranceRef.current.onend = null;
+                utteranceRef.current.onerror = null;
+            }
         };
-    }, [text, onSpeechEnd]); // Recreate utterance when text changes
+    }, []);
 
-    const handlePlay = () => {
-        const synth = window.speechSynthesis;
-        if (!utterance) return;
+    const handlePlay = (e: React.TouchEvent | React.MouseEvent) => {
+        e.preventDefault();
+        if (!synthRef.current || !isSupported) return;
 
-        // Cancel any ongoing speech before starting a new one
-        synth.cancel();
+        // iOS requires fresh utterance each time
+        const utterance = new SpeechSynthesisUtterance(text);
+        utteranceRef.current = utterance;
 
-        if (isPaused) {
-            synth.resume(); // Resume if paused
-        } else {
-            synth.speak(utterance); // Start speaking the current sentence
+        // Configure voice (iOS specific)
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            const voices = synthRef.current.getVoices();
+            const preferredVoice = voices.find(v => v.lang.includes('en')) || voices[0];
+            if (preferredVoice) utterance.voice = preferredVoice;
+            
+            utterance.rate = 0.9; // Slightly slower for clarity
+            utterance.pitch = 1.1; // Slightly higher pitch
         }
 
-        setIsPaused(false);
-    };
+        // Event handlers
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => {
+            setIsSpeaking(false);
+            onSpeechEnd?.();
+        };
+        utterance.onerror = (e) => {
+            console.error('Speech error:', e);
+            setIsSpeaking(false);
+            
+            // iOS specific fallback
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                alert('Please enable speech in Safari settings:\nSettings > Safari > Advanced > Web Speech');
+            }
+        };
 
-    const handlePause = () => {
-        const synth = window.speechSynthesis;
-        synth.pause(); // Pause the speech
-        setIsPaused(true);
+        try {
+            synthRef.current.cancel(); // Stop any current speech
+            synthRef.current.speak(utterance);
+        } catch (error) {
+            console.error('Speech synthesis failed:', error);
+            setIsSpeaking(false);
+        }
     };
 
     const handleStop = () => {
-        const synth = window.speechSynthesis;
-        synth.cancel(); // Stop the speech
-        setIsPaused(false);
+        synthRef.current?.cancel();
+        setIsSpeaking(false);
     };
+
+    if (isSupported === false) {
+        return (
+            <div className="text-red-500 text-sm p-2">
+                Text-to-speech not supported on this device
+            </div>
+        );
+    }
+
+    // Show loading state while checking support
+    if (isSupported === null) {
+        return (
+            <div className="text-gray-500 text-sm p-2">
+                Loading speech engine...
+            </div>
+        );
+    }
 
     return (
         <div className="flex gap-2 mt-1">
             <button
+                onTouchStart={handlePlay}
                 onClick={handlePlay}
-                aria-label={isPaused ? "Resume speech" : "Play speech"}
-                className="px-4 py-2 bg-green-500 text-white rounded"
+                disabled={!text}
+                aria-label={isSpeaking ? "Replay speech" : "Play speech"}
+                className={`px-4 py-2 text-white rounded transition-colors ${
+                    !text ? 'bg-gray-400 cursor-not-allowed' : 
+                    isSpeaking ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-green-500 hover:bg-green-600'
+                }`}
             >
-                Play ⏵
+                {isSpeaking ? 'Replay ↻' : 'Play ⏵'}
             </button>
-
+            
             <button
                 onClick={handleStop}
+                onTouchStart={(e) => {
+                    e.preventDefault();
+                    handleStop();
+                }}
+                disabled={!isSpeaking}
                 aria-label="Stop speech"
-                className="px-4 py-2 bg-red-500 text-white rounded"
-                disabled={!utterance} // Disable if no utterance
+                className={`px-4 py-2 text-white rounded transition-colors ${
+                    !isSpeaking ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500 hover:bg-red-600'
+                }`}
             >
                 Stop ⏹
             </button>
