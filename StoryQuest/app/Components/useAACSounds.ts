@@ -1,11 +1,21 @@
 //StoryQuest/app/Components/useAACSounds.ts
 
 import useSound from 'use-sound';
+import { useRef } from 'react';
 
 //Hook for playing AAC keyboard button sounds, uses mp3 files for each button
 const useAACSounds = () => {
+    const audioElements = useRef<Record<string, HTMLAudioElement>>({});
     const soundBaseUrl = '/aacSounds/';
     const volumeLevel = 2; // increased mp3 sound volume
+
+    const loadSound = (word: string, url: string) => {
+    // Create audio element on first use
+    if (!audioElements.current[word]) {
+        audioElements.current[word] = new Audio(url);
+        audioElements.current[word].preload = 'auto';
+        }
+    };
 
     // sound hooks for MP3 files
     const [playApples] = useSound(`${soundBaseUrl}apples.mp3`, { volume: volumeLevel });
@@ -102,16 +112,19 @@ const useAACSounds = () => {
     };
 
     const playSound = (word: string) => {
-        const playFunction = soundMap[word];
+    // iOS requires this to happen synchronously during the click handler
+    try {
+      const audio = audioElements.current[word];
+      if (audio) {
+        audio.currentTime = 0; // Rewind if already playing
+        audio.play().catch(e => console.error("Audio play failed:", e));
+      }
+    } catch (error) {
+      console.error("Sound error:", error);
+    }
+  };
 
-        if (playFunction) {
-            playFunction();
-        } else {
-            console.warn(`No sound found for word: ${word}`);
-        }
-    };
-
-    return { playSound };
+    return { playSound, loadSound };
 };
 
 export default useAACSounds;
