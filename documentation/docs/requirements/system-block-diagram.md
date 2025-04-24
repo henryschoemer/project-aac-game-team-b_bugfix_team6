@@ -4,16 +4,13 @@ sidebar_position: 2
 
 # System Block Diagram
 
-![System Block Diagram](/img/system-block-diagram-2_8_25.png)
+![System Block Diagram](/img/system-block-diagram-4_24_25.png)
 *Figure 1: System block diagram showcasing interaction between users, frontend, and backend.*
 
 
 ## Description of Gameplay/Flow
 
-Figure 1 depicts the high-level design of the StoryQuest: Teamwork Prevails! web application. This is a story making game
-in which users must fill in the blanks according to pictures in the word bank. Users can open the web application for our game and either 'Host' or 'Join' a game. Our frontend will contain the 'Host' mode and the
-'Player' mode. The 'Player' mode will display questions, and utilizes a built-in AAC tablet for Player answers. Once a Player has chosen an answer, the choice is sent to the backend.
-
+To Be Updated
 
 ## Technology Requirements
 
