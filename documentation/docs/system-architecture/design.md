@@ -4,8 +4,7 @@ sidebar_position: 1
 
 **Purpose**
 
-The front-end client is built 
-with React and Next.js, while the back-end leverages Firebase for real-time database synchronization, authentication, and 
+The front-end client is built with React and Next.js, while the back-end leverages Firebase for real-time database synchronization, authentication, and 
 accessible experience for AAC users, incorporating symbol-based communication and text-to-speech capabilities. 
 
 
@@ -18,7 +17,6 @@ The client is a React application built with Next.js framework, offering server-
 - Next.js (Routing and server-side rendering)
 - Tailwind CSS (Responsive and accessible styling)
 - Framer Motion (Smooth animations for kids)
-- ShadCN/UI (Pre-built, accessible UI components)
 - TypeScript (Ease of use in JavaScript)
 
 **Responsibilities:**
@@ -45,7 +43,7 @@ This architecture minimizes server management overhead while offering scalabilit
 - Manage session tokens.
 - Handle real-time game state updates across all players.
 - Store and retrieve stories, game progress, and player data.
-- Execute server-side logic for game validation (like answer validation)
+- Execute server-side logic for game validation
 
 **Interfaces:**
 - Client Requests: The client interacts with the server via Firebase SDK calls, which handle real-time data synchronization.
@@ -54,108 +52,144 @@ This architecture minimizes server management overhead while offering scalabilit
 ### Class Diagrams
 ```mermaid 
 classDiagram
-direction TB
-    class StartPage {
-	    +joinGame()
-	    +hostGame()
+    class Home {
+        +CreateButton
+        +JoinButton
+        +HomePageBackgroundMusic
     }
 
-    class HostPage {
-	    +String story
-	    +int difficulty
-	    +int numPlayers
-	    +selectStory() String
-	    +selectDifficulty() int
-	    +selectNumPlayers() int
-	    +startGameRoom()
+    class CreateRoomPage {
+        +selectedStory
+        +numPlayers
+        +difficultyLevel
+        +createRoom()
     }
 
-    class PlayerPage {
-	    +Player[] player
-        +allPlayersJoined boolean
-	    +startGame()
+    class JoinRoomPage {
+        +roomId
+        +handleCapturedImage()
+        +processQRCode()
+        +handleJoinRoom()
     }
 
-    class GameContainer {
-        +selectedWords: String[]
-	    +updateTurn()
-        +handleSelect(imgUrl: String): void
+    class CompletionPage {
+        +displayCompletion()
+        +playCompletionSound()
     }
 
-    class AACBoard {
-        +String[] pictograms
-	    +fetchPictograms(query: String): String[]
-        +onSelect(imgUrl: String): void
+    class AACKeyboard {
+        +onSelect(word)
+        +symbols[]
+        +backgroundColor
+        +buttonColor
+        +blockButtons
     }
 
-    class FirebaseController {
-	    +authenticateUser()
-	    +getRoomData(roomId)
-	    +updateGameState(roomId, data)
+    class Camera {
+        +videoRef
+        +canvasRef
+        +startCamera()
+        +captureAndScanFrame()
     }
 
-
-    class QuestionDisplay {
-	    +String[] phrase
-	    +String playerAnswer
-	    +int numBlanks
-	    +fillPhraseFromPlayerAnswer()
-	    +submit()
+    class CompletedStory {
+        +index
+        +completedPhrases[]
+        +onComplete()
+        +roomId
+        +handlePhraseComplete()
     }
 
-    class Player {
-        +String id
-        +String name
-        +String role
-        +setRole()
+    class TextToSpeechTextOnly {
+        +text
+        +onComplete()
+        +speakText()
     }
 
-    StartPage <|-- HostPage 
-    StartPage <|-- PlayerPage
-    PlayerPage <|-- Player
-    GameContainer *-- QuestionDisplay : Displays answers 
-    GameContainer o-- AACBoard : Chooses answers
-    GameContainer --|> PlayerPage : Manages turns
-    GameContainer --|> FirebaseController : Sends answer for validation
+    class TextToSpeechAACButtons {
+        +text
+        +onSpeechEnd()
+        +playSpeech()
+        +stopSpeech()
+    }
+
+    class useButtonFeedback {
+        +buttonHandler()
+        +isSpeaking
+    }
+
+    class useQuickTextToSpeech {
+        +speak(text)
+        +stop()
+        +isReady
+    }
+
+    class useTextToSpeech {
+        +speak(text)
+        +stop()
+        +isReady
+    }
+
+    class useAACSounds {
+        +playSound(word)
+    }
+
+    %% Relationships
+    Home --> CreateRoomPage
+    Home --> JoinRoomPage
+
+    CreateRoomPage --> useButtonFeedback
+    CreateRoomPage --> useQuickTextToSpeech
+
+    JoinRoomPage --> Camera
+    JoinRoomPage --> useButtonFeedback
+    JoinRoomPage --> useQuickTextToSpeech
+
+    CompletionPage --> CompletedStory
+    CompletionPage --> useButtonFeedback
+
+    CompletedStory --> TextToSpeechTextOnly
+
+    AACKeyboard --> useAACSounds
+    AACKeyboard --> useButtonFeedback
+
+    TextToSpeechAACButtons --> useQuickTextToSpeech
+    TextToSpeechAACButtons --> useTextToSpeech
+
+    TextToSpeechTextOnly --> useTextToSpeech
+
 ```
 *Figure 1: Class diagram showing interactions between classes within StoryQuest*
 
 This class diagram shows the relationship between different components in the StoryQuest system.
 
-### Player Management
-The **Player** class encompasses all users who interact with the system. Each player
-has an id, name, and a role, which can be either 'student' or 'host'. The setRole() function 
-assigns a role to a player based on whether they are joining a game or starting a game.
 
 #### Room Management
 The system has a StartPage, HostPage, and a PlayerPage, all of which handle room
 management and game setup.
-- StartPage: This is the initial landing page where a Player can choose to either 
-join an existing game or host a new one. The functions include:
-    - joinGame(): Allows a player to enter an active game session.
-    - hostGame(): Redirects the player to the HostPage to configure a new game session.
 
-- HostPage: This page provides administrative controls for setting up a new game. It 
-allows the host to define key game settings, such as:
-    - selectStory(): Chooses a story template for the game.
-    - selectDifficulty(): Sets the level of difficulty (easy, medium, or hard).
-    - selectNumPlayers(): Specifies how many players can join the game (4 max).
-    - startGameRoom(): Initializes the game session and transitions to gameplay mode.
+This section outlines the core frontend pages involved in the multiplayer room lifecycle, from game setup to lobby management and game start. Each page interacts with Firestore and Firebase Cloud Functions to manage real-time multiplayer sessions.
 
-- PlayerPage: This acts as a waiting room where players gather before the game begins.
-    - player[]: An array that holds all players currently in the game.
-    - allPlayersJoined: A boolean that checks if all expected players have joined.
-    - startGame(): Triggers the transition from the lobby to gameplay when all players are ready.
+HomePage
+The HomePage is the landing interface for users when they first open the application. It offers two primary options:
+- joinRoom(): Allows a player to join an existing game session via a QR code or room ID. Validates the room ID and redirects the player to the Gameplay page,
+- createRoom(): Initiates the process of creating a new game room. Redirects the user to the CreateRoom flow for configuration.
 
+CreateRoom
+The CreateRoom flow provides game setup tools for the host, allowing them to define the session settings before inviting players.
+- selectStory(): Lets the host choose a story template from a predefined library. This determines the narrative flow of the game.
+- selectDifficulty(): Sets the difficulty level of the game (e.g., "easy", "medium", "hard"), impacting pacing or challenge level.
+- selectNumPlayers(): Specifies the maximum number of players allowed in the game room (up to 4).
+- startGameRoom(): Finalizes the configuration, creates the room document in Firestore, and transitions the host to the gameplay session.
 
 #### Game Flow Summary
 
-1. The host sets up the game in HostPage.
-2. Players join a room via StartPage.
-3. Players wait in PlayerPage until the game starts.
-4. The game begins under GameContainer, displaying a phrase with blanks to fill.
-5. Players take turns selecting answers from the AACBoard.
-6. The selected word is displayed in QuestionDisplay and sent through FirebaseController.
+1. The host sets up the game in CreateRoom.
+2. Players join a room via JoinRoom on the HomePage.
+3. Players wait on a screen on the Gameplay page until the game starts.
+4. The game begins on the right panel of Gameplay, displaying a phrase with blanks to fill alongside a background and images.
+5. Players take turns selecting answers from the AACBoard on the left panel of Gameplay.
+6. The selected word is displayed on the bottom of the right panel of the Gameplay page and sent to the Firestore. 
 7. The game continues turn-by-turn until the story is complete.
 
 ### Database
@@ -291,7 +325,6 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 | attempts | Number | Total attempts made |
 | lastActive | Timestamp | Last time the player interacted |
 
----
 
 
 
