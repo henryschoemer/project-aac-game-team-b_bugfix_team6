@@ -3,8 +3,6 @@ sidebar_position: 1
 ---
 
 # `AACKeyboard` Component
-
-**Description:**  
 The `AACKeyboard` component renders a customizable, interactive AAC (Augmentative and Alternative Communication) keyboard with a set of buttons representing words and corresponding symbols. This component is built using React and integrates motion animations via `framer-motion` to enhance the user experience.
 
 ## Props

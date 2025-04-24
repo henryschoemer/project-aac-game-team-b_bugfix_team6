@@ -2,7 +2,6 @@
 sidebar_position: 2
 ---
 # `Camera.tsx` - Camera Component for QR Code Scanning
-
 This React component provides functionality for accessing the camera, scanning QR codes, and capturing images. It uses the `jsQR` library for QR code scanning and provides a visual interface for interacting with the camera.
 
 ## Props
