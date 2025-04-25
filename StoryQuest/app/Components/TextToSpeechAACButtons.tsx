@@ -1,15 +1,20 @@
 //StoryQuest/app/Components/TextToSpeechAACButtons.tsx
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface TextToSpeechProps {
     text: string;
+    disabled?: boolean;
     onSpeechEnd?: () => void; // Callback for when speech ends
 }
 
-const TextToSpeechAACButtons: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd }) => {
+const TextToSpeechAACButtons: React.FC<TextToSpeechProps> = ({ 
+    text, 
+    onSpeechEnd, 
+    disabled 
+}) => {
     const [isPaused, setIsPaused] = useState(false);
-    const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
+    const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
     useEffect(() => {
         const synth = window.speechSynthesis;
@@ -20,33 +25,25 @@ const TextToSpeechAACButtons: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd
             onSpeechEnd?.(); // Notify parent when speech ends
         };
 
-        const handlePause = () => {
-            setIsPaused(true);
-        };
-
         u.addEventListener("end", handleEnd);
-        u.addEventListener("pause", handlePause);
-
-        setUtterance(u);
+        utteranceRef.current = u;
 
         return () => {
             synth.cancel(); // Cancel any ongoing speech when the component unmounts or text changes
             u.removeEventListener("end", handleEnd);
-            u.removeEventListener("pause", handlePause);
         };
     }, [text, onSpeechEnd]); // Recreate utterance when text changes
 
     const handlePlay = () => {
-        const synth = window.speechSynthesis;
-        if (!utterance) return;
+        if (disabled) return;
 
-        // Cancel any ongoing speech before starting a new one
-        synth.cancel();
+        const synth = window.speechSynthesis;
+        synth.cancel(); // Cancel any ongoing speech before starting a new one
 
         if (isPaused) {
             synth.resume(); // Resume if paused
         } else {
-            synth.speak(utterance); // Start speaking the current sentence
+            synth.speak(utteranceRef.current!);
         }
 
         setIsPaused(false);
@@ -59,8 +56,8 @@ const TextToSpeechAACButtons: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd
     };
 
     const handleStop = () => {
-        const synth = window.speechSynthesis;
-        synth.cancel(); // Stop the speech
+        if (disabled) return; // NEW: Don't allow interaction when disabled
+        window.speechSynthesis.cancel();
         setIsPaused(false);
     };
 
@@ -68,19 +65,24 @@ const TextToSpeechAACButtons: React.FC<TextToSpeechProps> = ({ text, onSpeechEnd
         <div className="flex gap-2 mt-1">
             <button
                 onClick={handlePlay}
-                aria-label={isPaused ? "Resume speech" : "Play speech"}
-                className="px-4 py-2 bg-green-500 text-white rounded"
+                disabled={disabled}
+                className={`px-4 py-2 rounded text-white font-bold ${
+                    disabled ? 'bg-gray-400 cursor-not-allowed' : 
+                    'bg-green-500 hover:bg-green-600'
+                }`}
             >
-                Play ⏵
+                {disabled ? 'Auto-Reading...' : '▶ Play'}
             </button>
 
             <button
                 onClick={handleStop}
-                aria-label="Stop speech"
-                className="px-4 py-2 bg-red-500 text-white rounded"
-                disabled={!utterance} // Disable if no utterance
+                disabled={disabled} // Disable if no utterance
+                className={`px-4 py-2 rounded text-white font-bold ${
+                    disabled ? 'bg-gray-400 cursor-not-allowed' : 
+                    'bg-red-500 hover:bg-red-600'
+                }`}
             >
-                Stop ⏹
+                ⏹ Stop
             </button>
         </div>
     );

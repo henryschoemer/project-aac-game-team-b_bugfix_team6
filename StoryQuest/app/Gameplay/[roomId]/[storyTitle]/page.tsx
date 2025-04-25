@@ -97,7 +97,8 @@ export default function Home() {
   const trimmedSections = currentStory?.sections.slice(0, numberOfPhrasesForGame) || [];
   const [blockOverlay, setBlockOverlay] = useState<boolean>(false);
   const [showInitialPlayOverlay, setShowInitialPlayOverlay] = useState(true);
-
+  const [isAutoReading, setIsAutoReading] = useState(false);
+  
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
 //story chosen from create room becomes default story
@@ -271,14 +272,16 @@ useEffect(() => {
   }, [phrase, playerNumber, currentTurn]);
 
   const speakCurrentPhrase = useCallback(() => {
+    setIsAutoReading(true); // Set to true when auto-read starts
     const u = new SpeechSynthesisUtterance(phrase);
     u.addEventListener("end", () => {
-      // once it finishes, remove the overlay
-      setShowInitialPlayOverlay(false);
+        setIsAutoReading(false); // Set to false when done
+        setShowInitialPlayOverlay(false);
     });
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
-  }, [phrase]);
+}, [phrase]);
+
 
   const handleStoryChange = async (story: Story, phraseLimit: number) => {
     setCurrentStory(story);
@@ -432,6 +435,7 @@ useEffect(() => {
     );
   }
 
+
   return (
     <>
     {showInitialPlayOverlay && (
@@ -511,8 +515,11 @@ useEffect(() => {
         blockButtons={blockOverlay} // Last phrase "The End!"
       />
     </div>
-
-    <TextToSpeechAACButtons text={phrase} />
+    
+    <TextToSpeechAACButtons 
+      text={phrase}
+      disabled={isAutoReading} // Pass the auto-read state
+    />
   </div>
 
   {/* Right Panel: Game Scene */}
