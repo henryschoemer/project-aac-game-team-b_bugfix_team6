@@ -676,15 +676,10 @@ useEffect(() => {
       <div>
         {/*Call completedstory button and pass completedphrase map*/}
         <CompletedStory
-          index={completedPhrases.length - 1}
           completedPhrases={completedPhrases}
           roomId={roomId}
           onComplete={() => {
-            console.log("Gameplay: Story is completed!");
-            setStoryCompleted(true);
-            /*setTimeout(() => {
-              setShowOverlay(true);
-            }, 3000); Show the CompletionPage after a delay*/
+            setShowOverlay(true);
           }}
         />
       </div>
@@ -699,24 +694,6 @@ useEffect(() => {
 
   </div>
   </div>
-
-  {/* TTS Components */}
-  {/*{phrase && <TextToSpeechTextOnly key={phrase} text={phrase} />}
-
-  {phrase === "The End!" && (
-    <CompletedStory
-      index={completedPhrases.length - 1}
-      completedPhrases={completedPhrases}
-      roomId={roomId}
-      onComplete={() => setStoryCompleted(true)}
-    />
-  )}
-
-  {showOverlay && (
-    <div className="fixed inset-0 z-50">
-      <CompletionPage/>
-    </div>
-  )}*/}
 </>
 );
 }

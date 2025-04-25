@@ -1,78 +1,43 @@
 //StoryQuest/app/Components/CompletedStory.tsx
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/../firebaseControls/firebaseConfig";
-import TextToSpeechTextOnly from "@/Components/TextToSpeechTextOnly";
 
 interface TextToSpeechCompletedStoryProps {
-  index: number;
   completedPhrases: string[];
   onComplete: () => void;
   roomId: string;
 }
 
 const CompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({
-  index,
   completedPhrases,
   onComplete,
   roomId,
 }) => {
-  // Expect index to be completedPhrases.length - 1 indicating that the game is done.
-  const isLastPhrase = index === completedPhrases.length - 1;
-
-  // currentIndex for individual phrase tracking.
-  const [currentIndex, setCurrentIndex] = useState(0);
-  // When true, we switch from individual phrase reading to full-story reading.
-  const [finalRead, setFinalRead] = useState(false);
-
-  // When the game is complete, start with the first phrase.
   useEffect(() => {
-    if (isLastPhrase) {
-      setCurrentIndex(0);
-    }
-  }, [isLastPhrase]);
+    const narrationDelay = 1500; // 1.5 second delay before starting
+    const postNarrationDelay = 500; // 0.5 second delay after finishing
 
-  // Render nothing unless the story is complete.
-  if (!isLastPhrase) return null;
+    const fullStory = [...completedPhrases, "The End!"].join(". "); // Proper punctuation
+    
+    const timer = setTimeout(async () => {
+      const utterance = new SpeechSynthesisUtterance(fullStory);
+      
+      utterance.onend = async () => {
+        await updateDoc(doc(db, "games", roomId), { ttsDone: true });
+        setTimeout(onComplete, postNarrationDelay);
+      };
 
-  const handlePhraseComplete = async () => {
-    if (!finalRead) {
-      // If we haven't started reading the full story yet:
-      if (currentIndex < completedPhrases.length - 1) {
-        // Continue reading the next individual phrase.
-        setCurrentIndex((prev) => prev + 1);
-      } else {
-        // All individual phrases have been read.
-        // Switch to final reading mode.
-        setFinalRead(true);
-      }
-    } else {
-      // Final full-story reading is complete:
-      // Update Firestore so that other players know the TTS finished.
-      await updateDoc(doc(db, "games", roomId), {
-        ttsDone: true,
-      });
-      // Optionally, add a short delay before calling onComplete.
-      setTimeout(() => {
-        onComplete();
-      }, 1000);
-    }
-  };
+      window.speechSynthesis.speak(utterance);
+    }, narrationDelay);
 
-  // Decide what text to read.
-  // If in finalRead mode, join all completed phrases into one continuous string.
-  const textToSpeak = finalRead
-    ? completedPhrases.join(" ")
-    : completedPhrases[currentIndex];
+    return () => {
+      clearTimeout(timer);
+      window.speechSynthesis.cancel();
+    };
+  }, [completedPhrases, roomId, onComplete]);
 
-  return (
-    <TextToSpeechTextOnly
-      key={finalRead ? "final" : currentIndex}
-      text={textToSpeak}
-      onComplete={handlePhraseComplete}
-    />
-  );
+  return null; // No visual component needed
 };
 
 export default CompletedStory;
