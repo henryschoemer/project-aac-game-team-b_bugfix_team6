@@ -10,6 +10,7 @@ import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 import "./CreateRoomButtonStyles.css";
 import useButtonFeedback from "@/Components/useButtonClickSounds";
 import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
+import Link from "next/link";
 
 export default function CreateRoomPage() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -115,11 +116,9 @@ export default function CreateRoomPage() {
                 {/* Home Button (conditionally shown) */}
                 {(currentStep === 1 || currentStep === 4) && (
                     <div className="absolute top-4 left-1">            
-                        <ExitButton
-                            asLink={true}
-                            href="/"
-                            className="scale-50 p-2 rounded-full bg-white/90 shadow-md hover:bg-gray-100 transition-colors"
-                        />
+                        <Link href="/" className="absolute top-4 left-4 z-10 scale-50">
+                            <ExitButton />
+                        </Link>
                     </div>
                 )}
 

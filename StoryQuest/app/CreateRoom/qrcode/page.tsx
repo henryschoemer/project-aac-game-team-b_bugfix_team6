@@ -10,6 +10,7 @@ import Image from 'next/image';
 import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
 import useButtonFeedback from "@/Components/useButtonClickSounds";
 import { ExitButton } from "@/HomePage/HomePageButtons";
+import Link from "next/link";
 
 function QRCodeContent() {
     const searchParams = useSearchParams();
@@ -43,12 +44,10 @@ function QRCodeContent() {
                 <h1 className="text-2xl font-bold text-gray-800 text-center" onClick={()=>handleClick("Scan to Join Room")}>
                     Scan to Join Room
                 </h1>
-                 <div className="absolute bottom-0">            
-                    <ExitButton
-                        asLink={true}
-                        href="/"
-                        className="scale-50 p-2 rounded-full bg-white/90 shadow-md hover:bg-gray-100 transition-colors"
-                    />
+                 <div className="absolute bottom-40">            
+                    <Link href="/" className="absolute top-4 left-4 z-10 scale-50">
+                        <ExitButton />
+                    </Link>
                 </div>
 
                 {/* Steps */}
