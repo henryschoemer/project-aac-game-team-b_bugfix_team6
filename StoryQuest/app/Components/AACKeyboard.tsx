@@ -1,8 +1,9 @@
 //StoryQuest/app/Components/AACKeyboard.tsx
 
-import React from "react"
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import useAACSounds from "./useAACSounds";
+import loadSound from "./useAACSounds";
 
  interface AACKeyboardProps {
    onSelect: (word: string) => void; 
@@ -19,6 +20,17 @@ import useAACSounds from "./useAACSounds";
   buttonColor = "#63d2cb",
   blockButtons = false
 }) => {
+
+  const { playSound, loadSound } = useAACSounds();
+
+  // Preload sounds when component mounts
+  useEffect(() => {
+    symbols.forEach(symbol => {
+      loadSound(symbol.word, `/aacSounds/${symbol.word}.mp3`);
+    });
+  }, [symbols]);
+
+  
      // Style for the blocking overlay
      const blockAACButtonOverlayStyle: React.CSSProperties = {
          position: 'absolute',
@@ -31,12 +43,17 @@ import useAACSounds from "./useAACSounds";
          cursor: 'not-allowed',
      };
 
-     const { playSound } = useAACSounds();
-
      const handleButtonClick = (word: string) => {
-       playSound(word);
-       onSelect(word);
-     }
+    // Play sound immediately during the click handler
+    playSound(word);
+    
+    // Delay the selection handling slightly to ensure audio plays
+    setTimeout(() => {
+      onSelect(word);
+    }, 0);
+  };
+
+
    return (
      <div 
       className="p-2 border border-gray-300 rounded-lg shadow-md transform transition duration-500 hover:scale-105"
@@ -53,7 +70,7 @@ import useAACSounds from "./useAACSounds";
              key={symbol.word}
              className="p-1 text-white rounded flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
              style={{ backgroundColor: buttonColor }}
-             onClick={() => onSelect(symbol.word)}
+             onClick={() => handleButtonClick(symbol.word)}
              whileHover={{ scale: 1.1 }}
              whileTap={{ scale: 0.9 }}
              aria-label={`Select ${symbol.word}`}

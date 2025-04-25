@@ -9,6 +9,8 @@ import "../CreateRoomButtonStyles.css";
 import Image from 'next/image';
 import useQuickTextToSpeech from "@/Components/useQuickTextToSpeech";
 import useButtonFeedback from "@/Components/useButtonClickSounds";
+import { ExitButton } from "@/HomePage/HomePageButtons";
+import Link from "next/link";
 
 function QRCodeContent() {
     const searchParams = useSearchParams();
@@ -34,7 +36,7 @@ function QRCodeContent() {
     return (
         <div 
             className="h-screen w-screen overflow-hidden bg-cover bg-center flex items-center justify-center p-4"
-            style={{ backgroundImage: "url('../../HomePage-Images/home-background.jpg')" }}
+            style={{ backgroundImage: "url('/images/home-background.jpg')" }}
         >
             {/* Single Semi-Transparent Container */}
             <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border-4 border-teal-300 p-1 w-full max-w-6xl h-[85vh] overflow-hidden">
@@ -42,6 +44,11 @@ function QRCodeContent() {
                 <h1 className="text-2xl font-bold text-gray-800 text-center" onClick={()=>handleClick("Scan to Join Room")}>
                     Scan to Join Room
                 </h1>
+                 <div className="absolute bottom-40">            
+                    <Link href="/" className="absolute top-4 left-4 z-10 scale-50">
+                        <ExitButton />
+                    </Link>
+                </div>
 
                 {/* Steps */}
                 <div className="scale-75">

@@ -190,8 +190,11 @@ useEffect(() => {
   //Assigning player #'s
   const handleConfirmAvatar = async () => {
     if (!selectedAvatar) return alert("Pick one!");
-    const myId = crypto.randomUUID();
-    sessionStorage.setItem("player-uid", myId);
+    // With this polyfill:
+    const myId = typeof crypto !== 'undefined' && crypto.randomUUID 
+      ? crypto.randomUUID() 
+      : Date.now().toString(36) + Math.random().toString(36).substring(2);
+        sessionStorage.setItem("player-uid", myId);
 
     await runTransaction(db, async tx => {
       const gameRef = doc(db, "games", roomId);
