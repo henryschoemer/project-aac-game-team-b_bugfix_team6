@@ -8,9 +8,9 @@
 }
 
 .text-color{
-    color: black;
-    font-size: 25px;
-    font-weight: bold;
+    color: #241b03;
+    font-size: 1.8rem;
+    font-family: 'Slackey', sans-serif;
 }
 
 /*Spacing between icon and text on the right*/
@@ -37,19 +37,10 @@
     justify-content: center;
 }
 
-/* setup room button */
-.setup-room-button {
-    background-color: #4caf50;
-    border-color: #2e7d32;
-    color: white;
-    font-size: 1.5rem;
-    padding: 1rem 2rem;
-}
-
 /* HTML: <div class="ribbon">Your text content</div> */
 .ribbon {
     font-size: 35px;
-    font-weight: bold;
+    font-family: 'Slackey', sans-serif;
     color: #fff;
 }
 .ribbon {
@@ -80,5 +71,67 @@
     justify-content: center;
     align-items: center;
     z-index: 1000; /* Ensures it's on top */
+
 }
 
+/* leaderboard/summary */
+.leaderboard-container {
+    background: rgba(255, 253, 245, 0.9);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 25px 0;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 3px solid #F59E0B;
+}
+
+.leaderboard-title {
+    color: #78350F;
+    font-size: 1.8rem;
+    font-family: 'Slackey', sans-serif;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.players-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.player-card {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #36cf64;
+}
+
+.player-avatar {
+    font-size: 2rem;
+    margin-right: 16px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.player-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.player-name {
+    font-weight: 600;
+    font-family: 'Slackey', sans-serif;
+    color: #78350F;
+    font-size: 1.1rem;
+}
+
+.player-lines {
+    color: #92400E;
+    font-family: 'Slackey', sans-serif;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
