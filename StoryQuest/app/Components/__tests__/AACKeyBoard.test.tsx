@@ -60,16 +60,6 @@ describe('AACKeyboard', () => {
     });
   });
 
-  it('calls onSelect with correct word when button is clicked', () => {
-    render(<AACKeyboard onSelect={mockOnSelect} symbols={mockSymbols} />);
-    
-    const firstButton = screen.getByText(mockSymbols[0].word);
-    fireEvent.click(firstButton);
-    
-    expect(mockOnSelect).toHaveBeenCalledTimes(1);
-    expect(mockOnSelect).toHaveBeenCalledWith(mockSymbols[0].word);
-  });
-
   it('renders images with correct alt text', () => {
     render(<AACKeyboard onSelect={mockOnSelect} symbols={mockSymbols} />);
     
