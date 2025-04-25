@@ -435,6 +435,7 @@ useEffect(() => {
     );
   }
 
+  const numJoined = Object.keys(playerAvatars).length;
 
   return (
     <>
@@ -443,13 +444,30 @@ useEffect(() => {
         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
         style={{ backdropFilter: "blur(4px)" }}
       >
-        <button
-          onClick={speakCurrentPhrase}
-          className="text-9xl p-8 bg-white rounded-full shadow-xl animate-pulse"
-          aria-label="Press to start reading"
-        >
-          ▶️
-        </button>
+        {numJoined < maxPlayers ? (
+            <>
+              <p className="mb-4 text-3xl font-bold text-yellow-200 bg-blue-600 bg-opacity-70 p-4 rounded-2xl shadow-lg flex items-center space-x-2">
+                <span>🕹️</span>
+                <span>Waiting for players…</span>
+                <span>({numJoined}/{maxPlayers})</span>
+                <span>🕒</span>
+              </p>
+              <button
+                disabled
+                className="text-9xl p-8 bg-gray-500 rounded-full opacity-50 cursor-not-allowed"
+              >
+                ▶️
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={speakCurrentPhrase}
+              className="text-9xl p-8 bg-white rounded-full shadow-xl animate-pulse"
+              aria-label="Press to start reading"
+            >
+              ▶️
+            </button>
+          )}
       </div>
     )}
 
