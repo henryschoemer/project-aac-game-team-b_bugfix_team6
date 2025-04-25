@@ -571,13 +571,6 @@ useEffect(() => {
       </div>
     </div>
 
-
-
-
-
-
-
-
     {/* Animated Images with Sparkles: Shows selected images with a sparkle effect. */}
     <AnimatePresence>
       {completedImages.map((image, index) => {
@@ -645,14 +638,6 @@ useEffect(() => {
             <motion.img key={`normal-${index}`} src={image.src} alt={image.alt} className="w-48 h-48" {...getImageAnimation()} />
           );
         }
-
-
-
-
-
-
-
-
 
         return (
           <div key={`image-container-${index}`} className="absolute" style={{ left: `${image.x}%`, top: `${Math.min(image.y, 60)}%`, }}>
