@@ -440,34 +440,28 @@ useEffect(() => {
   return (
     <>
     {showInitialPlayOverlay && (
-      <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-        style={{ backdropFilter: "blur(4px)" }}
-      >
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-75">
         {numJoined < maxPlayers ? (
-            <>
-              <p className="mb-4 text-3xl font-bold text-yellow-200 bg-blue-600 bg-opacity-70 p-4 rounded-2xl shadow-lg flex items-center space-x-2">
-                <span>🕹️</span>
-                <span>Waiting for players…</span>
-                <span>({numJoined}/{maxPlayers})</span>
-                <span>🕒</span>
-              </p>
-              <button
-                disabled
-                className="text-9xl p-8 bg-gray-500 rounded-full opacity-50 cursor-not-allowed"
-              >
-                ▶️
-              </button>
-            </>
-          ) : (
-            <button
-              onClick={speakCurrentPhrase}
-              className="text-9xl p-8 bg-white rounded-full shadow-xl animate-pulse"
-              aria-label="Press to start reading"
-            >
-              ▶️
-            </button>
-          )}
+          <p className="mb-4 w-2/3 text-4xl font-bold text-yellow-200 bg-blue-300 bg-opacity-60 p-8 rounded-3xl shadow-2xl flex items-center justify-center space-x-4">
+            <span>Waiting for players… ({numJoined}/{maxPlayers})</span>
+            <span className="text-5xl">🕒</span>
+          </p>
+        ) : (
+          <button
+            onClick={speakCurrentPhrase}
+            className="relative text-9xl p-10 bg-gradient-to-tr from-purple-400 via-pink-500 to-red-500 text-white rounded-full shadow-2xl ring-4 ring-offset-4 ring-purple-300 
+            transform transition duration-300 ease-in-out hover:scale-110 active:scale-95 animate-pulse"
+            aria-label="Press to start reading"
+          >
+            ▶️
+            <span className="
+              absolute inset-0 rounded-full
+              bg-white bg-opacity-10
+              animate-ping
+              pointer-events-none
+            " />
+          </button>
+        )}
       </div>
     )}
 
