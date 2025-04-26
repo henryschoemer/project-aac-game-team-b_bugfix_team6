@@ -390,6 +390,8 @@ useEffect(() => {
     }
   }, [phrase]);
 
+  const usedAvatars = new Set(Object.values(playerAvatars));
+
   if (!ttsReady) {
     return (
       <>
@@ -400,17 +402,26 @@ useEffect(() => {
             <div className="bg-white p-6 rounded-lg w-[90vw] max-w-md mx-auto">
               <h2 className="text-xl font-bold mb-3 text-center text-black">Choose Your Avatar</h2>
               <div className="grid grid-cols-3 gap-3">
-                {availableAvatars.map(a => (
+                {availableAvatars.map(a => {
+                  const taken = usedAvatars.has(a);
+                  return (
                     <button
                       key={a}
-                      onClick={() => setSelectedAvatar(a)}
-                      className={`text-4xl p-2 rounded-full border-4 ${
-                        selectedAvatar === a ? "border-green-500" : "border-transparent"
-                      }`}
+                      onClick={() => !taken && setSelectedAvatar(a)}
+                      disabled={taken}
+                      className={`
+                        text-4xl p-2 rounded-full border-4
+                        ${selectedAvatar === a ? "border-green-500" : "border-transparent"}
+                        ${taken
+                          ? "opacity-40 cursor-not-allowed"
+                          : "hover:scale-110 transition-transform"}
+                      `}
                     >
                       {a}
+                      {taken && <span className="sr-only">(taken)</span>}
                     </button>
-                  ))}
+                  );
+                })}
               </div>
               <button
                 onClick={handleConfirmAvatar}
