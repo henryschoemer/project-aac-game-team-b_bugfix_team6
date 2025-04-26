@@ -20,7 +20,7 @@ interface Player {
 
 export default function CompletionPage() {
     const [players, setPlayers] = useState<Player[]>([]);
-    const [countdown, setCountdown] = useState(600);
+    const [countdown, setCountdown] = useState(4);
     const [shouldNavigate, setShouldNavigate] = useState(false);
     const router = useRouter();
     // Button Sound effects
