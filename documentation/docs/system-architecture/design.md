@@ -185,87 +185,173 @@ CreateRoom: The CreateRoom flow provides game setup tools for the host, allowing
 6. The selected word is displayed on the bottom of the right panel of the Gameplay page and sent to the Firestore. 
 7. The game continues turn-by-turn until the story is complete.
 
-### Database
-**Users:**
-- userId (PK): Unique identifier
-- name: Player's name
-- preferences: AAC settings, favorite symbols
+### Database Schema
 
-**Rooms:**
-- roomId (PK): Unique code for room access
-- hostId (FK from the Users table): The player who created the room
-- players: List of players in the room
-- currentTurn (FK from the users table): Tracks whose turn it is
-- storyProgress: Current state of the story
+#### Collections
 
-**Stories:**
-- storyId (PK): Unique ID
-- gradeLevel: Target grade level (3 grade max)
-- content: Story text with blanks
+###### `users` Collection
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| `userId` | `string` (Primary Key) | Unique identifier | "user_abc123" |
+| `name` | `string` | Player's display name | "Alex" |
+| `avatar` | `string` | Emoji or image URL | "🐱" |
+| `createdAt` | `timestamp` | Account creation time | `2023-11-15T14:32:00Z` |
+| `lastActive` | `timestamp` | Last login time | `2023-11-20T09:15:00Z` |
 
 **Responsibilities:**
-- Persist user data and game state
-- Support real-time synchronization of game progress
-- Allow dynamic story loading and AAC customization
+- Stores player profiles and preferences
+- Tracks user activity
 
-**Interfaces:**
-- Firebase Firestore SDK: Used by both client and server to read/write data in real-time
-- Cloud Functions: Perform automated updates (like saving game progress)
+---
+
+###### `rooms` Collection
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| `roomId` | `string` (PK) | Alphanumeric code which turns into a qr code | "ABCDEF" |
+| `hostId` | `string` (FK) | Creator's userId | "user_abc123" |
+| `players` | `array` | List of userIds | `["user_abc123", "user_xyz456"]` |
+| `currentTurn` | `number` | Player turn index | `1` |
+| `storyId` | `string` (FK) | Current story | "story_garden" |
+| `difficulty` | `string` | Game level | "medium" |
+| `status` | `string` | Game state | "playing" |
+| `createdAt` | `timestamp` | Creation time | `2023-11-20T10:00:00Z` |
+
+**Responsibilities:**
+- Manages active game sessions
+- Tracks turn order
+- Stores room configuration
+
+---
+
+###### `games` Collection
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| `gameId` | `string` (PK) | Session ID | "game_123" |
+| `roomId` | `string` (FK) | Associated room | "ABCDEF" |
+| `currentPhrase` | `string` | Active story segment | "The ___ flew high" |
+| `completedPhrases` | `array` | Finished segments | `["The bird", "The bird flew"]` |
+| `completedImages` | `array` | Selected images | `[{word: "bird", src: "bird.png"}]` |
+| `currentSectionIndex` | `number` | Progress index | `2` |
+| `maxPlayers` | `number` | Player limit | `4` |
+
+**Responsibilities:**
+- Tracks real-time game state
+- Stores completed content
+- Maintains player selections
+
+---
+
+###### `stories` Collection
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| `storyId` | `string` (PK) | Unique ID | "story_garden" |
+| `title` | `string` | Story title | "Garden Adventure" |
+| `gradeLevel` | `number` | Difficulty (1-3) | `1` |
+| `content` | `array` | Story segments | `["The ___", "The ___ flew"]` |
+| `wordBank` | `map` | AAC symbols | `{"bird": {image: "bird.png", sound: "bird.mp3"}}` |
+
+**Responsibilities:**
+- Stores story content
+- Provides AAC resources
+- Manages grade levels
+
+## Data Flow Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI
+    participant Firestore
+    participant CloudFunctions
+    
+    %% Room Creation Flow
+    User->>UI: Selects story/difficulty/players
+    UI->>Firestore: Creates new room document
+    Firestore->>CloudFunctions: Triggers roomCreated function
+    CloudFunctions->>Firestore: Initializes game state
+    
+    %% Player Joining Flow
+    User->>UI: Chooses avatar
+    UI->>Firestore: Updates player profile (avatar)
+    UI->>Firestore: Adds player to room.players[]
+    Firestore->>All Clients: Broadcasts player list update
+    
+    %% Gameplay Flow
+    loop Each Turn
+        User->>UI: Selects AAC symbol
+        UI->>Firestore: Records selection in game state
+        Firestore->>CloudFunctions: Checks turn completion
+        CloudFunctions->>Firestore: Updates currentTurn/phrase
+        Firestore->>All Clients: Updates game board
+    end
+    
+    %% Game Completion Flow
+    CloudFunctions->>Firestore: Marks game as completed
+    Firestore->>UI: Triggers celebration screen
+    UI->>User: Shows results with avatars
+    UI->>Firestore: Archives game data
+```
+
 
 ### Database Design
-Here is the database section with an Entity-Relationship Diagram (ERD) and a table design for StoryQuest. 
-Since we are using FireBase Firestore, which is a NoSQL database, the structure will be document-based, 
-but we can still represent it in a relational style for clarity.
-
-Entities and Relationships:
-
-- User represents a player. 
-- A Room is hosted by One user but can have multiple users (as in players). 
-- A room is then associated with one story. 
-- Each user in a room has a corresponding playerProgress.
+Here is the database section with an Entity-Relationship Diagram 
+(ERD) and a table design for StoryQuest. While Firestore is a NoSQL 
+database, we represent the structure relationally for design clarity. 
+Collections are shown as tables with their key fields.
 
 **Entity-Relationship Diagram**
 
 ```mermaid
 erDiagram
+    USER ||--o{ PLAYER_PROGRESS : "has"
+    ROOM ||--o{ PLAYER_PROGRESS : "tracks"
+    ROOM ||--|| STORY : "uses"
+    ROOM ||--|{ GAME_STATE : "maintains"
+
     USER {
-        string userId PK
+        string userId PK "firestore-autoID"
         string name
-        string email
-        json preferences
+        string avatar "emoji|imageURL"
         timestamp createdAt
+        timestamp lastActive
     }
 
     ROOM {
-        string roomId PK
-        string hostId FK
+        string roomId PK "Alphanumeric Code"
+        string hostId FK "USER.userId"
         string storyId FK
-        number gradeLevel
-        number numPlayers
-        string currentTurn FK
-        boolean isActive
+        string status "waiting|playing|completed"
+        string difficulty "easy|medium|hard"
+        number maxPlayers "2-4"
         timestamp createdAt
+        timestamp lastUpdated
     }
 
     STORY {
         string storyId PK
         string title
-        array content
-        number gradeLevel
-        timestamp createdAt
+        number gradeLevel "1-3"
+        string content "serialized array"
+        string theme "nature|space|fantasy"
     }
 
-    ROOM_PLAYERS {
+    GAME_STATE {
+        string gameId PK
         string roomId FK
-        string userId FK
-        string name
-        timestamp joinedAt
+        string currentPhrase
+        number currentTurnIndex "1-4"
+        string completedPhrases "serialized array"
+        string completedImages "serialized array"
+        string players "serialized map"
     }
 
-    USER ||--o{ ROOM_PLAYERS : "joins"
-    ROOM ||--o{ ROOM_PLAYERS : "has"
-    ROOM ||--|{ STORY : "uses"
-    STORY ||--o{ ROOM : "is played in"
+    PLAYER_PROGRESS {
+        string userId FK
+        string roomId FK
+        number symbolsContributed
+        number turnsCompleted
+        timestamp lastActive
+    }
 ```
 *Figure 2: An entity-relationship diagram showing interactions within the database*
 
@@ -273,51 +359,56 @@ erDiagram
 
 Here is how the data would be structured in Firestore. Though Firestore is a NoSQL database, this relational layout helps clarify the relationships.
 
-**Users Collection Figure 3**
+## Firestore Collection Structure
+
+### `users` Collection (Figure 3)
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| `userId` (PK) | string | Firebase Auth UID | "xZ8jyT..." |
+| `name` | string | Player's display name | "Alex" |
+| `avatar` | string | Emoji or image URL | "🦊" |
+| `aacSettings` | map | User preferences | `{ voiceSpeed: 1.2, theme: "dark" }` |
+| `createdAt` | timestamp | Account creation | `2023-11-20T09:15:00Z` |
+| `lastActive` | timestamp | Last login time | `2023-11-25T14:30:00Z` |
+
+### `rooms` Collection (Figure 4)
+| Field | Type | Description | Validation |
+|-------|------|-------------|------------|
+| `roomId` (PK) | string | 6-digit room code | "ABCD12" |
+| `hostId` | string (FK) | Creator's userId | Required |
+| `storyId` | string (FK) | Selected story | Required |
+| `difficulty` | string | Game level | "easy"/"medium"/"hard" |
+| `maxPlayers` | number | Player limit | 2-4 |
+| `currentTurn` | number | Turn index (1-4) | 1 |
+| `status` | string | Game state | "waiting"/"playing"/"completed" |
+| `createdAt` | timestamp | Creation time | Auto-set |
+| `timeLimit` | number | Turn timer (seconds) | Optional |
+
+### `roomPlayers` Subcollection
+| Field | Type | Description | Notes |
+|-------|------|-------------|-------|
+| `userId` (PK) | string (FK) | Player reference | Indexed |
+| `name` | string | Display name | Copied from user |
+| `avatar` | string | Player icon | "🐶" |
+| `turnOrder` | number | Player sequence | 1-4 |
+| `joinedAt` | timestamp | Join time | Auto-set |
+
+### `stories` Collection (Figure 6)
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| `storyId` (PK) | string | Unique ID | "garden-1" |
+| `title` | string | Story title | "Magic Garden" |
+| `difficulty` | number | Difficulty | 1-3 |
+| `content` | array | Phrase segments | `["The ___", "sat on the ___"]` |
+| `wordBank` | map | AAC resources | `{apple: {image: "apple.png", sound: "apple.mp3"}}` |
+
+
+### `gameState` Subcollection (within rooms)
 | Field | Type | Description |
-| ----- | ---- | ----------- |
-| userId (PK)| String | Unique Id (Firebase Auth UID) |
-| name | String | Player's display name |
-| preferences | Map | AAC preferences |
-| createdAt | Timestamp | Account creation date |
-
-**Rooms Collections Figure 4**
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| roomId (PK)| String | Unique code for room access |
-| hostId | String | User ID of the room host |
-| storyId | String | ID of selected story |
-| difficulty | Number | Difficulty level selected for the room |
-| numPlayers | Number | Number of players (1-4) |
-| currentTurn | String | User Id of player whose turn it is |
-| createdAt | Timestamp | Room creation date |
-| isActive | Boolean | Indicates if the game is in progress | 
-
-**RoomPlayers Subcollection (within rooms) Figure 5**
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| userId (PK)| String | User Id of the player |
-| name | String | Player's display name |
-| joinedAt | Timestamp | Time when the players joined the room |
-
-**Stories Collections Figure 6**
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| storyId (PK)| String | Unique id for the story |
-| title | String | Title of the story |
-| content | Array | Story text with blanks marked |
-| difficulty | Number | Intended difficulty level |
-| createdAt | Timestamp | Date when the story was added |
-
-**PlayerProgress Subcollection (within Rooms) Figure 7**
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| userId (PK)| String | User Id of the player |
-| answers | Array | List of the answers submitted by the player |
-| correctAnswers | Number | Total correct answers by the player |
-| attempts | Number | Total attempts made |
-| lastActive | Timestamp | Last time the player interacted |
-
-
-
+|-------|------|-------------|
+| `currentPhrase` | string | Active story segment |
+| `completedPhrases` | array | Filled segments |
+| `selectedSymbols` | array | `{word: "apple", by: "user123", avatar: "🐱"}` |
+| `currentTurn` | number | Turn index |
+| `lastUpdated` | timestamp | Auto-updated |
 
