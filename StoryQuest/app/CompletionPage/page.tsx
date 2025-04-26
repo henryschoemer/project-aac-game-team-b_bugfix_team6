@@ -48,7 +48,7 @@ export default function CompletionPage() {
                 // Count how many phrases this player contributed
                 const playerNumber = player.playerNumber;
                 const maxPlayers = gameData?.maxPlayers || 4;
-                const playerPhrases = completedPhrases.filter((_, index) => index % maxPlayers === playerNumber - 1).length;
+                const playerPhrases = completedPhrases.filter((_: any, index: number) => index % maxPlayers === playerNumber - 1).length;
 
                 playersData.push({
                     playerNumber: player.playerNumber,
