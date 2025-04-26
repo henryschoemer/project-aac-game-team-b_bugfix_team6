@@ -209,7 +209,7 @@ export default function JoinRoomPage() {
                 setFailedAttempts(newFailedAttempts);
                 
                 // Show popup after 3 failed attempts
-                if (newFailedAttempts >= 5) {
+                if (newFailedAttempts >= 10) {
                     setShowFailedPopup(true);
                 }
             }
