@@ -150,7 +150,7 @@ export default function CreateRoomPage() {
                             {[
                                 { title: "The Garden Adventure", img: "/images/garden-background.webp" },
                                 { title: "Walk in the Forest", img: "/images/forest-background.jpg" },
-                                { title: "Under the sea", img: "/images/ocean-background.png" },
+                                { title: "Under the Sea", img: "/images/ocean-background.png" },
                                 { title: "Space Adventure", img: "/images/space-background.svg" }
                             ].map((story) => (
                                 <button

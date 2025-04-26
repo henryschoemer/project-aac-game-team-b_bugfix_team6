@@ -49,7 +49,7 @@ const stories: Story[] = [
     },
 
     {
-      phrase: "And playing on the left was the ___.",
+      phrase: "And playing on the left is a ___.",
       words: {
         mouse: { image: "mouse.svg", x: 20, y: 90, effect: 'flip', width: 80, height: 80 },
         ladybug: { image: "ladybug.svg", x: 20, y: 90, effect: 'sideToSide' },
@@ -73,7 +73,7 @@ const stories: Story[] = [
     },
 
     {
-      phrase: "To the right we discovered a ___.",  
+      phrase: "To the right we discover a ___.",  
       words: {
         book: { image: "book.svg", x: 90, y: 60, effect: 'pulse' },
         butterfly: { image: "butterfly.svg",x: 90, y: 60, effect: 'sideToSide' },
@@ -461,7 +461,7 @@ sections: [
 
 
       {
-        phrase: "We also said hi to a(n) ___.",
+        phrase: "We also said hello to a(n) ___.",
         words: {
           alien: { image: "alien.svg", x: 5, y: 90, effect: 'pulse' },
           robot: { image: "robot.svg", x: 5, y: 90, effect: 'sideToSide' },
@@ -502,7 +502,7 @@ sections: [
 
 // NEW STORY - NUMBER 4
 {
-title: "Under the sea",
+title: "Under the Sea",
 backgroundImage: "ocean-background.png",
 colorTheme: {
 backgroundColor: "#0a0a23", // Deep space blue
@@ -511,7 +511,7 @@ buttonColor: "#4d79ff", // Cosmic blue
 sections: [
   
 {
-phrase: "It is a beautiful day under the ocean, on our right we see a ___.",
+phrase: "It is a beautiful day under the ocean, on our right we see a(n) ___.",
 words: {
   bluefish: { image: "bluefish.svg", x: 80, y: 40, effect: 'scaleUp' },
   redfish: { image: "redfish.svg", x: 80, y: 40, effect: 'sideToSide' },
@@ -533,7 +533,7 @@ words: {
 },
 },
 {
-phrase: "On our left we see a ___.",
+phrase: "On our left we see a(n) ___.",
 words: {
   bluefish: { image: "bluefish.svg", x: 10, y: 30, effect: 'spin' },
   redfish: { image: "redfish.svg", x: 10, y: 30, effect: 'sideToSide' },
@@ -546,7 +546,7 @@ words: {
 
 
 {
-phrase: "At the bottom of the ocean we discovered a ___.",
+phrase: "At the bottom of the ocean we discovered a(n) ___.",
 words: {
   seastar: { image: "seastar.svg", x: 40, y: 99, effect: 'scaleUp' },
   jellyfish: { image: "jellyfish.svg", x: 40, y: 99, effect: 'sideToSide' },
@@ -571,7 +571,7 @@ words: {
 
 
   {
-    phrase: "By the seaweed trying to hide there is a ___.",
+    phrase: "By the seaweed trying to hide there is a(n) ___.",
     words: {
       whale: { image: "seastar.svg", x: 70, y: 50, effect: 'spin' },
       jellyfish: { image: "jellyfish.svg", x: 70, y: 50, effect: 'sideToSide' },
@@ -584,7 +584,7 @@ words: {
 
 
     {
-      phrase: " Near the surface there is a ___.",
+      phrase: " Near the surface there is a(n) ___.",
       words: {
         whale: { image: "whale.svg", x: 80, y: 0, effect: 'scaleUp' },
         jellyfish: { image: "jellyfish.svg", x: 80, y: 0, effect: 'sideToSide' },
@@ -596,7 +596,7 @@ words: {
       },
 
 {
-phrase: "We said hello to a ___.",
+phrase: "We said hello to a(n) ___.",
 words: {
   bluefish: { image: "bluefish.svg", x: 10, y: 20, effect: 'pulse' },
   shark: { image: "shark.svg", x: 10, y: 20, effect: 'sideToSide' },

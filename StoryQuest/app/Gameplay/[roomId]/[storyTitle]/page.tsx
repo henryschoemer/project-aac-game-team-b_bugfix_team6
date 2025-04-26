@@ -442,6 +442,8 @@ useEffect(() => {
     }
   }, [phrase]);
 
+  const usedAvatars = new Set(Object.values(playerAvatars));
+
   if (!ttsReady) {
     return (
       <>
@@ -452,17 +454,26 @@ useEffect(() => {
             <div className="bg-white p-6 rounded-lg w-[90vw] max-w-md mx-auto">
               <h2 className="text-xl font-bold mb-3 text-center text-black">Choose Your Avatar</h2>
               <div className="grid grid-cols-3 gap-3">
-                {availableAvatars.map(a => (
+                {availableAvatars.map(a => {
+                  const taken = usedAvatars.has(a);
+                  return (
                     <button
                       key={a}
-                      onClick={() => setSelectedAvatar(a)}
-                      className={`text-4xl p-2 rounded-full border-4 ${
-                        selectedAvatar === a ? "border-green-500" : "border-transparent"
-                      }`}
+                      onClick={() => !taken && setSelectedAvatar(a)}
+                      disabled={taken}
+                      className={`
+                        text-4xl p-2 rounded-full border-4
+                        ${selectedAvatar === a ? "border-green-500" : "border-transparent"}
+                        ${taken
+                          ? "opacity-40 cursor-not-allowed"
+                          : "hover:scale-110 transition-transform"}
+                      `}
                     >
                       {a}
+                      {taken && <span className="sr-only">(taken)</span>}
                     </button>
-                  ))}
+                  );
+                })}
               </div>
               <button
                 onClick={handleConfirmAvatar}
@@ -527,35 +538,35 @@ useEffect(() => {
 
         <div className="grid grid-cols-4 gap-2 w-full">
           {Object.entries(playerAvatars)
-            .sort(([a], [b]) => Number(a) - Number(b))
-            .map(([num, avatar]) => {
-              const playerNum = Number(num);
-              const isActive = playerNum === currentTurn;
-              const isHighlighted = playerNum === highlightedPlayer;
-
-              return (
-                <div key={num} className="flex flex-col items-center">
-                  <span
-                    className={`
-                      ${isActive ? "text-7xl p-4 border-4 ring-4 ring-yellow-300" : "text-4xl p-1 border-2"}
-                      ${isHighlighted ? "animate-ping bg-green-500 rounded-full" : ""}
-                      transition-all duration-300
-                    `}
-                    style={{
-                      transform: isHighlighted ? "scale(1.5)" : "scale(1)",
-                      zIndex: isHighlighted ? 10 : 1
-                    }}
-                  >
-                    {avatar}
-                  </span>
-                  {isActive && (
-                    <span className="text-xs mt-1 font-bold">
-                      {playerNumber === playerNum ? "YOU!" : "Current"}
-                    </span>
-                  )}
-                </div>
-              );
-            })}
+                    .sort(([a], [b]) => Number(a) - Number(b))
+                    .map(([num, avatar]) => {
+                      const slot = Number(num);
+                      const highlight = slot === currentTurn && slot === playerNumber;
+                      return (
+                        <div key={num} className="flex flex-col items-center">
+                          <span
+                            className={`
+                              ${
+                                highlight
+                                  ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 bg-green-500 rounded-full scale-150 animate-pulse glow animate-ping"
+                                  : "text-5xl p-2 border-2 border-gray-400"
+                              }
+                              rounded-full
+                              transition-transform duration-300 ease-in-out
+                            `}
+                            style={{
+                              transform: highlight ? "scale(1.5)" : "scale(1)",
+                              zIndex:    highlight ? 10 : 1,
+                            }}
+                          >
+                            {avatar}
+                          </span>
+                          {highlight && (
+                            <span className="text-xs mt-1 font-bold text-green-600">YOU!</span>
+                          )}
+                        </div>
+                      );
+                  })}
         </div>
       
           <div className="mt-2 text-center w-full">
