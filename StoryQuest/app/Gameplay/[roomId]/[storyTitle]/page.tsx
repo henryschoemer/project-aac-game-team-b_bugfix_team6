@@ -98,6 +98,9 @@ export default function Home() {
   const [blockOverlay, setBlockOverlay] = useState<boolean>(false);
   const [showInitialPlayOverlay, setShowInitialPlayOverlay] = useState(true);
   const [isAutoReading, setIsAutoReading] = useState(false);
+  const [inactivityTimer, setInactivityTimer] = useState<NodeJS.Timeout | null>(null);
+  const [announcedPlayer, setAnnouncedPlayer] = useState<number | null>(null);
+  const [highlightedPlayer, setHighlightedPlayer] = useState<number | null>(null);
   
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
@@ -113,6 +116,26 @@ const lastCompleted = completedPhrases[completedLength - 1];
 const secondToLastCompleted = completedPhrases[completedLength - 2];
 const gameFinished = lastCompleted === "The End!";
 
+// NEW: Dedicated effect for turn timeout announcements
+useEffect(() => {
+  if (!currentTurn || !playerAvatars[currentTurn]) return;
+
+  // Clear previous timer
+  if (inactivityTimer) clearTimeout(inactivityTimer);
+
+  // Only set timer for other players' turns
+  if (playerNumber !== currentTurn) {
+    const timer = setTimeout(() => {
+      announcePlayer(currentTurn); // New speech feature
+    }, 5000);
+    
+    setInactivityTimer(timer);
+  }
+
+  return () => {
+    if (inactivityTimer) clearTimeout(inactivityTimer);
+  };
+}, [currentTurn, playerAvatars, playerNumber]); 
 
 //This is the snapshot used to retrieve game state in firestore
 useEffect(() => {
@@ -301,6 +324,11 @@ useEffect(() => {
 
   const handleWordSelect = async (word: string) => {
     if (!currentStory) return;
+    setAnnouncedPlayer(null);
+    // Clear existing timer
+    if (inactivityTimer) {
+      clearTimeout(inactivityTimer);
+    }
 
   // Access words from the trimmed sections
   const currentSections = trimmedSections;
@@ -373,6 +401,24 @@ useEffect(() => {
     setShowSparkles((prev) => [...prev, true]);
 
   }
+  const announcePlayer = useCallback((playerNum: number) => {
+    const avatar = playerAvatars[playerNum];
+    if (avatar) {
+      // Audio announcement
+      const utterance = new SpeechSynthesisUtterance(
+        `Player ${playerNum}, ${avatar}, it's your turn!`
+      );
+      window.speechSynthesis.speak(utterance);
+      
+      // Visual highlight
+      setHighlightedPlayer(playerNum);
+      
+      // Auto-remove highlight after 3 seconds
+      setTimeout(() => {
+        setHighlightedPlayer(null);
+      }, 3000);
+    }
+  }, [playerAvatars]);
 
     const handleAACSelect = (word: string) => {
     if (playerNumber !== currentTurn) {
@@ -381,6 +427,12 @@ useEffect(() => {
     console.log("AAC Button Clicked:", word);
     playSound(word);
     handleWordSelect(word);
+    // Reset announcement state
+    setAnnouncedPlayer(null);
+    if (inactivityTimer) {
+    clearTimeout(inactivityTimer);
+  }
+
   };
 
   useEffect(() => {
@@ -472,36 +524,51 @@ useEffect(() => {
     {/* Player turns display */}
     {playerNumber && (
       <div className="flex flex-col items-center justify-center mb-2 w-full">
+
         <div className="grid grid-cols-4 gap-2 w-full">
           {Object.entries(playerAvatars)
-                    .sort(([a], [b]) => Number(a) - Number(b))
-                    .map(([num, avatar]) => {
-                      const slot = Number(num);
-                      const isActive = slot === currentTurn;
-                      return (
-                        <div key={num} className="flex flex-col items-center">
-                          <span
-                            className={`
-                              ${isActive ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 scale-150 animate-pulse glow" 
-                                        : "text-4xl p-1 border-2 border-gray-400"}
-                              rounded-full 
-                            `}
-                            style={{ transition: "transform 0.3s ease-in-out" }}
-                          >
-                            {avatar}
-                          </span>
-                        </div>
-                      );
-                  })}
+            .sort(([a], [b]) => Number(a) - Number(b))
+            .map(([num, avatar]) => {
+              const playerNum = Number(num);
+              const isActive = playerNum === currentTurn;
+              const isHighlighted = playerNum === highlightedPlayer;
+
+              return (
+                <div key={num} className="flex flex-col items-center">
+                  <span
+                    className={`
+                      ${isActive ? "text-7xl p-4 border-4 ring-4 ring-yellow-300" : "text-4xl p-1 border-2"}
+                      ${isHighlighted ? "animate-ping bg-green-500 rounded-full" : ""}
+                      transition-all duration-300
+                    `}
+                    style={{
+                      transform: isHighlighted ? "scale(1.5)" : "scale(1)",
+                      zIndex: isHighlighted ? 10 : 1
+                    }}
+                  >
+                    {avatar}
+                  </span>
+                  {isActive && (
+                    <span className="text-xs mt-1 font-bold">
+                      {playerNumber === playerNum ? "YOU!" : "Current"}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
         </div>
       
           <div className="mt-2 text-center w-full">
             {playerNumber === currentTurn ? (
-              <p className="text-2xl font-extrabold text-green-600 animate-pulse">YOUR TURN!</p>
+              <p className="text-2xl font-extrabold text-green-600 animate-pulse">
+                YOUR TURN!
+              </p>
             ) : (
               <p className="text-2xl text-gray-600">
                 ⏳ Waiting for{" "}
-                <span className="font-bold text-5xl inline-block">
+                <span className={`font-bold text-5xl inline-block ${
+                  announcedPlayer === currentTurn ? 'animate-bounce' : ''
+                }`}>
                   {playerAvatars[currentTurn]}
                 </span>
                 ...
