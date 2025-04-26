@@ -1,5 +1,3 @@
-//StoryQuest/app/CompletionPage/page.tsx
-
 "use client";
 
 import "./CompletionPageStyling.css";
@@ -11,6 +9,8 @@ import Link from "next/link";
 import {ExitButton} from "@/HomePage/HomePageButtons";
 import { db } from "../../firebaseControls/firebaseConfig";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 interface Player {
     playerNumber: number;
@@ -20,6 +20,9 @@ interface Player {
 
 export default function CompletionPage() {
     const [players, setPlayers] = useState<Player[]>([]);
+    const [countdown, setCountdown] = useState(4);
+    const [shouldNavigate, setShouldNavigate] = useState(false);
+    const router = useRouter();
     // Button Sound effects
     const [playCompletedStorySound] = useSound("/sounds/story-completed.mp3");
 
@@ -27,6 +30,26 @@ export default function CompletionPage() {
         playCompletedStorySound();
         fetchPlayerData();
     }, [playCompletedStorySound]);
+
+    useEffect(() => {
+        if (countdown <= 0) {
+            setShouldNavigate(true);
+        }
+    }, [countdown]);
+
+    useEffect(() => {
+        if (shouldNavigate) {
+            router.push("/");
+        }
+    }, [shouldNavigate, router]);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCountdown((prev) => prev - 1);
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
 
     async function fetchPlayerData() {
         // Get room ID from URL
@@ -64,7 +87,8 @@ export default function CompletionPage() {
     }
 
     return (
-        <div className="page-container">
+        <div className="compact-overlay-scale">
+            <div className="page-container">
             <div className="content-container">
                 <div className="align-container">
                     {/* Title */}
@@ -120,8 +144,49 @@ export default function CompletionPage() {
                         </div>
                     </div>
 
-                    {/* Exit Button */}
+                    {/* Countdown and Exit Button */}
                     <div className="button-container">
+                        <div className="countdown-container">
+                            <motion.div 
+                                className="countdown-bubble"
+                                animate={{
+                                scale: [1, 1.05, 1],
+                                rotate: [0, 3, -3, 0],
+                                }}
+                                transition={{
+                                repeat: Infinity,
+                                duration: 1,
+                                ease: "easeInOut"
+                                }}
+                            >
+                                <div className="countdown-text">
+                                <span className="countdown-number">{countdown}</span>
+                                <span className="countdown-label">sec</span>
+                                </div>
+                                <div className="countdown-sparkles">
+                                {[...Array(2)].map((_, i) => (
+                                    <motion.div
+                                    key={i}
+                                    className="sparkle"
+                                    animate={{
+                                        opacity: [0, 1, 0],
+                                        y: [0, -10],
+                                        x: [0, (i - 0.5) * 8]
+                                    }}
+                                    transition={{
+                                        delay: i * 0.2,
+                                        repeat: Infinity,
+                                        duration: 1.2,
+                                        repeatDelay: 1.5
+                                    }}
+                                    />
+                                ))}
+                                </div>
+                            </motion.div>
+                            <div className="countdown-message">
+                                Going home soon...
+                            </div>
+                        </div>
                         <div className="home-button-container">
                             <Link href="/">
                                 <ExitButton/>
@@ -130,6 +195,8 @@ export default function CompletionPage() {
                     </div>
                 </div>
             </div>
+        </div>
+
         </div>
     )
 }
