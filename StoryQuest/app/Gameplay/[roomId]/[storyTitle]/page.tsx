@@ -488,12 +488,14 @@ useEffect(() => {
                     .sort(([a], [b]) => Number(a) - Number(b))
                     .map(([num, avatar]) => {
                       const slot = Number(num);
-                      const isActive = slot === currentTurn;
+                      const isYourTurn = playerNumber === currentTurn;      
+                      const isSelfSlot  = slot === playerNumber;            
+                      const highlight   = isYourTurn && isSelfSlot;  
                       return (
                         <div key={num} className="flex flex-col items-center">
                           <span
                             className={`
-                              ${isActive ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 scale-150 animate-pulse glow" 
+                              ${highlight ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 scale-150 animate-pulse glow" 
                                         : "text-4xl p-1 border-2 border-gray-400"}
                               rounded-full 
                             `}
