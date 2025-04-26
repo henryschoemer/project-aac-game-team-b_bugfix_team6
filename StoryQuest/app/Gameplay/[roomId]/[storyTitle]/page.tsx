@@ -541,21 +541,29 @@ useEffect(() => {
                     .sort(([a], [b]) => Number(a) - Number(b))
                     .map(([num, avatar]) => {
                       const slot = Number(num);
-                      const isYourTurn = playerNumber === currentTurn;      
-                      const isSelfSlot  = slot === playerNumber;            
-                      const highlight   = isYourTurn && isSelfSlot;  
+                      const highlight = slot === currentTurn && slot === playerNumber;
                       return (
                         <div key={num} className="flex flex-col items-center">
                           <span
                             className={`
-                              ${highlight ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 scale-150 animate-pulse glow" 
-                                        : "text-4xl p-1 border-2 border-gray-400"}
-                              rounded-full 
+                              ${
+                                highlight
+                                  ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 bg-green-500 rounded-full scale-150 animate-pulse glow animate-ping"
+                                  : "text-5xl p-2 border-2 border-gray-400"
+                              }
+                              rounded-full
+                              transition-transform duration-300 ease-in-out
                             `}
-                            style={{ transition: "transform 0.3s ease-in-out" }}
+                            style={{
+                              transform: highlight ? "scale(1.5)" : "scale(1)",
+                              zIndex:    highlight ? 10 : 1,
+                            }}
                           >
                             {avatar}
                           </span>
+                          {highlight && (
+                            <span className="text-xs mt-1 font-bold text-green-600">YOU!</span>
+                          )}
                         </div>
                       );
                   })}
