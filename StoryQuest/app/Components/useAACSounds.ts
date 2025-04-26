@@ -45,7 +45,7 @@ const useAACSounds = () => {
     const [playMonkey] = useSound(`${soundBaseUrl}monkey.mp3`, { volume: volumeLevel });
     const [playMoon] = useSound(`${soundBaseUrl}moon.mp3`, { volume: volumeLevel });
     const [playMouse] = useSound(`${soundBaseUrl}mouse.mp3`, { volume: volumeLevel });
-    const [playOranges] = useSound(`${soundBaseUrl}oranges.mp3`, { volume: volumeLevel });
+    const [playOranges] = useSound(`${soundBaseUrl}orange.mp3`, { volume: volumeLevel });
     const [playPlanet] = useSound(`${soundBaseUrl}planet.mp3`, { volume: volumeLevel });
     const [playRainbow] = useSound(`${soundBaseUrl}rainbow.mp3`, { volume: volumeLevel });
     const [playRobot] = useSound(`${soundBaseUrl}robot.mp3`, { volume: volumeLevel });
@@ -62,6 +62,7 @@ const useAACSounds = () => {
     const [playUFO] = useSound(`${soundBaseUrl}UFO.mp3`, { volume: volumeLevel });
     const [playWitch] = useSound(`${soundBaseUrl}witch.mp3`, { volume: volumeLevel });
     const [playWizard] = useSound(`${soundBaseUrl}wizard.mp3`, { volume: volumeLevel });
+    const [playMushrooms] = useSound(`${soundBaseUrl}mushrooms.mp3`, { volume: volumeLevel });
 
     // play function for each word
     const soundMap: Record<string, () => void> = {
@@ -109,6 +110,7 @@ const useAACSounds = () => {
         UFO: playUFO,
         witch: playWitch,
         wizard: playWizard,
+        mushrooms: playMushrooms
     };
 
     const playSound = (word: string) => {
