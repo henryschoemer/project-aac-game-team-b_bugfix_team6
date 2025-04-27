@@ -12,35 +12,40 @@
 ## Project Overview
 
 We will develop a game, called "Storyquest: Teamwork Prevails", that aims to maximize communication between children who use 
-Augmentative and Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to encourage communication among players.
-
-## Hosted Link
-These are the active domains you can visit:
-User Friendly Domain:
-Storyquest.world
-or 
-The original Firebase Domain:
-https://project-aac-game-team-b--storyquest-fcdc2.us-central1.hosted.app
-
-## How to run locally
-**Be sure to have your Firebase configured after doing these steps, otherwise some features may not work as intended**
-**Also keep in mind that this app was intended for Tablets so debugging certain things on a laptop would not help**
-1. First you have to make sure that you have Node installed on your computer. You can check this by navigating to a terminal, typing "npm -v" or "node -v" to find out which version you have. If you don't have it downloaded
-head over to https://nodejs.org/ to follow the instructions on downloading or updating.
-2. After making sure you have node installed, open up a terminal and navigate over to where you want to keep project, for example on your Desktop or if you have a special folder for your IDE's projects. Once there type in git clone repo-url, where the repo-url would be the url of the GitHub Repo. You can find it under a green button called "Code", click it and copy the url for HTTPS. Hit enter and you should now have a repo cloned onto your local machine.
-3. When in the Projects Root Folder, navigate over to a folder called "StoryQuest". That is the App root folder. After you have cd'ed into it, be sure to run npm install so our dependencies are installed too from our package.json.
-4. To run the project locally, type in "npm run dev". Your local host 3000 port should now have it live.
+Augmentative and Alternative Communication (AAC), and children who communicate verbally. This game will be turn-based, and use pictures to encourage communication and collaboration among players.
 
 ## Keywords
  - AAC - Augmentative and Alternative Communication
  - Cloze Phrase - A common technique leveraged in speech therapy. Phrases or sentences with words missing that are intended to be filled in by the reader/listener. Cloze phrases are used to assess reading comprehension and to help students learn to predict word meanings. 
 
+## Hosted Link
+These are the active domains you can visit:
+User Friendly Domain (set to shut down in June):
+https://storyquest.world
+
+OR
+
+The original Firebase Domain (which Temple will take over after the final demo):
+https://project-aac-game-team-b--storyquest-fcdc2.us-central1.hosted.app
+
+## How to run locally
+**Be sure to have your Firebase configured after doing these steps, otherwise some features may not work as intended!**
+
+**Also keep in mind that this app was intended for Tablets held horizontally!**
+
+Installation:
+1. First you have to make sure that you have Node installed on your computer. You can check this by navigating to a terminal, typing "npm -v" or "node -v" to find out which version you have. If you don't have it downloaded
+head over to https://nodejs.org/ to follow the instructions on downloading or updating.
+2. After making sure you have node installed, open up a terminal and navigate over to where you want to keep project, for example on your Desktop or if you have a special folder for your IDE's projects. Once there type in "git clone repo-url", where the "repo-url" would be the url of the GitHub Repo. You can find it under a green button called "Code", click it and copy the url for HTTPS. Hit enter and you should now have a repo cloned onto your local machine.
+3. When in the Projects Root Folder, navigate over to a folder called "StoryQuest". That is the App's root folder. After you have cd'ed into it, be sure to run "npm install" so our dependencies are installed from our package.json too.
+4. To run the project locally, type in "npm run dev". Your local host 3000 port should now have it live. If you are on the same wifi network as a tablet you can type in the ip address/3000 as long as you have it running to make debugging easier. The terminal should show you the url as well, right under the localhost url!
+
 
 ## Project Abstract
 
 This project is a web-based, tablet-friendly "cloze phrase" style story game designed for children to learn how to collaborate, with special considerations regarding players who use Augmentative and Alternative Communication (ACC). 
-In order to promote social inclusion and empathy, the game relies on teammates all communicating and working as a team in order to get the phrase complete. This is done so AAC users don't feel ostracized and are actively needed in the group. 
-An embedded or easily accessible AAC-friendly interface ensures minimal screen switching and enables easy participation. The interface dynamically indicates when a child is selecting their answer. 
+In order to promote social inclusion and empathy, the game relies on teammates all communicating and working as a team in order to get the story complete. This is done so AAC users don't feel ostracized and are actively needed in the group. 
+An easily accessible AAC-friendly interface ensures easy participation. The interface dynamically changes throughout the game, indicating player choice, turn taking, story progress, a final read through, and an auto redirect completion page.
 
 
 ## High Level Requirement
@@ -55,17 +60,15 @@ An embedded or easily accessible AAC-friendly interface ensures minimal screen s
 
     2. Accessibility
 
-        **Audio cues and narration:** Some children may not be able to read yet, so using voiceover narration or sound effects can help.
+        **Audio cues and narration:** Some children may not be able to read yet, so using voiceover narration and sound effects was needed.
 
         **Adjustable difficulty levels:** Include settings to adjust the game difficulty to match the child’s skill level.
 
     3. Engaging Content
 
-        **Interactive elements:** Kids should feel involved and rewarded during the game. Include interactive features like achievements, rewards, or animations.
+        **Interactive elements:** Kids should feel involved and rewarded during the game. Include interactive features like rewards and animations.
 
     4. Multiplayer/Collaboration Features 
-
-        **Social interaction:** Provide safe, controlled interaction options such as pre-set messages or emojis and voice dictation.
 
         **Cooperative gameplay:** Enable teamwork with easy communication.
 
@@ -104,6 +107,23 @@ Social interactions for development remains important at the grade-school level.
     **Authentication Service:** Consider integrating user authentication (like Firebase Authentication or Auth0) to ensure safety and privacy, especially with children’s accounts.
 
     **Accessibility APIs:** If the AAC device is connected via web standards, APIs like Web Speech API (for text-to-speech and speech recognition) might be useful.
+
+## Features
+1. **AAC Keyboard** 
+2. **Cloze Phraze Education**
+3. **Collaboration**
+4. **Difficulty Scaling**
+5. **Session Management**
+6. **Sustained Engagement**
+
+## Bugs 
+1. Prompt Security (rebuilding the app around an improved prompt tracking system would fix alot of bugs)
+2. Display changes depending on on system settings (Dark/Light)
+3. End Game Completion Page isn't triggered properly
+4. Make it clear that the game is meant to be played horizontally on a tablet,, btu set up on another screen
+5. Improved waiting room
+6. Rejoining the room if a player leaves, right now the game persists but they can join again.
+7. The announcement when a player doesn't choice is using the same speech synthesis, so it interrupts the autoreader at the end. Hence the longer time.
 
 
 ## Collaborators
