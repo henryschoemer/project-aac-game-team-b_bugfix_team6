@@ -538,6 +538,7 @@ useEffect(() => {
     {playerNumber && (
       <div className="flex flex-col items-center justify-center mb-2 w-full">
 
+        <div className="w-full bg-yellow-100 rounded-lg p-2 shadow-inner">
         <div className="grid grid-cols-4 gap-2 w-full">
           {Object.entries(playerAvatars)
                     .sort(([a], [b]) => Number(a) - Number(b))
@@ -569,6 +570,7 @@ useEffect(() => {
                         </div>
                       );
                   })}
+        </div>
         </div>
       
          <div className="mt-2 text-center w-full">
