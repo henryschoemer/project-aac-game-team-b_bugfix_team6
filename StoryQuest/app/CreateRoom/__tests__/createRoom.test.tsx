@@ -103,7 +103,7 @@ describe('CreateRoomPage', () => {
     // Step 4: Verify summary
     expect(getByText('The Garden Adventure')).toBeInTheDocument();
     expect(getByText('2 Players')).toBeInTheDocument();
-    expect(getByText('Easy')).toBeInTheDocument();
+    expect(getByText('easy')).toBeInTheDocument();
   });
 
   it('allows going back to previous steps', () => {
