@@ -68,9 +68,10 @@ interface ExitButtonProps {
   asLink?: boolean;
   href?: string;
   className?: string;
+  testId?: string;
 }
 
-/*Back Button - Used on Create Room Page and join room page */export const ExitButton: React.FC<ExitButtonProps> = ({ asLink = false, href, className = '' }) => {
+/*Back Button - Used on Create Room Page and join room page */export const ExitButton: React.FC<ExitButtonProps> = ({ asLink = false, href, className = '', testId = 'exit-button' }) => {
     const { speak } = useQuickTextToSpeech();
     const { buttonHandler, isSpeaking } = useButtonFeedback();
     
