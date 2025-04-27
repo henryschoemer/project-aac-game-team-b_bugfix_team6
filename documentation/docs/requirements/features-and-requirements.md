@@ -31,7 +31,7 @@ sidebar_position: 4
 **Functional**
 - The system must have an easy mode where one player fills in one blank for their turn.
 - The system must have a medium mode where one player fills in two blanks for their turn.
-- The system must have a collaborative mode where all players fill in a single phrase together.
+- The system must have a medium mode where one player fills in three blanks for their turn.
 
 **Non-Functional**
 - The system must then be able to scale as we have more rooms with different settings.
@@ -41,7 +41,7 @@ sidebar_position: 4
 - The system must have rooms for teams to play in.
 
 **Non-Functional**
-- The system must persist so someone can rejoin if disconnected.
+- The system must persist so the room doesnt shut down if someone disconnects.
 
 ### **6. Sustained Engagement**
 **Functional**
