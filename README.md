@@ -128,7 +128,7 @@ Social interactions for development remains important at the grade-school level.
 1. Prompt Security (rebuilding the app around an improved prompt tracking system would fix alot of bugs).
 2. Display changes depending on on system settings (Dark/Light).
 3. End Game Completion Page isn't triggered properly.
-4. Make it clear that the game is meant to be played horizontally on a tablet,, btu set up on another screen.
+4. Make it clear that the game is meant to be played horizontally on a tablet, but the host sets up the game on another screen.
 5. Improved waiting room.
 6. Rejoining the room if a player leaves, right now the game persists but they can join again.
 7. The announcement when a player doesn't choice is using the same speech synthesis, so it interrupts the autoreader at the end. Hence the longer time.
