@@ -43,7 +43,7 @@ export const JoinButton: React.FC = () => {
     const {buttonHandler} = useButtonFeedback();
     const handleClick = () => {
         speak("");
-        buttonHandler('pop', "Please follow the pictures on the screen, and scan the QR code using the camera", speak);
+        buttonHandler('pop', "Please grab your tablet and follow the pictures on the screen to scan the QR code using the camera", speak);
     };
     return (
         <div className="button-with-attached-circle">
