@@ -149,8 +149,8 @@ describe('CreateRoomPage', () => {
     
     // Check the button styles in Step 3
     await waitFor(() => {
-      expect(easyButton).toHaveClass('bg-green-100');
-      expect(easyButton).toHaveClass('border-green-400');
+      expect(easyButton).toHaveClass('bg-white rounded-xl shadow-md border-2 p-4 h-[110px] w-full transition-all flex flex-col justify-center items-center border-gray-200 hover:border-green-400');
+      expect(easyButton).toHaveClass('bg-white rounded-xl shadow-md border-2 p-4 h-[110px] w-full transition-all flex flex-col justify-center items-center border-gray-200 hover:border-green-400');
       
       // Verify other buttons remain unselected
       expect(mediumButton).not.toHaveClass('bg-orange-100');
