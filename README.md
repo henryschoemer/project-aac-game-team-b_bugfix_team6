@@ -45,7 +45,7 @@ head over to https://nodejs.org/ to follow the instructions on downloading or up
 Go to this url: https://firebase.google.com/docs/web/setup and follow the steps. 
 
 The following steps are for the initial setup:
-- Create a FireBase porject and register your app on the website with an account.
+- Create a FireBase project and register your app on the website with an account.
 - Install the SDK and initialize FireBase with whatever JavaScript framework you are using, we used Nexts.js.
 - After setup, be sure to pick which services you need for the project, we used the App Hosting (NOT Hosting which will not work with a Next.js Project) and FireBase FireStore.
 
@@ -117,7 +117,7 @@ Social interactions for development remains important at the grade-school level.
     **Accessibility APIs:** If the AAC device is connected via web standards, APIs like Web Speech API (for text-to-speech and speech recognition) might be useful.
 
 ## Features
-1. **AAC Keyboard** 
+1. **AAC Keyboard**
 2. **Cloze Phraze Education**
 3. **Collaboration**
 4. **Difficulty Scaling**
