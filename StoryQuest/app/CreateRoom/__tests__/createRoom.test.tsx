@@ -256,7 +256,6 @@ describe('CreateRoomPage', () => {
     expect(hardButton).toHaveClass('bg-red-100');
     expect(hardButton).toHaveClass('border-red-400');
   });
-
   it('shows the correct story image in the summary', () => {
     const { getByText, getByAltText } = render(<CreateRoomPage />);
     
@@ -272,10 +271,10 @@ describe('CreateRoomPage', () => {
       // Go through steps
       fireEvent.click(getByText(story.title));
       fireEvent.click(getByText('2 Players'));
-      fireEvent.click(getByText('Easy'));
+      fireEvent.click(getByText('easy'));
       
       // Verify image
-      const img = getByAltText(story.title || 'Story');
+      const img = getByAltText(story.title);
       expect(img).toHaveAttribute('src', story.img);
       
       // Go back to start
