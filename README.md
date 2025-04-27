@@ -40,6 +40,11 @@ head over to https://nodejs.org/ to follow the instructions on downloading or up
 3. When in the Projects Root Folder, navigate over to a folder called "StoryQuest". That is the App's root folder. After you have cd'ed into it, be sure to run "npm install" so our dependencies are installed from our package.json too.
 4. To run the project locally, type in "npm run dev". Your local host 3000 port should now have it live. If you are on the same wifi network as a tablet you can type in the ip address/3000 as long as you have it running to make debugging easier. The terminal should show you the url as well, right under the localhost url!
 
+FireBase Setup (in StoryQuest directory):
+1. Go to this url: https://firebase.google.com/docs/web/setup and follow the steps. The following steps are for the initial setup.
+- Create a FireBase porject and register your app on the website with an account.
+- Install the SDK and initialize FireBase with whatever JavaScript framework you are using, we used Nexts.js.
+- After setup, be sure to pick which services you need for the project, we used the App Hosting (NOT Hosting which will not work with a Next.js Project) and FireBase FireStore.
 
 ## Project Abstract
 
