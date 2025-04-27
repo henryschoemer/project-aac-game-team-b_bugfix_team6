@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
 import Camera from '../Camera';
 import '@testing-library/jest-dom';
 
@@ -10,7 +10,6 @@ const mockGetUserMedia = jest.fn(async () => {
       { 
         stop: jest.fn(), 
         kind: 'video',
-        // Add all required MediaStreamTrack properties
         id: 'mock-track-id',
         enabled: true,
         muted: false,
@@ -29,7 +28,6 @@ const mockGetUserMedia = jest.fn(async () => {
         dispatchEvent: jest.fn()
       }
     ],
-    // Add all required MediaStream properties
     active: true,
     id: 'mock-stream-id',
     onaddtrack: null,
@@ -52,7 +50,7 @@ const mockGetUserMedia = jest.fn(async () => {
 const mockJsQR = jest.fn();
 
 // Mock HTML elements and methods
-const mockPlay = jest.fn();
+const mockPlay = jest.fn().mockResolvedValue(undefined);
 const mockDrawImage = jest.fn();
 const mockGetContext = jest.fn(() => ({
   drawImage: mockDrawImage,
@@ -71,56 +69,6 @@ const mockGetContext = jest.fn(() => ({
 }));
 
 beforeAll(() => {
-  // Properly mock MediaStream with all required properties
-  class MockMediaStream {
-    active = true;
-    id = 'mock-stream-id';
-    onaddtrack = null;
-    onremovetrack = null;
-    
-    constructor(public tracks: MediaStreamTrack[] = []) {}
-    
-    getTracks() {
-      return this.tracks;
-    }
-    
-    addTrack(track: MediaStreamTrack) {
-      this.tracks.push(track);
-    }
-    
-    removeTrack(track: MediaStreamTrack) {
-      const index = this.tracks.indexOf(track);
-      if (index > -1) this.tracks.splice(index, 1);
-    }
-    
-    clone() {
-      return new MockMediaStream([...this.tracks]);
-    }
-    
-    getAudioTracks() {
-      return this.tracks.filter(t => t.kind === 'audio');
-    }
-    
-    getVideoTracks() {
-      return this.tracks.filter(t => t.kind === 'video');
-    }
-    
-    getTrackById(id: string) {
-      return this.tracks.find(t => t.id === id) || null;
-    }
-    
-    addEventListener() {}
-    removeEventListener() {}
-    dispatchEvent(event: Event) {
-      return true;
-    }
-  }
-
-  Object.defineProperty(global, 'MediaStream', {
-    value: MockMediaStream,
-    writable: true
-  });
-
   Object.defineProperty(global.navigator, 'mediaDevices', {
     value: {
       getUserMedia: mockGetUserMedia
@@ -162,7 +110,9 @@ describe('Camera Component', () => {
   });
 
   test('attempts to start camera on mount', async () => {
-    render(<Camera setHotspotImage={mockSetHotspotImage} />);
+    await act(async () => {
+      render(<Camera setHotspotImage={mockSetHotspotImage} />);
+    });
     
     await waitFor(() => {
       expect(mockGetUserMedia).toHaveBeenCalledWith({
@@ -179,7 +129,9 @@ describe('Camera Component', () => {
   test('falls back to front camera if back camera fails', async () => {
     mockGetUserMedia.mockRejectedValueOnce(new Error('Back camera error'));
     
-    render(<Camera setHotspotImage={mockSetHotspotImage} />);
+    await act(async () => {
+      render(<Camera setHotspotImage={mockSetHotspotImage} />);
+    });
     
     await waitFor(() => {
       expect(mockGetUserMedia).toHaveBeenCalledWith({
@@ -195,7 +147,9 @@ describe('Camera Component', () => {
   test('shows error message when camera access fails', async () => {
     mockGetUserMedia.mockRejectedValue(new Error('Camera access denied'));
     
-    render(<Camera setHotspotImage={mockSetHotspotImage} />);
+    await act(async () => {
+      render(<Camera setHotspotImage={mockSetHotspotImage} />);
+    });
     
     await waitFor(() => {
       expect(screen.getByText(/could not access camera/i)).toBeInTheDocument();
@@ -204,13 +158,17 @@ describe('Camera Component', () => {
   });
 
   test('handles capture button click', async () => {
-    render(<Camera setHotspotImage={mockSetHotspotImage} />);
+    await act(async () => {
+      render(<Camera setHotspotImage={mockSetHotspotImage} />);
+    });
     
     await waitFor(() => {
       expect(screen.getByRole('button', { name: /capture/i })).not.toBeDisabled();
     });
     
-    fireEvent.click(screen.getByRole('button', { name: /capture/i }));
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /capture/i }));
+    });
     
     await waitFor(() => {
       expect(mockGetContext).toHaveBeenCalled();
@@ -231,7 +189,9 @@ describe('Camera Component', () => {
       }
     });
     
-    render(<Camera setHotspotImage={mockSetHotspotImage} />);
+    await act(async () => {
+      render(<Camera setHotspotImage={mockSetHotspotImage} />);
+    });
     
     await waitFor(() => {
       expect(mockJsQR).toHaveBeenCalled();
@@ -262,7 +222,6 @@ describe('Camera Component', () => {
         removeEventListener: jest.fn(),
         dispatchEvent: jest.fn()
       }],
-      // Other MediaStream properties
       active: true,
       id: 'mock-stream-id',
       onaddtrack: null,
