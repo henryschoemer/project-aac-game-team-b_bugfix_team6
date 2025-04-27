@@ -124,6 +124,7 @@ Social interactions for development remains important at the grade-school level.
 5. Improved waiting room
 6. Rejoining the room if a player leaves, right now the game persists but they can join again.
 7. The announcement when a player doesn't choice is using the same speech synthesis, so it interrupts the autoreader at the end. Hence the longer time.
+8. "Start Adventure" gets cut off when we navigate to a new page when setting up.
 
 
 ## Collaborators
