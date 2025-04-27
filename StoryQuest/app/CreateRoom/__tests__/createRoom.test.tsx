@@ -28,7 +28,7 @@ jest.mock('firebase/firestore', () => ({
   doc: jest.fn(),
 }));
 
-jest.mock('@/Components/useQuickTextToSpeech', () => ({
+jest.mock('../../Components/useQuickTextToSpeech', () => ({
   __esModule: true,
   default: jest.fn(() => ({
     speak: jest.fn(),
