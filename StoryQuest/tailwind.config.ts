@@ -22,7 +22,7 @@ export default {
       },
       fontFamily: {
         mono: ["'Anonymous Pro'", "monospace"],
-        'short-stack': ['"Short Stack"', 'cursive'],
+        'short-stack': ['"Short Stack"', 'serif'],
         'patrick-hand': ['"Patrick Hand"', 'serif'],
       },
       colors: {
