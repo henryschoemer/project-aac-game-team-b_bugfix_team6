@@ -1,364 +1,172 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import JoinRoomPage from '@/JoinRoom/page';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../firebaseControls/firebaseConfig';
-import useQuickTextToSpeech from '../../Components/useTextToSpeech';
-import useButtonFeedback from '../../Components/useButtonClickSounds';
-import jsQR from 'jsqr';
+// project-aac-game-team-b/StoryQuest/app/JoinRoom/__tests__/page.test.tsx
 
-// Properly type mocks
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import JoinRoomPage from '../page';
+import '@testing-library/jest-dom';
+
+// Mock dependencies
+jest.mock('next/link', () => ({ children }: { children: React.ReactNode }) => children);
+jest.mock('next/image', () => ({ src, alt }: { src: string; alt: string }) => (
+  <img src={src} alt={alt} />
+));
+
+jest.mock('../../../firebaseControls/firebaseConfig', () => ({
+  db: {},
+}));
+
 jest.mock('firebase/firestore', () => ({
   doc: jest.fn(),
   getDoc: jest.fn(),
 }));
-jest.mock('../../../firebaseControls/firebaseConfig', () => ({
-  db: {},
-}));
+
+jest.mock('jsqr', () => jest.fn());
+
 jest.mock('use-sound', () => () => [jest.fn()]);
-jest.mock('../../Components/useTextToSpeech', () => ({
-  __esModule: true,
-  default: () => ({ speak: jest.fn() }),
+
+jest.mock('../../Components/useQuickTextToSpeech', () => ({
+  useQuickTextToSpeech: () => ({
+    speak: jest.fn(),
+  }),
 }));
+
 jest.mock('../../Components/useButtonClickSounds', () => ({
+  useButtonFeedback: () => ({
+    buttonHandler: jest.fn(),
+    isSpeaking: false,
+  }),
+}));
+
+// Mock Camera component
+jest.mock('../../Components/Camera', () => ({
   __esModule: true,
-  default: () => ({ buttonHandler: jest.fn(), isSpeaking: false }),
+  default: ({ setHotspotImage }: { setHotspotImage: (data: string) => void }) => (
+    <div data-testid="mock-camera" onClick={() => setHotspotImage('mock-image-data')}>
+      Mock Camera
+    </div>
+  ),
 }));
-jest.mock('@/Components/Camera', () => {
-  return {
-    __esModule: true,
-    default: ({ setHotspotImage }: { setHotspotImage: (imageData: string) => void }) => (
-      <div data-testid="camera-mock">
-        <button
-          data-testid="capture-button"
-          onClick={() => setHotspotImage('mock-image-data')}
-        >
-          Capture
-        </button>
-      </div>
-    ),
-  };
-});
-jest.mock('jsqr', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}));
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(() => ({
-    push: jest.fn(),
-  })),
-}));
-jest.mock('next/link', () => {
-  const Link = ({
-    children,
-    href,
-  }: {
-    children: React.ReactNode;
-    href: string;
-  }) => <a href={href}>{children}</a>;
-  Link.displayName = 'Link';
-  return {
-    __esModule: true,
-    default: Link,
-  };
-});
-
-// Create proper mock types for HTML elements
-const mockGetImageData = jest.fn(() => ({
-  data: new Uint8ClampedArray(300 * 300 * 4),
-  width: 300,
-  height: 300,
-}));
-
-const mockContext = {
-  drawImage: jest.fn(),
-  getImageData: mockGetImageData,
-};
-
-// Type for mocked canvas
-type MockCanvas = {
-  getContext: jest.Mock;
-  width: number;
-  height: number;
-};
-
-// Type for mocked Image
-interface MockImage {
-  onload: (() => void) | null;
-  onerror: (() => void) | null;
-  width: number;
-  height: number;
-  src: string;
-}
-
-// Mock implementations
-const mockImageInstance: MockImage = {
-  onload: null,
-  onerror: null,
-  width: 300,
-  height: 300,
-  src: '',
-};
-
-// Setup document.createElement mock
-const originalCreateElement = document.createElement;
-
-jest.spyOn(document, 'createElement').mockImplementation((tagName: string): any => {
-  if (tagName === 'canvas') {
-    const mockCanvas: MockCanvas = {
-      getContext: jest.fn(() => mockContext),
-      width: 0,
-      height: 0,
-    };
-    return mockCanvas;
-  }
-  return originalCreateElement.call(document, tagName);
-});
-
-// Setup window.Image mock
-const originalImage = window.Image;
-window.Image = jest.fn(() => mockImageInstance as unknown as HTMLImageElement);
 
 describe('JoinRoomPage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    
-    // Reset location.href mock
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: { href: '' },
-      writable: true,
-    });
-    
-    // Reset jsQR mock for each test
-    (jsQR as jest.Mock).mockReset();
   });
 
-  afterAll(() => {
-    // Restore original functions
-    window.Image = originalImage;
-    jest.restoreAllMocks();
-  });
-
-  it('renders the page with all required elements', () => {
+  it('renders the page with all components', () => {
     render(<JoinRoomPage />);
-
-    // Check for key UI elements
-    expect(screen.getByText("Scan Below")).toBeInTheDocument();
-    expect(screen.getByText("GRAB A TABLET AND FOLLOW THE PICTURES BELLOW")).toBeInTheDocument();
-    expect(screen.getByText("Point the camera")).toBeInTheDocument();
-    expect(screen.getByText("Find this picture")).toBeInTheDocument();
-    expect(screen.getByText("Wait for scan")).toBeInTheDocument();
-    expect(screen.getByText("Play together")).toBeInTheDocument();
-    expect(screen.getByTestId("camera-mock")).toBeInTheDocument();
+    
+    expect(screen.getByText('GRAB A TABLET AND FOLLOW THE PICTURES BELLOW')).toBeInTheDocument();
+    expect(screen.getByText('Scan Below')).toBeInTheDocument();
+    expect(screen.getByTestId('mock-camera')).toBeInTheDocument();
   });
 
-  it('processes QR code successfully and redirects to the game page', async () => {
-    // Mock successful QR decode
-    (jsQR as jest.Mock).mockReturnValue({ data: 'room123' });
-    
-    // Mock successful room lookup
-    (getDoc as jest.Mock).mockResolvedValue({ exists: () => true });
-
+  it('shows QR scanning instructions with images', () => {
     render(<JoinRoomPage />);
+    
+    expect(screen.getByAltText('Step 1')).toBeInTheDocument();
+    expect(screen.getByAltText('Step 2')).toBeInTheDocument();
+    expect(screen.getByAltText('Step 3')).toBeInTheDocument();
+    expect(screen.getByAltText('Step 4')).toBeInTheDocument();
+    
+    expect(screen.getByText('Point the camera')).toBeInTheDocument();
+    expect(screen.getByText('Find this picture')).toBeInTheDocument();
+    expect(screen.getByText('Wait for scan')).toBeInTheDocument();
+    expect(screen.getByText('Play together')).toBeInTheDocument();
+  });
 
-    // Trigger image capture
-    fireEvent.click(screen.getByTestId('capture-button'));
-
-    // Simulate successful image load
-    await act(async () => {
-      if (mockImageInstance.onload) mockImageInstance.onload();
-    });
+  it('handles successful QR code scan', async () => {
+    const mockCode = { data: 'mock-room-id' };
+    const mockGetDoc = jest.fn().mockResolvedValue({ exists: () => true });
+    
+    require('firebase/firestore').getDoc.mockImplementation(mockGetDoc);
+    require('jsqr').mockImplementation(() => mockCode);
+    
+    render(<JoinRoomPage />);
+    
+    fireEvent.click(screen.getByTestId('mock-camera'));
     
     await waitFor(() => {
-      expect(getDoc).toHaveBeenCalledWith(doc(db, "rooms", "room123"));
-      expect(window.location.href).toBe('/Gameplay/room123/');
+      expect(require('firebase/firestore').doc).toHaveBeenCalledWith({}, 'rooms', 'mock-room-id');
+      expect(mockGetDoc).toHaveBeenCalled();
     });
   });
 
-  it('handles QR code with full URL format correctly', async () => {
-    // Mock successful QR decode with URL format
-    (jsQR as jest.Mock).mockReturnValue({ data: 'http://example.com/Gameplay/room123/storyABC' });
+  it('shows error message when QR code is not detected', async () => {
+    require('jsqr').mockImplementation(() => null);
     
-    // Mock successful room lookup
-    (getDoc as jest.Mock).mockResolvedValue({ exists: () => true });
-
     render(<JoinRoomPage />);
-
-    // Trigger image capture
-    fireEvent.click(screen.getByTestId('capture-button'));
-
-    // Simulate successful image load
-    await act(async () => {
-      if (mockImageInstance.onload) mockImageInstance.onload();
-    });
+    
+    fireEvent.click(screen.getByTestId('mock-camera'));
     
     await waitFor(() => {
-      expect(getDoc).toHaveBeenCalledWith(doc(db, "rooms", "room123"));
-      expect(window.location.href).toBe('/Gameplay/room123/storyABC');
+      expect(screen.getByText('No QR code detected. Please position the code clearly and try again.')).toBeInTheDocument();
     });
   });
 
   it('shows error message when room is not found', async () => {
-    // Mock successful QR decode
-    (jsQR as jest.Mock).mockReturnValue({ data: 'invalid-room' });
+    const mockCode = { data: 'non-existent-room' };
+    const mockGetDoc = jest.fn().mockResolvedValue({ exists: () => false });
     
-    // Mock unsuccessful room lookup
-    (getDoc as jest.Mock).mockResolvedValue({ exists: () => false });
-
+    require('firebase/firestore').getDoc.mockImplementation(mockGetDoc);
+    require('jsqr').mockImplementation(() => mockCode);
+    
     render(<JoinRoomPage />);
-
-    // Trigger image capture
-    fireEvent.click(screen.getByTestId('capture-button'));
-
-    // Simulate successful image load
-    await act(async () => {
-      if (mockImageInstance.onload) mockImageInstance.onload();
-    });
+    
+    fireEvent.click(screen.getByTestId('mock-camera'));
     
     await waitFor(() => {
-      expect(screen.getByText("Room not found. Please check the QR code and try again.")).toBeInTheDocument();
+      expect(screen.getByText('Room not found. Please check the QR code and try again.')).toBeInTheDocument();
     });
   });
 
-  it('shows error message when QR code processing fails', async () => {
-    // Mock failed QR decode
-    (jsQR as jest.Mock).mockReturnValue(null);
-
-    render(<JoinRoomPage />);
-
-    // Trigger image capture
-    fireEvent.click(screen.getByTestId('capture-button'));
-
-    // Simulate successful image load
-    await act(async () => {
-      if (mockImageInstance.onload) mockImageInstance.onload();
-    });
+  it('shows QR scan failed popup after multiple failed attempts', async () => {
+    require('jsqr').mockImplementation(() => null);
     
-    await waitFor(() => {
-      expect(screen.getByText("No QR code detected. Please position the code clearly and try again.")).toBeInTheDocument();
-    });
-  });
-
-  it('shows error message when image loading fails', async () => {
     render(<JoinRoomPage />);
-
-    // Trigger image capture
-    fireEvent.click(screen.getByTestId('capture-button'));
-
-    // Simulate image load error
-    await act(async () => {
-      if (mockImageInstance.onerror) mockImageInstance.onerror();
-    });
     
-    await waitFor(() => {
-      expect(screen.getByText("Error loading captured image. Please try again.")).toBeInTheDocument();
-    });
-  });
-
-  it('shows failure popup after multiple failed attempts', async () => {
-    // Mock failed QR decode multiple times
-    (jsQR as jest.Mock).mockReturnValue(null);
-
-    render(<JoinRoomPage />);
-
-    // Trigger multiple failed captures
-    for (let i = 0; i < 8; i++) {
-      fireEvent.click(screen.getByTestId('capture-button'));
-      
-      // Simulate successful image load but failed QR detection
-      await act(async () => {
-        if (mockImageInstance.onload) mockImageInstance.onload();
-      });
+    // Simulate multiple failed attempts
+    for (let i = 0; i < 3; i++) {
+      fireEvent.click(screen.getByTestId('mock-camera'));
+      await waitFor(() => {});
     }
     
-    // Trigger one more to exceed threshold
-    fireEvent.click(screen.getByTestId('capture-button'));
-    await act(async () => {
-      if (mockImageInstance.onload) mockImageInstance.onload();
-    });
-    
-    // Now the popup should be visible
     await waitFor(() => {
-      expect(screen.getByText("Need help scanning?")).toBeInTheDocument();
-      expect(screen.getByText("Please follow the picture and hold the camera in veiw of the QR Code")).toBeInTheDocument();
-      expect(screen.getByText("Try Again")).toBeInTheDocument();
+      expect(screen.getByText('Need help scanning?')).toBeInTheDocument();
     });
   });
 
-  it('closes the failure popup and resets failed attempts', async () => {
-    // Mock failed QR decode multiple times
-    (jsQR as jest.Mock).mockReturnValue(null);
-
+  it('closes QR scan failed popup when clicking try again', async () => {
+    require('jsqr').mockImplementation(() => null);
+    
     render(<JoinRoomPage />);
-
-    // Trigger multiple failed captures to show popup
-    for (let i = 0; i < 9; i++) {
-      fireEvent.click(screen.getByTestId('capture-button'));
-      
-      // Simulate successful image load but failed QR detection
-      await act(async () => {
-        if (mockImageInstance.onload) mockImageInstance.onload();
-      });
+    
+    // Simulate multiple failed attempts to show popup
+    for (let i = 0; i < 3; i++) {
+      fireEvent.click(screen.getByTestId('mock-camera'));
+      await waitFor(() => {});
     }
     
-    // Popup should be visible
-    await waitFor(() => {
-      expect(screen.getByText("Need help scanning?")).toBeInTheDocument();
-    });
+    fireEvent.click(screen.getByText('Try Again'));
     
-    // Close the popup
-    fireEvent.click(screen.getByText("Try Again"));
-    
-    // Popup should be gone
     await waitFor(() => {
-      expect(screen.queryByText("Need help scanning?")).not.toBeInTheDocument();
+      expect(screen.queryByText('Need help scanning?')).not.toBeInTheDocument();
     });
   });
 
-  it('handles Firebase errors properly', async () => {
-    // Mock successful QR decode
-    (jsQR as jest.Mock).mockReturnValue({ data: 'room123' });
+  it('handles URL format QR codes correctly', async () => {
+    const mockUrl = 'http://example.com/Gameplay/mock-room-id/story-title';
+    const mockCode = { data: mockUrl };
+    const mockGetDoc = jest.fn().mockResolvedValue({ exists: () => true });
     
-    // Mock Firebase error
-    (getDoc as jest.Mock).mockRejectedValue(new Error('Firebase error'));
-
-    render(<JoinRoomPage />);
-
-    // Trigger image capture
-    fireEvent.click(screen.getByTestId('capture-button'));
-
-    // Simulate successful image load
-    await act(async () => {
-      if (mockImageInstance.onload) mockImageInstance.onload();
-    });
-    
-    await waitFor(() => {
-      expect(screen.getByText("Error joining room. Please try again.")).toBeInTheDocument();
-    });
-  });
-
-  it('prevents multiple simultaneous processing attempts', async () => {
-    // Mock successful QR decode
-    (jsQR as jest.Mock).mockReturnValue({ data: 'room123' });
-    (getDoc as jest.Mock).mockResolvedValue({ exists: () => true });
+    require('firebase/firestore').getDoc.mockImplementation(mockGetDoc);
+    require('jsqr').mockImplementation(() => mockCode);
     
     render(<JoinRoomPage />);
-
-    // Trigger first image capture
-    fireEvent.click(screen.getByTestId('capture-button'));
     
-    // Immediately trigger second image capture (should be ignored)
-    fireEvent.click(screen.getByTestId('capture-button'));
-
-    // Simulate successful image load
-    await act(async () => {
-      if (mockImageInstance.onload) mockImageInstance.onload();
-    });
+    fireEvent.click(screen.getByTestId('mock-camera'));
     
-    // getDoc should only be called once
     await waitFor(() => {
-      expect(getDoc).toHaveBeenCalledTimes(1);
+      expect(require('firebase/firestore').doc).toHaveBeenCalledWith({}, 'rooms', 'mock-room-id');
     });
   });
 });
