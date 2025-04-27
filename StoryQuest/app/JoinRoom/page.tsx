@@ -249,17 +249,17 @@ export default function JoinRoomPage() {
                 <div className="max-w-[1024px] w-full flex flex-col gap-4 h-full max-h-full relative">
                     
                     {/* Exit Button - Top Left */}
-                    <Link href="/" className="absolute top-4 left-4 z-10 scale-50">
+                    <Link href="/" className="absolute top-0 left-0 z-10 scale-50">
                         <ExitButton />
                     </Link>
 
                 {/* QR Instructions Section */}
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border-2 border-teal-300 p-4 shrink-0 pt-12" onClick={()=> handleClick("How to join with QR code:, 1. Find the picture, 2. Scan the picture, 3. Play together, 4. Enjoy")}>
                     <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">
-                        How to join with QR code:
+                        GRAB A TABLET AND FOLLOW THE PICTURES BELLOW
                     </h2>
                     
-                    <div className="flex justify-center gap-1">
+                    <div className="flex justify-center gap-4">
                         {[1, 2, 3, 4].map((step) => (
                             <div key={step} className="items-center">
                                 <Image 
@@ -271,10 +271,10 @@ export default function JoinRoomPage() {
                                     priority
                                 />
                                 <p className="text-md text-gray-600 text-center">
-                                    {step === 1 && "1. Find the picture"}
-                                    {step === 2 && "2. Scan the picture"}
-                                    {step === 3 && "3. Play together"}
-                                    {step === 4 && "4. Enjoy"}
+                                    {step === 1 && "Point the camera"}
+                                    {step === 2 && "Find this picture"}
+                                    {step === 3 && "Wait for scan"}
+                                    {step === 4 && "Play together"}
                                 </p>
                             </div>
                         ))}
