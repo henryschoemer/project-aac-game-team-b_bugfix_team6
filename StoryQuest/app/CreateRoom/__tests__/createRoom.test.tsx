@@ -131,25 +131,32 @@ describe('CreateRoomPage', () => {
   it('shows the correct difficulty color coding', async () => {
     const { getByText } = render(<CreateRoomPage />);
     
-    // Go to difficulty step
+    // Go to difficulty step (Step 3)
     fireEvent.click(getByText('The Garden Adventure'));
     fireEvent.click(getByText('2 Players'));
     
-    // Get difficulty buttons
+    // Get difficulty buttons in Step 3
     const easyButton = getByText('Easy').closest('button');
+    const mediumButton = getByText('Medium').closest('button');
+    const hardButton = getByText('Hard').closest('button');
     
     // Verify initial classes
     expect(easyButton).toHaveClass('bg-white');
     expect(easyButton).toHaveClass('border-gray-200');
     
-    // Select easy
+    // Select easy (but don't proceed to next step)
     fireEvent.click(getByText('Easy'));
     
-    // Wait for component to update
+    // Check the button styles in Step 3
     await waitFor(() => {
-      // Check both the background and border colors
       expect(easyButton).toHaveClass('bg-green-100');
       expect(easyButton).toHaveClass('border-green-400');
+      
+      // Verify other buttons remain unselected
+      expect(mediumButton).not.toHaveClass('bg-orange-100');
+      expect(mediumButton).toHaveClass('bg-white');
+      expect(hardButton).not.toHaveClass('bg-red-100');
+      expect(hardButton).toHaveClass('bg-white');
     });
   });
 
