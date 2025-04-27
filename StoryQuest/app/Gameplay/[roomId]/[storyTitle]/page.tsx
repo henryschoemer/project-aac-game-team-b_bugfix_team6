@@ -101,7 +101,10 @@ export default function Home() {
   const [inactivityTimer, setInactivityTimer] = useState<NodeJS.Timeout | null>(null);
   const [announcedPlayer, setAnnouncedPlayer] = useState<number | null>(null);
   const [highlightedPlayer, setHighlightedPlayer] = useState<number | null>(null);
-  
+  const [speechQueue, setSpeechQueue] = useState<SpeechSynthesisUtterance[]>([]);
+const [isSpeaking, setIsSpeaking] = useState(false);
+
+
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
 //story chosen from create room becomes default story
@@ -116,6 +119,23 @@ const lastCompleted = completedPhrases[completedLength - 1];
 const secondToLastCompleted = completedPhrases[completedLength - 2];
 const gameFinished = lastCompleted === "The End!";
 
+  const announcePlayer = useCallback((playerNum: number) => {
+    const avatar = playerAvatars[playerNum];
+    if (avatar) {
+      // Audio announcement
+      const utterance = new SpeechSynthesisUtterance(
+        `Player ${playerNum}, ${avatar}, it's your turn!`
+      );
+      window.speechSynthesis.speak(utterance);
+      
+      // Visual highlight
+      setHighlightedPlayer(playerNum);
+      
+      // Auto-remove highlight after 5 seconds
+      setTimeout(() => setHighlightedPlayer(null), 5000);//clears after 5 seconds
+    }
+  }, [playerAvatars]);
+
 // NEW: Dedicated effect for turn timeout announcements
 useEffect(() => {
   if (!currentTurn || !playerAvatars[currentTurn]) return;
@@ -123,11 +143,11 @@ useEffect(() => {
   // Clear previous timer
   if (inactivityTimer) clearTimeout(inactivityTimer);
 
-  // Only set timer for other players' turns
-  if (playerNumber !== currentTurn) {
+  // Only set timer if this is the current player's device
+  if (playerNumber === currentTurn) {
     const timer = setTimeout(() => {
-      announcePlayer(currentTurn); // New speech feature
-    }, 5000);
+      announcePlayer(currentTurn);
+    },30000); // 30 second delay
     
     setInactivityTimer(timer);
   }
@@ -135,7 +155,7 @@ useEffect(() => {
   return () => {
     if (inactivityTimer) clearTimeout(inactivityTimer);
   };
-}, [currentTurn, playerAvatars, playerNumber]); 
+}, [currentTurn, playerAvatars, playerNumber, announcePlayer]); 
 
 //This is the snapshot used to retrieve game state in firestore
 useEffect(() => {
@@ -401,24 +421,6 @@ useEffect(() => {
     setShowSparkles((prev) => [...prev, true]);
 
   }
-  const announcePlayer = useCallback((playerNum: number) => {
-    const avatar = playerAvatars[playerNum];
-    if (avatar) {
-      // Audio announcement
-      const utterance = new SpeechSynthesisUtterance(
-        `Player ${playerNum}, ${avatar}, it's your turn!`
-      );
-      window.speechSynthesis.speak(utterance);
-      
-      // Visual highlight
-      setHighlightedPlayer(playerNum);
-      
-      // Auto-remove highlight after 3 seconds
-      setTimeout(() => {
-        setHighlightedPlayer(null);
-      }, 3000);
-    }
-  }, [playerAvatars]);
 
     const handleAACSelect = (word: string) => {
     if (playerNumber !== currentTurn) {
@@ -536,6 +538,7 @@ useEffect(() => {
     {playerNumber && (
       <div className="flex flex-col items-center justify-center mb-2 w-full">
 
+        <div className="w-full bg-yellow-100 rounded-lg p-2 shadow-inner">
         <div className="grid grid-cols-4 gap-2 w-full">
           {Object.entries(playerAvatars)
                     .sort(([a], [b]) => Number(a) - Number(b))
@@ -548,7 +551,7 @@ useEffect(() => {
                             className={`
                               ${
                                 highlight
-                                  ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 bg-green-500 rounded-full scale-150 animate-pulse glow animate-ping"
+                                  ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 bg-green-500 rounded-full scale-150 animate-pulse glow"
                                   : "text-5xl p-2 border-2 border-gray-400"
                               }
                               rounded-full
@@ -568,24 +571,26 @@ useEffect(() => {
                       );
                   })}
         </div>
+        </div>
       
-          <div className="mt-2 text-center w-full">
-            {playerNumber === currentTurn ? (
-              <p className="text-2xl font-extrabold text-green-600 animate-pulse">
-                YOUR TURN!
-              </p>
-            ) : (
-              <p className="text-2xl text-gray-600">
-                ⏳ Waiting for{" "}
-                <span className={`font-bold text-5xl inline-block ${
-                  announcedPlayer === currentTurn ? 'animate-bounce' : ''
-                }`}>
-                  {playerAvatars[currentTurn]}
-                </span>
-                ...
-              </p>
-            )}
-          </div>
+         <div className="mt-2 text-center w-full">
+          {playerNumber === currentTurn ? (
+            <p className={`text-2xl font-extrabold ${
+              highlightedPlayer === currentTurn 
+                ? "text-red-600 animate-pulse" 
+                : "text-green-600"
+            }`}>
+              {highlightedPlayer === currentTurn 
+                ? "⚠️ YOUR TURN! (PLAY NOW!)" 
+                : "YOUR TURN!"}
+            </p>
+          ) : (
+            <p className="text-2xl text-gray-600">
+              ⏳ Waiting for {playerAvatars[currentTurn]}...
+            </p>
+          )}
+        </div>
+
         </div>
     )}
     <div className={`aac-blocking-container ${blockOverlay ? "blocked" : ""}`} style={{height: '60%'}}>
