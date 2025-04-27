@@ -135,6 +135,7 @@ Social interactions for development remains important at the grade-school level.
 8. "Start Adventure" gets cut off when we navigate to a new page when setting up.
 9. The player annoucement for when the player does not select, keeps going no matter what page you are on. So if you finish the story, it will still track 30 seconds and announce one more time. 
 10. Home-page is black after we return to it after the auto redirect after the completion page.
+11. Images are overlapping the words at the end, a pop up with the story over the images would be good.
 
 
 ## Collaborators
