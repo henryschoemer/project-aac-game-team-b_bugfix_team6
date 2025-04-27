@@ -4,7 +4,7 @@ import JoinRoomPage from '@/JoinRoom/page';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebaseControls/firebaseConfig';
 import useQuickTextToSpeech from '../../Components/useTextToSpeech';
-import useButtonFeedback from '@/Components/useButtonClickSounds';
+import useButtonFeedback from '../../Components/useButtonClickSounds';
 import jsQR from 'jsqr';
 
 // Properly type mocks
@@ -20,7 +20,7 @@ jest.mock('../../Components/useTextToSpeech', () => ({
   __esModule: true,
   default: () => ({ speak: jest.fn() }),
 }));
-jest.mock('@/Components/useButtonFeedback', () => ({
+jest.mock('../../Components/useButtonClickSounds', () => ({
   __esModule: true,
   default: () => ({ buttonHandler: jest.fn(), isSpeaking: false }),
 }));
