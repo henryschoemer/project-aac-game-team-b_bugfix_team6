@@ -35,7 +35,7 @@ jest.mock('../../Components/useQuickTextToSpeech', () => ({
   })),
 }));
 
-jest.mock('@/Components/useButtonClickSounds', () => ({
+jest.mock('../../Components/useButtonClickSounds', () => ({
   __esModule: true,
   default: jest.fn(() => ({
     buttonHandler: jest.fn(),
