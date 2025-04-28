@@ -1,12 +1,14 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import CompletedStory from '@/Components/CompletedStory';
 import { doc, updateDoc } from 'firebase/firestore';
 import '@testing-library/jest-dom';
 
+
 // Mocking Firebase
 jest.mock('firebase/firestore', () => ({
-    doc: jest.fn(),
+    getFirestore: jest.fn(() => ({})),
+    doc: jest.fn((db, path) => ({ db, path })),
     updateDoc: jest.fn().mockResolvedValue(undefined),
 }));
 
