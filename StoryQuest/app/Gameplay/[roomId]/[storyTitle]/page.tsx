@@ -17,6 +17,10 @@ import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, serverTimestamp, collection, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
 
+interface HomeProps {
+  skipSetup?: boolean;
+}
+
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
   return (
@@ -69,7 +73,7 @@ async function savePlayerProfile (
   }
 }
 
-export default function Home() {
+export default function Home({ skipSetup = false }: HomeProps) {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const { playSound } = useAACSounds(); // aac mp3 sound hook
   const [phrase, setPhrase] = useState("");
@@ -135,6 +139,16 @@ const gameFinished = lastCompleted === "The End!";
       setTimeout(() => setHighlightedPlayer(null), 5000);//clears after 5 seconds
     }
   }, [playerAvatars]);
+
+  useEffect(() => {
+    if (skipSetup) {
+      // instantly allow the main UI to render
+      setTtsReady(true);
+      setAvatarModalOpen(false);
+      setShowInitialPlayOverlay(false);
+    }
+  }, [skipSetup]);
+
 
 // NEW: Dedicated effect for turn timeout announcements
 useEffect(() => {
