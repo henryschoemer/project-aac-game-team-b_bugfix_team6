@@ -92,10 +92,6 @@ text, demonstrating proper initial component mounting. No mocks are needed for t
 This test verifies proper initialization state. It checks for the default story's first phrase "Look in the 
 garden, there is a ___", ensuring the story data is properly loaded and displayed on component mount.
 
-### `allows story selection from dropdown`
-This test verifies the story selection UI. It checks for both the presence of the dropdown and its correct 
-default value ("The Garden Adventure"), demonstrating proper integration between the UI and story data.
-
 ### `handles word selection through AAC keyboard`
 This test verifies the complete word selection flow. It simulates AAC button clicks and verifies phrase 
 updates, demonstrating integration between the AAC interface and phrase display.
@@ -109,11 +105,6 @@ This test ensures proper sound output. It verifies that when an icon on the AAC 
 the correct phrase is being played aloud to the user by checking the return value of the sound sprite. This 
 ensures engagement via text and audio. 
 
-### `triggers play when the hear phrase button is clicked`
-This test ensures proper sound output. It verifies that when the button 'Click to Hear Phrase' is clicked,
-the most recent user-completed phrase is played aloud. This ensures engagement with the user by integrating their
-actions into gameplay. 
-
 ### `shows "The End!" when all sections are completed`
 This test verifies game completion logic. It simulates completing story sections and checks for the appearance 
 of the completion message, demonstrating proper game flow handling.
@@ -121,11 +112,6 @@ of the completion message, demonstrating proper game flow handling.
 ### `handles invalid word selection gracefully`
 This test verifies error handling. It uses a Jest spy on window.alert to verify proper error messaging when 
 invalid words are selected, demonstrating robust error handling in the AAC interface.
-
-## Profile Testing
-The profile test is an essential test that makes sure that the profile page is able to render and take in data corectly. The test goes through and makes sure the page renders, profile picture selection works, user input is able to update, and the save and delete button perform as expected.
-Unit tests for profile are located in `StoryQuest/app/Profile/profile.test.tsx`.
-
 
 ## HomePage
 Unit tests for HomePage are located in 'StoryQuest/app/__tests__/completionPage.test.tsx'
