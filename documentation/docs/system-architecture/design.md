@@ -193,7 +193,7 @@ CreateRoom: The CreateRoom flow provides game setup tools for the host, allowing
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
 | `userId` | `string` (Primary Key) | Unique identifier | "user_abc123" |
-| `name` | `string` | Player's display name | "Alex" |
+| `name` | `string` | Player's display name | "Player 1" |
 | `avatar` | `string` | Emoji or image URL | "🐱" |
 | `createdAt` | `timestamp` | Account creation time | `2023-11-15T14:32:00Z` |
 | `lastActive` | `timestamp` | Last login time | `2023-11-20T09:15:00Z` |
@@ -211,7 +211,7 @@ CreateRoom: The CreateRoom flow provides game setup tools for the host, allowing
 | `hostId` | `string` (FK) | Creator's userId | "user_abc123" |
 | `players` | `array` | List of userIds | `["user_abc123", "user_xyz456"]` |
 | `currentTurn` | `number` | Player turn index | `1` |
-| `storyId` | `string` (FK) | Current story | "story_garden" |
+| `storyId` | `string` (FK) | Current story | "The Garden Adventure" |
 | `difficulty` | `string` | Game level | "medium" |
 | `status` | `string` | Game state | "playing" |
 | `createdAt` | `timestamp` | Creation time | `2023-11-20T10:00:00Z` |
@@ -365,7 +365,7 @@ Here is how the data would be structured in Firestore. Though Firestore is a NoS
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
 | `userId` (PK) | string | Firebase Auth UID | "xZ8jyT..." |
-| `name` | string | Player's display name | "Alex" |
+| `name` | string | Player's display name | "Player 1" |
 | `avatar` | string | Emoji or image URL | "🦊" |
 | `aacSettings` | map | User preferences | `{ voiceSpeed: 1.2, theme: "dark" }` |
 | `createdAt` | timestamp | Account creation | `2023-11-20T09:15:00Z` |
