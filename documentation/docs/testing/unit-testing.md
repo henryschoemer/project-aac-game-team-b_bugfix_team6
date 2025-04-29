@@ -64,7 +64,7 @@ describe('Component/Method Name', () => {
 
 
 ## Test Cases and Implementation
-Unit tests for GamePlay are located in `StoryQuest/app/Gameplay/__tests__/completionPage.test.tsx`.
+Unit tests for GamePlay are located in `StoryQuest/app/Gameplay/__tests__/gameplay.test.tsx`.
 ## Gameplay Testing
 
 Here are the key test cases:
@@ -114,7 +114,7 @@ This test verifies error handling. It uses a Jest spy on window.alert to verify 
 invalid words are selected, demonstrating robust error handling in the AAC interface.
 
 ## HomePage
-Unit tests for HomePage are located in 'StoryQuest/app/__tests__/completionPage.test.tsx'
+Unit tests for HomePage are located in 'StoryQuest/app/__tests__/page.test.tsx'
 
 ### `renders the text of the animated title correctly`
 This test verifies that animated title is rendered properly. It checks that the rendered span text matches the
@@ -143,7 +143,7 @@ contains the text 'Gameplay'.
 
 ## Room Creation Testing
 The room creation testing ensures that a user is able to initiate settings to accommodate the game room, such as choosing a story, the number of players, and the difficulty level. 
-Unit tests for Room Creation are located in `StoryQuest/app/CreateRoom/__tests__/completionPage.test.tsx`.
+Unit tests for Room Creation are located in `StoryQuest/app/CreateRoom/__tests__/createRoom.test.tsx`.
 
 ### `renders the CreateRoomPage component`
 This test checks that the component renders properly, ensuring that all setting choices are displayed on the screen. 
@@ -258,6 +258,55 @@ This test ensures the component sets up proper event listeners and voice selecti
 
 ### `should clean up on unmount`
 This test verifies the component cancels any pending speech and removes event listeners during unmounting.
+
+## useAACSounds Hook
+
+Unit tests for the useAACSounds component are located in `StoryQuest/app/Components/__tests__/useAACSounds.test.tsx`.
+
+### `should load sound correctly`
+Confirms the hook properly initializes Audio instances with correct URLs and preload settings for immediate playback.
+
+## useButtonClickSounds Hook
+
+Unit tests for the useButtonClickSounds component are located in `StoryQuest/app/Components/__tests__/useButtonClickSounds.test.tsx`.
+
+### `should initialize with isSpeaking as false`
+Verifies the hook initializes with the correct default state for speech tracking.
+
+### `buttonHandler calls the correct sound function`
+Ensures the hook plays the appropriate sound effect based on the button type provided.
+
+### `buttonHandler calls speakFn after 350ms delay`
+Confirms the hook properly synchronizes sound effects with speech feedback using the correct timing.
+
+## useQuickTextToSpeech Hook
+
+Unit tests for the useQuickTextToSpeech component are located in `StoryQuest/app/Components/__tests__/useQuickTextToSpeech.test.tsx`.
+
+### `should initialize and set isReady to true`
+Verifies the hook properly initializes and updates its ready state when voices are loaded.
+
+### `should select a preferred voice`
+Confirms the hook's voice selection logic chooses an appropriate voice from available options.
+
+### `should call speak() and use speechSynthesis`
+Ensures the hook correctly utilizes the speech synthesis API when speaking text.
+
+### `should call stop() and cancel speech`
+Verifies the hook properly cancels ongoing speech when the stop function is called.
+
+## useTextToSpeech Hook
+
+Unit tests for the useTextToSpeech component are located in `StoryQuest/app/Components/__tests__/useTextToSpeech.test.tsx`.
+
+### `should handle platform-specific voice selection`
+Confirms the hook properly prioritizes high-quality, platform-specific voices when available.
+
+### `should handle speech synthesis errors gracefully`
+Verifies the hook maintains stability even when speech synthesis encounters errors.
+
+### `should properly clean up resources`
+Ensures the hook cancels any active speech and removes listeners when unmounted.
 
 
 ## Test coverage report:
