@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 ---
-# Unit tests
+# Unit Tests
 (For each method, there are one or more test cases. A test case consists of input parameter values and expected results. 
 All external classes should be stubbed using mock objects.)
 
@@ -142,7 +142,7 @@ contains the text 'Gameplay'.
 
 
 ## Room Creation Testing
-The room creation testing ensures that a user is able to initiate settings to accomodate the game room, such as choosing a story, the number of players, and the difficulty level. 
+The room creation testing ensures that a user is able to initiate settings to accommodate the game room, such as choosing a story, the number of players, and the difficulty level. 
 Unit tests for Room Creation are located in `StoryQuest/app/CreateRoom/__tests__/completionPage.test.tsx`.
 
 ### `renders the CreateRoomPage component`
@@ -157,6 +157,32 @@ This test checks to see that all the data is logged correctly after the user mak
 ### `allows user to change selected story`
 This test is to ensure that a user is able to select a different setting than their primary choice and have it still rendered on screen.
 
+## Components
+The component testing ensures that each component contained within the webapp exhibits the expected behavior.
+
+## AACKeyBoard Component
+
+Unit tests for AACKeyBoard are located in `StoryQuest/app/Components/__tests__/AACKeyBoard.test.tsx`.
+
+### `renders correctly with default props`
+This test verified that basic rendering, with default properties happens. This included checking that all symbols are displayed as buttons
+and confirming the presence of the "AAC Keyboard" title
+
+### `applies custom background and button colors`
+This test checks the custom styling props, verifying the container background and button colors are correct
+
+### `renders images with correct alt text`
+This test validates image rendering by checking image sources and alternate text.  For example, each image should exist.
+
+### `has proper accessibility attributes`
+This test verifies accessibility features, making sure each symbol button on the AAC board has an aria-label.
+
+### `renders correct grid layout`
+This test verifies layout structure and checks the CSS grid implementation.
+
+### `handles empty symbols array gracefully`
+This test checks for edge cases, when the array gives the board no symbols, and verifies that empty state is handled 
+correctly and cleanly.
 
 ## Test coverage report:
 npx jest --coverage: This generates the coverage report that showcases even how many lines of code are being tested.
