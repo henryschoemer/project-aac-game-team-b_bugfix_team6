@@ -1,18 +1,20 @@
-// project-aac-game-team-b/StoryQuest/app/JoinRoom/__tests__/page.test.tsx
-
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import JoinRoomPage from '../page';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import JoinRoomPage from '../../JoinRoom/page';
 
-// Mock dependencies
-jest.mock('next/link', () => ({ children }: { children: React.ReactNode }) => children);
-jest.mock('next/image', () => ({ src, alt }: { src: string; alt: string }) => (
-  <img src={src} alt={alt} />
-));
+// Mock the necessary dependencies
+jest.mock('next/link', () => {
+  return ({ children, href }: { children: React.ReactNode; href: string }) => {
+    return <a href={href}>{children}</a>;
+  };
+});
 
-jest.mock('../../../firebaseControls/firebaseConfig', () => ({
-  db: {},
+jest.mock('next/image', () => ({
+  __esModule: true,
+  default: (props: any) => {
+    return <img {...props} />;
+  },
 }));
 
 jest.mock('firebase/firestore', () => ({
@@ -20,64 +22,108 @@ jest.mock('firebase/firestore', () => ({
   getDoc: jest.fn(),
 }));
 
-jest.mock('jsqr', () => jest.fn());
-
-jest.mock('use-sound', () => () => [jest.fn(), { stop: jest.fn() }]);
-
-// Corrected mock for useQuickTextToSpeech - now matching named export
-jest.mock('../../Components/useQuickTextToSpeech', () => ({
-  __esModule: true,
-  default: jest.fn(() => ({
-    speak: jest.fn(),
-  })),
+jest.mock('../../../firebaseControls/firebaseConfig', () => ({
+  db: {},
 }));
 
-// Corrected mock for useButtonClickSounds
-jest.mock('../../Components/useButtonClickSounds', () => ({
-  __esModule: true,
-  default: jest.fn(() => ({
+jest.mock('use-sound', () => {
+  return () => [jest.fn()];
+});
+
+jest.mock('jsqr', () => {
+  return jest.fn();
+});
+
+jest.mock('../../Components/Camera', () => {
+  return {
+    __esModule: true,
+    default: ({ setHotspotImage }: { setHotspotImage: (image: string) => void }) => {
+      return <div data-testid="camera-component">Camera Component</div>;
+    },
+  };
+});
+
+jest.mock('../../Components/useQuickTextToSpeech', () => {
+  return () => ({
+    speak: jest.fn(),
+  });
+});
+
+jest.mock('../../Components/useButtonClickSounds', () => {
+  return () => ({
     buttonHandler: jest.fn(),
     isSpeaking: false,
-  })),
-}));
+  });
+});
 
-// Mock Camera component
-jest.mock('../../Components/Camera', () => ({
-  __esModule: true,
-  default: ({ setHotspotImage }: { setHotspotImage: (data: string) => void }) => (
-    <div data-testid="mock-camera" onClick={() => setHotspotImage('mock-image-data')}>
-      Mock Camera
-    </div>
-  ),
-}));
-
-// Import the mocked hooks to configure them in beforeEach
-import useQuickTextToSpeech from '../../Components/useQuickTextToSpeech';
-import useButtonClickSounds from '../../Components/useButtonClickSounds';
-
-describe('JoinRoomPage', () => {
+describe('JoinRoomPage Component', () => {
   beforeEach(() => {
-    // Clear all mocks and reset mock implementations
+    // Clear all mocks before each test
     jest.clearAllMocks();
-    
-    // Set up default mock implementations
-    (useQuickTextToSpeech as jest.Mock).mockImplementation(() => ({
-      speak: jest.fn(),
-    }));
-    
-    (useButtonClickSounds as jest.Mock).mockImplementation(() => ({
-      buttonHandler: jest.fn((type, text, speak) => speak(text)),
-      isSpeaking: false,
-    }));
   });
 
-  it('renders the page with all components', () => {
+  it('renders the component without crashing', () => {
+    render(<JoinRoomPage />);
+    expect(screen.getByText(/Scan Below/i)).toBeInTheDocument();
+  });
+
+  it('displays the exit button', () => {
+    render(<JoinRoomPage />);
+    expect(screen.getByRole('link')).toHaveAttribute('href', '/');
+  });
+
+  it('renders the QR instructions section with correct content', () => {
     render(<JoinRoomPage />);
     
+    // Check heading
     expect(screen.getByText('GRAB A TABLET AND FOLLOW THE PICTURES BELLOW')).toBeInTheDocument();
-    expect(screen.getByText('Scan Below')).toBeInTheDocument();
-    expect(screen.getByTestId('mock-camera')).toBeInTheDocument();
+    
+    // Check step instructions are present
+    expect(screen.getByText('Point the camera')).toBeInTheDocument();
+    expect(screen.getByText('Find this picture')).toBeInTheDocument();
+    expect(screen.getByText('Wait for scan')).toBeInTheDocument();
+    expect(screen.getByText('Play together')).toBeInTheDocument();
   });
 
-  // ... rest of your test cases remain the same ...
+  it('renders all four QR instruction images', () => {
+    render(<JoinRoomPage />);
+    
+    const images = screen.getAllByAltText(/Step \d/);
+    expect(images.length).toBe(4);
+    
+    expect(images[0]).toHaveAttribute('src', '/diagrams/QR1.png');
+    expect(images[1]).toHaveAttribute('src', '/diagrams/QR2.png');
+    expect(images[2]).toHaveAttribute('src', '/diagrams/QR3.png');
+    expect(images[3]).toHaveAttribute('src', '/diagrams/QR4.png');
+  });
+
+  it('renders the camera section with correct heading', () => {
+    render(<JoinRoomPage />);
+    
+    expect(screen.getByText('Scan Below')).toBeInTheDocument();
+    expect(screen.getByTestId('camera-component')).toBeInTheDocument();
+  });
+
+  it('has the correct structure of nested divs', () => {
+    const { container } = render(<JoinRoomPage />);
+    
+    // Main container div with background
+    const mainDiv = container.firstChild;
+    expect(mainDiv).toHaveClass('h-screen', 'w-screen', 'fixed', 'inset-0');
+    
+    // Check for the QR instructions section
+    const qrInstructionsDiv = screen.getByText('GRAB A TABLET AND FOLLOW THE PICTURES BELLOW').closest('div');
+    expect(qrInstructionsDiv).toHaveClass('bg-white/90', 'backdrop-blur-sm', 'rounded-2xl');
+    
+    // Check for the camera section
+    const cameraSectionDiv = screen.getByText('Scan Below').closest('div');
+    expect(cameraSectionDiv).toHaveClass('bg-white/90', 'backdrop-blur-sm', 'rounded-2xl');
+  });
+
+  it('does not show the failed popup by default', () => {
+    render(<JoinRoomPage />);
+    
+    // The failed popup text should not be visible initially
+    expect(screen.queryByText('Need help scanning?')).not.toBeInTheDocument();
+  });
 });
