@@ -8,9 +8,43 @@ sidebar_position: 2
 *Figure 1: System block diagram showcasing interaction between users, frontend, and backend.*
 
 
-## Description of Gameplay/Flow
+## Diagram of Gameplay Flow
 
-To Be Updated
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI
+    participant Firestore
+    participant CloudFunctions
+    
+    %% Room Creation Flow
+    User->>UI: Selects story/difficulty/players
+    UI->>Firestore: Creates new room document
+    Firestore->>CloudFunctions: Triggers roomCreated function
+    CloudFunctions->>Firestore: Initializes game state
+    
+    %% Player Joining Flow
+    User->>UI: Chooses avatar
+    UI->>Firestore: Updates player profile (avatar)
+    UI->>Firestore: Adds player to room.players[]
+    Firestore->>All Clients: Broadcasts player list update
+    
+    %% Gameplay Flow
+    loop Each Turn
+        User->>UI: Selects AAC symbol
+        UI->>Firestore: Records selection in game state
+        Firestore->>CloudFunctions: Checks turn completion
+        CloudFunctions->>Firestore: Updates currentTurn/phrase
+        Firestore->>All Clients: Updates game board
+    end
+    
+    %% Game Completion Flow
+    CloudFunctions->>Firestore: Marks game as completed
+    Firestore->>UI: Triggers celebration screen
+    UI->>User: Shows results with avatars
+    UI->>Firestore: Archives game data
+```
+
 
 ## Technology Requirements
 
