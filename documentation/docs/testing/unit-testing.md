@@ -224,6 +224,42 @@ This test is for cleanup, and verifies speech cancellation on unmount
 This test is for an edge case, where we verify that even with an empty phrase array we can error-handle 
 gracefully and return "The End!"
 
+## TextToSpeechPhrases Component
+
+Unit tests for the TextToSpeechPhrases component are located in `StoryQuest/app/Components/__tests__/TextToSpeechPhrases.test.tsx`.
+
+### `initializes and selects a preferred voice`
+This test verifies that the component properly loads available voices and sets up event listeners to handle voice changes, ensuring the speech synthesis is ready for use.
+
+### `does not call speechSynthesis.speak when voices are not loaded`
+This test confirms that the component gracefully handles the voice loading state by not attempting to speak until voices become available.
+
+### `calls speechSynthesis.speak with underscores replaced in text`
+This test ensures the component correctly processes text by replacing underscores with spaces before speaking, resulting in natural pronunciation.
+
+### `cancels speech when unmounted`
+This test verifies that the component performs proper cleanup by canceling any ongoing speech and removing event listeners when unmounted.
+
+### `does not speak when text is empty`
+This tests confirms the component handles empty text inputs gracefully by skipping speech synthesis entirely.
+
+## TextToSpeechTextOnly Component
+
+Unit tests for the TextToSpeechPhrases component are located in `StoryQuest/app/Components/__tests__/TextToSpeechTextOnly.test.tsx`.
+
+### `should handle voices loading via event`
+This test verifies the component properly initializes speech synthesis and waits for voices to load through the voiceschanged event.
+
+### `should handle unsupported speech synthesis`
+This test confirms the component fails gracefully when the speech synthesis API is unavailable, rendering nothing and avoiding errors.
+
+### `should initialize and wait for voices`
+This test ensures the component sets up proper event listeners and voice selection logic during initialization.
+
+### `should clean up on unmount`
+This test verifies the component cancels any pending speech and removes event listeners during unmounting.
+
+
 ## Test coverage report:
 npx jest --coverage: This generates the coverage report that showcases even how many lines of code are being tested.
 
