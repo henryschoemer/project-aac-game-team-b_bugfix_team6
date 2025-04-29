@@ -171,7 +171,8 @@ user would not be able to navigate back to the home page.
 This test makes sure that the instructions for scaning the QR code arent tampered with and are still present on the page
 
 ### `renders all four QR instruction images`
-This test is here to 
+This test is here to make sure that the images are rendered correctly. These images are important becasue they allow users 
+who may not be able to read gain insight on how ot join a lobby.
 
 ### `renders the camera section with correct heading`
 
