@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 ---
-# Integration tests
+# Integration Tests
 
 Tests to demonstrate each use-case based on the use-case descriptions and the sequence diagrams. External input 
 was provided via mock objects and results verified via mock objects.
