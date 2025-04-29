@@ -157,6 +157,33 @@ This test checks to see that all the data is logged correctly after the user mak
 ### `allows user to change selected story`
 This test is to ensure that a user is able to select a different setting than their primary choice and have it still rendered on screen.
 
+## Join Room
+The join room testing ensures that the page renders correctly so that users will be able to have a standarized view of the page. This test is located at `StoryQuest/app/JoinRoom/__tests__/page.test.tsx` 
+
+### `renders the component without crashing`
+This test makes sure that the whole page renders with out crashing or that any other problems happen
+
+### `displays the exit button`
+This test is used to mkae sure that the exit button is alsways being displayed on the page. withoutthis button
+user would not be able to navigate back to the home page.
+
+### `renders the QR instructions section with correct content` 
+This test makes sure that the instructions for scaning the QR code arent tampered with and are still present on the page
+
+### `renders all four QR instruction images`
+This test is here to make sure that the images are rendered correctly. These images are important becasue they allow users 
+who may not be able to read gain insight on how ot join a lobby.
+
+### `renders the camera section with correct heading`
+This test is here to make sure that the camera portion of the join room page is rendered in correctly. This is vital so that
+users are able to scan the qr code.
+
+### `has the correct structure of nested divs`
+This test is for making sure that divs have proper closing tags and that they exist.
+
+### `does not show the failed popup by default`
+This test is here to make sure that the failed to scan QR code pop up does not pop up on the screen by defualt. 
+
 ## Components
 The component testing ensures that each component contained within the webapp exhibits the expected behavior.
 
