@@ -166,10 +166,10 @@ Unit tests for AACKeyBoard are located in `StoryQuest/app/Components/__tests__/A
 
 ### `renders correctly with default props`
 This test verified that basic rendering, with default properties happens. This included checking that all symbols are displayed as buttons
-and confirming the presence of the "AAC Keyboard" title
+and confirming the presence of the "AAC Keyboard" title.
 
 ### `applies custom background and button colors`
-This test checks the custom styling props, verifying the container background and button colors are correct
+This test checks the custom styling props, verifying the container background and button colors are correct.
 
 ### `renders images with correct alt text`
 This test validates image rendering by checking image sources and alternate text.  For example, each image should exist.
@@ -183,6 +183,30 @@ This test verifies layout structure and checks the CSS grid implementation.
 ### `handles empty symbols array gracefully`
 This test checks for edge cases, when the array gives the board no symbols, and verifies that empty state is handled 
 correctly and cleanly.
+
+## Camera Component
+
+Unit tests for the Camera component are located in `StoryQuest/app/Componnents/__tests__/Camera.test.tsx`.
+
+### `renders camera component`
+This test checks for basic rendering and verifies that the capture button is present on screen.
+
+### `attempts to start camera on mount`
+This test tries camera initialization, verifying media constraints and checking video play capability in the process.
+
+### `falls back to front camera if back camera fails`
+This test ensures that if the default behavior (back camera) can not be achieved, the error is handled and we fallback to 
+secondary behavior (front camera), while maintaining resolution.
+
+### `shows error message when camera access fails`
+This test checks error state UI and verifies the existences of the retry button
+
+### `handles capture button click`
+This test runs photo capture and verifies canvas operations by checking the image callback
+
+### `scans for QR codes when camera is active`
+This test is for QR detection. It verifies the jsQR integration and checks the callback with the results
+
 
 ## Test coverage report:
 npx jest --coverage: This generates the coverage report that showcases even how many lines of code are being tested.
