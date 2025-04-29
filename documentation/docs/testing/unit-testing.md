@@ -207,6 +207,22 @@ This test runs photo capture and verifies canvas operations by checking the imag
 ### `scans for QR codes when camera is active`
 This test is for QR detection. It verifies the jsQR integration and checks the callback with the results
 
+## CompletedStory Component
+
+Unit tests for the CompletedStory component are located in `StoryQuest/app/Components/__tests__/CompletedStory.test.tsx`
+
+### `should not render any visual component`
+This test checks the invisible nature of the completed story, and verifies an empty container is present.
+
+### `should schedule speech synthesis after delay`
+This test verifies the timing of narration and utterance content played.
+
+### `should clean up on unmount`
+This test is for cleanup, and verifies speech cancellation on unmount 
+
+### `should handle empty phrases array`
+This test is for an edge case, where we verify that even with an empty phrase array we can error-handle 
+gracefully and return "The End!"
 
 ## Test coverage report:
 npx jest --coverage: This generates the coverage report that showcases even how many lines of code are being tested.
