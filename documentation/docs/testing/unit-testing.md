@@ -175,8 +175,11 @@ This test is here to make sure that the images are rendered correctly. These ima
 who may not be able to read gain insight on how ot join a lobby.
 
 ### `renders the camera section with correct heading`
+This test is here to make sure that the camera portion of the join room page is rendered in correctly. This is vital so that
+users are able to scan the qr code.
 
 ### `has the correct structure of nested divs`
+
 
 ### `does not show the failed popup by default`
 ## Components
