@@ -182,6 +182,8 @@ users are able to scan the qr code.
 This test is for making sure that divs have proper closing tags and that they exist.
 
 ### `does not show the failed popup by default`
+This test is here to make sure that the failed to scan QR code pop up does not pop up on the screen by defualt. 
+
 ## Components
 The component testing ensures that each component contained within the webapp exhibits the expected behavior.
 
