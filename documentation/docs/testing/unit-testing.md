@@ -179,7 +179,7 @@ This test is here to make sure that the camera portion of the join room page is 
 users are able to scan the qr code.
 
 ### `has the correct structure of nested divs`
-
+This test is for making sure that divs have proper closing tags and that they exist.
 
 ### `does not show the failed popup by default`
 ## Components
