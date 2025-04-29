@@ -172,12 +172,12 @@ describe('Home', () => {
   
     test('renders without crashing', async () => {
         render(<Home />);
-        // Check for something that should always be present
-        expect(screen.getByText(/START GAME/i)).toBeInTheDocument();
+        // In test mode we immediately show the first story phrase
+        expect(await screen.findByText(/Look in the garden/i)).toBeInTheDocument();
       });
       
       test('initializes with the first story', async () => {
-        render(<Home skipSetup />);
+        render(<Home />);
         
         await waitFor(() => {
           expect(screen.getByText(/Look in the garden/i)).toBeInTheDocument();
@@ -194,7 +194,7 @@ describe('Home', () => {
             return jest.fn();
         });
 
-        render(<Home skipSetup />);
+        render(<Home />);
         
         // Wait for initial render
         await screen.findByText(/Look in the garden/i);
@@ -231,7 +231,7 @@ describe('Home', () => {
         .mockImplementationOnce(() => [1, jest.fn()]) // currentTurn
         .mockImplementationOnce(() => [false, jest.fn()]); // avatarModalOpen
 
-    render(<Home skipSetup />);
+    render(<Home />);
     
     await waitFor(() => {
         expect(screen.getByText(/Look in the garden/i)).toBeInTheDocument();
@@ -258,7 +258,7 @@ describe('Home', () => {
         sessionStorage.setItem('player-uid', 'test-player-1');
 
         // Render the component
-        render(<Home skipSetup />);
+        render(<Home />);
 
         // Find and click the button
         const mouseButton = await screen.findByAltText('mouse');
@@ -339,7 +339,7 @@ describe('Home', () => {
             return jest.fn(); // unsubscribe
         });
 
-        render(<Home skipSetup />);
+        render(<Home />);
 
         // Verify completion
         await waitFor(() => {
@@ -358,7 +358,7 @@ describe('Home', () => {
         jest.spyOn(React, 'useState')
           .mockImplementationOnce(() => [{ playerNumber: 2, currentTurn: 1 }, jest.fn()]);
         
-        render(<Home skipSetup/>);
+        render(<Home />);
       
         alertSpy.mockRestore();
       });
