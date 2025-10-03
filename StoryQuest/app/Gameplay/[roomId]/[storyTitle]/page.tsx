@@ -334,7 +334,7 @@ useEffect(() => {
     });
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
-}, [phrase]);
+  }, [phrase]);
 
 
   const handleStoryChange = async (story: Story, phraseLimit: number) => {
@@ -773,9 +773,9 @@ useEffect(() => {
     </AnimatePresence>
 
     {/* Calls AutomaticTextToSpeech, which speech texts the current fill in the blank phrase*/}
-    {phrase && (
+    {phrase && (currentTurn === playerNumber) ? (
       <TextToSpeechTextOnly key={phrase} text={phrase} />
-    )}
+    ): null}
 
     {/* Text to speech completed story*/}
     {phrase === "The End!" && (
